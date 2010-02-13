@@ -17,7 +17,7 @@ import java.io.*;
 public class MessageManager 
 {
 	final String messageDir = "Messages/";
-	Hashtable messages = new Hashtable();
+	Hashtable<String, String> messages = new Hashtable<String, String>();
 	
 	/**
 	 * Creates a new Message Manager and loads all game messages.

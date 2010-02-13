@@ -10,7 +10,7 @@ public class Area
 {
 	String name = "";
 	String creator = "";
-	LinkedList rooms = new LinkedList();
+	LinkedList<Room> rooms = new LinkedList<Room>();
 	
 	/**
 	 * Creates a new area with the given name and name of the creator.

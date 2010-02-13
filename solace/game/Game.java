@@ -44,8 +44,17 @@ public class Game
 	 */
 	public static void main(String[] args) 
 	{
+		int port;
+		
 		try 
 		{
+			try {
+				port = Integer.parseInt(args[0]);
+			}
+			catch (Exception e) {
+				port = 4000;
+			}
+			
 			// Initialize the message manager
 			messageManager = new MessageManager();
 			
@@ -53,7 +62,7 @@ public class Game
 			world = new World();
 
 			// Initialize and start the game server
-			server = new Server();
+			server = new Server(port);
 			server.listen();
 		}
 		catch (IOException ioe)

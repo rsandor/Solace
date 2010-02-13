@@ -11,7 +11,7 @@ public class Room
 	int id;
 	String title;
 	String desc;
-	Hashtable exits = new Hashtable();
+	Hashtable<String, Room> exits = new Hashtable<String, Room>();
 	
 	/**
 	 * Creates a new room with the given id, title, and description.

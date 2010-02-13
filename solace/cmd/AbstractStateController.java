@@ -16,7 +16,7 @@ public abstract class AbstractStateController
 	implements StateController 
 {
 	Connection connection;
-	LinkedList commands = new LinkedList();
+	LinkedList<Command> commands = new LinkedList<Command>();
 	String invalidCommandMessage;
 	
 	/**

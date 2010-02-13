@@ -10,10 +10,10 @@ import solace.net.Connection;
  */
 public class World 
 {
-	List connections;
-	List oogChat;
-	Hashtable namesToAccounts;
-	Hashtable accountsToConnections;
+	List<Connection> connections;
+	List<Connection> oogChat;
+	Hashtable<String, Account> namesToAccounts;
+	Hashtable<Account, Connection> accountsToConnections;
 	
 	/**
 	 * Creates a new game world.
@@ -21,10 +21,10 @@ public class World
 	public World()
 	{
 		Log.info("Game world loaded");
-		connections = Collections.synchronizedList(new LinkedList());
-		oogChat = Collections.synchronizedList(new LinkedList());
-		namesToAccounts = new Hashtable();
-		accountsToConnections = new Hashtable();
+		connections = Collections.synchronizedList(new LinkedList<Connection>());
+		oogChat = Collections.synchronizedList(new LinkedList<Connection>());
+		namesToAccounts = new Hashtable<String, Account>();
+		accountsToConnections = new Hashtable<Account, Connection>();
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class World
 	/**
 	 * @return the connections
 	 */
-	public Collection getConnections() 
+	public Collection<Connection> getConnections() 
 	{
 		return connections;
 	}
@@ -106,7 +106,7 @@ public class World
 	/**
 	 * @return the oogChat
 	 */
-	public Collection getOogChat() 
+	public Collection<Connection> getOogChat() 
 	{
 		return oogChat;
 	}
