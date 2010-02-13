@@ -120,9 +120,13 @@ Easy peasy! Here are the 4 major build targets defined in the build.xml file:
 * jar - Builds the jar file
 * run - Executes the game server
 
-By default the server beings running on port 4000 (if this is bad for you please
-edit the solace/game/Game.java file to change the port, command-line optiosn 
-coming soon!).
+By default the server beings running on port 4000, you can pass a custom port
+number by executing the following command:
+
+	java -jar build/jar/Solace.jar <your port>
+	
+Please note that the port must be all numeric and it is suggested that you use
+a port greater than 2000 to avoid conflicts with standard system ports.
 
 To connect and "play" the game use any mud client or even telnet. To use telnet
 just type `telnet localhost 4000` and you'll connect to the game.
