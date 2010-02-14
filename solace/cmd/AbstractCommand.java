@@ -26,10 +26,19 @@ public abstract class AbstractCommand
 	/**
 	 * Default behavior set to always return <code>true</code>, override in sub classes to
 	 * add varied functionality.
+	 * @param c Connection to test against.
 	 */
-	public boolean canExecute(Connection c)
-	{
+	public boolean canExecute(Connection c) {
 		return true;
+	}
+
+	/**
+	 * Implementation of the basic "prefix" match used by many other MUDs.
+	 * @param s String to check for match.
+	 * @return <code>true</code> if the given string matches, <code>false</code> otherwise.
+	 */
+	public boolean matches(String s) {
+		return name.startsWith(s);
 	}
 	
 	/**
@@ -38,25 +47,6 @@ public abstract class AbstractCommand
 	public String getName() 
 	{
 		return name;
-	}
-
-	/**
-	 * Implementation of the basic "prefix" match used by many other MUDs.
-	 **/
-	public boolean matches(String s) 
-	{
-		if (s == null || s.length() == 0)
-			return false;
-		
-		s = s.toLowerCase();
-		
-		for (int i = 0; i < s.length(); i++)
-		{
-			if (i >= name.length() || name.charAt(i) != s.charAt(i))
-				return false;
-		}
-		
-		return true;
 	}
 
 	/**

@@ -3,6 +3,9 @@ package solace.game;
 import java.util.*;
 import solace.util.Log;
 import solace.net.Connection;
+import solace.xml.GameParser;
+import java.io.*;
+
 
 /**
  * Holds the state of the entire game world.
@@ -14,17 +17,56 @@ public class World
 	List<Connection> oogChat;
 	Hashtable<String, Account> namesToAccounts;
 	Hashtable<Account, Connection> accountsToConnections;
-	
+	Hashtable<String, Area> areas = new Hashtable<String, Area>();
+
+	protected String areaDir = "data/areas/";
+
 	/**
 	 * Creates a new game world.
 	 */
 	public World()
 	{
-		Log.info("Game world loaded");
+		loadAreas();
+		
 		connections = Collections.synchronizedList(new LinkedList<Connection>());
 		oogChat = Collections.synchronizedList(new LinkedList<Connection>());
 		namesToAccounts = new Hashtable<String, Account>();
 		accountsToConnections = new Hashtable<Account, Connection>();
+		
+		Log.info("Game world loaded");
+	}
+	
+	/**
+	 * Loads all game areas.
+	 */
+	protected void loadAreas() {
+		File dir = new File(areaDir);
+		String[] names = dir.list();
+		
+		if (names != null) {			
+			for (int i = 0; i < names.length; i++) {
+				try {
+				  String fileName = areaDir + names[i];
+					Area a = GameParser.parseArea(fileName);
+					areas.put(a.getId(), a);
+					Log.info("Area '" + a.getId() + "' successfully loaded from '" + names[i] + "'");
+				}
+				catch (IOException ioe) {
+					Log.error("Area '" + names[i] + "' failed to load.");
+				}
+			}
+		}
+		else {
+			Log.info("No area files available to load.");
+		}
+	}
+	
+	/**
+	 * @param id An area id.
+	 * @return The <code>Area</code> associated with the id, or null if none exists.
+	 */
+	public Area getArea(String id) {
+		return areas.get(id);
 	}
 	
 	/**
@@ -46,7 +88,7 @@ public class World
 		namesToAccounts.put(a.getName(), a);
 		accountsToConnections.put(a, c);
 	}
-	
+
 	/**
 	 * Finds a connection, given an account.
 	 * @param a Account to determine the connection for.

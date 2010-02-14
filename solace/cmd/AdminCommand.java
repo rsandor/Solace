@@ -24,6 +24,6 @@ public abstract class AdminCommand
 	 */
 	public boolean canExecute(Connection c)
 	{
-		return (c.hasAccount() && c.getAccount().getAccountType() == Account.AT_ADMIN);
+		return (c.hasAccount() && c.getAccount().isAdmin());
 	}
 }

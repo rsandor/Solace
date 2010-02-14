@@ -1,8 +1,10 @@
 package solace.cmd;
 
+import java.util.*;
+
 import solace.game.*;
 import solace.net.Connection;
-import java.util.*;
+import solace.util.*;
 
 /**
  * Out of game chat controller. The out of game chat allows people to chat on the server without
@@ -17,7 +19,7 @@ public class ChatController
 	public ChatController(Connection c)
 	{
 		super(c);
-		String intro = Game.getMessageManager().get("ChatIntro");
+		String intro = Message.get("ChatIntro");
 		
 		// Add the commands
 		addCommand(new Quit());
@@ -75,7 +77,7 @@ public class ChatController
 		public Help() { super("/help"); }
 		public void run(Connection c, String []args)
 		{
-			String help = Game.getMessageManager().get("ChatHelp");
+			String help = Message.get("ChatHelp");
 			c.sendln(help);
 		}
 	}

@@ -15,8 +15,53 @@ import java.util.*;
 public abstract class AbstractStateController 
 	implements StateController 
 {
+	/**
+	 * Simple command tuple.
+	 * @author Ryan Sandor Richards
+	 */
+	private class CommandTuple {
+		// Instance variables
+		String name;
+		Command command;
+		
+		/**
+		 * Creates a new command tuple.
+		 * @param n Name for the command.
+		 */
+		public CommandTuple(String n, Command c) {
+			name = n;
+			command = c;
+		}
+		
+		/**
+		 * @return The name associated with the command.
+		 */
+		public String getName() { 
+			return name; 
+		}
+		
+		/**
+		 * @return The executable command.
+		 */
+		public Command getCommand() { 
+			return command; 
+		}
+		
+		/**
+		 * Implementation of the basic "prefix" match used by many other MUDs.
+		 * @param s String to check for match.
+		 * @return <code>true</code> if the given string matches, <code>false</code> otherwise.
+		 */
+		public boolean matches(String s) {
+			return name.startsWith(s);
+		}
+	}
+	
+	
+	// Instance Variables
 	Connection connection;
-	LinkedList<Command> commands = new LinkedList<Command>();
+	LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
+	
 	String invalidCommandMessage;
 	
 	/**
@@ -69,7 +114,19 @@ public abstract class AbstractStateController
 	 */
 	public void addCommand(Command c)
 	{
-		commands.add(c);
+		commands.add(new CommandTuple(c.getName(), c));
+	}
+	
+	/**
+	 * Adds a command to the controller under the given alias.
+	 * This is useful for commands that can be executed via
+	 * multiple names (such as movement commands).
+	 *
+	 * @param alias Alias for the command.
+	 * @param c Command to add.
+	 */
+	public void addCommand(String alias, Command c) {
+		commands.add(new CommandTuple(alias, c));
 	}
 	
 	/**
@@ -79,15 +136,9 @@ public abstract class AbstractStateController
 	 */
 	protected Command findCommand(String c)
 	{
-		Iterator iter = commands.iterator();
-		
-		while (iter.hasNext())
-		{
-			Command cmd = (Command)iter.next();
-			if (cmd.matches(c))
-				return cmd;
-		}
-		
+		for (CommandTuple t : commands)
+			if (t.matches(c))
+				return t.getCommand();
 		return null;
 	}
 	

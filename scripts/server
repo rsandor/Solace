@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Server Launch/Restart Script
+# By Ryan Sandor Richards
+java -jar build/jar/Solace.jar $1

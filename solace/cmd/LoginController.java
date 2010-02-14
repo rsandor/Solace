@@ -49,7 +49,7 @@ public class LoginController
 		else
 			connection.setUseColor(false);
 		
-		connection.sendln( Game.getMessageManager().get("Intro") );
+		connection.sendln( Message.get("Intro") );
 		connection.setPrompt("Account: ");
 		
 		state = ACCOUNT_NAME;
@@ -63,12 +63,12 @@ public class LoginController
 	 */
 	protected void accountName(String input)
 	{
-		String aname = input;
+		String aname = input.trim();
 		
 		// Check to see if they want to make a new account
 		if (input.toLowerCase().equals("new"))
 		{
-			connection.sendln( Game.getMessageManager().get("NewAccountRules") );
+			connection.sendln( Message.get("NewAccountRules") );
 			connection.setPrompt("Name for account: ");
 			state = NEW_ACCOUNT_NAME;
 			return;
@@ -86,9 +86,12 @@ public class LoginController
 		// Try to load the account.
 		try 
 		{
-			connection.setAccount( Account.loadFromFile(aname) );
+			connection.setAccount( Account.load(aname) );
 			state = ACCOUNT_PASS;
 			connection.setPrompt("Password: ");
+
+			// Send the don't echo command
+			connection.echoOff();
 		}
 		catch (IOException ioe)
 		{
@@ -109,27 +112,29 @@ public class LoginController
 		if (!connection.hasAccount())
 		{
 			state = ACCOUNT_NAME;
-			connection.setPrompt("Account: ");
+			connection.setPrompt("\r\nAccount: ");
 			return;
 		}
 		
 		Account account = connection.getAccount();
 		
 		// Check for an incorrect password
-		if (!pass.equals(account.getPassword()))
+		if (!Digest.sha256(pass).equals(account.getPassword()))
 		{
 			Log.info("Incorrect password given for user '" + account.getName() + "' from " + 
 				connection.getInetAddress());
-			connection.sendln("Incorrect password.");
+			connection.sendln("\n\rIncorrect password.");
 			connection.close();
 			return;
 		}
 		
 		// Everything seems fine, log them in and present the game's main menu
 		Game.getWorld().addAccount(connection, account);
+		connection.setAccount(account);
 		Log.info("Account '" + account.getName() + "' logged into from " + connection.getInetAddress());
-		connection.sendln("\nWelcome " + connection.getAccount().getName() + "!");
+		connection.sendln("\n\rWelcome " + connection.getAccount().getName() + "!");
 		connection.setStateController( new MainMenu(connection) );
+		connection.echoOn();
 	}
 	
 	/**
@@ -154,8 +159,9 @@ public class LoginController
 		
 		// If all is well move on to the next step
 		newUserName = input.toLowerCase();
-		connection.setPrompt("Password for Account: ");
+		connection.setPrompt("\n\rPassword for Account: ");
 		state = NEW_ACCOUNT_PASS;
+		connection.echoOff();
 	}
 	
 	/**
@@ -163,16 +169,16 @@ public class LoginController
 	 * @param input Password for the account.
 	 */
 	protected void newAccountPassword(String input)
-	{
+	{		
 		// Ensure the password is long enough
 		if (input.length() < 6)
 		{
-			connection.sendln("Passwords must be at least 6 letters in length!");
+			connection.sendln("\n\rPasswords must be at least 6 letters in length!");
 			return;
 		}
 		
 		newUserPass = input;
-		connection.setPrompt("Confirm Password: ");
+		connection.setPrompt("\n\rConfirm Password: ");
 		state = NEW_ACCOUNT_CONFIRM;
 	}
 	
@@ -181,12 +187,14 @@ public class LoginController
 	 * @param input Confirmed (hopefully) password.
 	 */
 	protected void newAccountConfirm(String input)
-	{
+	{	
 		// See if the passwords match
 		if (!newUserPass.equals(input))
 		{
-			connection.sendln("Password and confirmation do not match!");
+			connection.sendln("\n\rPassword and confirmation do not match!");
+			connection.send("\r");
 			connection.setPrompt("Password for Account: ");
+			connection.echoOff();
 			state = NEW_ACCOUNT_PASS;
 			return;
 		}
@@ -194,21 +202,22 @@ public class LoginController
 		// We are good to go, create the account and give them an update
 		try
 		{
-			Account.createAccount(newUserName, newUserPass, Account.AT_NORMAL);
-			connection.sendln("Account created! Please login using your account name and password.");
+			Account.createAccount(newUserName, newUserPass, false);
+			connection.sendln("\n\rAccount created! Please login using your account name and password.");
+			connection.echoOn();
 		}
 		catch (IOException ioe)
 		{
-			connection.sendln("An error occured while trying to create your account. Please try again!");
+			connection.sendln("\n\rAn error occured while trying to create your account. Please try again!");
 		}
 		catch (IllegalArgumentException iae)
 		{
-			connection.sendln("Sorry, an account with that name already exists!");
+			connection.sendln("\n\rSorry, an account with that name already exists!");
 		}
 		finally
 		{
 			state = ACCOUNT_NAME;
-			connection.setPrompt("Account: ");
+			connection.setPrompt("\n\rAccount: ");
 		}
 	}
 

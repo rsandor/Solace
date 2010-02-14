@@ -4,37 +4,19 @@ import java.util.*;
 import java.io.*;
 
 /**
- * This is a basic message manager for the game. It pulls
- * messages from the "Message/" folder and loads them so
- * that they may be sent to players.
- * 
- * Messages are things like the introduction screen, or any
- * other "static" information that is displayed to users
- * by the game.
- * 
- * @author Ryan Sandor Richards (Gaius)
+ * The message manager for the game. Messages are things like the introduction screen, or any
+ * other "static" information that is displayed to users by the game.
+ * @author Ryan Sandor Richards
  */
-public class MessageManager 
+public class Message
 {
-	final String messageDir = "Messages/";
-	Hashtable<String, String> messages = new Hashtable<String, String>();
-	
-	/**
-	 * Creates a new Message Manager and loads all game messages.
-	 * @throws IOException if and i/o error occured while loading messages.
-	 */
-	public MessageManager()
-		throws IOException
-	{
-		loadMessages();
-		Log.info("Game messages loaded");
-	}
+	static final String messageDir = "data/messages/";
+	static Hashtable<String, String> messages = new Hashtable<String, String>();
 	
 	/**
 	 * Loads messages into the manager.
 	 */
-	void loadMessages()
-		throws IOException
+	public static void load() throws IOException
 	{
 		File dir = new File(messageDir);
 		File []messageFiles = dir.listFiles();
@@ -63,11 +45,9 @@ public class MessageManager
 	/**
 	 * Reloads messages on the fly.
 	 */
-	public void reload()
-		throws IOException
-	{
+	public static void reload() throws IOException {
 		messages.clear();
-		loadMessages();
+		load();
 		Log.info("Game Messages Reloaded");
 	}
 	
@@ -75,9 +55,8 @@ public class MessageManager
 	 * Retrieves a message contents.
 	 * @param name Name of the message.
 	 */
-	public String get(String name)
-	{
-		return (String)messages.get(name);
+	public static String get(String name) {
+		return messages.get(name).replace("\n", "\n\r");
 	}
 }
 

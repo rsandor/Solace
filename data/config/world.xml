@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="world">
+	<!-- Overall information about the game world -->
+	<option name="name" value="Solace" />
+	<option name="author" value="Ryan Sandor Richards" />
+	
+	<default>
+		<!--
+			The default area and room represent the starting room for a new character.
+			They are required or players will not be able to log new characters into
+			the game world.
+		-->
+		<option name="area" value="smallhouse" />
+		<option name="room" value="entrance" />
+	</default>
+	
+	<!-- Defines coloring for various game objects -->
+	<colors>
+		<room>
+			<option name="exit" value="{r" />
+			<option name="object" value="{y" />
+		</room>
+	</colors>
+</config>

@@ -62,7 +62,40 @@ public class Connection
 	}
 	
 	/**
-	 * [Spike] Basic output function for connections.
+	 * Turns client echo off.
+	 */
+	public void echoOff() {
+		try {
+			int[] cmd = {255, 251, 1};
+			for (int i : cmd) 
+				socket.getOutputStream().write(i);
+			byte[] bytes = {0, 0, 0};
+			socket.getInputStream().read(bytes);
+		}
+		catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Turns client echo on.
+	 */
+	public void echoOn() {
+		try {
+			int[] cmd = {255, 252, 1};
+			for (int i : cmd) 
+				socket.getOutputStream().write(i);
+			byte[] bytes = {0, 0, 0};
+			socket.getInputStream().read(bytes);
+		}
+		catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	
+	/**
+	 * Basic output function for connections.
 	 * @param s String to send.
 	 */
 	public void send(String s)
@@ -84,7 +117,7 @@ public class Connection
 	 */
 	public void sendln(String s)
 	{
-		send(s+"\n");
+		send(s+"\n\r");
 	}
 		
 	/**

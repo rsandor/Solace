@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<area id="smallhouse" title="The small house" author="Ryan Sandor Richards">
+	<room id="entrance">
+		<title>A cozy and inviting mud room</title>
+		A small room with off-white painted walls, worn hardwood flooring, and simple 
+		darkly stained molding. A plain wooden chair rests against the western wall and 
+		sits atop an old stained Persian rug. A tall brass coatrack is positioned next to 
+		a <exit names="south doorway" to="diningroom">doorway leading south</exit> into 
+		a large dining area.
+	</room>
+	
+	<room id="diningroom">
+		<title>A large open dining room</title>
+		The dining room has walls colored a rich deep red and a traffic worn hardwood floor adorned 
+		with a large and thick throw rug. A wooden cabinet rests against the south wall between two windows 
+		that look out into the back yard. A large table sits directly in the middle of the room surrounded
+		by six chairs along both long sides. There is a <exit names="north doorway" to="entrance">doorway 
+		leading north</exit> into a mud room.
+	</room>
+	
+	<!--
+	<room id="bathroom">
+		<title>A small full bathroom</title>
+	</room>
+	
+	<room id="livingroom">
+		<title>A comfortable living room</title>
+	</room>
+	
+	<room id="kitchen">
+		<title>A small utilitarian kitchen</title>
+	</room>
+
+	<room id="masterbedroom">
+		<title>The master bedroom</title>
+	</room>
+	
+	<room id="guestbedroom">
+		<title>A plain guest bedroom</title>
+	</room>
+	-->
+</area>

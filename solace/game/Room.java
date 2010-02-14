@@ -8,68 +8,87 @@ import java.util.*;
  */
 public class Room 
 {
-	int id;
+	String id;
 	String title;
 	String desc;
-	Hashtable<String, Room> exits = new Hashtable<String, Room>();
+	Area area;
+	LinkedList<Exit> exits = new LinkedList<Exit>();
 	
 	/**
 	 * Creates a new room with the given id, title, and description.
 	 * @param i Id for the room.
-	 * @param t Title for the room.
-	 * @param d Description for the room.
 	 */
-	public Room(int i, String t, String d)
-	{
+	public Room(String i) {
 		id = i;
-		title = t;
-		desc = d;
+		desc = "";
+		title = "";
+		area = null;
 	}
 
 	/**
-	 * Determines if the room has a particular exit.
-	 * @param name Name of the exit.
-	 * @return True if the room has such an exit, false otherwise.
+	 * @return the area the room belongs to.
 	 */
-	public boolean hasExit(String name)
-	{
-		return exits.containsKey(name);
+	public Area getArea() {
+		return area;
 	}
 	
 	/**
-	 * Sets an exit for the room.
-	 * @param name Name of the exit.
-	 * @param to Destination room for the exit.
+	 * @param a area for the room.
 	 */
-	public void setExit(String name, Room to)
-	{
-		exits.put(name, to);
+	public void setArea(Area a) {
+		area = a;
+	}
+
+	/**
+	 * @return The room's id.
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * Adds an exit for the room.
+	 * @param e Exit to add to the room.
+	 */
+	public void addExit(Exit e) {
+		exits.add(e);
 	}
 	
 	/**
-	 * Returns the destination room for a given exit.
-	 * @param name Name of the exit.
-	 * @return Destination room for the exit.
+	 * Performs a prefix search that looks for an exit based off a direction fragment.
+	 * @param fragment Fragment by which to perform the search.
+	 * @return The exit if an exit matching the fragment was found, <code>null</code> otherwise.
 	 */
-	public Room getExit(String name)
-	{
-		return (Room)exits.get(name);
+	public Exit findExit(String fragment) {		
+		for (Exit e : exits) 
+			if (e.matches(fragment))
+				return e;
+		
+		return null;
 	}
 	
 	/**
 	 * @return the desc
 	 */
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return desc.trim();
 	}
 
 	/**
 	 * @param desc the desc to set
 	 */
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String d) {
+		desc = d;
 	}
-
+	
+	/**
+	 * Appends more information to the description.
+	 * @param d Information to append.
+	 */
+	public void addToDescription(String d) {
+		desc += d;
+	}
+ 
 	/**
 	 * @return the title
 	 */
