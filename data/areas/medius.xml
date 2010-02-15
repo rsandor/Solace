@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Medius is the central city of the game world. It is a relatively large city
+	that is known for its temples, trade houses, unique stone architecture and
+	also for its three awe inspiring obelisks: Equitas, Otium, and Prosperitas.
+	There are three major districts in the city, each named after the obelisk 
+	around which they are centered.
+	
+	The city rests against a bay known as the "Median Bay". The Imbrium river
+	runs through the center of the prosperity district. Along with two major
+	aqueducts that run water from the mountains from the north and south this
+	river supplies much of the city's fresh water.
+-->	
+<area id="medius" title="The city of Medius" author="Ryan Sandor Richards">
+	
+	<!-- Prosperitus Square -->
+	<district name="Prosperitas Square">	
+		<room id="prosperitas">
+			<title>Prosperitas Square</title>	
+			Ornate copper statues depicting wealth, abundance, and health dot the well groomed gardens
+			of the square. At its center towering two hundred feet above the square stands the  
+			Prosperity Obelisk. The obelisk itself is built of thousands of smoothed stone blocks and 
+			at its base it is surrounded by ziggurat of eleven perfectly square marble steps. The southern
+			side of the obelisk contains a large copper dedication plaque. 
+		
+			Various shops and trade houses lie on the edges of the square. They include,
+			<exit names="contego protectives" to="contego protectives">Contego Protectives</exit> 
+			the localarmor stop, an quality weapons shop called 
+			<exit names="arma armarium" to="arma armarium">Arma Armarium</exit>, and
+			an old, well respected inn known as  <exit names="argentum inn" to="argentum">The Argentum</exit>. 
+			The two major exits from the square are along Dito Lane, which runs 
+			<exit names="north" to="prosperitas north">north</exit> and 
+			<exit names="south" to="prosperitas south">south</exit>, 
+			and Median Avenue that leads pedestrians 
+			<exit names="east" to="prosperitas east">east</exit> and 
+			<exit names="west" to="prosperitas west">west</exit> through the square.
+		</room>
+	
+		<room id="contego protectives">
+			<title>Contego Protectives</title>
+			<exit names="door exit" to="prosperitas">door</exit>
+		</room>
+	
+		<room id="arma armarium">
+			<title>Arma Armarium</title>
+			<exit names="door exit" to="prosperitas">door</exit>
+		</room>
+	
+		<!-- The Argentum Inn -->
+		<building name="The Argentum">
+			<room id="the argentum">
+				<title>The Argentum</title>
+				<exit names="door exit" to="prosperitas">door</exit>
+			</room>
+		</building>
+	
+		<room id="propseritas north">
+			<title>North of Prosperitas Square along Dito Lane</title>
+			<exit names="south" to="prosperitas">south</exit>
+		</room>
+	
+		<room id="propseritas south">
+			<title>South of Prosperitas Square along Dito Lane</title>
+			<exit names="north" to="prosperitas">north</exit>
+		</room>
+	
+		<room id="propseritas east">
+			<title>East of Prosperitas Square along Median Avenue</title>
+			<exit names="west" to="prosperitas">west</exit>
+		</room>
+	
+		<room id="propseritas west">
+			<title>West of Prosperitas Square along Median Avenue</title>
+			<exit names="east" to="prosperitas">east</exit>
+		</room>
+	</district>
+	
+</area>

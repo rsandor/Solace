@@ -9,9 +9,9 @@ import java.util.*;
 public class Room 
 {
 	String id;
-	String title;
-	String desc;
-	Area area;
+	String title = "";
+	String desc = "";
+	Area area = null;
 	LinkedList<Exit> exits = new LinkedList<Exit>();
 	
 	/**
@@ -20,9 +20,6 @@ public class Room
 	 */
 	public Room(String i) {
 		id = i;
-		desc = "";
-		title = "";
-		area = null;
 	}
 
 	/**

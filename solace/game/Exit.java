@@ -27,6 +27,13 @@ public class Exit {
 	 */
 	public LinkedList<String> getNames() { return names; }
 	
+	public String getCompiledNames() {
+		StringBuffer buf = new StringBuffer();
+		for (String s : names)
+			buf.append(s + " ");
+		return buf.toString().trim();
+	}
+	
 	/**
 	 * @param n Names for the exit.
 	 */

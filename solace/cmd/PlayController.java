@@ -63,7 +63,8 @@ public class PlayController
 		
 		String []moveAliases = {
 			"move", "go", "north", "south", 
-			"east", "west", "up", "down"
+			"east", "west", "up", "down", 
+			"exit", "enter"
 		};
 		for (String n : moveAliases)
 			addCommand(n, move);
@@ -83,6 +84,8 @@ public class PlayController
 	 *   west
 	 *   up
 	 *   down
+	 *   enter [place]
+	 *   exit [place]
 	 */
 	class Move extends AbstractCommand {
 		public Move() { super("move"); }
@@ -97,6 +100,9 @@ public class PlayController
 				}
 				direction = params[1];
 			} 
+			else if ((cmd.equals("enter") || cmd.equals("exit")) && params.length >= 2) {
+				direction = params[1];
+			}
 			else {
 				direction = cmd;
 			}
@@ -108,7 +114,14 @@ public class PlayController
 			}
 			
 			Area area = character.getRoom().getArea();
+
 			Room destination = area.getRoom(exit.getToId());
+			if (destination == null) {
+				Log.error("Null destination encountered on move from '" + 
+					character.getRoom().getId() + "' along exit with names '" + 
+					exit.getCompiledNames() + "'");
+				return;
+			}
 			
 			character.setRoom(destination);
 			

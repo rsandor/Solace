@@ -10,8 +10,8 @@
 			They are required or players will not be able to log new characters into
 			the game world.
 		-->
-		<option name="area" value="smallhouse" />
-		<option name="room" value="entrance" />
+		<option name="area" value="medius" />
+		<option name="room" value="prosperitas" />
 	</default>
 	
 	<!-- Defines coloring for various game objects -->
