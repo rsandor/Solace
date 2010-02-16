@@ -126,6 +126,7 @@ public class Account
 	 */
 	public void addCharacter(solace.game.Character c) {
 		characters.put(c.getName(), c);
+		c.setAccount(this);
 	}
 	
 	/**

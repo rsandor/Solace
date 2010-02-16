@@ -121,7 +121,9 @@ public class World
 	 */
 	public static synchronized Connection connectionFromAccount(Account a)
 	{
-		return (Connection)accountsToConnections.get(a);
+		if (!accountsToConnections.containsKey(a))
+			return null;
+		return accountsToConnections.get(a);
 	}
 	
 	/**

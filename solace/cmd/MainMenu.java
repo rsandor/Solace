@@ -232,7 +232,7 @@ public class MainMenu
 					// Freeze all the players (ignore their input)
 					// TODO: Once battle is in place we will need to freeze battle as well.
 					for (Connection con : players) {
-						con.sendln("\n{yGame areas being reloaded, please stand by...{x\n");
+						con.sendln("\n{yGame areas being reloaded, please stand by...{x");
 						con.setIgnoreInput(true);
 					}
 					
@@ -305,9 +305,10 @@ public class MainMenu
 				finally {
 					// Un-freeze the players and force them to take a look around :)
 					for (Connection con : players) {
-						con.sendln("\n{yAreas reloaded, thanks for your patience!{x\n");
+						con.sendln("{yAreas reloaded, thanks for your patience!{x\n");
 						con.getStateController().force("look");
 						con.setIgnoreInput(false);	
+						con.send(con.getPrompt());
 					}
 				}
 			}

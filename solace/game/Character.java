@@ -1,4 +1,5 @@
 package solace.game;
+import solace.net.Connection;
 
 /**
  * Represents a player character or actor in the game world.
@@ -9,6 +10,7 @@ public class Character {
 	String id = null;
 	String name;
 	Room room = null;
+	Account account = null;
 	
 	/**
 	 * Creates a new character.
@@ -16,6 +18,34 @@ public class Character {
 	 */
 	public Character(String n) {
 		name = n;
+	}
+	
+	/**
+	 * Helper method to send messages to a character.
+	 * @param msg Message to send.
+	 */
+	public void sendMessage(String msg) {
+		Connection c = World.connectionFromAccount(account);
+		
+		// The connection could be null, if the character is an actor and not a player...
+		if (c != null) {
+			c.sendln("\n" + msg);
+			c.send(c.getPrompt());
+		}
+	}
+	
+	/**
+	 * @param a The account for the character.
+	 */
+	public void setAccount(Account a) {
+		account = a;
+	}
+	
+	/**
+	 * @return The account to which the character belongs.
+	 */
+	public Account getAccount() {
+		return account;
 	}
 	
 	/**

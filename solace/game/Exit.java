@@ -25,7 +25,9 @@ public class Exit {
 	/**
 	 * @return The names for the exit.
 	 */
-	public LinkedList<String> getNames() { return names; }
+	public LinkedList<String> getNames() { 
+		return names; 
+	}
 	
 	public String getCompiledNames() {
 		StringBuffer buf = new StringBuffer();

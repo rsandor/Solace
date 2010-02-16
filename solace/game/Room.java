@@ -14,12 +14,34 @@ public class Room
 	Area area = null;
 	LinkedList<Exit> exits = new LinkedList<Exit>();
 	
+	List<solace.game.Character> characters;
+	
+	
 	/**
 	 * Creates a new room with the given id, title, and description.
 	 * @param i Id for the room.
 	 */
 	public Room(String i) {
 		id = i;
+		characters = Collections.synchronizedList(new LinkedList<solace.game.Character>());
+	}
+
+	/**
+	 * Sends a message to all of the characters in a room.
+	 * @param message Message to send.
+	 */
+	public void sendMessage(String message) {
+		synchronized(characters) {
+			for (solace.game.Character ch : characters)
+				ch.sendMessage(message);
+		}
+	}
+
+	/**
+	 * Returns the list of users in the room.
+	 */
+	public List<solace.game.Character> getCharacters() {
+		return characters;
 	}
 
 	/**

@@ -35,6 +35,8 @@ public class PlayController
 		// Character location initialization
 		if (ch.getRoom() == null) {	
 			ch.setRoom(World.getDefaultRoom());
+			World.getDefaultRoom().getCharacters().add(ch);
+			World.getDefaultRoom().getCharacters().sendMessage(ch.getName() + " has entered the game.");
 		}
 		
 		// Add the main gameplay commands
@@ -86,13 +88,13 @@ public class PlayController
 				}
 				direction = params[1];
 			} 
-			else if ((cmd.equals("enter") || cmd.equals("exit")) && params.length >= 2) {
+			else if ((new String("enter").startsWith(cmd) || new String("exit").startsWith("exit")) && params.length >= 2) {
 				direction = params[1];
 			}
 			else {
 				direction = cmd;
 			}
-		
+			
 			Exit exit = character.getRoom().findExit(direction);
 			if (exit == null) {
 				c.sendln("There is no exit '" + direction + "'");
@@ -100,18 +102,55 @@ public class PlayController
 			}
 			
 			Area area = character.getRoom().getArea();
-
+			Room origin = character.getRoom();
 			Room destination = area.getRoom(exit.getToId());
+			
 			if (destination == null) {
+				c.sendln("There is no exit '" + direction + "'");
 				Log.error("Null destination encountered on move from '" + 
 					character.getRoom().getId() + "' along exit with names '" + 
 					exit.getCompiledNames() + "'");
 				return;
 			}
 			
-			character.setRoom(destination);
+			// Determine the exit and enter messages
+			String exitFormat = "%s leaves.";
+			String enterFormat = "%s arrives.";
 			
-			// TODO Send movement messages to everyone in the room
+			String charName = character.getName();
+			if (new String("north").startsWith(direction)) {
+				exitFormat = "%s leaves to the north.";
+				enterFormat = "%s arrives from the south.";
+			}
+			else if (new String("south").startsWith(direction)) {
+				exitFormat = "%s heads to the south.";
+				enterFormat = "%s arrives from the north.";
+			}
+			else if (new String("east").startsWith(direction)) {
+				exitFormat = "%s leaves heading east.";
+				enterFormat = "%s arrives from the west.";
+			}
+			else if (new String("west").startsWith(direction)) {
+				exitFormat = "%s heads west.";
+				enterFormat = "%s arrives from the east.";
+			}
+			else if (new String("enter").startsWith(cmd)) {
+				exitFormat = "%s enters " + destination.getTitle() + ".";
+			}
+			else if (new String("exit").startsWith(cmd)) {
+				enterFormat = "%s arrives from " + origin.getTitle() + ".";
+			}
+				
+			String cName = character.getName();
+				
+			// Remove the character from its current room
+			origin.getCharacters().remove(character);
+			origin.sendMessage(String.format(exitFormat, cName));
+			
+			// Send it to the destination room
+			character.setRoom(destination);
+			destination.sendMessage(String.format(enterFormat, cName));
+			destination.getCharacters().add(character);
 			
 			look.run(c, new String("look").split(" "));
 		}
@@ -134,6 +173,15 @@ public class PlayController
 				Room room = character.getRoom();
 				c.sendln("{y" + room.getTitle().trim() + "{x\n");
 				c.sendln(Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n");
+				
+				// Show a list of characters in the room
+				c.sendln("{cThe following characters present:{x");
+				synchronized(room.getCharacters()) {
+					for (solace.game.Character ch : room.getCharacters()) {
+						c.sendln(ch.getName() + ".");
+					}
+				}
+				c.sendln("");
 			}
 			else {
 				String id = params[2];
@@ -149,6 +197,9 @@ public class PlayController
 	class Quit extends AbstractCommand {
 		public Quit() { super("quit"); }
 		public void run(Connection c, String []params) {
+			Room room = character.getRoom();
+			room.getCharacters().remove(character);
+			room.sendMessage(String.format("%s has left the game.", character.getName()));
 			World.getActivePlayers().remove(c);
 			c.setStateController( new MainMenu(c) );
 		}
