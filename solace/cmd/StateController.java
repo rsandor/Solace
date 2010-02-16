@@ -15,6 +15,12 @@ public interface StateController
 	public void init(Connection c);
 	
 	/**
+	 * Forces a user to enter and execute a command.
+	 * @param command Command to execute.
+	 */
+	public void force(String input);
+	
+	/**
 	 * Parses user input and attempts to execute an appropriate command (if any).
 	 * @param input Input to parse.
 	 */

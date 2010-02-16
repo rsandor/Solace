@@ -84,6 +84,16 @@ class CreateCharacter implements StateController {
 		connection = c;
 	}
 	
+	/**
+	 * @see solace.cmd.StateController.force();
+	 */
+	public void force(String command) {
+		parse(command);
+	}
+	
+	/**
+	 * @see solace.cmd.StateController.parse();
+	 */
 	public void parse(String input) {
 		state = state.parse(connection, input);
 		if (state == State.EXIT)

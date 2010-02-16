@@ -1,6 +1,6 @@
 package solace.net;
 
-import solace.game.Game;
+import solace.game.*;
 import solace.util.Log;
 
 import java.net.*;
@@ -87,7 +87,7 @@ public class Server
 		Connection c = new Connection(s);
 		
 		// Add the connection to the game world
-		Game.getWorld().addConnection(c);
+		World.addConnection(c);
 		
 		// Start the connection thread
 		(new Thread(c)).start();
@@ -104,7 +104,7 @@ public class Server
 		/*
 		 * Close all connections to the server.
 		 */
-		Collection connections = Collections.synchronizedCollection(Game.getWorld().getConnections());
+		Collection connections = Collections.synchronizedCollection(World.getConnections());
 		synchronized (connections)
 		{
 			Iterator i = connections.iterator();

@@ -19,6 +19,7 @@ public class Account
 	String password;
 	boolean admin;
 	Hashtable <String, solace.game.Character>characters;
+	solace.game.Character activeCharacter = null;
 	
 	/*
 	 * Account file location constants.
@@ -90,6 +91,36 @@ public class Account
 	}
 	
 	/**
+	 * Sets the active character for the account.
+	 * @param ch New active character for the account.
+	 */
+	public void setActiveCharacter(solace.game.Character ch) {
+		activeCharacter = ch;
+	}
+	
+	/**
+	 * Clears the current active character for the account.
+	 */
+	public void clearActiveCharacter() {
+		activeCharacter = null;
+	}
+	
+	/**
+	 * @return <code>true</code> if the account has an actively playing character, <code>false</code> otherwise.
+	 */
+	public boolean hasActiveCharacter() {
+		return (activeCharacter != null);
+	}
+	
+	/**
+	 * @return The active character for the account, or <code>null</code> if no such character
+	 *  is currently being played.
+	 */
+	public solace.game.Character getActiveCharacter() {
+		return activeCharacter;
+	}
+	
+	/**
 	 * Associates a character with the account.
 	 * @param c Character to associate.
 	 */
@@ -110,16 +141,22 @@ public class Account
 	 * @param <code>true</code> if a character with the name exists on the account, <code>false</code> otherwise.
 	 */
 	public boolean hasCharacter(String name) {
-		return characters.containsKey(name);
+		for (solace.game.Character ch : characters.values())
+			if (ch.getName().toLowerCase().startsWith(name))
+				return true;
+		return false;
 	}
 	
 	/**
 	 * Gets a character with the given name. 
 	 * @param name Name of the character.
-	 * @return The character with the given name.
+	 * @return The character with the given name, or null if no such character was found.
 	 */
 	public solace.game.Character getCharacter(String name) {
-		return characters.get(name);
+		for (solace.game.Character ch : characters.values())
+			if (ch.getName().toLowerCase().startsWith(name))
+				return ch;
+		return null;
 	}
 	
 	/**

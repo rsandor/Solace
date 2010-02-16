@@ -2,9 +2,9 @@ package solace.cmd;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
+import java.util.*;
 import solace.util.*;
-import solace.game.Account;
-import solace.game.Game;
+import solace.game.*;
 import solace.net.*;
 
 public class LoginController 
@@ -75,7 +75,7 @@ public class LoginController
 		}
 		
 		// Ensure they are not attempting to login twice
-		if (Game.getWorld().isLoggedIn(aname))
+		if (World.isLoggedIn(aname))
 		{
 			connection.sendln("{rAccount already logged in!{x");
 			Log.info("Double login attempt for account '" + aname + "' from " + connection.getInetAddress());
@@ -123,13 +123,19 @@ public class LoginController
 		{
 			Log.info("Incorrect password given for user '" + account.getName() + "' from " + 
 				connection.getInetAddress());
+			
 			connection.sendln("\n\rIncorrect password.");
+			Collection connections = Collections.synchronizedCollection(World.getConnections());
+			synchronized (connections) {
+				connections.remove(connection);
+			}
 			connection.close();
+			
 			return;
 		}
 		
 		// Everything seems fine, log them in and present the game's main menu
-		Game.getWorld().addAccount(connection, account);
+		World.addAccount(connection, account);
 		connection.setAccount(account);
 		Log.info("Account '" + account.getName() + "' logged into from " + connection.getInetAddress());
 		connection.sendln("\n\rWelcome " + connection.getAccount().getName() + "!");
@@ -219,6 +225,13 @@ public class LoginController
 			state = ACCOUNT_NAME;
 			connection.setPrompt("\n\rAccount: ");
 		}
+	}
+
+	/**
+	 * @see solace.cmd.StateController.force()
+	 */
+	public void force(String c) {
+		parse(c);
 	}
 
 	/**

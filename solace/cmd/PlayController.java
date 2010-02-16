@@ -18,7 +18,7 @@ public class PlayController
 	// Commonly used command instances
 	Look look = new Look();
 	Move move = new Move();
-	
+
 	/**
 	 * Creates a new game play controller.
 	 * @param c The connection.
@@ -32,31 +32,10 @@ public class PlayController
 		super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
 		character = ch;
 		
-		c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
-		c.setPrompt("{c>{x ");
-		
 		// Character location initialization
-		if (ch.getRoom() == null) {
-			String aName = Config.get("world.default.area");
-			if (aName == null)
-				throw new GameException("Required configuration key 'world.default.area' does not exist.");
-			
-			String rName = Config.get("world.default.room");
-			if (rName == null)
-				throw new GameException("Required configuration key 'world.default.room' does not exist.");
-			
-			Area area = Game.getWorld().getArea(aName);
-			if (area == null)
-				throw new GameException("Default area with id '" + aName + "' does not exist.");
-			
-			Room room = area.getRoom(rName);
-			if (room == null)
-				throw new GameException("Default room with id '" + rName + "' does not exist.");
-				
-			ch.setRoom(room);
+		if (ch.getRoom() == null) {	
+			ch.setRoom(World.getDefaultRoom());
 		}
-		
-		look.run(c, new String("look").split(" "));
 		
 		// Add the main gameplay commands
 		addCommand(look);
@@ -70,8 +49,15 @@ public class PlayController
 			addCommand(n, move);
 		
 		addCommand(new Quit());
+		
+		World.getActivePlayers().add(c);
+		
+		c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
+		c.setPrompt("{c>{x ");
+		
+		look.run(c, new String("look").split(" "));
 	}
-	
+
 	/**
 	 * The movement command is used to move about the game world.
 	 *
@@ -163,6 +149,7 @@ public class PlayController
 	class Quit extends AbstractCommand {
 		public Quit() { super("quit"); }
 		public void run(Connection c, String []params) {
+			World.getActivePlayers().remove(c);
 			c.setStateController( new MainMenu(c) );
 		}
 	}

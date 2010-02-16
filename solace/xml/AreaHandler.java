@@ -109,9 +109,13 @@ public class AreaHandler extends Handler {
 	{
 		StringBuffer desc = new StringBuffer(length);
 		boolean space = false;
+		
 		for (int i = start; i < start+length; i++) {
 			char a = ch[i];
-			if (a == '\n' || a == ' ' || a == '\t') {
+			
+			if (a == '\n' && i > 0 && ch[i-1] == '\n')
+				a = '\n';
+			else if (a == '\n' || a == ' ' || a == '\t') {
 				if (space)
 					continue;
 				a = ' ';

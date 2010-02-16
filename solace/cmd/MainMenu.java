@@ -95,8 +95,9 @@ public class MainMenu
 					c.sendln("Character '" + name + "' not found, use the '{ylist{x' command to see a list of your characters.");
 					return;
 				}
-		
-				c.setStateController(new PlayController(c, act.getCharacter(name)));
+				solace.game.Character ch = act.getCharacter(name);
+				act.setActiveCharacter(ch);
+				c.setStateController(new PlayController(c, ch));
 			}
 			catch (GameException ge) {
 				Log.error(ge.getMessage());
@@ -146,10 +147,10 @@ public class MainMenu
 			
 			// If the connection has an account, remove it from the accounts list
 			if (connection.hasAccount())
-				Game.getWorld().removeAccount(connection.getAccount());
+				World.removeAccount(connection.getAccount());
 			
 			// Remove it from the connections list
-			Game.getWorld().removeConnection(connection);
+		  World.removeConnection(connection);
 			
 			c.close();
 		}
@@ -168,7 +169,8 @@ public class MainMenu
 		 * when I switch the code base to java 6.
 		 */
 		public void run(Connection c, String []params) {
-			Collection connections = Game.getWorld().getConnections();		
+			Collection connections = World.getConnections();
+					
 			c.sendln("{y---- {xPlayers Online{y ----{x");
 			synchronized (connections) {
 				Iterator iter = connections.iterator(); 
@@ -218,17 +220,128 @@ public class MainMenu
 	{
 		public Reload() { super("reload"); }
 		
+		/**
+		 * Reloads the game's areas.
+		 * @param c Connection that initiated the reload.
+		 */
+		protected void reloadAreas(Connection c) throws IOException {
+			Log.info("Area reload commenced by '" + c.getAccount().getName().toLowerCase() + "'.");
+			Collection<Connection> players = Collections.synchronizedCollection(World.getActivePlayers());
+			synchronized (players) {
+				try {
+					// Freeze all the players (ignore their input)
+					// TODO: Once battle is in place we will need to freeze battle as well.
+					for (Connection con : players) {
+						con.sendln("\n{yGame areas being reloaded, please stand by...{x\n");
+						con.setIgnoreInput(true);
+					}
+					
+					
+					// Reload all the areas
+					World.loadAreas();
+					Room defaultRoom = World.getDefaultRoom();
+					if (defaultRoom == null) {
+						Log.error("Default room null on area reload.");
+					}
+					
+					// Place players into their original rooms if available, or the default room if not
+					for (Connection con : players) {
+						if (!con.hasAccount()) 
+							continue;
+
+						Account act = con.getAccount();
+						if (act == null) {
+							Log.error("Null account encountered on area reload.");
+							continue;
+						}
+						
+						if (!act.hasActiveCharacter()) {
+							Log.error("Account without active character ("+act.getName().toLowerCase()+") encountered on area reload.");
+							continue;
+						}
+							
+						solace.game.Character ch = act.getActiveCharacter();
+						if (ch == null) {
+							Log.error("Null character encounted on area reload.");
+							continue;
+						}
+						
+						Room room = ch.getRoom();
+
+						if (room == null) {
+							Log.error("Null room encountered on area reload.");
+							ch.setRoom(defaultRoom);
+						}
+						else {
+							Area area = room.getArea();
+							if (area == null) {
+								ch.setRoom(defaultRoom);
+							}
+							else {
+								String room_id = room.getId();
+								String area_id = area.getId();
+								Area new_area = World.getArea(area_id);
+								
+								if (new_area == null) {
+									ch.setRoom(defaultRoom);
+								}
+								else {
+									Room new_room = new_area.getRoom(room_id);
+									if (new_room == null)
+										ch.setRoom(defaultRoom);
+									else
+										ch.setRoom(new_room);
+								}
+							}
+						}
+					}
+					
+					c.sendln("Areas reloaded.");
+				}
+				catch (GameException ge) {
+					c.sendln("Unable to reload areas: default room could not be determined for the game.");
+					Log.error("Area reload by user '" + c.getAccount().getName().toLowerCase() + "' aborted: no default room could be determined.");
+				}
+				finally {
+					// Un-freeze the players and force them to take a look around :)
+					for (Connection con : players) {
+						con.sendln("\n{yAreas reloaded, thanks for your patience!{x\n");
+						con.getStateController().force("look");
+						con.setIgnoreInput(false);	
+					}
+				}
+			}
+		}
+		
+		/**
+		 * Reloads the game's static messages.
+		 * @param c Connection that initiated the reload.
+		 */
+		protected void reloadMessages(Connection c) throws IOException {
+			Message.reload();
+			c.sendln("Game messages reloaded.");
+		}
+		
 		public void run(Connection c, String []params) {
-			try
-			{
-				Message.reload();
-				c.sendln("Game messages reloaded.");
+			String errorStr = "";
+			
+			try {
+				if (params.length > 1 && new String("areas").startsWith(params[1])) {
+					errorStr = "areas";
+					reloadAreas(c);
+				}
+				else if ((params.length > 1 && new String("messages").startsWith(params[1])) || params.length == 1) {
+					errorStr = "game messages";
+					reloadMessages(c);
+				}
+				else
+					c.sendln("Unable to reload '" + params[1] + "', you can either reload 'areas' or 'messages'.");
 			}
 			catch (IOException ioe)
 			{
-				c.sendln("An error occured while trying to reload game messages!");
-				Log.error("An IO exception occured when reloading messages (reload spawned by user '" +
-						c.getAccount().getName().toLowerCase() + "')");
+				c.sendln("An error occured while trying to reload " + errorStr + ".");
+				Log.error("An IO exception occured when reloading " + errorStr + " by user '" +
+						c.getAccount().getName().toLowerCase() + "'");
 			}			
 		}
 	}
@@ -253,11 +366,10 @@ public class MainMenu
 				return;
 			}
 			
-			World world = Game.getWorld();
 			
 			if (params[1].toLowerCase().equals("all"))
 			{
-				Collection connections = Collections.synchronizedCollection(world.getConnections());
+				Collection connections = Collections.synchronizedCollection(World.getConnections());
 				synchronized (connections)
 				{
 					Iterator i = connections.iterator();
@@ -270,11 +382,11 @@ public class MainMenu
 				// Generate peek reports for each of the given names
 				for (int i = 1; i < params.length; i++)
 				{
-					if (!world.isLoggedIn(params[i]))
+					if (!World.isLoggedIn(params[i]))
 						c.sendln("Player '"+params[i]+"' is not currently logged in.");
 					else
 					{
-						Connection target = world.connectionFromName(params[i]);
+						Connection target = World.connectionFromName(params[i]);
 						c.sendln(formatInfo(target));
 					}
 				}

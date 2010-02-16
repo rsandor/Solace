@@ -23,6 +23,10 @@ public class Connection
 	StateController controller;
 	Date connectionTime;
 	
+	// Useful for disabling characters while major game actions are taking place
+	// such as area reloading or reboots. See the setIgnoreInput() method.
+	boolean ignoreInput = false;
+	
 	/**
 	 * Creates a new connection through the given socket.
 	 * @param s Socket for the connection
@@ -45,6 +49,13 @@ public class Connection
 	public void setStateController(StateController c)
 	{
 		controller = c;
+	}
+	
+	/**
+	 * @return The user's state controller.
+	 */
+	public StateController getStateController() {
+		return controller;
 	}
 	
 	/**
@@ -132,7 +143,7 @@ public class Connection
 			{
 				send(prompt);
 				String input = in.readLine();
-				if (input != null)
+				if (input != null && !ignoreInput)
 					controller.parse(input);
 			}
 		}
@@ -202,5 +213,12 @@ public class Connection
 	 */
 	public Date getConnectionTime() {
 		return connectionTime;
+	}
+	
+	/**
+	 * @param b Whether or not the current connection should ignore input from the user.
+	 */
+	public void setIgnoreInput(boolean b) {
+		ignoreInput = b;
 	}
 }

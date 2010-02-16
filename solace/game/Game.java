@@ -3,6 +3,8 @@ package solace.game;
 import solace.net.*;
 import solace.util.*;
 import solace.xml.*;
+import solace.cmd.GameException;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,14 +15,6 @@ import java.util.*;
 public class Game 
 {
 	static Server server;
-	static World world;
-	
-	/**
-	 * @return The game world.
-	 */
-	public static World getWorld() {
-		return world;
-	}
 	
 	/**
 	 * @return The game server.
@@ -32,7 +26,7 @@ public class Game
 	/**
 	 * Initializes the game and starts the game server.
 	 */
-	protected static void initGame(String[] args) throws IOException {
+	protected static void init(String[] args) throws IOException, GameException {
 		int port;
 		
 		try {
@@ -49,7 +43,7 @@ public class Game
 		Message.load();
 		
 		// Initialize the game world
-		world = new World();
+		World.init();
 
 		// Initialize and start the game server
 		server = new Server(port);
@@ -63,7 +57,10 @@ public class Game
 	public static void main(String[] args) 
 	{
 		try {
-			initGame(args);
+			init(args);
+		}
+		catch (GameException e) {
+			Log.error("Unable to initialize game: " + e.getMessage());
 		}
 		catch (IOException e) {
 			Log.error("Unable to initialize and start game server:");

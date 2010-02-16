@@ -143,6 +143,16 @@ public abstract class AbstractStateController
 	}
 	
 	/**
+	 * Forces a user to execute a command.
+	 * Note: This function is VERY useful for unit testing :).
+	 * @param command Command to execute.
+	 */
+	public void force(String command) {
+		connection.sendln(command);
+		parse(command);
+	}
+	
+	/**
 	 * Parses commands using a "prefix" search routine.
 	 * @param input Input to parse.
 	 */

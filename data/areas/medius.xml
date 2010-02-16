@@ -26,7 +26,7 @@
 		
 			Various shops and trade houses lie on the edges of the square. They include,
 			<exit names="contego protectives" to="contego protectives">Contego Protectives</exit> 
-			the localarmor stop, an quality weapons shop called 
+			the local armor stop, an quality weapons shop called 
 			<exit names="arma armarium" to="arma armarium">Arma Armarium</exit>, and
 			an old, well respected inn known as  <exit names="argentum inn" to="argentum">The Argentum</exit>. 
 			The two major exits from the square are along Dito Lane, which runs 
@@ -49,28 +49,28 @@
 	
 		<!-- The Argentum Inn -->
 		<building name="The Argentum">
-			<room id="the argentum">
-				<title>The Argentum</title>
+			<room id="argentum">
+				<title>The Argentum Inn</title>
 				<exit names="door exit" to="prosperitas">door</exit>
 			</room>
 		</building>
 	
-		<room id="propseritas north">
+		<room id="prosperitas north">
 			<title>North of Prosperitas Square along Dito Lane</title>
 			<exit names="south" to="prosperitas">south</exit>
 		</room>
 	
-		<room id="propseritas south">
+		<room id="prosperitas south">
 			<title>South of Prosperitas Square along Dito Lane</title>
 			<exit names="north" to="prosperitas">north</exit>
 		</room>
 	
-		<room id="propseritas east">
+		<room id="prosperitas east">
 			<title>East of Prosperitas Square along Median Avenue</title>
 			<exit names="west" to="prosperitas">west</exit>
 		</room>
 	
-		<room id="propseritas west">
+		<room id="prosperitas west">
 			<title>West of Prosperitas Square along Median Avenue</title>
 			<exit names="east" to="prosperitas">east</exit>
 		</room>

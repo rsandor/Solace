@@ -26,7 +26,7 @@ public class ChatController
 		addCommand(new Help());
 		
 		// Add the user to the chat list
-		Game.getWorld().getOogChat().add(c);
+		World.getChatConnections().add(c);
 		
 		// Set the prompt and send the intro
 		c.setPrompt("{cchat>{x ");
@@ -56,7 +56,7 @@ public class ChatController
 		String name = connection.getAccount().getName().toLowerCase();
 		String format = "{y" + name + ": {x" + msg;
 		
-		Collection chatters = Collections.synchronizedCollection(Game.getWorld().getOogChat());
+		Collection chatters = Collections.synchronizedCollection(World.getChatConnections());
 		synchronized (chatters)
 		{
 			Iterator i = chatters.iterator();
@@ -94,7 +94,7 @@ public class ChatController
 			c.sendln("Later!");
 			
 			// Remove the user from chat
-			Game.getWorld().getOogChat().remove(c);
+			World.getChatConnections().remove(c);
 			
 			// Send them back to the main menu
 			connection.setStateController( new MainMenu(connection) );
