@@ -14,7 +14,7 @@ public class PlayController
 	extends AbstractStateController
 {
 	solace.game.Character character;
-	
+
 	// Commonly used command instances
 	Look look = new Look();
 	Move move = new Move();
@@ -25,38 +25,42 @@ public class PlayController
 	 * @param ch The character.
 	 * @throws GameException if anything goes wrong when logging the user in.
 	 */
-	public PlayController(Connection c, solace.game.Character ch) 
+	public PlayController(Connection c, solace.game.Character ch)
 		throws GameException
 	{
 		// Initialize the menu
 		super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
 		character = ch;
-		
+
 		// Character location initialization
-		if (ch.getRoom() == null) {	
+		if (ch.getRoom() == null) {
+			List<solace.game.Character> characters = World.getDefaultRoom().getCharacters();
+			for (solace.game.Character roomCharacter : characters) {
+				roomCharacter.sendMessage(ch.getName() + " has entered the game.");
+			}
+
 			ch.setRoom(World.getDefaultRoom());
-			World.getDefaultRoom().getCharacters().add(ch);
-			World.getDefaultRoom().getCharacters().sendMessage(ch.getName() + " has entered the game.");
+			characters.add(ch);
 		}
-		
+
 		// Add the main gameplay commands
 		addCommand(look);
-		
+
 		String []moveAliases = {
-			"move", "go", "north", "south", 
-			"east", "west", "up", "down", 
+			"move", "go", "north", "south",
+			"east", "west", "up", "down",
 			"exit", "enter"
 		};
 		for (String n : moveAliases)
 			addCommand(n, move);
-		
+
 		addCommand(new Quit());
-		
+
 		World.getActivePlayers().add(c);
-		
+
 		c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
 		c.setPrompt("{c>{x ");
-		
+
 		look.run(c, new String("look").split(" "));
 	}
 
@@ -80,43 +84,43 @@ public class PlayController
 		public void run(Connection c, String []params) {
 			String cmd = params[0];
 			String direction;
-			
+
 			if (cmd.equals("move") || cmd.equals("go")) {
 				if (params.length < 2) {
 					c.sendln("You must provide a direction to move.");
 					return;
 				}
 				direction = params[1];
-			} 
+			}
 			else if ((new String("enter").startsWith(cmd) || new String("exit").startsWith("exit")) && params.length >= 2) {
 				direction = params[1];
 			}
 			else {
 				direction = cmd;
 			}
-			
+
 			Exit exit = character.getRoom().findExit(direction);
 			if (exit == null) {
 				c.sendln("There is no exit '" + direction + "'");
 				return;
 			}
-			
+
 			Area area = character.getRoom().getArea();
 			Room origin = character.getRoom();
 			Room destination = area.getRoom(exit.getToId());
-			
+
 			if (destination == null) {
 				c.sendln("There is no exit '" + direction + "'");
-				Log.error("Null destination encountered on move from '" + 
-					character.getRoom().getId() + "' along exit with names '" + 
+				Log.error("Null destination encountered on move from '" +
+					character.getRoom().getId() + "' along exit with names '" +
 					exit.getCompiledNames() + "'");
 				return;
 			}
-			
+
 			// Determine the exit and enter messages
 			String exitFormat = "%s leaves.";
 			String enterFormat = "%s arrives.";
-			
+
 			String charName = character.getName();
 			if (new String("north").startsWith(direction)) {
 				exitFormat = "%s leaves to the north.";
@@ -140,29 +144,29 @@ public class PlayController
 			else if (new String("exit").startsWith(cmd)) {
 				enterFormat = "%s arrives from " + origin.getTitle() + ".";
 			}
-				
+
 			String cName = character.getName();
-				
+
 			// Remove the character from its current room
 			origin.getCharacters().remove(character);
 			origin.sendMessage(String.format(exitFormat, cName));
-			
+
 			// Send it to the destination room
 			character.setRoom(destination);
 			destination.sendMessage(String.format(enterFormat, cName));
 			destination.getCharacters().add(character);
-			
+
 			look.run(c, new String("look").split(" "));
 		}
 	}
-	
+
 	/**
 	 * The look command is used to examine rooms, characters, and objects in the game world.
-	 * 
-	 * Syntax: 
+	 *
+	 * Syntax:
 	 *   look [player name | item | etc..]
 	 *   examine [item]
-	 *  
+	 *
 	 * @author Ryan Sandor Richards
 	 */
 	class Look extends AbstractCommand {
@@ -173,7 +177,7 @@ public class PlayController
 				Room room = character.getRoom();
 				c.sendln("{y" + room.getTitle().trim() + "{x\n");
 				c.sendln(Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n");
-				
+
 				// Show a list of characters in the room
 				c.sendln("{cThe following characters present:{x");
 				synchronized(room.getCharacters()) {
@@ -189,7 +193,7 @@ public class PlayController
 			}
 		}
 	}
-	
+
 	/**
 	 * Quits the game and returns to the main menu.
 	 * @author Ryan Sandor Richards.
@@ -204,7 +208,7 @@ public class PlayController
 			c.setStateController( new MainMenu(c) );
 		}
 	}
-	
+
 	/**
 	 * Help Command
 	 * @author Ryan Sandor Richards (Gaius)
