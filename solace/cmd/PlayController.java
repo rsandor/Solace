@@ -24,6 +24,7 @@ public class PlayController
     // Commonly used command instances
     Look look = new Look();
     Move move = new Move();
+    Say say = new Say();
 
     /**
      * Creates a new game play controller.
@@ -48,20 +49,26 @@ public class PlayController
         // Inform other players in the room that they player has entered the game
         ch.getRoom().sendMessage(character.getName() + " has entered the game.", character);
 
-        // Add the main gameplay commands
-        addCommand(look);
+        // Add commands
+        addCommands();
 
-        for (String n : moveAliases)
-            addCommand(n, move);
-
-        addCommand(new Quit());
-
+        // Place the player in the world and force a look command
         World.getActivePlayers().add(c);
-
         c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
         c.setPrompt("{c>{x ");
 
         look.run(c, new String("look").split(" "));
+    }
+
+    /**
+     * Adds basic gameplay commands to the controller.
+     */
+    protected void addCommands() {
+        addCommand(look);
+        for (String n : moveAliases)
+            addCommand(n, move);
+        addCommand(new Quit());
+        addCommand(say);
     }
 
     /**
@@ -240,6 +247,43 @@ public class PlayController
     class Help extends AbstractCommand {
         public Help() { super("help"); }
         public void run(Connection c, String []params) {
+        }
+    }
+
+    /**
+     * The say command, allows players to speak to eachother in a given room.
+     * @author Ryan Sandor Richards
+     */
+    class Say extends AbstractCommand {
+        public Say() {
+            super("say");
+        }
+
+        public void run(Connection c, String []params) {
+            if (params.length < 2) {
+                c.sendln("What would you like to say?");
+                return;
+            }
+
+            // Format the message
+            String message = "'";
+            for (int i = 1; i < params.length; i++) {
+                message += params[i];
+                if (i != params.length - 1)
+                    message += " ";
+            }
+            message += "'\n";
+
+            // Broadcast to the room
+            Room room = character.getRoom();
+            synchronized(room.getCharacters()) {
+                for (solace.game.Character ch : room.getCharacters()) {
+                    if (ch == character)
+                        c.sendln("You say " + message);
+                    else
+                        ch.sendMessage(character.getName() + " says " + message);
+                }
+            }
         }
     }
 }
