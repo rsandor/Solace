@@ -11,211 +11,235 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class PlayController
-	extends AbstractStateController
+    extends AbstractStateController
 {
-	solace.game.Character character;
+    solace.game.Character character;
 
-	// Commonly used command instances
-	Look look = new Look();
-	Move move = new Move();
+    static final String[] moveAliases = {
+        "move", "go", "north", "south",
+        "east", "west", "up", "down",
+        "exit", "enter"
+    };
 
-	/**
-	 * Creates a new game play controller.
-	 * @param c The connection.
-	 * @param ch The character.
-	 * @throws GameException if anything goes wrong when logging the user in.
-	 */
-	public PlayController(Connection c, solace.game.Character ch)
-		throws GameException
-	{
-		// Initialize the menu
-		super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
-		character = ch;
+    // Commonly used command instances
+    Look look = new Look();
+    Move move = new Move();
 
-		// Character location initialization
-		if (ch.getRoom() == null) {
-			List<solace.game.Character> characters = World.getDefaultRoom().getCharacters();
-			for (solace.game.Character roomCharacter : characters) {
-				roomCharacter.sendMessage(ch.getName() + " has entered the game.");
-			}
+    /**
+     * Creates a new game play controller.
+     * @param c The connection.
+     * @param ch The character.
+     * @throws GameException if anything goes wrong when logging the user in.
+     */
+    public PlayController(Connection c, solace.game.Character ch)
+        throws GameException
+    {
+        // Initialize the menu
+        super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
+        character = ch;
 
-			ch.setRoom(World.getDefaultRoom());
-			characters.add(ch);
-		}
+        // Character location initialization
+        if (ch.getRoom() == null) {
+            Room room = World.getDefaultRoom();
+            room.getCharacters().add(ch);
+            ch.setRoom(room);
+        }
 
-		// Add the main gameplay commands
-		addCommand(look);
+        // Inform other players in the room that they player has entered the game
+        ch.getRoom().sendMessage(character.getName() + " has entered the game.", character);
 
-		String []moveAliases = {
-			"move", "go", "north", "south",
-			"east", "west", "up", "down",
-			"exit", "enter"
-		};
-		for (String n : moveAliases)
-			addCommand(n, move);
+        // Add the main gameplay commands
+        addCommand(look);
 
-		addCommand(new Quit());
+        for (String n : moveAliases)
+            addCommand(n, move);
 
-		World.getActivePlayers().add(c);
+        addCommand(new Quit());
 
-		c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
-		c.setPrompt("{c>{x ");
+        World.getActivePlayers().add(c);
 
-		look.run(c, new String("look").split(" "));
-	}
+        c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
+        c.setPrompt("{c>{x ");
 
-	/**
-	 * The movement command is used to move about the game world.
-	 *
-	 * Syntax:
-	 *   move [direction]
-	 *   go [direction]
-	 *   north
-	 *   south
-	 *   east
-	 *   west
-	 *   up
-	 *   down
-	 *   enter [place]
-	 *   exit [place]
-	 */
-	class Move extends AbstractCommand {
-		public Move() { super("move"); }
-		public void run(Connection c, String []params) {
-			String cmd = params[0];
-			String direction;
+        look.run(c, new String("look").split(" "));
+    }
 
-			if (cmd.equals("move") || cmd.equals("go")) {
-				if (params.length < 2) {
-					c.sendln("You must provide a direction to move.");
-					return;
-				}
-				direction = params[1];
-			}
-			else if ((new String("enter").startsWith(cmd) || new String("exit").startsWith("exit")) && params.length >= 2) {
-				direction = params[1];
-			}
-			else {
-				direction = cmd;
-			}
+    /**
+     * The movement command is used to move about the game world.
+     *
+     * Syntax:
+     *   move [direction]
+     *   go [direction]
+     *   north
+     *   south
+     *   east
+     *   west
+     *   up
+     *   down
+     *   enter [place]
+     *   exit [place]
+     */
+    class Move extends AbstractCommand {
+        public Move() { super("move"); }
+        public void run(Connection c, String []params) {
+            String cmd = params[0];
+            String direction;
+            boolean notEast = !(new String("east").startsWith(cmd));
 
-			Exit exit = character.getRoom().findExit(direction);
-			if (exit == null) {
-				c.sendln("There is no exit '" + direction + "'");
-				return;
-			}
+            if (cmd.equals("move") || cmd.equals("go")) {
+                if (params.length < 2) {
+                    c.sendln("What direction would you like to move?");
+                    return;
+                }
+                direction = params[1];
+            }
+            else if (new String("enter").startsWith(cmd) && notEast) {
+                if (params.length < 2) {
+                    c.sendln("Where would you like to enter?");
+                    return;
+                }
+                direction = params[1];
+            }
+            else if (new String("exit").startsWith(cmd) && notEast) {
+                if (params.length < 2) {
+                    c.sendln("Where would you like to exit?");
+                    return;
+                }
+                direction = params[1];
+            }
+            else {
+                direction = cmd;
+            }
 
-			Area area = character.getRoom().getArea();
-			Room origin = character.getRoom();
-			Room destination = area.getRoom(exit.getToId());
+            if (direction == null) {
+                c.sendln("That is not a direction.");
+                Log.error("Null direction encountered during move.");
+                return;
+            }
 
-			if (destination == null) {
-				c.sendln("There is no exit '" + direction + "'");
-				Log.error("Null destination encountered on move from '" +
-					character.getRoom().getId() + "' along exit with names '" +
-					exit.getCompiledNames() + "'");
-				return;
-			}
+            Exit exit = character.getRoom().findExit(direction);
+            if (exit == null) {
+                c.sendln("There is no exit '" + direction + "'.");
+                return;
+            }
 
-			// Determine the exit and enter messages
-			String exitFormat = "%s leaves.";
-			String enterFormat = "%s arrives.";
+            Area area = character.getRoom().getArea();
+            Room origin = character.getRoom();
+            Room destination = area.getRoom(exit.getToId());
 
-			String charName = character.getName();
-			if (new String("north").startsWith(direction)) {
-				exitFormat = "%s leaves to the north.";
-				enterFormat = "%s arrives from the south.";
-			}
-			else if (new String("south").startsWith(direction)) {
-				exitFormat = "%s heads to the south.";
-				enterFormat = "%s arrives from the north.";
-			}
-			else if (new String("east").startsWith(direction)) {
-				exitFormat = "%s leaves heading east.";
-				enterFormat = "%s arrives from the west.";
-			}
-			else if (new String("west").startsWith(direction)) {
-				exitFormat = "%s heads west.";
-				enterFormat = "%s arrives from the east.";
-			}
-			else if (new String("enter").startsWith(cmd)) {
-				exitFormat = "%s enters " + destination.getTitle() + ".";
-			}
-			else if (new String("exit").startsWith(cmd)) {
-				enterFormat = "%s arrives from " + origin.getTitle() + ".";
-			}
+            if (destination == null) {
+                c.sendln("There is no exit '" + direction + "'");
+                Log.error("Null destination encountered on move from '" +
+                    character.getRoom().getId() + "' along exit with names '" +
+                    exit.getCompiledNames() + "'");
+                return;
+            }
 
-			String cName = character.getName();
+            // Determine the exit and enter messages
+            String exitFormat = "%s leaves.";
+            String enterFormat = "%s arrives.";
 
-			// Remove the character from its current room
-			origin.getCharacters().remove(character);
-			origin.sendMessage(String.format(exitFormat, cName));
+            String charName = character.getName();
+            if (new String("north").startsWith(direction)) {
+                exitFormat = "%s leaves to the north.";
+                enterFormat = "%s arrives from the south.";
+            }
+            else if (new String("south").startsWith(direction)) {
+                exitFormat = "%s heads to the south.";
+                enterFormat = "%s arrives from the north.";
+            }
+            else if (new String("east").startsWith(direction)) {
+                exitFormat = "%s leaves heading east.";
+                enterFormat = "%s arrives from the west.";
+            }
+            else if (new String("west").startsWith(direction)) {
+                exitFormat = "%s heads west.";
+                enterFormat = "%s arrives from the east.";
+            }
+            else if (new String("enter").startsWith(cmd)) {
+                exitFormat = "%s enters " + destination.getTitle() + ".";
+            }
+            else if (new String("exit").startsWith(cmd)) {
+                enterFormat = "%s arrives from " + origin.getTitle() + ".";
+            }
 
-			// Send it to the destination room
-			character.setRoom(destination);
-			destination.sendMessage(String.format(enterFormat, cName));
-			destination.getCharacters().add(character);
+            String cName = character.getName();
 
-			look.run(c, new String("look").split(" "));
-		}
-	}
+            // Remove the character from its current room
+            origin.getCharacters().remove(character);
+            origin.sendMessage(String.format(exitFormat, cName));
 
-	/**
-	 * The look command is used to examine rooms, characters, and objects in the game world.
-	 *
-	 * Syntax:
-	 *   look [player name | item | etc..]
-	 *   examine [item]
-	 *
-	 * @author Ryan Sandor Richards
-	 */
-	class Look extends AbstractCommand {
-		public Look() { super("look"); }
-		public void run(Connection c, String []params) {
-			// TODO Implement examine and looking at characters and items
-			if (params.length == 1) {
-				Room room = character.getRoom();
-				c.sendln("{y" + room.getTitle().trim() + "{x\n");
-				c.sendln(Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n");
+            // Send it to the destination room
+            character.setRoom(destination);
+            destination.sendMessage(String.format(enterFormat, cName));
+            destination.getCharacters().add(character);
 
-				// Show a list of characters in the room
-				c.sendln("{cThe following characters present:{x");
-				synchronized(room.getCharacters()) {
-					for (solace.game.Character ch : room.getCharacters()) {
-						c.sendln(ch.getName() + ".");
-					}
-				}
-				c.sendln("");
-			}
-			else {
-				String id = params[2];
-				c.sendln("You do not see '{r" + id + "{x' here.");
-			}
-		}
-	}
+            look.run(c, new String("look").split(" "));
+        }
+    }
 
-	/**
-	 * Quits the game and returns to the main menu.
-	 * @author Ryan Sandor Richards.
-	 */
-	class Quit extends AbstractCommand {
-		public Quit() { super("quit"); }
-		public void run(Connection c, String []params) {
-			Room room = character.getRoom();
-			room.getCharacters().remove(character);
-			room.sendMessage(String.format("%s has left the game.", character.getName()));
-			World.getActivePlayers().remove(c);
-			c.setStateController( new MainMenu(c) );
-		}
-	}
+    /**
+     * The look command is used to examine rooms, characters, and objects in the game world.
+     *
+     * Syntax:
+     *   look [player name | item | etc..]
+     *   examine [item]
+     *
+     * @author Ryan Sandor Richards
+     */
+    class Look extends AbstractCommand {
+        public Look() {super("look"); }
+        public void run(Connection c, String []params) {
+            // TODO Implement examine and looking at characters and items
+            if (params.length == 1) {
+                Room room = character.getRoom();
+                c.sendln("{y" + room.getTitle().trim() + "{x\n");
+                c.sendln(Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n");
 
-	/**
-	 * Help Command
-	 * @author Ryan Sandor Richards (Gaius)
-	 */
-	class Help extends AbstractCommand {
-		public Help() { super("help"); }
-		public void run(Connection c, String []params) {
-		}
-	}
+                // Show a list of characters in the room
+                List<solace.game.Character> others = room.getOtherCharacters(character);
+                if (others.size() > 0) {
+                    c.sendln("{cThe following characters are present:{x");
+                    for (solace.game.Character ch : others) {
+                        if (ch == character)
+                            continue;
+                        c.sendln(ch.getName() + ".");
+                    }
+                }
+                else {
+                    c.sendln("{cYou are the only one here.{x");
+                }
+                c.sendln("");
+            }
+            else {
+                String id = params[2];
+                c.sendln("You do not see '{r" + id + "{x' here.");
+            }
+        }
+    }
+
+    /**
+     * Quits the game and returns to the main menu.
+     * @author Ryan Sandor Richards.
+     */
+    class Quit extends AbstractCommand {
+        public Quit() { super("quit"); }
+        public void run(Connection c, String []params) {
+            Room room = character.getRoom();
+            room.getCharacters().remove(character);
+            room.sendMessage(String.format("%s has left the game.", character.getName()));
+            World.getActivePlayers().remove(c);
+            c.setStateController( new MainMenu(c) );
+        }
+    }
+
+    /**
+     * Help Command
+     * @author Ryan Sandor Richards (Gaius)
+     */
+    class Help extends AbstractCommand {
+        public Help() { super("help"); }
+        public void run(Connection c, String []params) {
+        }
+    }
 }

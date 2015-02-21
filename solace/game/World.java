@@ -13,7 +13,7 @@ import solace.cmd.GameException;
  * Holds the state of the entire game world.
  * @author Ryan Sandor Richards (Gaius)
  */
-public class World 
+public class World
 {
 	static List<Connection> connections;
 	static List<Connection> oogChat;
@@ -22,9 +22,9 @@ public class World
 	static Hashtable<String, Area> areas;
 
 	static List<Connection> playing;
-	
+
 	static final String areaDir = "data/areas/";
-	
+
 	static boolean initialized = false;
 	static boolean areasLoaded = false;
 
@@ -36,31 +36,31 @@ public class World
 	{
 		if (initialized)
 			return;
-		
+
 		loadAreas();
-		
+
 		connections = Collections.synchronizedList(new LinkedList<Connection>());
 		oogChat = Collections.synchronizedList(new LinkedList<Connection>());
 		playing = Collections.synchronizedList(new LinkedList<Connection>());
 		namesToAccounts = new Hashtable<String, Account>();
 		accountsToConnections = new Hashtable<Account, Connection>();
-		
+
 		Log.info("Game world loaded");
-		
+
 		initialized = true;
 	}
-	
+
 	/**
 	 * Attempts to loads all game areas.
 	 * @throws GameException if no default room could be determined after the load.
 	 */
 	public static synchronized void loadAreas() throws GameException {
 		Hashtable<String, Area> newAreas = new Hashtable<String, Area>();
-		
+
 		File dir = new File(areaDir);
 		String[] names = dir.list();
-		
-		if (names != null) {			
+
+		if (names != null) {
 			// Try to load all the areas...
 			for (int i = 0; i < names.length; i++) {
 				try {
@@ -73,17 +73,17 @@ public class World
 					Log.error("Area '" + names[i] + "' failed to load.");
 				}
 			}
-			
+
 			// Attempt to find the default area
 			findDefaultRoom(newAreas);
 		}
 		else {
 			Log.info("No area files available to load.");
 		}
-		
+
 		areas = newAreas;
 	}
-	
+
 	/**
 	 * @param id An area id.
 	 * @return The <code>Area</code> associated with the id, or null if none exists.
@@ -93,7 +93,7 @@ public class World
 			return null;
 		return areas.get(id);
 	}
-	
+
 	/**
 	 * Determines if an account is currently logged in.
 	 * @param name Name of the account to check for.
@@ -103,7 +103,7 @@ public class World
 	{
 		return namesToAccounts.containsKey(name.toLowerCase());
 	}
-		
+
 	/**
 	 * Adds an account to the game world.
 	 * @param a Account to add
@@ -125,17 +125,18 @@ public class World
 			return null;
 		return accountsToConnections.get(a);
 	}
-	
+
 	/**
 	 * Finds a connection, given an account name.
 	 * @param name Name of the account to find the connection for.
-	 * @return The connection associated with the account of the given name, returns null if no connection was found.
+	 * @return The connection associated with the account of the given name,
+	 *  returns null if no connection was found.
 	 */
 	public static synchronized Connection connectionFromName(String name)
 	{
 		return connectionFromAccount((Account)namesToAccounts.get(name));
 	}
-	
+
 	/**
 	 * Logs an account out of game world.
 	 * @param a Account to remove.
@@ -145,7 +146,7 @@ public class World
 		namesToAccounts.remove(a.getName().toLowerCase());
 		accountsToConnections.remove(a);
 	}
-	
+
 	/**
 	 * Adds a connection to the game world.
 	 * @param c Connection to add.
@@ -163,18 +164,18 @@ public class World
 	{
 		connections.remove(c);
 	}
-	
-	/** 
+
+	/**
 	 * @return All the connections currently playing a character in the game world.
 	 */
 	public static Collection<Connection> getActivePlayers() {
 		return playing;
 	}
-	
+
 	/**
 	 * @return the connections
 	 */
-	public static Collection<Connection> getConnections() 
+	public static Collection<Connection> getConnections()
 	{
 		return connections;
 	}
@@ -182,14 +183,14 @@ public class World
 	/**
 	 * @return the oogChat
 	 */
-	public static Collection<Connection> getChatConnections() 
+	public static Collection<Connection> getChatConnections()
 	{
 		return oogChat;
 	}
 
 
 	/**
-	 * Finds the default room in a list of areas. 
+	 * Finds the default room in a list of areas.
 	 * @param areaHash Hashtable to search for the default area.
 	 * @return The default room in the area hash.
 	 */
@@ -197,24 +198,24 @@ public class World
 		String aName = Config.get("world.default.area");
 		if (aName == null)
 			throw new GameException("Required configuration key 'world.default.area' does not exist.");
-		
+
 		String rName = Config.get("world.default.room");
 		if (rName == null)
 			throw new GameException("Required configuration key 'world.default.room' does not exist.");
-		
+
 		if (!areaHash.containsKey(aName))
 			throw new GameException("Default area with id '" + aName + "' does not exist.");
-		
+
 		Area area = areaHash.get(aName);
-			
+
 		Room room = area.getRoom(rName);
 		if (room == null)
 			throw new GameException("Default room with id '" + rName + "' does not exist.");
-			
+
 		return room;
 	}
 
-	/** 
+	/**
 	 * @return The default room for the game world.
 	 * @throws GameException if the configuration does not have the appropriate keys to fetch the default room.
 	 */
