@@ -101,9 +101,9 @@ public class PlayController
     protected void addCommands() {
         addCommand(new Quit());
         addCommand(new Help());
+        addCommand(moveAliases, new Move(character));
         addCommand(new Look(character));
         addCommand(new Say(character));
         addCommand(new Scan(character));
-        addCommand(moveAliases, new Move(character));
     }
 }
