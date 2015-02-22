@@ -227,15 +227,6 @@ public abstract class AbstractStateController
     }
 
     /**
-     * Forces a user to execute a command without sending the command
-     * to the user.
-     * @param command Command to execute.
-     */
-    public void quietForce(String command) {
-        parse(command);
-    }
-
-    /**
      * Parses commands using a "prefix" search routine.
      * @param input Input to parse.
      */

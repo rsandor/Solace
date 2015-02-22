@@ -1,6 +1,7 @@
 package solace.game;
 
 import java.util.*;
+import solace.util.Strings;
 
 /**
  * Basic room class for the engine.
@@ -160,5 +161,36 @@ public class Room
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * Builds a string that discribes the room to the given character.
+     * This is the method used by the game's look command. We define the
+     * method here because it is used in various places ouside the scope
+     * of that command (after moving/teleporting, upon login, etc.).
+     *
+     * @param ch Character who's perspective will be used.
+     * @return A string describing the room.
+     */
+    public String describeTo(solace.game.Character ch) {
+        Room room = ch.getRoom();
+        List<solace.game.Character> others = room.getOtherCharacters(ch);
+
+        // Title and description of the room
+        String view = "{y" + room.getTitle().trim() + "{x\n\r\n\r" +
+            Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n\r\n\r";
+
+        // Show a list of characters in the room
+        if (others.size() > 0) {
+            view += "{cThe following characters are present:{x\n\r";
+            for (solace.game.Character c : others) {
+                view += "    " + c.getName() + "\n\r";
+            }
+        }
+        else {
+            view += "{cYou are the only one here.{x\n\r";
+        }
+
+        return view;
     }
 }

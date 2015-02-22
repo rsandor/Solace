@@ -125,6 +125,9 @@ public class Move extends PlayCommand {
         destination.sendMessage(String.format(enterFormat, cName));
         destination.getCharacters().add(character);
 
+        // Show them the room they just entered
+        c.sendln(destination.describeTo(character));
+
         return true;
     }
 }

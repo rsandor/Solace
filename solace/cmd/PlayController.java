@@ -80,11 +80,13 @@ public class PlayController
         // Add commands
         addCommands();
 
-        // Place the player in the world and force a look command
+        // Place the player in the world
         World.getActivePlayers().add(c);
         c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
         c.setPrompt("{c>{x ");
-        quietForce("look");
+
+        // Describe the room to the player
+        c.sendln(ch.getRoom().describeTo(ch));
     }
 
     /**
@@ -93,16 +95,9 @@ public class PlayController
     protected void addCommands() {
         addCommand(new Quit());
         addCommand(new Help());
-
         addCommand(new Look(character));
         addCommand(new Say(character));
         addCommand(new Scan(character));
-
-        Command move = new Move(character);
-        addCommand(moveAliases, move);
-        afterSuccess(move, () -> {
-            quietForce("look");
-            return true;
-        });
+        addCommand(moveAliases, new Move(character));
     }
 }

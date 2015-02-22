@@ -22,25 +22,12 @@ public class Look extends PlayCommand {
 
     public boolean run(Connection c, String []params) {
         if (params.length == 1) {
+            // Describe the room to the character
             Room room = character.getRoom();
-            List<solace.game.Character> others = room.getOtherCharacters(character);
+            c.sendln(room.describeTo(character));
 
-            c.sendln("{y" + room.getTitle().trim() + "{x\n");
-            c.sendln(Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n");
-
-            // Show a list of characters in the room
-            if (others.size() > 0) {
-                c.sendln("{cThe following characters are present:{x");
-                for (solace.game.Character ch : others) {
-                    if (ch == character)
-                        continue;
-                    c.sendln(ch.getName() + ".");
-                }
-            }
-            else {
-                c.sendln("{cYou are the only one here.{x");
-            }
-            c.sendln("");
+            // Inform other players that the character is looking around
+            room.sendMessage(character.getName() + " looks around.", character);
         }
         else {
             // TODO Implement examine and looking at characters and items
