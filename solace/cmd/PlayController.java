@@ -27,7 +27,10 @@ public class PlayController
      * @author Ryan Sandor Richards.
      */
     class Quit extends AbstractCommand {
-        public Quit() { super("quit"); }
+        public Quit() {
+            super("quit");
+        }
+
         public boolean run(Connection c, String []params) {
             Room room = character.getRoom();
             room.getCharacters().remove(character);
@@ -43,7 +46,10 @@ public class PlayController
      * @author Ryan Sandor Richards
      */
     class Help extends AbstractCommand {
-        public Help() { super("help"); }
+        public Help() {
+            super("help");
+        }
+
         public boolean run(Connection c, String []params) {
             String commandText = "\n{cAvailable Commands:{x\n";
             for (CommandTuple cmd : commands) {
