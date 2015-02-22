@@ -2,7 +2,8 @@ package solace.cmd;
 
 import solace.net.Connection;
 import java.util.*;
-
+import java.util.concurrent.*;
+import solace.util.Log;
 
 /**
  * Base class for all state controllers used in the Solace Engine.
@@ -61,6 +62,14 @@ public abstract class AbstractStateController
     // Instance Variables
     Connection connection;
     LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
+
+    // Event tables
+    Hashtable<Command, List<Callable<Boolean>>> beforeCallbacks =
+        new Hashtable<Command, List<Callable<Boolean>>>();
+    Hashtable<Command, List<Callable<Boolean>>> afterCallbacks =
+        new Hashtable<Command, List<Callable<Boolean>>>();
+    Hashtable<Command, List<Callable<Boolean>>> afterSuccessCallbacks =
+        new Hashtable<Command, List<Callable<Boolean>>>();
 
     String invalidCommandMessage;
 
@@ -130,6 +139,17 @@ public abstract class AbstractStateController
     }
 
     /**
+     * Adds a command to the controller under each given alias.
+     * @param aliases Alias names for the command.
+     * @param c Command to add.
+     */
+    public void addCommand(String[] aliases, Command c) {
+        for (String alias : aliases) {
+            commands.add(new CommandTuple(alias, c));
+        }
+    }
+
+    /**
      * Attempts to find a command that matches with the given string.
      * @param c Search criteria.
      * @return A command that matches, or null if no commands match the string.
@@ -143,12 +163,75 @@ public abstract class AbstractStateController
     }
 
     /**
+     * Finds a list of callbacks for a given command and map. If no such
+     * list exists in the map then this method will create and assign one
+     * for the given command.
+     *
+     * @param map Map to search for callback list.
+     * @param c Command to use as a key to the map.
+     * @return The callback list associated with the command in the given map.
+     */
+    protected List<Callable<Boolean>> getCallbacks(Hashtable<Command, List<Callable<Boolean>>> map, Command c) {
+        if (map.containsKey(c))
+            return map.get(c);
+        List<Callable<Boolean>> list = new LinkedList<Callable<Boolean>>();
+        map.put(c, list);
+        return list;
+    }
+
+    /**
+     * Registers a callabck event to execute immediately before
+     * a command is processed. Since the callback returns a boolean
+     * the command will fail to execute unless it returns true.
+     *
+     * This is useful for adding precondition logic to commands that
+     * may be outside the scope of the command itself (aka, requires
+     * knowledge about the game state the command may not have access
+     * to, etc.).
+     *
+     * @param c Command for which to add the callback.
+     * @param fn Callback to execute.
+     */
+    public void before(Command c, Callable<Boolean> fn) {
+        getCallbacks(beforeCallbacks, c).add(fn);
+    }
+
+    /**
+     * Registers a callback event to execute immediately after
+     * a command has been processed.
+     * @param c Command for which to add the callback.
+     * @param fn Callback to execute.
+     */
+    public void after(Command c, Callable<Boolean> fn) {
+        getCallbacks(afterCallbacks, c).add(fn);
+    }
+
+    /**
+     * Registers an after callback that only executes if the command
+     * was successful (aka it's run() method returns true).
+     * @param c Command for which to add the callback.
+     * @param fn Callback to execute after the command is successful.
+     */
+    public void afterSuccess(Command c, Callable<Boolean> fn) {
+        getCallbacks(afterSuccessCallbacks, c).add(fn);
+    }
+
+    /**
      * Forces a user to execute a command.
      * Note: This function is VERY useful for unit testing :).
      * @param command Command to execute.
      */
     public void force(String command) {
         connection.sendln(command);
+        parse(command);
+    }
+
+    /**
+     * Forces a user to execute a command without sending the command
+     * to the user.
+     * @param command Command to execute.
+     */
+    public void quietForce(String command) {
         parse(command);
     }
 
@@ -168,8 +251,30 @@ public abstract class AbstractStateController
 
         Command cmd = findCommand(params[0]);
 
-        if (cmd != null && cmd.canExecute(connection))
-            cmd.run(connection, params);
+        if (cmd != null && cmd.canExecute(connection)) {
+            try {
+                // Handle before listeners
+                for (Callable<Boolean> fn : getCallbacks(beforeCallbacks, cmd)) {
+                    if (!fn.call())
+                        return;
+                }
+
+                // Execute the command (and possibly, success callbacks)
+                if (cmd.run(connection, params)) {
+                    for (Callable<Boolean> fn : getCallbacks(afterSuccessCallbacks, cmd)) {
+                        fn.call();
+                    }
+                }
+
+                // Handle after listeners
+                for (Callable<Boolean> fn : getCallbacks(afterCallbacks, cmd)) {
+                    fn.call();
+                }
+            }
+            catch (Exception e) {
+                Log.error("AbstractStateController.parse() - Error in command callback: " + e.getMessage());
+            }
+        }
         else
             connection.sendln(invalidCommandMessage);
     }

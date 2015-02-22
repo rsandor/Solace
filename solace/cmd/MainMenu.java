@@ -51,7 +51,7 @@ public class MainMenu
      */
     class List extends AbstractCommand {
         public List() { super("list"); }
-        public void run(Connection c, String []params) {
+        public boolean run(Connection c, String []params) {
             Collection<solace.game.Character> chars = c.getAccount().getCharacters();
             if (chars.size() == 0) {
                 c.sendln("You have no characters, use the '{ycreate{x' command to create a new one.");
@@ -63,6 +63,7 @@ public class MainMenu
                 }
                 c.sendln("");
             }
+            return true;
         }
     }
 
@@ -72,8 +73,9 @@ public class MainMenu
      */
     class Create extends AbstractCommand {
         public Create() { super("create"); }
-        public void run(Connection c, String []params) {
+        public boolean run(Connection c, String []params) {
             c.setStateController( new CreateCharacter(c) );
+            return true;
         }
     }
 
@@ -82,7 +84,7 @@ public class MainMenu
      */
     class Play extends AbstractCommand {
         public Play() { super("play"); }
-        public void run(Connection c, String []params) {
+        public boolean run(Connection c, String []params) {
             try {
                 Account act = c.getAccount();
                 solace.game.Character ch;
@@ -95,7 +97,7 @@ public class MainMenu
                     if (!act.hasCharacter(name)) {
                         c.sendln("Character '" + name +
                             "' not found, use the '{ylist{x' command to see a list of your characters.");
-                        return;
+                        return false;
                     }
                     ch = act.getCharacter(name);
                 }
@@ -103,10 +105,12 @@ public class MainMenu
 
                 act.setActiveCharacter(ch);
                 c.setStateController(new PlayController(c, ch));
+                return true;
             }
             catch (GameException ge) {
                 Log.error(ge.getMessage());
                 c.sendln("An {rerror{x occured, please try again later.");
+                return false;
             }
         }
     }
@@ -118,9 +122,9 @@ public class MainMenu
     class Chat extends AbstractCommand
     {
         public Chat() { super("chat"); }
-        public void run(Connection c, String []params)
-        {
+        public boolean run(Connection c, String []params) {
             c.setStateController(new ChatController(c));
+            return true;
         }
     }
 
@@ -131,11 +135,12 @@ public class MainMenu
     class Help extends AbstractCommand
     {
         public Help() { super("help"); }
-        public void run(Connection c, String []params)
+        public boolean run(Connection c, String []params)
         {
             c.sendln(Message.get("MainMenu"));
             if (c.getAccount().isAdmin())
                 c.sendln(Message.get("AdminMenu"));
+            return true;
         }
     }
 
@@ -146,7 +151,7 @@ public class MainMenu
     class Quit extends AbstractCommand
     {
         public Quit() { super("quit"); }
-        public synchronized void run(Connection c, String []params)
+        public synchronized boolean run(Connection c, String []params)
         {
             c.sendln("Goodbye!");
 
@@ -155,9 +160,10 @@ public class MainMenu
                 World.removeAccount(connection.getAccount());
 
             // Remove it from the connections list
-          World.removeConnection(connection);
+            World.removeConnection(connection);
 
             c.close();
+            return true;
         }
     }
 
@@ -173,7 +179,7 @@ public class MainMenu
          * Note: This whole thing will become SIGNIFICANTLY easier
          * when I switch the code base to java 6.
          */
-        public void run(Connection c, String []params) {
+        public boolean run(Connection c, String []params) {
             Collection connections = World.getConnections();
 
             c.sendln("{y---- {xPlayers Online{y ----{x");
@@ -188,6 +194,8 @@ public class MainMenu
                 }
             }
             c.sendln("");
+
+            return true;
         }
     }
 
@@ -203,9 +211,10 @@ public class MainMenu
     class Shutdown extends AdminCommand
     {
         public Shutdown() { super("shutdown"); }
-        public void run(Connection c, String []params)
+        public boolean run(Connection c, String []params)
         {
             Game.getServer().shutdown();
+            return true;
         }
     }
 
@@ -336,7 +345,7 @@ public class MainMenu
             c.sendln("Game messages reloaded.");
         }
 
-        public void run(Connection c, String []params) {
+        public boolean run(Connection c, String []params) {
             String errorStr = "";
 
             try {
@@ -350,12 +359,14 @@ public class MainMenu
                 }
                 else
                     c.sendln("Unable to reload '" + params[1] + "', you can either reload 'areas' or 'messages'.");
+                return true;
             }
             catch (IOException ioe)
             {
                 c.sendln("An error occured while trying to reload " + errorStr + ".");
                 Log.error("An IO exception occured when reloading " + errorStr + " by user '" +
                         c.getAccount().getName().toLowerCase() + "'");
+                return false;
             }
         }
     }
@@ -372,12 +383,12 @@ public class MainMenu
     {
         public Peek() { super("peek"); }
 
-        public void run(Connection c, String []params)
+        public boolean run(Connection c, String []params)
         {
             if (params.length < 2)
             {
                 c.sendln("Syntax: peek <player1> <player2> ... | all");
-                return;
+                return false;
             }
 
 
@@ -405,6 +416,8 @@ public class MainMenu
                     }
                 }
             }
+
+            return true;
         }
 
         /**

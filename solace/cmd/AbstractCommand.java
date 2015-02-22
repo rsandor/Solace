@@ -52,5 +52,5 @@ public abstract class AbstractCommand
     /**
      * @see solace.cmd.Command.run(Connection c, String []params)
      */
-    public abstract void run(Connection c, String[] params);
+    public abstract boolean run(Connection c, String[] params);
 }
