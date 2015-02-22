@@ -41,6 +41,9 @@ public class Scan extends PlayCommand {
             message = "There is nobody of interest in any direction.";
         }
 
+        // Tell the other players in the room what the character is doing
+        room.sendMessage(character.getName() + " scans the surrounding area.", character);
+
         c.sendln(message);
 
         return true;

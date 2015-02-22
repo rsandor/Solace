@@ -35,8 +35,12 @@ public class PlayController
             Room room = character.getRoom();
             room.getCharacters().remove(character);
             room.sendMessage(String.format("%s has left the game.", character.getName()));
-            World.getActivePlayers().remove(c);
+
+            World.getActiveCharacters().remove(character);
+            Game.writer.save(character);
+
             c.setStateController( new MainMenu(c) );
+
             return true;
         }
     }
@@ -87,7 +91,7 @@ public class PlayController
         addCommands();
 
         // Place the player in the world
-        World.getActivePlayers().add(c);
+        World.getActiveCharacters().add(ch);
         c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
         c.setPrompt("{c>{x ");
 

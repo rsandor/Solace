@@ -25,13 +25,20 @@ public class Character {
      * @param msg Message to send.
      */
     public void sendMessage(String msg) {
-        Connection c = World.connectionFromAccount(account);
+        Connection c = getConnection();
 
         // The connection could be null, if the character is an actor and not a player...
         if (c != null) {
             c.sendln("\n" + msg);
             c.send(c.getPrompt());
         }
+    }
+
+    /**
+     * @return The connection associated with this character.
+     */
+    public Connection getConnection() {
+        return World.connectionFromAccount(account);
     }
 
     /**
@@ -66,9 +73,12 @@ public class Character {
      * @return XML representation of the character.
      */
     public String getXML() {
-        String xml = "";
-        xml += "<character name=\"" + name + "\"></character>";
-        return xml;
+        String xml = "<character name=\"" + name + "\">";
+
+        // Current location
+        xml += "<location area=\"" + room.getArea().getId() + "\" room=\"" + room.getId() + "\" />";
+
+        return xml + "</character>";
     }
 
     /**

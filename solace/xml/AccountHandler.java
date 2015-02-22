@@ -16,19 +16,20 @@ public class AccountHandler extends Handler {
 	 * Enumeration for the basic states handled by the parser.
 	 */
 	private enum State { INIT, USER, CHARACTERS, CHARACTER }
-	
+
 	// Instance variables
 	Account account;
 	solace.game.Character character;
-	
+	Area area;
+
 	/**
-	 * @return The area as a result of the parse, or <code>null</code> if no area could be 
+	 * @return The area as a result of the parse, or <code>null</code> if no area could be
 	 *   or has yet been parsed.
 	 */
 	public Object getResult() {
 		return account;
 	}
-	
+
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler
 	 */
@@ -43,8 +44,12 @@ public class AccountHandler extends Handler {
 			String characterName = attrs.getValue("name");
 			character = new solace.game.Character(characterName);
 		}
+		else if (name == "location") {
+			area = World.getArea(attrs.getValue("area"));
+			character.setRoom(area.getRoom(attrs.getValue("room")));
+		}
 	}
-	
+
 	/**
 	 * @see org.xml.sax.helpers.DefaultHandler
 	 */

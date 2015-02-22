@@ -213,7 +213,7 @@ public class MainMenu
         public Shutdown() { super("shutdown"); }
         public boolean run(Connection c, String []params)
         {
-            Game.getServer().shutdown();
+            Game.shutdown();
             return true;
         }
     }
@@ -240,12 +240,14 @@ public class MainMenu
          */
         protected void reloadAreas(Connection c) throws IOException {
             Log.info("Area reload commenced by '" + c.getAccount().getName().toLowerCase() + "'.");
-            Collection<Connection> players = Collections.synchronizedCollection(World.getActivePlayers());
+            Collection<solace.game.Character> players =
+                Collections.synchronizedCollection(World.getActiveCharacters());
             synchronized (players) {
                 try {
                     // Freeze all the players (ignore their input)
                     // TODO: Once battle is in place we will need to freeze battle as well.
-                    for (Connection con : players) {
+                    for (solace.game.Character ch : players) {
+                        Connection con = ch.getConnection();
                         con.sendln("\n{yGame areas being reloaded, please stand by...{x");
                         con.setIgnoreInput(true);
                     }
@@ -259,7 +261,9 @@ public class MainMenu
                     }
 
                     // Place players into their original rooms if available, or the default room if not
-                    for (Connection con : players) {
+                    for (solace.game.Character ch : players) {
+                        Connection con = ch.getConnection();
+
                         if (!con.hasAccount())
                             continue;
 
@@ -278,19 +282,13 @@ public class MainMenu
                             continue;
                         }
 
-                        solace.game.Character ch = act.getActiveCharacter();
-                        if (ch == null) {
-                            Log.error("Null character encounted on area reload.");
-                            continue;
-                        }
-
                         Room room = ch.getRoom();
 
                         if (room == null) {
                             Log.error("Null room encountered on area reload.");
                             ch.setRoom(defaultRoom);
-                        }
-                        else {
+
+}                        else {
                             Area area = room.getArea();
                             if (area == null) {
                                 ch.setRoom(defaultRoom);
@@ -326,7 +324,8 @@ public class MainMenu
                 }
                 finally {
                     // Un-freeze the players and force them to take a look around :)
-                    for (Connection con : players) {
+                    for (solace.game.Character ch : players) {
+                        Connection con = ch.getConnection();
                         con.sendln("{yAreas reloaded, thanks for your patience!{x\n");
                         con.getStateController().force("look");
                         con.setIgnoreInput(false);

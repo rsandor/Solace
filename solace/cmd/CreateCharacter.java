@@ -16,7 +16,7 @@ class CreateCharacter implements StateController {
 	 * State set for the <code>CreateCharacter</code> state controller.
 	 */
 	private enum State {
-	
+
 		CHOOSE_NAME("{cChoose a name, or '{ycancel{c' to exit:{x ") {
 			public State parse(Connection c, String input) {
 				if (input.trim().equals("cancel")) {
@@ -33,17 +33,19 @@ class CreateCharacter implements StateController {
 						act.addCharacter(new solace.game.Character(input));
 						act.save();
 					}
-					catch (IOException ioe) {}
+					catch (IOException ioe) {
+
+					}
 					c.sendln("Character created!");
 					return EXIT;
 				}
 			}
 		},
-		
+
 		EXIT("");
-		
+
 		String prompt;
-		
+
 		/**
 		 * Creates a new state.
 		 * @param p Prompt for the state.
@@ -51,14 +53,14 @@ class CreateCharacter implements StateController {
 		State(String p) {
 			prompt = p;
 		}
-		
+
 		/**
 		 * @return The prompt for the state.
 		 */
 		public String getPrompt() {
 			return prompt;
 		}
-		
+
 		/**
 		 * Parses a command.
 		 * @param c Connection that submitted the command.
@@ -69,28 +71,28 @@ class CreateCharacter implements StateController {
 			return CHOOSE_NAME;
 		}
 	}
-	
+
 	Connection connection;
 	State state;
-	
-	public CreateCharacter(Connection c) {	
+
+	public CreateCharacter(Connection c) {
 		init(c);
 		state = state.CHOOSE_NAME;
 		c.sendln(Message.get("NewCharacter"));
 		c.setPrompt(state.getPrompt());
 	}
-	
+
 	public void init(Connection c) {
 		connection = c;
 	}
-	
+
 	/**
 	 * @see solace.cmd.StateController.force();
 	 */
 	public void force(String command) {
 		parse(command);
 	}
-	
+
 	/**
 	 * @see solace.cmd.StateController.parse();
 	 */

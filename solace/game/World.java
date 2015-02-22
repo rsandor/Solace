@@ -21,7 +21,7 @@ public class World
 	static Hashtable<Account, Connection> accountsToConnections;
 	static Hashtable<String, Area> areas;
 
-	static List<Connection> playing;
+	static List<solace.game.Character> playing;
 
 	static final String areaDir = "data/areas/";
 
@@ -41,7 +41,7 @@ public class World
 
 		connections = Collections.synchronizedList(new LinkedList<Connection>());
 		oogChat = Collections.synchronizedList(new LinkedList<Connection>());
-		playing = Collections.synchronizedList(new LinkedList<Connection>());
+		playing = Collections.synchronizedList(new LinkedList<solace.game.Character>());
 		namesToAccounts = new Hashtable<String, Account>();
 		accountsToConnections = new Hashtable<Account, Connection>();
 
@@ -168,7 +168,7 @@ public class World
 	/**
 	 * @return All the connections currently playing a character in the game world.
 	 */
-	public static Collection<Connection> getActivePlayers() {
+	public static Collection<solace.game.Character> getActiveCharacters() {
 		return playing;
 	}
 
