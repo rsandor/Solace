@@ -25,6 +25,8 @@ public class PlayController
     Look look = new Look();
     Move move = new Move();
     Say say = new Say();
+    Help help = new Help();
+    Scan scan = new Scan();
 
     /**
      * Creates a new game play controller.
@@ -69,6 +71,8 @@ public class PlayController
             addCommand(n, move);
         addCommand(new Quit());
         addCommand(say);
+        addCommand(help);
+        addCommand(scan);
     }
 
     /**
@@ -163,6 +167,14 @@ public class PlayController
                 exitFormat = "%s heads west.";
                 enterFormat = "%s arrives from the east.";
             }
+            else if (new String("up").startsWith(direction)) {
+                exitFormat = "%s leaves heading up.";
+                enterFormat = "%s arrives from below.";
+            }
+            else if (new String("down").startsWith(direction)) {
+                exitFormat = "%s leaves going down.";
+                enterFormat = "%s arrives from above.";
+            }
             else if (new String("enter").startsWith(cmd)) {
                 exitFormat = "%s enters " + destination.getTitle() + ".";
             }
@@ -241,12 +253,17 @@ public class PlayController
     }
 
     /**
-     * Help Command
-     * @author Ryan Sandor Richards (Gaius)
+     * Help Command. Currently only displays a list of commands available to the user.
+     * @author Ryan Sandor Richards
      */
     class Help extends AbstractCommand {
         public Help() { super("help"); }
         public void run(Connection c, String []params) {
+            String commandText = "\n{cAvailable Commands:{x\n";
+            for (CommandTuple cmd : commands) {
+                commandText += cmd.getName() + " ";
+            }
+            c.sendln(commandText + "\n");
         }
     }
 
@@ -284,6 +301,45 @@ public class PlayController
                         ch.sendMessage(character.getName() + " says " + message);
                 }
             }
+        }
+    }
+
+    /**
+     * Scan command, shows players and mobiles in adjacent rooms.
+     * @author Ryan Sandor Richards
+     */
+    class Scan extends AbstractCommand {
+        public Scan() {
+            super("scan");
+        }
+
+        public void run(Connection c, String []params) {
+            Room room = character.getRoom();
+            Area area = room.getArea();
+            List<Exit> exits = room.getExits();
+
+            String message = "";
+
+            for (Exit ex : exits) {
+                Room r = area.getRoom(ex.getToId());
+
+                if (r.getCharacters().size() == 0)
+                    continue;
+
+                message += ex.getDescription().trim() + ":\n\r";
+
+                synchronized(r.getCharacters()) {
+                    for (solace.game.Character ch : r.getCharacters()) {
+                        message += "    " + ch.getName() + "\n\r";
+                    }
+                }
+            }
+
+            if (message == "") {
+                message = "There is nobody of interest in any direction.";
+            }
+
+            c.sendln(message);
         }
     }
 }

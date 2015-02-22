@@ -74,7 +74,7 @@ public class Room
                 others.add(ch);
             }
         }
-        return others;
+        return Collections.unmodifiableList(others);
     }
 
     /**
@@ -117,6 +117,13 @@ public class Room
                 return e;
 
         return null;
+    }
+
+    /**
+     * @return an unmodifiable list of exits associated with this room.
+     */
+    public List<Exit> getExits() {
+        return Collections.unmodifiableList(exits);
     }
 
     /**

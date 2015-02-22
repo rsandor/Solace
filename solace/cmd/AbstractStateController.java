@@ -19,7 +19,7 @@ public abstract class AbstractStateController
      * Simple command tuple.
      * @author Ryan Sandor Richards
      */
-    private class CommandTuple {
+    protected class CommandTuple {
         // Instance variables
         String name;
         Command command;
