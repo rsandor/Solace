@@ -15,70 +15,75 @@
 <area id="medius" title="The city of Medius" author="Ryan Sandor Richards">
 
 	<!-- Prosperitus Square -->
-	<district name="Prosperitas Square">
-		<room id="prosperitas">
-			<title>Prosperitas Square</title>
-			Ornate copper statues depicting wealth, abundance, and health dot the well groomed gardens
-			of the square. At its center towering two hundred feet above the square stands the
-			Prosperity Obelisk. The obelisk itself is built of thousands of smoothed stone blocks and
-			at its base it is surrounded by ziggurat of eleven perfectly square marble steps. The southern
-			side of the obelisk contains a large copper dedication plaque.
+	<room id="prosperitas">
+		<title>Prosperitas Square</title>
+		Ornate copper statues depicting wealth, abundance, and health dot the well groomed gardens
+		of the square. At its center towering two hundred feet above the square stands the
+		Prosperity Obelisk. The obelisk itself is built of thousands of smoothed stone blocks and
+		at its base it is surrounded by ziggurat of eleven perfectly square marble steps. The southern
+		side of the obelisk contains a large copper dedication plaque.
 
-			Various shops and trade houses lie on the edges of the square. They include,
-			<exit names="contego protectives" to="contego protectives">Contego Protectives</exit>
-			the local armor stop, an quality weapons shop called
-			<exit names="arma armarium" to="arma armarium">Arma Armarium</exit>, and
-			an old, well respected inn known as  <exit names="argentum inn" to="argentum">The Argentum</exit>.
-			The two major exits from the square are along Dito Lane, which runs
-			<exit names="north" to="prosperitas north">north</exit> and
-			<exit names="south" to="prosperitas south">south</exit>,
-			and Median Avenue that leads pedestrians
-			<exit names="east" to="prosperitas east">east</exit> and
-			<exit names="west" to="prosperitas west">west</exit> through the square.
-		</room>
+		Various shops and trade houses lie on the edges of the square. They include,
+		<exit names="contego protectives" to="contego protectives">Contego Protectives</exit>
+		the local armor stop, an quality weapons shop called
+		<exit names="arma armarium" to="arma armarium">Arma Armarium</exit>, and
+		an old, well respected inn known as  <exit names="argentum inn" to="argentum">The Argentum</exit>.
+		The two major exits from the square are along Dito Lane, which runs
+		<exit names="north" to="prosperitas north">north</exit> and
+		<exit names="south" to="prosperitas south">south</exit>,
+		and Median Avenue that leads pedestrians
+		<exit names="east" to="prosperitas east">east</exit> and
+		<exit names="west" to="prosperitas west">west</exit> through the square.
+	</room>
 
-		<room id="contego protectives">
-			<title>Contego Protectives</title>
-			<exit names="door exit" to="prosperitas">door</exit>
-		</room>
+	<room id="contego protectives">
+		<title>Contego Protectives</title>
+		<exit names="door exit" to="prosperitas">door</exit>
+	</room>
 
-		<room id="arma armarium">
-			<title>Arma Armarium</title>
-			<exit names="door exit" to="prosperitas">door</exit>
-		</room>
+	<room id="arma armarium">
+		<title>Arma Armarium</title>
+		<exit names="door exit" to="prosperitas">door</exit>
+	</room>
 
-		<!-- The Argentum Inn -->
-		<building name="The Argentum">
-			<room id="argentum">
-				<title>The Argentum Inn</title>
-				<exit names="door exit" to="prosperitas">door</exit>
-				<exit names="up stairs" to="argentum second floor">up stairs</exit>
-			</room>
-			<room id="argentum second floor">
-				<title>Second floor of the Argentum Inn</title>
-				<exit names="down stairs" to="argentum">down stairs</exit>
-			</room>
-		</building>
+	<room id="argentum">
+		<title>The Argentum Inn</title>
+		<exit names="door exit" to="prosperitas">door</exit>
+		<exit names="up" to="argentum second floor">up</exit>
+	</room>
 
-		<room id="prosperitas north">
-			<title>North of Prosperitas Square along Dito Lane</title>
-			<exit names="south" to="prosperitas">south</exit>
-		</room>
+	<room id="argentum second floor">
+		<title>Second floor of the Argentum Inn</title>
+		<exit names="down" to="argentum">down</exit>
+	</room>
 
-		<room id="prosperitas south">
-			<title>South of Prosperitas Square along Dito Lane</title>
-			<exit names="north" to="prosperitas">north</exit>
-		</room>
+	<room id="prosperitas north">
+		<title>North of Prosperitas Square along Dito Lane</title>
+		<exit names="south" to="prosperitas">south</exit>
+	</room>
 
-		<room id="prosperitas east">
-			<title>East of Prosperitas Square along Median Avenue</title>
-			<exit names="west" to="prosperitas">west</exit>
-		</room>
+	<room id="prosperitas south">
+		<title>South of Prosperitas Square along Dito Lane</title>
+		<exit names="north" to="prosperitas">north</exit>
+	</room>
 
-		<room id="prosperitas west">
-			<title>West of Prosperitas Square along Median Avenue</title>
-			<exit names="east" to="prosperitas">east</exit>
-		</room>
-	</district>
+	<room id="prosperitas east">
+		<title>East of Prosperitas Square along Median Avenue</title>
+		<exit names="west" to="prosperitas">west</exit>
+	</room>
 
+	<room id="prosperitas west">
+		<title>West of Prosperitas Square along Median Avenue</title>
+		<exit names="east" to="prosperitas">east</exit>
+	</room>
+
+	<!-- Some example items -->
+	<item id="yarn" names="ball yarn">
+		<property key="description">
+			Yellow yarn that that has been neatly and tightly
+			wound into a small ball.
+		</property>
+		<property key="description.inventory">A ball of yarn.</property>
+		<property key="description.room">A ball of yarn rests here.</property>
+	</item>
 </area>
