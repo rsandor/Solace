@@ -92,7 +92,7 @@ public class AccountWriter implements Runnable {
                 Thread.sleep(1000);
             }
             catch (InterruptedException ie) {
-                // TODO ?
+                Log.error("AccountWriter interrupted: " + ie.getMessage());
             }
         }
     }

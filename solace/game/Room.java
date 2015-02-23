@@ -173,12 +173,11 @@ public class Room
      * @return A string describing the room.
      */
     public String describeTo(solace.game.Character ch) {
-        Room room = ch.getRoom();
-        List<solace.game.Character> others = room.getOtherCharacters(ch);
+        List<solace.game.Character> others = getOtherCharacters(ch);
 
         // Title and description of the room
-        String view = "{y" + room.getTitle().trim() + "{x\n\r\n\r" +
-            Strings.toFixedWidth(room.getDescription(), 80).trim() + "\n\r\n\r";
+        String view = "{y" + getTitle().trim() + "{x\n\r\n\r" +
+            Strings.toFixedWidth(getDescription(), 80).trim() + "\n\r\n\r";
 
         // Show a list of characters in the room
         if (others.size() > 0) {
