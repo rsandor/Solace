@@ -36,7 +36,27 @@
 		</describe>
 
 		<describe names="dedication plaque">
-			Dedicated to the prosperity of all Medius, General Xavier IV
+			The plaque reads: Dedicated to the prosperity of all Medius, General Xavier IV
+		</describe>
+
+		<describe names="contego protectives">
+			The building is build of solid gray bricks and is adorned with decorative copper
+			shields, armors, and helms. The sign that hangs above two heavy ironbound wooden
+			doors reads: Contego Protectives, Quality Armors Since 142.
+		</describe>
+
+		<describe names="arma armarium">
+			Images of various spatas, maces, chains, and whips are engraved into stone on the face
+			of this building. A large single door is flanked by two full scale statures of soldiers
+			holding long copper spears. The sign that hangs above the door reads: Arma Armarium -
+			exquisite weapons, exceptional prices.
+		</describe>
+
+		<describe names="argentum">
+			This old yet warm inn is one of the only buildings in the square completely made of
+			wood. It has been painted a deep regal purple with pale yellow trim surrounding its
+			multitude of expertly placed leaded glass windows. The sign above the cozy double
+			doors simply reads: The Argentum.
 		</describe>
 
 		<exit names="contego protectives" to="contego protectives">Contego Protectives (Armorer)</exit>
