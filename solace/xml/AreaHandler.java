@@ -14,10 +14,14 @@ import java.util.*;
  */
 public class AreaHandler extends Handler {
 	static Area area = null;
-	static Room currentRoom = null;
-	static Exit currentExit = null;
-	static Item currentItem = null;
+	static Room room = null;
+	static Exit exit = null;
+	static Item item = null;
 	static String propertyKey = null;
+
+	static StringBuffer description = null;
+	static String descriptionNames = null;
+
 	static Stack<StringBuffer> buffers = new Stack<StringBuffer>();
 
 	/**
@@ -53,15 +57,13 @@ public class AreaHandler extends Handler {
 			public State start(String name, Attributes attrs) {
 				if (name == "room") {
 					String id = attrs.getValue("id").trim();
-					currentRoom = new Room(id);
-
-					System.out.println("ROOM: " + id);
+					room = new Room(id);
 					return ROOM;
 				}
 				else if (name == "item") {
 					String id = attrs.getValue("id"),
 						names = attrs.getValue("names");
-					currentItem = new Item(id, names, area);
+					item = new Item(id, names, area);
 					return ITEM;
 				}
 
@@ -82,14 +84,13 @@ public class AreaHandler extends Handler {
 				else if (name == "exit") {
 					String names = attrs.getValue("names");
 					String to = attrs.getValue("to");
-					currentExit = new Exit(names, to);
-
-					String exitColor = Config.get("world.colors.room.exit");
-					if (exitColor == null)
-						exitColor = "";
-					currentRoom.addToDescription(exitColor);
-
+					exit = new Exit(names, to);
 					return EXIT;
+				}
+				else if (name == "describe") {
+					description = new StringBuffer();
+					descriptionNames = attrs.getValue("names");
+					return ROOM_DESCRIBE;
 				}
 
 				return ROOM;
@@ -97,12 +98,51 @@ public class AreaHandler extends Handler {
 
 			public State end(String name) {
 				// TODO Check for duplicate ids
-				area.addRoom(currentRoom);
+				area.addRoom(room);
 				return AREA;
+			}
+		},
+
+		ROOM_DESCRIBE() {
+			public State start(String name, Attributes attrs) {
+				if (name == "exit") {
+					String color = Config.get("world.colors.room.exit");
+					description.append((color == null) ? "" : color);
+					return ROOM_DESCRIBE_FEATURE;
+				}
+				else if (name == "look") {
+					String color = Config.get("world.colors.room.look");
+					description.append((color == null) ? "" : color);
+					return ROOM_DESCRIBE_FEATURE;
+				}
+
+				return ROOM_DESCRIBE;
 			}
 
 			public void characters(String str) {
-				currentRoom.addToDescription(str);
+				description.append(str);
+			}
+
+			public State end(String name) {
+				String descriptionStr = description.toString().trim().replaceAll("\\s([,.;:])", "$1");
+
+				if (descriptionNames == null)
+					room.setDescription(descriptionStr);
+				else
+					room.addFeature(descriptionNames, descriptionStr);
+
+				return ROOM;
+			}
+		},
+
+		ROOM_DESCRIBE_FEATURE() {
+			public void characters(String str) {
+				description.append(str);
+			}
+
+			public State end(String name) {
+				description.append("{x");
+				return ROOM_DESCRIBE;
 			}
 		},
 
@@ -117,29 +157,29 @@ public class AreaHandler extends Handler {
 			}
 
 			public State end(String name) {
-				area.addItem(currentItem);
+				area.addItem(item);
 				return AREA;
 			}
 		},
 
 		EXIT() {
 			public State end(String name) {
-				String desc = currentRoom.getDescription();
-				String endColor = Config.get("world.colors.room.exit") == null ? "" : "{x";
-				currentRoom.setDescription(desc.trim() + endColor);
-				currentRoom.addExit(currentExit);
+				// String desc = room.getDescription();
+				// String endColor = Config.get("world.colors.room.exit") == null ? "" : "{x";
+				// room.setDescription(desc.trim() + endColor);
+				room.addExit(exit);
 				return ROOM;
 			}
 
 			public void characters(String str) {
-				currentRoom.addToDescription(str);
+				exit.addToDescription(str);
 			}
 		},
 
 		TITLE() {
 			public State end(String name) {
 				StringBuffer buffer = buffers.pop();
-				currentRoom.setTitle(buffer.toString().trim());
+				room.setTitle(buffer.toString().trim());
 				return ROOM;
 			}
 
@@ -151,7 +191,7 @@ public class AreaHandler extends Handler {
 		PROPERTY() {
 			public State end(String name) {
 				StringBuffer buffer = buffers.pop();
-				currentItem.set(propertyKey, buffer.toString().trim());
+				item.set(propertyKey, buffer.toString().trim());
 				return ITEM;
 			}
 

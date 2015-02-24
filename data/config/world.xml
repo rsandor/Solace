@@ -3,7 +3,7 @@
 	<!-- Overall information about the game world -->
 	<option name="name" value="Solace" />
 	<option name="author" value="Ryan Sandor Richards" />
-	
+
 	<default>
 		<!--
 			The default area and room represent the starting room for a new character.
@@ -13,12 +13,13 @@
 		<option name="area" value="medius" />
 		<option name="room" value="prosperitas" />
 	</default>
-	
+
 	<!-- Defines coloring for various game objects -->
 	<colors>
 		<room>
 			<option name="exit" value="{r" />
 			<option name="object" value="{y" />
+			<option name="look" value="{g" />
 		</room>
 	</colors>
 </config>

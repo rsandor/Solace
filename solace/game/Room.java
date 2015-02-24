@@ -11,12 +11,13 @@ public class Room
 {
     String id;
     String title = "";
-    String desc = "";
     Area area = null;
     LinkedList<Exit> exits = new LinkedList<Exit>();
 
-    List<solace.game.Character> characters;
+    String desc = "";
+    Hashtable<String, String> features = new Hashtable<String, String>();
 
+    List<solace.game.Character> characters;
 
     /**
      * Creates a new room with the given id, title, and description.
@@ -191,5 +192,14 @@ public class Room
         }
 
         return view;
+    }
+
+    /**
+     * Adds a feature to the room that can be examined by the player.
+     * @param names Names associated with the feature.
+     * @param value Description of the feature.
+     */
+    public void addFeature(String names, String value) {
+        features.put(names, value);
     }
 }
