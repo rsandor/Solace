@@ -21,18 +21,20 @@ public class Look extends PlayCommand {
     }
 
     public boolean run(Connection c, String []params) {
-        if (params.length == 1) {
-            // Describe the room to the character
-            Room room = character.getRoom();
-            c.sendln(room.describeTo(character));
+        Room room = character.getRoom();
 
-            // Inform other players that the character is looking around
+        if (params.length == 1) {
+            c.sendln(room.describeTo(character));
             room.sendMessage(character.getName() + " looks around.", character);
         }
         else {
-            // TODO Implement examine and looking at characters and items
-            String id = params[2];
-            c.sendln("You do not see '{r" + id + "{x' here.");
+            String name = params[1],
+                feature = room.describeFeature(name);
+
+            if (feature != null)
+                c.sendln(feature);
+            else
+                c.sendln("You do not see '{g" + name + "{x' here.");
         }
 
         return true;

@@ -195,6 +195,23 @@ public class Room
     }
 
     /**
+     * Finds the description for a feature with the given name.
+     * @param name Name of the feature to find.
+     * @return The description of the feature, or null if no such feature was found.
+     */
+    public String describeFeature(String name) {
+        for (String key : features.keySet()) {
+            String[] names = key.split("\\s+");
+            for (String n : names) {
+                if (n.startsWith(name)) {
+                    return "\n\r" + Strings.toFixedWidth(features.get(key)) + "\n\r";
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Adds a feature to the room that can be examined by the player.
      * @param names Names associated with the feature.
      * @param value Description of the feature.

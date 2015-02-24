@@ -10,6 +10,7 @@ public class Strings {
      * Formats a string to a fixed width number of characters, useful for paragraphs.
      * @param s String to format.
      * @param w Maximum column width.
+     * @return The formatted string.
      */
     public static String toFixedWidth(String s, int w) {
         StringTokenizer tokenizer = new StringTokenizer(s);
@@ -32,5 +33,14 @@ public class Strings {
         }
 
         return buf.toString();
+    }
+
+    /**
+     * Formats a string to a fixed width of 80 characters.
+     * @param s String to format.
+     * @return The formatted string.
+     */
+    public static String toFixedWidth(String s) {
+        return toFixedWidth(s, 80);
     }
 }
