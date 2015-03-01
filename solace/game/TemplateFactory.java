@@ -1,6 +1,12 @@
 package solace.game;
 import java.util.*;
 
+/**
+ * The TemplateFactory class is responsible for keeping track of
+ * all item and mobile templates in the game. It can be used to
+ * instantiate a given template into an actual game object.
+ * @author Ryan Sandor Richards
+ */
 public class TemplateFactory {
     private static final TemplateFactory INSTANCE = new TemplateFactory();
     Hashtable<String, Template> items;
