@@ -66,6 +66,9 @@
 		<exit names="south" to="prosperitas south">Dito Lane</exit>
 		<exit names="east" to="prosperitas east">Median Avenue</exit>
 		<exit names="west" to="prosperitas west">Median Avenue</exit>
+
+		<instance type="item" id="yarn" />
+		<instance type="item" id="yarn" />
 	</room>
 
 	<room id="contego protectives">

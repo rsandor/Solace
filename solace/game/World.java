@@ -15,16 +15,14 @@ import solace.cmd.GameException;
  */
 public class World
 {
+	static final String areaDir = "data/areas/";
+
 	static List<Connection> connections;
 	static List<Connection> oogChat;
 	static Hashtable<String, Account> namesToAccounts;
 	static Hashtable<Account, Connection> accountsToConnections;
 	static Hashtable<String, Area> areas;
-
 	static List<solace.game.Character> playing;
-
-	static final String areaDir = "data/areas/";
-
 	static boolean initialized = false;
 	static boolean areasLoaded = false;
 
@@ -67,6 +65,11 @@ public class World
 				  String fileName = areaDir + names[i];
 					Area a = GameParser.parseArea(fileName);
 					newAreas.put(a.getId(), a);
+
+					for (Room room : a.getRooms()) {
+						room.instantiate();
+					}
+
 					Log.info("Area '" + a.getId() + "' successfully loaded from '" + names[i] + "'");
 				}
 				catch (IOException ioe) {

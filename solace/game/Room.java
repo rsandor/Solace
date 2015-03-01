@@ -1,7 +1,7 @@
 package solace.game;
 
 import java.util.*;
-import solace.util.Strings;
+import solace.util.*;
 
 /**
  * Basic room class for the engine.
@@ -17,7 +17,11 @@ public class Room
     String desc = "";
     Hashtable<String, String> features = new Hashtable<String, String>();
 
+    List<String> itemInstances = new LinkedList<String>();
+
     List<solace.game.Character> characters;
+    List<Item> items;
+
 
     /**
      * Creates a new room with the given id, title, and description.
@@ -177,21 +181,34 @@ public class Room
         List<solace.game.Character> others = getOtherCharacters(ch);
 
         // Title and description of the room
-        String view = "{y" + getTitle().trim() + "{x\n\r\n\r" +
-            Strings.toFixedWidth(getDescription(), 80).trim() + "\n\r\n\r";
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("{y" + getTitle().trim() + "{x\n\r\n\r");
+        buffer.append(Strings.toFixedWidth(getDescription(), 80).trim() + "\n\r\n\r");
+
+        // Show the items in the room
+        if (items.size() > 0) {
+            synchronized(items) {
+                buffer.append("{cThe following items are present:{x\n\r");
+                for (Item item : items) {
+                    buffer.append("    " + item.get("description.room") + "\n\r");
+                }
+            }
+            buffer.append("\n\r");
+        }
 
         // Show a list of characters in the room
         if (others.size() > 0) {
-            view += "{cThe following characters are present:{x\n\r";
+            buffer.append("{cThe following characters are present:{x\n\r");
             for (solace.game.Character c : others) {
-                view += "    " + c.getName() + "\n\r";
+                buffer.append("    " + c.getName() + "\n\r");
             }
         }
         else {
-            view += "{cYou are the only one here.{x\n\r";
+            buffer.append("{cYou are the only one here.{x\n\r");
         }
 
-        return view;
+        return buffer.toString();
     }
 
     /**
@@ -212,11 +229,76 @@ public class Room
     }
 
     /**
+     * Finds the description of an item with the given name.
+     * @param name Name of the item to find.
+     * @return The description of the item, or null if no such item was found.
+     */
+    public String describeItem(String name) {
+        for (Item item : items) {
+            for (String n : item.getNames())
+                if (n.startsWith(name)) {
+                    return item.get("description");
+                }
+
+        }
+        return null;
+    }
+
+    /**
      * Adds a feature to the room that can be examined by the player.
      * @param names Names associated with the feature.
      * @param value Description of the feature.
      */
     public void addFeature(String names, String value) {
         features.put(names, value);
+    }
+
+    /**
+     * Adds an item instance to the room. Items are actually loaded into the room
+     * after the world's game data has been fully loaded.
+     * @param id Id of the item to instantiate upon load.
+     */
+    public void addItemInstance(String id) {
+        itemInstances.add(id);
+    }
+
+    /**
+     * Adds an item to the game room.
+     * @param item Item to be added.
+     */
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    /**
+     * Removes an item from the game room.
+     * @param item Item to be removed.
+     */
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    /**
+     * @return a list of all items in the room.
+     */
+    public List<Item> getItems() {
+        return items;
+    }
+
+    /**
+     * Instantiates all templatable game objects for the room. This includes
+     * items, mobiles, etc.
+     */
+    public void instantiate() {
+        items = Collections.synchronizedList(new LinkedList<Item>());
+        for (String id : itemInstances) {
+            try {
+                Log.info("Instantiating item with id ["+id+"] into room ["+this.id+"]");
+                addItem(TemplateFactory.getInstance().getItem(id));
+            }
+            catch (TemplateNotFoundException e) {
+                Log.error("Room.instantiate ("+this.id+"): " + e.getMessage());
+            }
+        }
     }
 }

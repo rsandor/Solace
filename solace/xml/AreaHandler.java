@@ -16,8 +16,10 @@ public class AreaHandler extends Handler {
 	static Area area = null;
 	static Room room = null;
 	static Exit exit = null;
-	static Item item = null;
+	static Template item = null;
 	static String propertyKey = null;
+
+	static TemplateFactory templates = TemplateFactory.getInstance();
 
 	static StringBuffer description = null;
 	static String descriptionNames = null;
@@ -63,7 +65,7 @@ public class AreaHandler extends Handler {
 				else if (name == "item") {
 					String id = attrs.getValue("id"),
 						names = attrs.getValue("names");
-					item = new Item(id, names, area);
+					item = new Template(id, names, area);
 					return ITEM;
 				}
 
@@ -92,12 +94,27 @@ public class AreaHandler extends Handler {
 					descriptionNames = attrs.getValue("names");
 					return ROOM_DESCRIBE;
 				}
+				else if (name == "instance") {
+					String type = attrs.getValue("type"),
+						globalId = attrs.getValue("id");
+
+					// Check if the given id represents a global id
+					// if not, then make sure to prepend the local
+					// area.
+					if (globalId.indexOf(".") < 0) {
+						globalId = area.getId() + "." + globalId;
+					}
+
+					room.addItemInstance(globalId);
+				}
 
 				return ROOM;
 			}
 
 			public State end(String name) {
 				// TODO Check for duplicate ids
+				if (name != "room")
+					return ROOM;
 				area.addRoom(room);
 				return AREA;
 			}
@@ -157,7 +174,8 @@ public class AreaHandler extends Handler {
 			}
 
 			public State end(String name) {
-				area.addItem(item);
+				String globalId = area.getId() + "." + item.getId();
+				templates.addItemTemplate(globalId, item);
 				return AREA;
 			}
 		},

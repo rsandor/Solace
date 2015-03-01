@@ -12,8 +12,6 @@ public class Area
 	String title = "";
 	String author = "";
 	Hashtable<String, Room>rooms = new Hashtable<String, Room>();
-	Hashtable<String, Item>items = new Hashtable<String, Item>();
-
 
 	/**
 	 * Creates a new area with the given name and name of the creator.
@@ -58,39 +56,6 @@ public class Area
 	 */
 	public Collection<Room> getRooms() {
 		return rooms.values();
-	}
-
-	/**
-	 * Adds an item to the area.
-	 * @param item Item to add to the area.
-	 */
-	public void addItem(Item item) {
-		items.put(item.getId(), item);
-		item.setArea(this);
-	}
-
-	/**
-	 * Removes an item from this area.
-	 * @param item Item to remove.
-	 */
-	public void removeItem(Item item) {
-		items.remove(item.getId());
-	}
-
-	/**
-	 * Gets an item with the specified id.
-	 * @param id Id of the item to retrieve.
-	 * @return The item with the given id, or null of no such item exists.
-	 */
-	public Item getItem(String id) {
-		return items.get(id);
-	}
-
-	/**
-	 * @return a collection of items associated with this area.
-	 */
-	public Collection<Item> getItems() {
-		return items.values();
 	}
 
 	/**
