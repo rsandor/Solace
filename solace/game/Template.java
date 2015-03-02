@@ -124,6 +124,19 @@ public class Template {
     }
 
     /**
+     * Determines if the templated object has a name which begins with
+     * the given prefix.
+     * @param prefix Prefix to apply when searching names.
+     * @return True if the templated object has such a name, false otherwise.
+     */
+    public boolean hasName(String prefix) {
+        for (String name : names)
+            if (name.startsWith(prefix))
+                return true;
+        return false;
+    }
+
+    /**
      * @return The area where the object originates.
      */
     public Area getArea() {

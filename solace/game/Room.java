@@ -266,7 +266,7 @@ public class Room
      * Adds an item to the game room.
      * @param item Item to be added.
      */
-    public void addItem(Item item) {
+    public synchronized void addItem(Item item) {
         items.add(item);
     }
 
@@ -274,15 +274,31 @@ public class Room
      * Removes an item from the game room.
      * @param item Item to be removed.
      */
-    public void removeItem(Item item) {
+    public synchronized void removeItem(Item item) {
         items.remove(item);
     }
 
     /**
-     * @return a list of all items in the room.
+     * @return an immutable list of all items in the room.
      */
     public List<Item> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
+    }
+
+    /**
+     * Finds an item with the given name prefix in the room.
+     * @param prefix Prefix of the name of the item in question.
+     * @return An item who's name has the given prefix, null if no
+     *  such item was found.
+     */
+    public Item getItem(String prefix) {
+        synchronized(items) {
+            for (Item item : items) {
+                if (item.hasName(prefix))
+                    return item;
+            }
+        }
+        return null;
     }
 
     /**

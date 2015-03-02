@@ -85,7 +85,7 @@ public class PlayController
         }
 
         // Inform other players in the room that they player has entered the game
-        ch.getRoom().sendMessage(character.getName() + " has entered the game.", character);
+        ch.getRoom().sendMessage(ch.getName() + " has entered the game.", character);
 
         // Add commands
         addCommands();
@@ -109,5 +109,8 @@ public class PlayController
         addCommand(new Look(character));
         addCommand(new Say(character));
         addCommand(new Scan(character));
+        addCommand(new Inventory(character));
+        addCommand(new Get(character));
+        addCommand(new Drop(character));
     }
 }
