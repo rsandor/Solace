@@ -13,285 +13,292 @@ import java.util.*;
  * @author Ryan Sandor Richards.
  */
 public class AreaHandler extends Handler {
-	static Area area = null;
-	static Room room = null;
-	static Exit exit = null;
-	static Template item = null;
-	static String propertyKey = null;
+  static Area area = null;
+  static Room room = null;
+  static Exit exit = null;
+  static Template item = null;
+  static String propertyKey = null;
 
-	static TemplateFactory templates = TemplateFactory.getInstance();
+  static TemplateFactory templates = TemplateFactory.getInstance();
 
-	static StringBuffer description = null;
-	static String descriptionNames = null;
+  static StringBuffer description = null;
+  static String descriptionNames = null;
 
-	static Stack<StringBuffer> buffers = new Stack<StringBuffer>();
+  static Stack<StringBuffer> buffers = new Stack<StringBuffer>();
 
-	/**
-	 * Enumeration for the basic states handled by the parser.
-	 */
-	private enum State {
-		INIT {
-			public State start(String name, Attributes attrs) {
-				if (name != "area")
-					return INIT;
+  /**
+   * Enumeration for the basic states handled by the parser.
+   */
+  private enum State {
+    INIT {
+      public State start(String name, Attributes attrs) {
+        if (name != "area")
+          return INIT;
 
-				String id = attrs.getValue("id").trim();
-				String title = attrs.getValue("title").trim();
-				String author = attrs.getValue("author").trim();
+        String id = attrs.getValue("id").trim();
+        String title = attrs.getValue("title").trim();
+        String author = attrs.getValue("author").trim();
 
-				if (id == null)
-					id = "";
-				if (title == null)
-					title = "";
-				if (author == null)
-					author = "";
+        if (id == null)
+          id = "";
+        if (title == null)
+          title = "";
+        if (author == null)
+          author = "";
 
-				area = new Area(id, title, author);
-				return AREA;
-			}
+        area = new Area(id, title, author);
+        return AREA;
+      }
 
-			public State end(String name) {
-				return INIT;
-			}
-		},
+      public State end(String name) {
+        return INIT;
+      }
+    },
 
-		AREA() {
-			public State start(String name, Attributes attrs) {
-				if (name == "room") {
-					String id = attrs.getValue("id").trim();
-					room = new Room(id);
-					return ROOM;
-				}
-				else if (name == "item") {
-					String id = attrs.getValue("id"),
-						names = attrs.getValue("names");
-					item = new Template(id, names, area);
-					return ITEM;
-				}
+    AREA() {
+      public State start(String name, Attributes attrs) {
+        if (name == "room") {
+          String id = attrs.getValue("id").trim();
+          room = new Room(id);
+          return ROOM;
+        }
+        else if (name == "item") {
+          String id = attrs.getValue("id"),
+            names = attrs.getValue("names");
+          item = new Template(id, names, area);
+          return ITEM;
+        }
 
-				return AREA;
-			}
+        return AREA;
+      }
 
-			public State end(String name) {
-				return INIT;
-			}
-		},
+      public State end(String name) {
+        return INIT;
+      }
+    },
 
-		ROOM() {
-			public State start(String name, Attributes attrs) {
-				if (name == "title") {
-					buffers.push(new StringBuffer());
-					return TITLE;
-				}
-				else if (name == "exit") {
-					String names = attrs.getValue("names");
-					String to = attrs.getValue("to");
-					exit = new Exit(names, to);
-					return EXIT;
-				}
-				else if (name == "describe") {
-					description = new StringBuffer();
-					descriptionNames = attrs.getValue("names");
-					return ROOM_DESCRIBE;
-				}
-				else if (name == "instance") {
-					String type = attrs.getValue("type"),
-						globalId = attrs.getValue("id");
+    ROOM() {
+      public State start(String name, Attributes attrs) {
+        if (name == "title") {
+          buffers.push(new StringBuffer());
+          return TITLE;
+        }
+        else if (name == "exit") {
+          String names = attrs.getValue("names");
+          String to = attrs.getValue("to");
+          exit = new Exit(names, to);
+          return EXIT;
+        }
+        else if (name == "describe") {
+          description = new StringBuffer();
+          descriptionNames = attrs.getValue("names");
+          return ROOM_DESCRIBE;
+        }
+        else if (name == "instance") {
+          String type = attrs.getValue("type"),
+            globalId = attrs.getValue("id");
 
-					// Check if the given id represents a global id
-					// if not, then make sure to prepend the local
-					// area.
-					if (globalId.indexOf(".") < 0) {
-						globalId = area.getId() + "." + globalId;
-					}
+          // Check if the given id represents a global id
+          // if not, then make sure to prepend the local
+          // area.
+          if (globalId.indexOf(".") < 0) {
+            globalId = area.getId() + "." + globalId;
+          }
 
-					room.addItemInstance(globalId);
-				}
+          room.addItemInstance(globalId);
+        }
 
-				return ROOM;
-			}
+        return ROOM;
+      }
 
-			public State end(String name) {
-				// TODO Check for duplicate ids
-				if (name != "room")
-					return ROOM;
-				area.addRoom(room);
-				return AREA;
-			}
-		},
+      public State end(String name) {
+        // TODO Check for duplicate ids
+        if (name != "room")
+          return ROOM;
+        area.addRoom(room);
+        return AREA;
+      }
+    },
 
-		ROOM_DESCRIBE() {
-			public State start(String name, Attributes attrs) {
-				if (name == "exit") {
-					String color = Config.get("world.colors.room.exit");
-					description.append((color == null) ? "" : color);
-					return ROOM_DESCRIBE_FEATURE;
-				}
-				else if (name == "look") {
-					String color = Config.get("world.colors.room.look");
-					description.append((color == null) ? "" : color);
-					return ROOM_DESCRIBE_FEATURE;
-				}
+    ROOM_DESCRIBE() {
+      public State start(String name, Attributes attrs) {
+        if (name == "exit") {
+          String color = Config.get("world.colors.room.exit");
+          description.append((color == null) ? "" : color);
+          return ROOM_DESCRIBE_FEATURE;
+        }
+        else if (name == "look") {
+          String color = Config.get("world.colors.room.look");
+          description.append((color == null) ? "" : color);
+          return ROOM_DESCRIBE_FEATURE;
+        }
 
-				return ROOM_DESCRIBE;
-			}
+        return ROOM_DESCRIBE;
+      }
 
-			public void characters(String str) {
-				description.append(str);
-			}
+      public void characters(String str) {
+        description.append(str);
+      }
 
-			public State end(String name) {
-				String descriptionStr = description.toString().trim().replaceAll("\\s([,.;:])", "$1");
+      public State end(String name) {
+        String descriptionStr = description.toString().trim()
+          .replaceAll("\\s([,.;:])", "$1");
 
-				if (descriptionNames == null)
-					room.setDescription(descriptionStr);
-				else
-					room.addFeature(descriptionNames, descriptionStr);
+        if (descriptionNames == null)
+          room.setDescription(descriptionStr);
+        else
+          room.addFeature(descriptionNames, descriptionStr);
 
-				return ROOM;
-			}
-		},
+        return ROOM;
+      }
+    },
 
-		ROOM_DESCRIBE_FEATURE() {
-			public void characters(String str) {
-				description.append(str);
-			}
+    ROOM_DESCRIBE_FEATURE() {
+      public void characters(String str) {
+        description.append(str);
+      }
 
-			public State end(String name) {
-				description.append("{x");
-				return ROOM_DESCRIBE;
-			}
-		},
+      public State end(String name) {
+        description.append("{x");
+        return ROOM_DESCRIBE;
+      }
+    },
 
-		ITEM() {
-			public State start(String name, Attributes attrs) {
-				if (name == "property") {
-					propertyKey = attrs.getValue("key");
-					buffers.push(new StringBuffer());
-					return PROPERTY;
-				}
-				return ITEM;
-			}
+    ITEM() {
+      public State start(String name, Attributes attrs) {
+        if (name == "property") {
+          propertyKey = attrs.getValue("key");
+          buffers.push(new StringBuffer());
+          return PROPERTY;
+        }
+        return ITEM;
+      }
 
-			public State end(String name) {
-				String globalId = area.getId() + "." + item.getId();
-				templates.addItemTemplate(globalId, item);
-				return AREA;
-			}
-		},
+      public State end(String name) {
+        String globalId = area.getId() + "." + item.getId();
+        templates.addItemTemplate(globalId, item);
+        return AREA;
+      }
+    },
 
-		EXIT() {
-			public State end(String name) {
-				// String desc = room.getDescription();
-				// String endColor = Config.get("world.colors.room.exit") == null ? "" : "{x";
-				// room.setDescription(desc.trim() + endColor);
-				room.addExit(exit);
-				return ROOM;
-			}
+    EXIT() {
+      public State end(String name) {
+        // String desc = room.getDescription();
+        // String endColor =
+        //   Config.get("world.colors.room.exit") == null ? "" : "{x";
+        // room.setDescription(desc.trim() + endColor);
+        room.addExit(exit);
+        return ROOM;
+      }
 
-			public void characters(String str) {
-				exit.addToDescription(str);
-			}
-		},
+      public void characters(String str) {
+        exit.addToDescription(str);
+      }
+    },
 
-		TITLE() {
-			public State end(String name) {
-				StringBuffer buffer = buffers.pop();
-				room.setTitle(buffer.toString().trim());
-				return ROOM;
-			}
+    TITLE() {
+      public State end(String name) {
+        StringBuffer buffer = buffers.pop();
+        room.setTitle(buffer.toString().trim());
+        return ROOM;
+      }
 
-			public void characters(String str) {
-				buffers.peek().append(str);
-			}
-		},
+      public void characters(String str) {
+        buffers.peek().append(str);
+      }
+    },
 
-		PROPERTY() {
-			public State end(String name) {
-				StringBuffer buffer = buffers.pop();
-				item.set(propertyKey, buffer.toString().trim());
-				return ITEM;
-			}
+    PROPERTY() {
+      public State end(String name) {
+        StringBuffer buffer = buffers.pop();
+        item.set(propertyKey, buffer.toString().trim());
+        return ITEM;
+      }
 
-			public void characters(String str) {
-				buffers.peek().append(str);
-			}
-		};
+      public void characters(String str) {
+        buffers.peek().append(str);
+      }
+    };
 
-		State() {
-		}
+    State() {
+    }
 
-		public State start(String name, Attributes attrs) {
-			return this;
-		}
+    public State start(String name, Attributes attrs) {
+      return this;
+    }
 
-		public State end(String name) {
-			return this;
-		}
+    public State end(String name) {
+      return this;
+    }
 
-		public void characters(String str) {
-		}
-	}
+    public void characters(String str) {
+    }
+  }
 
-	// Instance variables
-	State state = State.INIT;
+  // Instance variables
+  State state = State.INIT;
 
-	/**
-	 * @return The area as a result of the parse, or <code>null</code> if no area could be
-	 *   or has yet been parsed.
-	 */
-	public Object getResult() {
-		return AreaHandler.area;
-	}
+  /**
+   * @return The area as a result of the parse, or <code>null</code> if no area
+   * could be or has yet been parsed.
+   */
+  public Object getResult() {
+    return AreaHandler.area;
+  }
 
-	/**
-	 * @see org.xml.sax.helpers.DefaultHandler
-	 */
-	public void startElement(String uri, String localName, String name, Attributes attrs) {
-		state = state.start(name, attrs);
-	}
+  /**
+   * @see org.xml.sax.helpers.DefaultHandler
+   */
+  public void startElement(
+    String uri,
+    String localName,
+    String name,
+    Attributes attrs
+  ) {
+    state = state.start(name, attrs);
+  }
 
-	/**
-	 * @see org.xml.sax.helpers.DefaultHandler
-	 */
-	public void endElement(String uri, String localName, String name) {
-		state = state.end(name);
-	}
+  /**
+   * @see org.xml.sax.helpers.DefaultHandler
+   */
+  public void endElement(String uri, String localName, String name) {
+    state = state.end(name);
+  }
 
-	/**
-	 * @see org.xml.sax.helpers.DefaultHandler
-	 */
-	public void characters(char[] ch, int start, int length)
-	{
-		StringBuffer desc = new StringBuffer(length);
-		boolean space = false;
+  /**
+   * @see org.xml.sax.helpers.DefaultHandler
+   */
+  public void characters(char[] ch, int start, int length)
+  {
+    StringBuffer desc = new StringBuffer(length);
+    boolean space = false;
 
-		for (int i = start; i < start+length; i++) {
-			char a = ch[i];
+    for (int i = start; i < start+length; i++) {
+      char a = ch[i];
 
-			if (a == '\n' && i > 0 && ch[i-1] == '\n')
-				a = '\n';
-			else if (a == '\n' || a == ' ' || a == '\t') {
-				if (space)
-					continue;
-				a = ' ';
-				space = true;
-			}
-			else
-				space = false;
-			desc.append(a);
-		}
+      if (a == '\n' && i > 0 && ch[i-1] == '\n')
+        a = '\n';
+      else if (a == '\n' || a == ' ' || a == '\t') {
+        if (space)
+          continue;
+        a = ' ';
+        space = true;
+      }
+      else
+        space = false;
+      desc.append(a);
+    }
 
-		if (desc.toString() == null)
-			return;
+    if (desc.toString() == null)
+      return;
 
-		String str = desc.toString().trim();
+    String str = desc.toString().trim();
 
-		if (str == "" || str == null || str.length() == 0)
-			return;
+    if (str == "" || str == null || str.length() == 0)
+      return;
 
-		str = " " + str;
+    str = " " + str;
 
-		state.characters(str);
-	}
+    state.characters(str);
+  }
 }
