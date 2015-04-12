@@ -6,5 +6,6 @@
   <info organisation="com.github.rsandor" module="solace"/>
   <dependencies>
     <dependency org="junit" name="junit-dep" rev="4.8.2"/>
+    <dependency org="org.mockito" name="mockito-all" rev="1.8.4"/>
   </dependencies>
 </ivy-module>
