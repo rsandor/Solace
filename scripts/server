@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Server Launch Script
-# By Ryan Sandor Richards
-
-java -jar build/jar/Solace.jar $1
