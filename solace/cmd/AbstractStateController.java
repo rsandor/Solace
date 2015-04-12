@@ -248,23 +248,22 @@ public abstract class AbstractStateController
 
     if (cmd != null && cmd.canExecute(connection)) {
       try {
-        Callable<Boolean> fn;
-
         // Handle before listeners
-        for (fn : getCallbacks(beforeCallbacks, cmd)) {
+        for (Callable<Boolean> fn : getCallbacks(beforeCallbacks, cmd)) {
           if (!fn.call())
             return;
         }
 
         // Execute the command (and possibly, success callbacks)
         if (cmd.run(connection, params)) {
-          for (fn : getCallbacks(afterSuccessCallbacks, cmd)) {
+          for (Callable<Boolean> fn : getCallbacks(afterSuccessCallbacks, cmd))
+          {
             fn.call();
           }
         }
 
         // Handle after listeners
-        for (fn : getCallbacks(afterCallbacks, cmd)) {
+        for (Callable<Boolean> fn : getCallbacks(afterCallbacks, cmd)) {
           fn.call();
         }
       }

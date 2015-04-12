@@ -99,7 +99,7 @@ public class MainMenu
           String name = params[1];
           if (!act.hasCharacter(name)) {
             c.sendln(
-              "Character '" + name + "' not found, "
+              "Character '" + name + "' not found, " +
               "use the '{ylist{x' command to see a list of your characters."
             );
             return false;
@@ -368,8 +368,8 @@ public class MainMenu
         boolean isMessages = false;
 
         if (hasParam) {
-          isAreas = new String("areas").startsWith(params[1])
-          isMessages = new String("messages").startsWith(params[1])
+          isAreas = new String("areas").startsWith(params[1]);
+          isMessages = new String("messages").startsWith(params[1]);
         }
 
         if (isAreas) {
