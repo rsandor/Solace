@@ -8,10 +8,10 @@ import solace.util.*;
 import solace.cmd.AbstractCommand;
 
 public abstract class PlayCommand extends AbstractCommand {
-    solace.game.Character character;
+  solace.game.Character character;
 
-    public PlayCommand(String name, solace.game.Character ch) {
-        super(name);
-        character = ch;
-    }
+  public PlayCommand(String name, solace.game.Character ch) {
+    super(name);
+    character = ch;
+  }
 }

@@ -12,35 +12,35 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Inventory extends PlayCommand {
-    public Inventory(solace.game.Character ch) {
-        super("inventory", ch);
+  public Inventory(solace.game.Character ch) {
+    super("inventory", ch);
+  }
+
+  public boolean run(Connection c, String []params) {
+    List<Item> inventory = character.getInventory();
+
+    // Send a basic "you have nothing" message if the inventory
+    // is empty
+    if (inventory.size() == 0) {
+      c.sendln("You do not currently possess any items.\n\r");
+      return true;
     }
 
-    public boolean run(Connection c, String []params) {
-        List<Item> inventory = character.getInventory();
-
-        // Send a basic "you have nothing" message if the inventory
-        // is empty
-        if (inventory.size() == 0) {
-            c.sendln("You do not currently possess any items.\n\r");
-            return true;
-        }
-
-        // Build the result of the inventory output
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("You currently possess the following items:\n\r");
-        synchronized(inventory) {
-            for (Item item : inventory) {
-                buffer.append("    ");
-                buffer.append(item.get("description.inventory"));
-                buffer.append("\n\r");
-            }
-        }
+    // Build the result of the inventory output
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("You currently possess the following items:\n\r");
+    synchronized(inventory) {
+      for (Item item : inventory) {
+        buffer.append("    ");
+        buffer.append(item.get("description.inventory"));
         buffer.append("\n\r");
-
-        // Send the inventory description to the player
-        c.sendln(buffer.toString());
-
-        return true;
+      }
     }
+    buffer.append("\n\r");
+
+    // Send the inventory description to the player
+    c.sendln(buffer.toString());
+
+    return true;
+  }
 }
