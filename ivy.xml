@@ -1,0 +1,10 @@
+<!--
+  ivy.xml
+  Dependency management via Apache Ivy
+-->
+<ivy-module version="2.0">
+  <info organisation="com.github.rsandor" module="solace"/>
+  <dependencies>
+    <dependency org="junit" name="junit-dep" rev="4.8.2"/>
+  </dependencies>
+</ivy-module>

@@ -14,9 +14,7 @@
   Alternately you can build the source using `ant jar` and then run the game
   server by using `java -jar build/jar/Solace.jar`
 -->
-<project name="Solace">
-  <!-- <dependency org="junit" name="junit-dep" rev="4.8.2"/> -->
-
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="solace" default="run">
   <!-- Build Properties -->
   <property name="src.dir" value="solace" />
   <property name="build.dir" value="build" />
@@ -25,12 +23,17 @@
   <property name="main-class" value="solace.game.Game" />
 
   <!-- Clean target -->
-  <target name="clean">
+  <target name="clean" description="--> clean the build directory">
     <delete dir="${build.dir}"/>
   </target>
 
+  <!-- Ivy Target -->
+  <target name="resolve" description="--> retrieve dependencies with ivy">
+    <ivy:retrieve />
+  </target>
+
   <!-- Compile target -->
-  <target name="compile">
+  <target name="compile" depends="resolve" description="--> compile source">
     <mkdir dir="${classes.dir}"/>
     <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <compilerarg value="-Xlint:unchecked" />
@@ -38,7 +41,7 @@
   </target>
 
   <!-- Jar target -->
-  <target name="jar" depends="compile">
+  <target name="jar" depends="compile" description="--> build solace.jar">
     <mkdir dir="${jar.dir}"/>
     <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
       <manifest>
@@ -48,7 +51,7 @@
   </target>
 
   <!-- Run target -->
-  <target name="run" depends="jar">
+  <target name="run" depends="jar" description="--> run solace">
     <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
   </target>
 </project>
