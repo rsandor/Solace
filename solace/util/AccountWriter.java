@@ -18,7 +18,9 @@ public class AccountWriter implements Runnable {
   boolean running = true;
 
   public AccountWriter() {
-    saveQueue = Collections.synchronizedList(new LinkedList<solace.game.Character>());
+    saveQueue = Collections.synchronizedList(
+      new LinkedList<solace.game.Character>()
+    );
   }
 
   /**
