@@ -12,18 +12,18 @@ import solace.game.Account;
  * @author Ryan Sandor Richards
  */
 public abstract class AdminCommand 
-	extends AbstractCommand 
+  extends AbstractCommand 
 {
-	public AdminCommand(String n)
-	{
-		super(n);
-	}
-	
-	/**
-	 * Returns true only if the connection has an account with type administrator
-	 */
-	public boolean canExecute(Connection c)
-	{
-		return (c.hasAccount() && c.getAccount().isAdmin());
-	}
+  public AdminCommand(String n)
+  {
+    super(n);
+  }
+  
+  /**
+   * Returns true only if the connection has an account with type administrator
+   */
+  public boolean canExecute(Connection c)
+  {
+    return (c.hasAccount() && c.getAccount().isAdmin());
+  }
 }

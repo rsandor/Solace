@@ -7,252 +7,274 @@ import solace.util.*;
 import solace.game.*;
 import solace.net.*;
 
-public class LoginController 
-	implements StateController 
+public class LoginController
+  implements StateController
 {
-	/*
-	 * Login State Constants
-	 */
-	public static final int COLOR = 0;
-	public static final int ACCOUNT_NAME = 1;
-	public static final int ACCOUNT_PASS = 2;
-	public static final int NEW_ACCOUNT_NAME = 3;
-	public static final int NEW_ACCOUNT_PASS = 4;
-	public static final int NEW_ACCOUNT_CONFIRM = 5;
-	
-	// Instance Variables
-	int state = COLOR;
-	Connection connection;
-	String newUserName = "";
-	String newUserPass = "";
+  /*
+   * Login State Constants
+   */
+  public static final int COLOR = 0;
+  public static final int ACCOUNT_NAME = 1;
+  public static final int ACCOUNT_PASS = 2;
+  public static final int NEW_ACCOUNT_NAME = 3;
+  public static final int NEW_ACCOUNT_PASS = 4;
+  public static final int NEW_ACCOUNT_CONFIRM = 5;
 
-	
-	public LoginController(Connection c)
-	{
-		init(c);
-	}
-	
-	public void init(Connection c)
-	{
-		connection = c;
-		c.setPrompt("Use ANSI Color (Y/N)? ");
-	}
-	
-	/**
-	 * Handles whether or not the user wants to use color.
-	 * @param input
-	 */
-	protected void useColor(String input)
-	{
-		if (input.toLowerCase().charAt(0) == 'y')
-			connection.setUseColor(true);
-		else
-			connection.setUseColor(false);
-		
-		connection.sendln( Message.get("Intro") );
-		connection.setPrompt("Account: ");
-		
-		state = ACCOUNT_NAME;
-	}
-	
-	
-	/**
-	 * Login handler parses input for account name and attempts
-	 * to load account associated with that name.
-	 * @param input Input from the user.
-	 */
-	protected void accountName(String input)
-	{
-		String aname = input.trim();
-		
-		// Check to see if they want to make a new account
-		if (input.toLowerCase().equals("new"))
-		{
-			connection.sendln( Message.get("NewAccountRules") );
-			connection.setPrompt("Name for account: ");
-			state = NEW_ACCOUNT_NAME;
-			return;
-		}
-		
-		// Ensure they are not attempting to login twice
-		if (World.isLoggedIn(aname))
-		{
-			connection.sendln("{rAccount already logged in!{x");
-			Log.info("Double login attempt for account '" + aname + "' from " + connection.getInetAddress());
-			connection.close();
-			return;
-		}
-		
-		// Try to load the account.
-		try 
-		{
-			connection.setAccount( Account.load(aname) );
-			state = ACCOUNT_PASS;
-			connection.setPrompt("Password: ");
+  // Instance Variables
+  int state = COLOR;
+  Connection connection;
+  String newUserName = "";
+  String newUserPass = "";
 
-			// Send the don't echo command
-			connection.echoOff();
-		}
-		catch (IOException ioe)
-		{
-			connection.sendln("Account not found, enter '{ynew{x' to create a new account!");
-		}
-	}
-	
-	/**
-	 * Login handler parses input for account password and attempts
-	 * to verify that the user has entered the correct password.
-	 * @param input Input from user.
-	 */
-	protected void accountPassword(String input)
-	{
-		String pass = input;
-		
-		// Ensure that an account has been loaded
-		if (!connection.hasAccount())
-		{
-			state = ACCOUNT_NAME;
-			connection.setPrompt("\r\nAccount: ");
-			return;
-		}
-		
-		Account account = connection.getAccount();
-		
-		// Check for an incorrect password
-		if (!Digest.sha256(pass).equals(account.getPassword()))
-		{
-			Log.info("Incorrect password given for user '" + account.getName() + "' from " + 
-				connection.getInetAddress());
-			
-			connection.sendln("\n\rIncorrect password.");
-			Collection connections = Collections.synchronizedCollection(World.getConnections());
-			synchronized (connections) {
-				connections.remove(connection);
-			}
-			connection.close();
-			
-			return;
-		}
-		
-		// Everything seems fine, log them in and present the game's main menu
-		World.addAccount(connection, account);
-		connection.setAccount(account);
-		Log.info("Account '" + account.getName() + "' logged into from " + connection.getInetAddress());
-		connection.sendln("\n\rWelcome " + connection.getAccount().getName() + "!");
-		connection.setStateController( new MainMenu(connection) );
-		connection.echoOn();
-	}
-	
-	/**
-	 * For the creation of new accounts, this processes an account name input.
-	 * @param input Input given by user.
-	 */
-	protected void newAccountName(String input)
-	{
-		// Check the validity of the name
-		if (!Pattern.matches("\\w+\\z", input))
-		{
-			connection.sendln("Invalid name, please use letters and numbers only!");
-			return;
-		}
-		
-		// Check to see if the name already exists
-		if (Account.accountExists(input.toLowerCase()))
-		{
-			connection.sendln("An account with the given name already exists, please choose another.");
-			return;
-		}
-		
-		// If all is well move on to the next step
-		newUserName = input.toLowerCase();
-		connection.setPrompt("\n\rPassword for Account: ");
-		state = NEW_ACCOUNT_PASS;
-		connection.echoOff();
-	}
-	
-	/**
-	 * For the creation of new accounts, this processes account password input.
-	 * @param input Password for the account.
-	 */
-	protected void newAccountPassword(String input)
-	{		
-		// Ensure the password is long enough
-		if (input.length() < 6)
-		{
-			connection.sendln("\n\rPasswords must be at least 6 letters in length!");
-			return;
-		}
-		
-		newUserPass = input;
-		connection.setPrompt("\n\rConfirm Password: ");
-		state = NEW_ACCOUNT_CONFIRM;
-	}
-	
-	/**
-	 * For the creation of new accounts, this processes the password confirmation.
-	 * @param input Confirmed (hopefully) password.
-	 */
-	protected void newAccountConfirm(String input)
-	{	
-		// See if the passwords match
-		if (!newUserPass.equals(input))
-		{
-			connection.sendln("\n\rPassword and confirmation do not match!");
-			connection.send("\r");
-			connection.setPrompt("Password for Account: ");
-			connection.echoOff();
-			state = NEW_ACCOUNT_PASS;
-			return;
-		}
-		
-		// We are good to go, create the account and give them an update
-		try
-		{
-			Account.createAccount(newUserName, newUserPass, false);
-			connection.sendln("\n\rAccount created! Please login using your account name and password.");
-			connection.echoOn();
-		}
-		catch (IOException ioe)
-		{
-			connection.sendln("\n\rAn error occured while trying to create your account. Please try again!");
-		}
-		catch (IllegalArgumentException iae)
-		{
-			connection.sendln("\n\rSorry, an account with that name already exists!");
-		}
-		finally
-		{
-			state = ACCOUNT_NAME;
-			connection.setPrompt("\n\rAccount: ");
-		}
-	}
 
-	/**
-	 * @see solace.cmd.StateController.force()
-	 */
-	public void force(String c) {
-		parse(c);
-	}
+  public LoginController(Connection c)
+  {
+    init(c);
+  }
 
-	/**
-	 * Handles parsing for the login controller.
-	 * @param s Input to parse.
-	 */
-	public void parse(String s)
-	{
-		s = s.toLowerCase();
-		
-		if (state == COLOR)
-			useColor(s);
-		else if (state == ACCOUNT_NAME)
-			accountName(s);
-		else if (state == ACCOUNT_PASS)
-			accountPassword(s);
-		else if (state == NEW_ACCOUNT_NAME)
-			newAccountName(s);
-		else if (state == NEW_ACCOUNT_PASS)
-			newAccountPassword(s);
-		else if (state == NEW_ACCOUNT_CONFIRM)
-			newAccountConfirm(s);
-	}
+  public void init(Connection c)
+  {
+    connection = c;
+    c.setPrompt("Use ANSI Color (Y/N)? ");
+  }
+
+  /**
+   * Handles whether or not the user wants to use color.
+   * @param input
+   */
+  protected void useColor(String input)
+  {
+    if (input.toLowerCase().charAt(0) == 'y')
+      connection.setUseColor(true);
+    else
+      connection.setUseColor(false);
+
+    connection.sendln( Message.get("Intro") );
+    connection.setPrompt("Account: ");
+
+    state = ACCOUNT_NAME;
+  }
+
+
+  /**
+   * Login handler parses input for account name and attempts
+   * to load account associated with that name.
+   * @param input Input from the user.
+   */
+  protected void accountName(String input)
+  {
+    String aname = input.trim();
+
+    // Check to see if they want to make a new account
+    if (input.toLowerCase().equals("new"))
+    {
+      connection.sendln( Message.get("NewAccountRules") );
+      connection.setPrompt("Name for account: ");
+      state = NEW_ACCOUNT_NAME;
+      return;
+    }
+
+    // Ensure they are not attempting to login twice
+    if (World.isLoggedIn(aname))
+    {
+      connection.sendln("{rAccount already logged in!{x");
+      Log.info(
+        "Double login attempt for account '" + aname + "' from " +
+        connection.getInetAddress()
+      );
+      connection.close();
+      return;
+    }
+
+    // Try to load the account.
+    try
+    {
+      connection.setAccount( Account.load(aname) );
+      state = ACCOUNT_PASS;
+      connection.setPrompt("Password: ");
+
+      // Send the don't echo command
+      connection.echoOff();
+    }
+    catch (IOException ioe)
+    {
+      connection.sendln(
+        "Account not found, " +
+        "enter '{ynew{x' to create a new account!"
+      );
+    }
+  }
+
+  /**
+   * Login handler parses input for account password and attempts
+   * to verify that the user has entered the correct password.
+   * @param input Input from user.
+   */
+  protected void accountPassword(String input)
+  {
+    String pass = input;
+
+    // Ensure that an account has been loaded
+    if (!connection.hasAccount())
+    {
+      state = ACCOUNT_NAME;
+      connection.setPrompt("\r\nAccount: ");
+      return;
+    }
+
+    Account account = connection.getAccount();
+
+    // Check for an incorrect password
+    if (!Digest.sha256(pass).equals(account.getPassword()))
+    {
+      Log.info(
+        "Incorrect password given for user '" + account.getName() +
+        "' from " + connection.getInetAddress()
+      );
+
+      connection.sendln("\n\rIncorrect password.");
+      Collection connections = Collections.synchronizedCollection(
+        World.getConnections()
+      );
+      synchronized (connections) {
+        connections.remove(connection);
+      }
+      connection.close();
+
+      return;
+    }
+
+    // Everything seems fine, log them in and present the game's main menu
+    World.addAccount(connection, account);
+    connection.setAccount(account);
+    Log.info(
+      "Account '" + account.getName() +
+      "' logged into from " + connection.getInetAddress()
+    );
+    connection.sendln("\n\rWelcome " + connection.getAccount().getName() + "!");
+    connection.setStateController( new MainMenu(connection) );
+    connection.echoOn();
+  }
+
+  /**
+   * For the creation of new accounts, this processes an account name input.
+   * @param input Input given by user.
+   */
+  protected void newAccountName(String input)
+  {
+    // Check the validity of the name
+    if (!Pattern.matches("\\w+\\z", input))
+    {
+      connection.sendln("Invalid name, please use letters and numbers only!");
+      return;
+    }
+
+    // Check to see if the name already exists
+    if (Account.accountExists(input.toLowerCase()))
+    {
+      connection.sendln(
+        "An account with the given name already exists, " +
+        "please choose another."
+      );
+      return;
+    }
+
+    // If all is well move on to the next step
+    newUserName = input.toLowerCase();
+    connection.setPrompt("\n\rPassword for Account: ");
+    state = NEW_ACCOUNT_PASS;
+    connection.echoOff();
+  }
+
+  /**
+   * For the creation of new accounts, this processes account password input.
+   * @param input Password for the account.
+   */
+  protected void newAccountPassword(String input)
+  {
+    // Ensure the password is long enough
+    if (input.length() < 6)
+    {
+      connection.sendln("\n\rPasswords must be at least 6 letters in length!");
+      return;
+    }
+
+    newUserPass = input;
+    connection.setPrompt("\n\rConfirm Password: ");
+    state = NEW_ACCOUNT_CONFIRM;
+  }
+
+  /**
+   * For the creation of new accounts, this processes the password confirmation.
+   * @param input Confirmed (hopefully) password.
+   */
+  protected void newAccountConfirm(String input)
+  {
+    // See if the passwords match
+    if (!newUserPass.equals(input))
+    {
+      connection.sendln("\n\rPassword and confirmation do not match!");
+      connection.send("\r");
+      connection.setPrompt("Password for Account: ");
+      connection.echoOff();
+      state = NEW_ACCOUNT_PASS;
+      return;
+    }
+
+    // We are good to go, create the account and give them an update
+    try
+    {
+      Account.createAccount(newUserName, newUserPass, false);
+      connection.sendln(
+        "\n\rAccount created! " +
+        "Please login using your account name and password."
+      );
+      connection.echoOn();
+    }
+    catch (IOException ioe)
+    {
+      connection.sendln(
+        "\n\rAn error occured while trying to create your account. " +
+        "Please try again!"
+      );
+    }
+    catch (IllegalArgumentException iae)
+    {
+      connection.sendln("\n\rSorry, an account with that name already exists!");
+    }
+    finally
+    {
+      state = ACCOUNT_NAME;
+      connection.setPrompt("\n\rAccount: ");
+    }
+  }
+
+  /**
+   * @see solace.cmd.StateController.force()
+   */
+  public void force(String c) {
+    parse(c);
+  }
+
+  /**
+   * Handles parsing for the login controller.
+   * @param s Input to parse.
+   */
+  public void parse(String s)
+  {
+    s = s.toLowerCase();
+
+    if (state == COLOR)
+      useColor(s);
+    else if (state == ACCOUNT_NAME)
+      accountName(s);
+    else if (state == ACCOUNT_PASS)
+      accountPassword(s);
+    else if (state == NEW_ACCOUNT_NAME)
+      newAccountName(s);
+    else if (state == NEW_ACCOUNT_PASS)
+      newAccountPassword(s);
+    else if (state == NEW_ACCOUNT_CONFIRM)
+      newAccountConfirm(s);
+  }
 }
