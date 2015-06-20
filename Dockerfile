@@ -16,5 +16,4 @@ RUN cp apache-ivy-2.4.0/ivy-2.4.0.jar /usr/share/ant/lib
 RUN ant jar
 
 # Run the game server
-CMD java -jar build/jar/solace.jar 5678
-
+CMD java -jar build/jar/solace.jar 4000

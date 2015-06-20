@@ -50,6 +50,26 @@ a port greater than `2000` to avoid conflicts with standard system ports.
 To connect and "play" the game use any mud client or even telnet. To use telnet
 just type `telnet localhost 4000` and you'll connect to the game.
 
+## Running in a Docker container
+
+Solace can also be built as a Docker image and run in a container. To build
+the image, change to the repository's root directory and run the following
+command:
+
+```
+sudo docker build -t rsandor/solace .
+```
+
+Once the image is built, you can run it like so:
+
+```
+sudo docker run -d --name solace -p 4000:4000 rsandor/solace
+```
+
+Note that if port `4000` is not available on the host machine you can simply
+choose to expose the container's port to any port you wish.
+
+
 ## About the Project
 
 In 1998 two things happened... well more than two things, but two things
