@@ -147,6 +147,9 @@ public class Account
     return characters;
   }
 
+  /**
+   * @return The account's first character, or null if there are no characters.
+   */
   public solace.game.Character getFirstCharacter() {
     return characters.get(0);
   }
@@ -162,6 +165,15 @@ public class Account
       if (ch.getName().toLowerCase().startsWith(name.toLowerCase()))
         return true;
     return false;
+  }
+
+  /**
+   * Determines if the account has any characters.
+   * @return <code>true</code> if the account has at least one character,
+   *   <code>false</code> otherwise.
+   */
+  public boolean hasCharacter() {
+    return characters.size() > 0;
   }
 
   /**

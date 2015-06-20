@@ -92,6 +92,15 @@ public class MainMenu
         Account act = c.getAccount();
         solace.game.Character ch;
 
+        if (!act.hasCharacter()) {
+          c.sendln(
+            "You currently have no characters. Use the {ycreate{x command " +
+            "to create a new character."
+          );
+          c.sendln("");
+          return false;
+        }
+
         if (params.length < 2) {
           ch = act.getFirstCharacter();
         }
@@ -102,6 +111,7 @@ public class MainMenu
               "Character '" + name + "' not found, " +
               "use the '{ylist{x' command to see a list of your characters."
             );
+            c.sendln("");
             return false;
           }
           ch = act.getCharacter(name);
