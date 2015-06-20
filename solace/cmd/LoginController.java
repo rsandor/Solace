@@ -27,13 +27,11 @@ public class LoginController
   String newUserPass = "";
 
 
-  public LoginController(Connection c)
-  {
+  public LoginController(Connection c) {
     init(c);
   }
 
-  public void init(Connection c)
-  {
+  public void init(Connection c) {
     connection = c;
     c.setPrompt("Use ANSI Color (Y/N)? ");
   }
@@ -42,8 +40,7 @@ public class LoginController
    * Handles whether or not the user wants to use color.
    * @param input
    */
-  protected void useColor(String input)
-  {
+  protected void useColor(String input) {
     if (input.toLowerCase().charAt(0) == 'y')
       connection.setUseColor(true);
     else
@@ -61,13 +58,11 @@ public class LoginController
    * to load account associated with that name.
    * @param input Input from the user.
    */
-  protected void accountName(String input)
-  {
+  protected void accountName(String input) {
     String aname = input.trim();
 
     // Check to see if they want to make a new account
-    if (input.toLowerCase().equals("new"))
-    {
+    if (input.toLowerCase().equals("new")) {
       connection.sendln( Message.get("NewAccountRules") );
       connection.setPrompt("Name for account: ");
       state = NEW_ACCOUNT_NAME;
@@ -75,8 +70,7 @@ public class LoginController
     }
 
     // Ensure they are not attempting to login twice
-    if (World.isLoggedIn(aname))
-    {
+    if (World.isLoggedIn(aname)) {
       connection.sendln("{rAccount already logged in!{x");
       Log.info(
         "Double login attempt for account '" + aname + "' from " +
@@ -87,8 +81,7 @@ public class LoginController
     }
 
     // Try to load the account.
-    try
-    {
+    try {
       connection.setAccount( Account.load(aname) );
       state = ACCOUNT_PASS;
       connection.setPrompt("Password: ");
@@ -96,8 +89,7 @@ public class LoginController
       // Send the don't echo command
       connection.echoOff();
     }
-    catch (IOException ioe)
-    {
+    catch (IOException ioe) {
       connection.sendln(
         "Account not found, " +
         "enter '{ynew{x' to create a new account!"
@@ -110,13 +102,11 @@ public class LoginController
    * to verify that the user has entered the correct password.
    * @param input Input from user.
    */
-  protected void accountPassword(String input)
-  {
+  protected void accountPassword(String input) {
     String pass = input;
 
     // Ensure that an account has been loaded
-    if (!connection.hasAccount())
-    {
+    if (!connection.hasAccount()) {
       state = ACCOUNT_NAME;
       connection.setPrompt("\r\nAccount: ");
       return;
@@ -125,8 +115,7 @@ public class LoginController
     Account account = connection.getAccount();
 
     // Check for an incorrect password
-    if (!Digest.sha256(pass).equals(account.getPassword()))
-    {
+    if (!Digest.sha256(pass).equals(account.getPassword())) {
       Log.info(
         "Incorrect password given for user '" + account.getName() +
         "' from " + connection.getInetAddress()
@@ -160,18 +149,15 @@ public class LoginController
    * For the creation of new accounts, this processes an account name input.
    * @param input Input given by user.
    */
-  protected void newAccountName(String input)
-  {
+  protected void newAccountName(String input) {
     // Check the validity of the name
-    if (!Pattern.matches("\\w+\\z", input))
-    {
+    if (!Pattern.matches("\\w+\\z", input)) {
       connection.sendln("Invalid name, please use letters and numbers only!");
       return;
     }
 
     // Check to see if the name already exists
-    if (Account.accountExists(input.toLowerCase()))
-    {
+    if (Account.accountExists(input.toLowerCase())) {
       connection.sendln(
         "An account with the given name already exists, " +
         "please choose another."
@@ -190,11 +176,9 @@ public class LoginController
    * For the creation of new accounts, this processes account password input.
    * @param input Password for the account.
    */
-  protected void newAccountPassword(String input)
-  {
+  protected void newAccountPassword(String input) {
     // Ensure the password is long enough
-    if (input.length() < 6)
-    {
+    if (input.length() < 6) {
       connection.sendln("\n\rPasswords must be at least 6 letters in length!");
       return;
     }
@@ -208,11 +192,9 @@ public class LoginController
    * For the creation of new accounts, this processes the password confirmation.
    * @param input Confirmed (hopefully) password.
    */
-  protected void newAccountConfirm(String input)
-  {
+  protected void newAccountConfirm(String input) {
     // See if the passwords match
-    if (!newUserPass.equals(input))
-    {
+    if (!newUserPass.equals(input)) {
       connection.sendln("\n\rPassword and confirmation do not match!");
       connection.send("\r");
       connection.setPrompt("Password for Account: ");
@@ -222,8 +204,7 @@ public class LoginController
     }
 
     // We are good to go, create the account and give them an update
-    try
-    {
+    try {
       Account.createAccount(newUserName, newUserPass, false);
       connection.sendln(
         "\n\rAccount created! " +
@@ -231,19 +212,16 @@ public class LoginController
       );
       connection.echoOn();
     }
-    catch (IOException ioe)
-    {
+    catch (IOException ioe) {
       connection.sendln(
         "\n\rAn error occured while trying to create your account. " +
         "Please try again!"
       );
     }
-    catch (IllegalArgumentException iae)
-    {
+    catch (IllegalArgumentException iae) {
       connection.sendln("\n\rSorry, an account with that name already exists!");
     }
-    finally
-    {
+    finally {
       state = ACCOUNT_NAME;
       connection.setPrompt("\n\rAccount: ");
     }
@@ -260,8 +238,7 @@ public class LoginController
    * Handles parsing for the login controller.
    * @param s Input to parse.
    */
-  public void parse(String s)
-  {
+  public void parse(String s) {
     s = s.toLowerCase();
 
     if (state == COLOR)
