@@ -78,8 +78,10 @@ public class Character {
    */
   public String getXML() {
     String xml = "<character name=\"" + name + "\">";
-    xml += "<location area=\"" + room.getArea().getId() +
-      "\" room=\"" + room.getId() + "\" />";
+    if (room != null) {
+      xml += "<location area=\"" + room.getArea().getId() +
+             "\" room=\"" + room.getId() + "\" />";
+    }
     return xml + "</character>";
   }
 

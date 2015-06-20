@@ -34,9 +34,15 @@ class CreateCharacter implements StateController {
             act.save();
           }
           catch (IOException ioe) {
-
+            Log.error(ioe.getMessage());
           }
-          c.sendln("Character created!");
+          catch (NullPointerException npe) {
+            Log.error("Null pointer exception: ");
+            npe.printStackTrace();
+          }
+          finally {
+            c.sendln("Character created!");
+          }
           return EXIT;
         }
       }
