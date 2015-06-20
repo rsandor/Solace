@@ -58,6 +58,7 @@ public class MainMenu
           "You have no characters, " +
           "use the '{ycreate{x' command to create a new one."
         );
+        c.sendln("");
       }
       else {
         c.sendln("{y---- {xYour Characters {y----{x");
@@ -125,6 +126,7 @@ public class MainMenu
       catch (GameException ge) {
         Log.error(ge.getMessage());
         c.sendln("An {rerror{x occured, please try again later.");
+        c.sendln("");
         return false;
       }
     }
@@ -171,8 +173,9 @@ public class MainMenu
       c.sendln("Goodbye!");
 
       // If the connection has an account, remove it from the accounts list
-      if (connection.hasAccount())
+      if (connection.hasAccount()) {
         World.removeAccount(connection.getAccount());
+      }
 
       // Remove it from the connections list
       World.removeConnection(connection);
@@ -241,11 +244,6 @@ public class MainMenu
    * to game message files and you just need to quickly update them without
    * doing a full reboot/reload of the game.
    *
-   * TODO Eventually I would like the 'reload' command to allow admins to reload
-   * more than just game messages. They should be able to specify what they want
-   * to reload via an argument to the command and it will reload the specific
-   * thing they wish (areas, messages, etc.)
-   *
    * @author Ryan Sandor Richards
    */
   class Reload extends AdminCommand
@@ -272,7 +270,6 @@ public class MainMenu
             con.sendln("\n{yGame areas being reloaded, please stand by...{x");
             con.setIgnoreInput(true);
           }
-
 
           // Reload all the areas
           World.loadAreas();
@@ -309,8 +306,8 @@ public class MainMenu
             if (room == null) {
               Log.error("Null room encountered on area reload.");
               ch.setRoom(defaultRoom);
-
-}            else {
+            }
+            else {
               Area area = room.getArea();
               if (area == null) {
                 ch.setRoom(defaultRoom);
@@ -399,8 +396,7 @@ public class MainMenu
 
         return true;
       }
-      catch (IOException ioe)
-      {
+      catch (IOException ioe) {
         c.sendln("An error occured while trying to reload " + errorStr + ".");
         Log.error(
           "An IO exception occured when reloading " + errorStr + " by user '" +
@@ -419,43 +415,36 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Peek extends AdminCommand
-  {
+  class Peek extends AdminCommand {
     public Peek() { super("peek"); }
 
-    public boolean run(Connection c, String []params)
-    {
-      if (params.length < 2)
-      {
+    public boolean run(Connection c, String []params) {
+      if (params.length < 2) {
         c.sendln("Syntax: peek <player1> <player2> ... | all");
         return false;
       }
 
-
-      if (params[1].toLowerCase().equals("all"))
-      {
+      if (params[1].toLowerCase().equals("all")) {
         Collection connections = Collections.synchronizedCollection(
           World.getConnections()
         );
-        synchronized (connections)
-        {
+        synchronized (connections) {
           Iterator i = connections.iterator();
           while (i.hasNext())
             c.sendln( formatInfo((Connection)i.next()) );
         }
       }
-      else
-      {
+      else {
         // Generate peek reports for each of the given names
-        for (int i = 1; i < params.length; i++)
-        {
-          if (!World.isLoggedIn(params[i]))
-            c.sendln("Player '"+params[i]+"' is not currently logged in.");
-          else
-          {
+        for (int i = 1; i < params.length; i++) {
+          if (!World.isLoggedIn(params[i])) {
+            c.sendln("Player '" + params[i] + "' is not currently logged in.");
+          }
+          else {
             Connection target = World.connectionFromName(params[i]);
             c.sendln(formatInfo(target));
           }
+          c.sendln("");
         }
       }
 
@@ -467,8 +456,7 @@ public class MainMenu
      * @param c Connection to peek into.
      * @return Formatted peek information about the user.
      */
-    protected String formatInfo(Connection c)
-    {
+    protected String formatInfo(Connection c) {
       String format = "Player '" + c.getAccount().getName() +
         "', logged on at: " + c.getConnectionTime() +
         " from address: " + c.getInetAddress();
