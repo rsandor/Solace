@@ -50,6 +50,9 @@ public class Game
     writer = new AccountWriter();
     new Thread(writer).start();
 
+    // Start the main game world clock
+    Clock.getInstance().start();
+
     // Initialize and start the game server
     server = new Server(port);
     server.listen();
@@ -60,7 +63,11 @@ public class Game
    * stopping all network communication to clients.
    */
   public static void shutdown() {
+    Log.info("Stopping account writer.");
     writer.stop();
+
+    Log.info("Stopping game clock.");
+    Clock.getInstance().stop();
     server.shutdown();
   }
 

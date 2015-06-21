@@ -111,8 +111,7 @@ public class Connection
    * Basic output function for connections.
    * @param s String to send.
    */
-  public void send(String s)
-  {
+  public void send(String s) {
     // Handle color formatting
     if (color)
       s = Color.format(s);
@@ -128,9 +127,16 @@ public class Connection
    * Sends a string followed by a newline to the connection
    * @param s String to send.
    */
-  public void sendln(String s)
-  {
+  public void sendln(String s) {
     send(s+"\n\r");
+  }
+
+  /**
+   * Sends a string wrapped above and below by newlines.
+   * @param s String to send.
+   */
+  public void wrapln(String s) {
+    send("\n\r" + s + "\n\r\n\r");
   }
 
   /**

@@ -71,6 +71,35 @@ public class PlayController
   }
 
   /**
+   * Toggles the tick indication (shows ticks to admins).
+   */
+  class Tick extends AdminCommand {
+    boolean show = false;
+    Clock.Event tickEvent;
+    Clock clock = Clock.getInstance();
+
+    public Tick() {
+      super("ticks");
+    }
+
+    public boolean run(Connection c, String []params) {
+      show = !show;
+      if (show) {
+        tickEvent = clock.interval(1, new Runnable() {
+          public void run() {
+            c.wrapln("-- TICK --");
+          }
+        });
+      }
+      else {
+        tickEvent.cancel();
+        tickEvent = null;
+      }
+      return true;
+    }
+  }
+
+  /**
    * Creates a new game play controller.
    * @param c The connection.
    * @param ch The character.
@@ -119,5 +148,6 @@ public class PlayController
     addCommand(new Inventory(character));
     addCommand(new Get(character));
     addCommand(new Drop(character));
+    addCommand(new Tick());
   }
 }
