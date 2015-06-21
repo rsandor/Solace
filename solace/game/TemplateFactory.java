@@ -27,11 +27,13 @@ public class TemplateFactory {
 
   /**
    * Adds an item template to the factory.
+   * @param areaId Id of the area that defines the item.
    * @param id Id of the item template.
    * @param t The template.
    */
-  public void addItemTemplate(String id, Template t) {
-    items.put(id, t);
+  public void addItemTemplate(String areaId, String id, Template t) {
+    String globalId = areaId + '.' + id;
+    items.put(globalId, t);
   }
 
   /**

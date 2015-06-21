@@ -143,12 +143,12 @@ public class AreaHandler extends Handler {
       public State end(String name) {
         String descriptionStr = description.toString().trim()
           .replaceAll("\\s([,.;:])", "$1");
-
-        if (descriptionNames == null)
+        if (descriptionNames == null) {
           room.setDescription(descriptionStr);
-        else
+        }
+        else {
           room.addFeature(descriptionNames, descriptionStr);
-
+        }
         return ROOM;
       }
     },
@@ -175,8 +175,7 @@ public class AreaHandler extends Handler {
       }
 
       public State end(String name) {
-        String globalId = area.getId() + "." + item.getId();
-        templates.addItemTemplate(globalId, item);
+        templates.addItemTemplate(area.getId(), item.getId(), item);
         return AREA;
       }
     },
@@ -276,16 +275,18 @@ public class AreaHandler extends Handler {
     for (int i = start; i < start+length; i++) {
       char a = ch[i];
 
-      if (a == '\n' && i > 0 && ch[i-1] == '\n')
+      if (a == '\n' && i > 0 && ch[i-1] == '\n') {
         a = '\n';
+      }
       else if (a == '\n' || a == ' ' || a == '\t') {
         if (space)
           continue;
         a = ' ';
         space = true;
       }
-      else
+      else {
         space = false;
+      }
       desc.append(a);
     }
 

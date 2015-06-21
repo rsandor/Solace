@@ -84,6 +84,35 @@
 
 	<room id="contego protectives">
 		<title>Contego Protectives</title>
+
+		<describe>
+			The armor shop has a large open structure with tall gray stone
+			<look>pillars</look> to support the ceiling. Between the pillars
+			<look>display dummies</look> sit donning the finest bronze, iron, and
+			steel armors. The smell of protective oils and cold metal pervade every
+			nook and crany of the dimly torchlit space. Against the wall opposite the
+			<exit>door</exit> rests a large <look>wooden counter</look>.
+		</describe>
+
+		<describe names="pillars">
+			The pillars are sqauare and constructed of finely masoned medium gray
+			stone. Small dim torches hang on each side lending their light to the
+			space around them.
+		</describe>
+
+		<describe names="display dummies dummy">
+			Wooden dummies ranging from disembodied heads, to whole human figures
+			occupy the spaces between pillars. The armor they wear looks legitimate
+			as the wood sags a bit under the heavy weight of the composite metals
+			and leathers.
+		</describe>
+
+		<describe names="wooden counter">
+			The counter's sides are ornately carved and depict an epic battle between
+			two armies of men on a sparsely wooded hillside. A large metal plaque
+			affixed to its front plainly reads "CONTEGO"
+		</describe>
+
 		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
 	</room>
 
