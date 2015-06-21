@@ -32,17 +32,21 @@ public class Look extends PlayCommand {
 
     String name = params[1];
 
-    // Check for room features
     String feature = room.describeFeature(name);
     if (feature != null) {
       c.sendln(feature);
       return true;
     }
 
-    // Check for items
     String item = room.describeItem(name);
     if (item != null) {
       c.sendln(item);
+      return true;
+    }
+
+    String character = room.describeCharacter(name);
+    if (character != null) {
+      c.sendln(character);
       return true;
     }
 

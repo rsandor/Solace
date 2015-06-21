@@ -6,6 +6,7 @@ import javax.xml.parsers.*;
 import java.io.*;
 import solace.game.*;
 import solace.util.Config;
+import solace.util.Log;
 import java.util.*;
 
 /**
@@ -16,9 +17,9 @@ public class AreaHandler extends Handler {
   static Area area = null;
   static Room room = null;
   static Exit exit = null;
-  static Template item = null;
-  static String propertyKey = null;
 
+  static Template template = null;
+  static String propertyKey = null;
   static TemplateFactory templates = TemplateFactory.getInstance();
 
   static StringBuffer description = null;
@@ -62,11 +63,11 @@ public class AreaHandler extends Handler {
           room = new Room(id);
           return ROOM;
         }
-        else if (name == "item") {
+        else if (name == "item" || name == "mobile") {
           String id = attrs.getValue("id"),
             names = attrs.getValue("names");
-          item = new Template(id, names, area);
-          return ITEM;
+          template = new Template(id, names, area);
+          return TEMPLATE;
         }
 
         return AREA;
@@ -105,7 +106,12 @@ public class AreaHandler extends Handler {
             globalId = area.getId() + "." + globalId;
           }
 
-          room.addItemInstance(globalId);
+          if (type.startsWith("item")) {
+            room.addItemInstance(globalId);
+          }
+          else if (type.startsWith("mobile")) {
+            MobileManager.getInstance().addInstance(globalId, room);
+          }
         }
 
         return ROOM;
@@ -164,18 +170,31 @@ public class AreaHandler extends Handler {
       }
     },
 
-    ITEM() {
+    TEMPLATE() {
       public State start(String name, Attributes attrs) {
         if (name == "property") {
           propertyKey = attrs.getValue("key");
           buffers.push(new StringBuffer());
           return PROPERTY;
         }
-        return ITEM;
+        return TEMPLATE;
       }
 
       public State end(String name) {
-        templates.addItemTemplate(area.getId(), item.getId(), item);
+        if (name == "item") {
+          templates.addItemTemplate(
+            area.getId(),
+            template.getId(),
+            template
+          );
+        }
+        else if (name == "mobile") {
+          templates.addMobileTemplate(
+            area.getId(),
+            template.getId(),
+            template
+          );
+        }
         return AREA;
       }
     },
@@ -210,8 +229,8 @@ public class AreaHandler extends Handler {
     PROPERTY() {
       public State end(String name) {
         StringBuffer buffer = buffers.pop();
-        item.set(propertyKey, buffer.toString().trim());
-        return ITEM;
+        template.set(propertyKey, buffer.toString().trim());
+        return TEMPLATE;
       }
 
       public void characters(String str) {

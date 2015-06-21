@@ -1,6 +1,10 @@
 package solace.game;
-import solace.net.Connection;
+
 import java.util.*;
+
+import solace.net.Connection;
+import solace.util.EventEmitter;
+import solace.util.EventListener;
 
 /**
  * Represents a player character or actor in the game world.
@@ -10,9 +14,13 @@ public class Character {
   // Instance Variables
   String id = null;
   String name;
+  String description;
+
   Room room = null;
   Account account = null;
   List<Item> inventory = null;
+
+  EventEmitter events;
 
   /**
    * Creates a new character.
@@ -21,6 +29,7 @@ public class Character {
   public Character(String n) {
     name = n;
     inventory = Collections.synchronizedList(new ArrayList<Item>());
+    events = new EventEmitter();
   }
 
   /**
@@ -36,13 +45,18 @@ public class Character {
       c.sendln("\n" + msg);
       c.send(c.getPrompt());
     }
+
+    events.trigger("message", new Object[] { msg });
   }
 
   /**
    * @return The connection associated with this character.
    */
   public Connection getConnection() {
-    return World.connectionFromAccount(account);
+    if (account != null) {
+      return World.connectionFromAccount(account);
+    }
+    return null;
   }
 
   /**
@@ -106,6 +120,16 @@ public class Character {
   public void setName(String n) { name = n; }
 
   /**
+   * @return The character's description.
+   */
+  public String getDescription() { return description; }
+
+  /**
+   * @param n Description to set for the character.
+   */
+  public void setDescription(String n) { description = n; }
+
+  /**
    * @return A read-only list of the player's inventory.
    */
   public List<Item> getInventory() {
@@ -151,5 +175,23 @@ public class Character {
     // TODO: No limits on item removal yet, implement them when applicable
     inventory.remove(item);
     return true;
+  }
+
+  /**
+   * Adds an event listener to the character.
+   * @param event Name of the event.
+   * @param listener Listener for the event.
+   */
+  public void addEventListener(String event, EventListener listener) {
+    events.addListener(event, listener);
+  }
+
+  /**
+   * Removes an event listener from the character.
+   * @param event Name of the event.
+   * @param listener Listener for the event.
+   */
+  public void removeEventListener(String event, EventListener listener) {
+    events.removeListener(event, listener);
   }
 }

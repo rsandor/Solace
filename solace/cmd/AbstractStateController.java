@@ -272,6 +272,7 @@ public abstract class AbstractStateController
           "AbstractStateController.parse() - Error in command callback: " +
           e.getMessage()
         );
+        e.printStackTrace();
       }
     }
     else {

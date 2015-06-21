@@ -12,7 +12,7 @@ public class Area
   String title = "";
   String author = "";
   Hashtable<String, Room>rooms = new Hashtable<String, Room>();
-
+  
   /**
    * Creates a new area with the given name and name of the creator.
    * @param i The area's id.

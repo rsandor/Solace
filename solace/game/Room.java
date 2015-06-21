@@ -22,7 +22,6 @@ public class Room
   List<solace.game.Character> characters;
   List<Item> items;
 
-
   /**
    * Creates a new room with the given id, title, and description.
    * @param i Id for the room.
@@ -251,6 +250,25 @@ public class Room
           return item.get("description");
         }
 
+    }
+    return null;
+  }
+
+  /**
+   * Finds the description for a character with the given name.
+   * @param name Name of the character to find.
+   * @return The description of the character, or null if none was found.
+   */
+  public String describeCharacter(String name) {
+    synchronized(characters) {
+      for (solace.game.Character ch : characters) {
+        String[] names = ch.getName().split("\\s+");
+        for (String n : names) {
+          if (n.toLowerCase().startsWith(name.toLowerCase())) {
+            return "\n\r" + Strings.toFixedWidth(ch.getDescription()) + "\n\r";
+          }
+        }
+      }
     }
     return null;
   }

@@ -37,6 +37,7 @@ public class World
       return;
 
     loadAreas();
+    MobileManager.getInstance().instantiate();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());
     oogChat = Collections.synchronizedList(new LinkedList<Connection>());

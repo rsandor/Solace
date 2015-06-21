@@ -114,6 +114,16 @@
 		</describe>
 
 		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
+
+		<!--
+		TODO Add shops!
+		<shop>
+			<item id="nickle" price="5" quantity="-1" />
+			<item id="yarn" price="1" quantity="-1" />
+		</shop>
+		-->
+
+		<instance type="mobile" id="duke" />
 	</room>
 
 	<room id="arma armarium">
@@ -154,7 +164,7 @@
 		<exit names="east" to="prosperitas">Prosperitas Square</exit>
 	</room>
 
-	<!-- Some example items -->
+	<!-- Items -->
 	<item id="yarn" names="ball yarn">
 		<property key="description">
 			A length of yellow yarn that that has been neatly and tightly
@@ -163,4 +173,29 @@
 		<property key="description.inventory">A ball of yarn.</property>
 		<property key="description.room">A ball of yarn rests here.</property>
 	</item>
+
+	<item id="nickle" names="wooden nickle">
+		<property key="description">
+			A small round coin made from a light softwood. Each side contains an
+			intricate script which reads: Contego Protectives: Celebrating a Century
+			of fine Armors.
+		</property>
+		<property key="description.inventory">A wooden nickle.</property>
+		<property key="description.room">A small wooden nickle lies here.</property>
+	</item>
+
+	<!-- Mobiles -->
+	<mobile id="duke" names="duke stabilis">
+		<property key="description">
+			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturty man.
+			His short dusty gray hair connects to a trim but thick beard, which nearly
+			conceals a serious grimace. Gray blue eyes peer calmly about the
+			establishment from sunken pits on his hard and worn face.
+		</property>
+		<property key="description.name">Duke Stabilis</property>
+		<property key="description.spawn">
+			Duke Stabilis, the proprieter of Contego Protectives, enters the shop.
+		</property>
+	</mobile>
+
 </area>
