@@ -144,7 +144,6 @@ public class Connection
    */
   public void run()
   {
-    setPrompt("Use ANSI Color [Y/N]? ");
     try
     {
       while (socket.isConnected())

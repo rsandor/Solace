@@ -13,7 +13,6 @@ public class LoginController
   /*
    * Login State Constants
    */
-  public static final int COLOR = 0;
   public static final int ACCOUNT_NAME = 1;
   public static final int ACCOUNT_PASS = 2;
   public static final int NEW_ACCOUNT_NAME = 3;
@@ -21,7 +20,7 @@ public class LoginController
   public static final int NEW_ACCOUNT_CONFIRM = 5;
 
   // Instance Variables
-  int state = COLOR;
+  int state = ACCOUNT_NAME;
   Connection connection;
   String newUserName = "";
   String newUserPass = "";
@@ -33,25 +32,11 @@ public class LoginController
 
   public void init(Connection c) {
     connection = c;
-    c.setPrompt("Use ANSI Color (Y/N)? ");
-  }
-
-  /**
-   * Handles whether or not the user wants to use color.
-   * @param input
-   */
-  protected void useColor(String input) {
-    if (input.toLowerCase().charAt(0) == 'y')
-      connection.setUseColor(true);
-    else
-      connection.setUseColor(false);
-
+    c.setUseColor(true);
     connection.sendln( Message.get("Intro") );
     connection.setPrompt("Account: ");
-
     state = ACCOUNT_NAME;
   }
-
 
   /**
    * Login handler parses input for account name and attempts
@@ -241,9 +226,7 @@ public class LoginController
   public void parse(String s) {
     s = s.toLowerCase();
 
-    if (state == COLOR)
-      useColor(s);
-    else if (state == ACCOUNT_NAME)
+    if (state == ACCOUNT_NAME)
       accountName(s);
     else if (state == ACCOUNT_PASS)
       accountPassword(s);
