@@ -80,6 +80,8 @@
 
 		<instance type="item" id="yarn" />
 		<instance type="item" id="yarn" />
+		<instance type="mobile" id="pauper" />
+		<instance type="mobile" id="pauper" />
 	</room>
 
 	<room id="contego protectives">
@@ -147,6 +149,7 @@
 	<room id="prosperitas north">
 		<title>North of Prosperitas Square along Dito Lane</title>
 		<exit names="south" to="prosperitas">Prosperitas Square</exit>
+		<instance type="mobile" id="pauper" />
 	</room>
 
 	<room id="prosperitas south">
@@ -185,7 +188,7 @@
 	</item>
 
 	<!-- Mobiles -->
-	<mobile id="duke" names="duke stabilis">
+	<mobile id="duke" names="duke stabilis" state="stationary">
 		<property key="description">
 			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturty man.
 			His short dusty gray hair connects to a trim but thick beard, which nearly
@@ -197,5 +200,17 @@
 			Duke Stabilis, the proprieter of Contego Protectives, enters the shop.
 		</property>
 	</mobile>
+
+	<mobile id="pauper" names="pauper" state="wandering">
+		<property key="description">
+			A thin and poorly kept man with hollow brown eyes. His clothes are mere
+			white stained rags that cling to his fragile frame.
+		</property>
+		<property key="description.name">Pauper</property>
+		<property key="description.spawn">
+			A pauper shambles slowly into the vicinity.
+		</property>
+	</mobile>
+
 
 </area>

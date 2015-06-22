@@ -33,7 +33,8 @@ public class Character {
   }
 
   /**
-   * Helper method to send messages to a character.
+   * Helper method to send messages to a character. This also resends their
+   * prompt after the message has been sent.
    * @param msg Message to send.
    */
   public void sendMessage(String msg) {
@@ -46,6 +47,48 @@ public class Character {
       c.send(c.getPrompt());
     }
 
+    events.trigger("message", new Object[] { msg });
+  }
+
+  /**
+   * Sends a string to the character. This method is preferred over
+   * `Connection.send` since it allows non-player characters to recieve game
+   * messages.
+   * @param msg Message to send the character.
+   */
+  public void send(String msg) {
+    Connection c = getConnection();
+    if (c != null) {
+      c.send(msg);
+    }
+    events.trigger("message", new Object[] { msg });
+  }
+
+  /**
+   * Sends a string to the character append with a newline. This method is
+   * preferred over `Connection.send` since it allows non-player characters to
+   * recieve game messages.
+   * @param msg Message to send the character.
+   */
+  public void sendln(String msg) {
+    Connection c = getConnection();
+    if (c != null) {
+      c.sendln(msg);
+    }
+    events.trigger("message", new Object[] { msg });
+  }
+
+  /**
+   * Sends a string to the character wrapped with newlines. This method is
+   * preferred over `Connection.send` since it allows non-player characters to
+   * recieve game messages.
+   * @param msg Message to send the character.
+   */
+  public void wrapln(String msg) {
+    Connection c = getConnection();
+    if (c != null) {
+      c.wrapln(msg);
+    }
     events.trigger("message", new Object[] { msg });
   }
 

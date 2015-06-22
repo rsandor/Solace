@@ -33,21 +33,21 @@ public class Move extends PlayCommand {
 
     if (cmd.equals("move") || cmd.equals("go")) {
       if (params.length < 2) {
-        c.sendln("What direction would you like to move?");
+        character.sendln("What direction would you like to move?");
         return false;
       }
       direction = params[1];
     }
     else if (new String("enter").startsWith(cmd) && notEast) {
       if (params.length < 2) {
-        c.sendln("Where would you like to enter?");
+        character.sendln("Where would you like to enter?");
         return false;
       }
       direction = params[1];
     }
     else if (new String("exit").startsWith(cmd) && notEast) {
       if (params.length < 2) {
-        c.sendln("Where would you like to exit?");
+        character.sendln("Where would you like to exit?");
         return false;
       }
       direction = params[1];
@@ -57,14 +57,14 @@ public class Move extends PlayCommand {
     }
 
     if (direction == null) {
-      c.sendln("That is not a direction.");
+      character.sendln("That is not a direction.");
       Log.error("Null direction encountered during move.");
       return false;
     }
 
     Exit exit = character.getRoom().findExit(direction);
     if (exit == null) {
-      c.sendln("There is no exit '" + direction + "'.");
+      character.sendln("There is no exit '" + direction + "'.");
       return false;
     }
 
@@ -73,7 +73,7 @@ public class Move extends PlayCommand {
     Room destination = area.getRoom(exit.getToId());
 
     if (destination == null) {
-      c.sendln("There is no exit '" + direction + "'");
+      character.sendln("There is no exit '" + direction + "'");
       Log.error("Null destination encountered on move from '" +
         character.getRoom().getId() + "' along exit with names '" +
         exit.getCompiledNames() + "'");
@@ -129,7 +129,7 @@ public class Move extends PlayCommand {
     destination.getCharacters().add(character);
 
     // Show them the room they just entered
-    c.sendln(destination.describeTo(character));
+    character.sendln(destination.describeTo(character));
 
     return true;
   }
