@@ -81,7 +81,6 @@
 		<instance type="item" id="yarn" />
 		<instance type="item" id="yarn" />
 		<instance type="mobile" id="pauper" />
-		<instance type="mobile" id="pauper" />
 	</room>
 
 	<room id="contego protectives">

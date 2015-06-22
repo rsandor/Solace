@@ -51,8 +51,16 @@ public class Mobile extends Template {
         wanderEvent = Clock.getInstance().interval(15, new Runnable() {
           public void run() {
             // Get a random exit and move there
+            Random rand = new Random();
+
+            // 50-50 shot of just staying put
+            if (rand.nextInt(2) == 0) {
+              return;
+            }
+
+            // Move to a random exit
             List<Exit> exits = character.getRoom().getExits();
-            Exit exit = exits.get((new Random()).nextInt(exits.size()));
+            Exit exit = exits.get(rand.nextInt(exits.size()));
             String direction = exit.getNames().get(0);
             move.run(null, new String[] { direction });
           }
