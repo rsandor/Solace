@@ -20,7 +20,6 @@ public class Connection
   BufferedReader in;
   String prompt = "";
   Account account;
-  boolean color = false;
   StateController controller;
   Date connectionTime;
 
@@ -112,14 +111,7 @@ public class Connection
    * @param s String to send.
    */
   public void send(String s) {
-    // Handle color formatting
-    if (color)
-      s = Color.format(s);
-    else
-      s = Color.strip(s);
-
-    // Output and flush information through the socket
-    out.print(s);
+    out.print(Color.format(s));
     out.flush();
   }
 
@@ -204,15 +196,6 @@ public class Connection
   public InetAddress getInetAddress()
   {
     return socket.getInetAddress();
-  }
-
-  /**
-   * Sets whether or not this connection uses ANSI color.
-   * @param c True if the connection is to use color, false otherwise.
-   */
-  public void setUseColor(boolean c)
-  {
-    color = c;
   }
 
   /**

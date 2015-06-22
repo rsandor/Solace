@@ -32,10 +32,8 @@ public class LoginController
 
   public void init(Connection c) {
     connection = c;
-    c.setUseColor(true);
     connection.sendln( Message.get("Intro") );
     connection.setPrompt("Account: ");
-    state = ACCOUNT_NAME;
   }
 
   /**
