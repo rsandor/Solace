@@ -19,3 +19,4 @@ stats/ability.md: ability
 commands/index.md: commands
 commands/help.md: help
 commands/quit.md: quit
+commands/move.md: move go exit enter north south east west up down

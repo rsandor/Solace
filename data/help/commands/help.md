@@ -1,5 +1,4 @@
 # Command: help
-
 Usage: `help [keywords]`
 
 The help command is used to query the games help files. Help files have

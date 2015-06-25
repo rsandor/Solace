@@ -28,7 +28,7 @@ public class Help extends AbstractCommand {
     for (int i = 1; i < params.length; i++) {
       keywords.add(params[i]);
     }
-    c.wrapln(help.query(keywords));
+    c.send("\n\r" + help.query(keywords) + "\n\r");
 
     return true;
   }

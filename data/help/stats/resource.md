@@ -17,7 +17,7 @@ actions that have an associated cost in one of the resources will fail to
 execute.
 
 A character's current value for each stat is naturally restored over time, and
-characters can recieve bonuses to this restoration by resting, sleeping, or
+characters can receive bonuses to this restoration by resting, sleeping, or
 being in special places (like healing temples). Restorative effects such as
 potions and spells can also restore a character's current resource stat values.
 
