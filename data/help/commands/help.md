@@ -1,4 +1,4 @@
-# Help Command
+# Command: help
 
 Usage: `help [keywords]`
 

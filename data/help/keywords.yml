@@ -1,8 +1,20 @@
+# Each help article must be listed here with associated keywords
+# in order to be loaded into the game's help system upon load.
+#
+# The format for the file is simple, each line contains the path
+# to a help article as a key, followed by a space separated list
+# of keywords associated with that article. For instance,
+#
+#   dir/article.md: some key words
+#
+# Will map the article loacted at `data/help/dir/article.md` to
+# the keywords 'some', 'key', and 'words'
+
 stats/index.md: statistics stats
 stats/hp.md: hp hit points
 stats/mp.md: mp magic points
 stats/sp.md: sp stamina points
-stats/reource.md: resource
+stats/resource.md: resource
 stats/ability.md: ability
 commands/index.md: commands
 commands/help.md: help

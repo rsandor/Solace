@@ -30,8 +30,10 @@ public class HelpSystem {
    * Creates a new help system to query help articles.
    */
   public HelpSystem() {
+    Log.info("Generating help system keyword indexes");
     generateKeywordIndex();
     articles = new Hashtable<String, String>();
+    Log.info("Help system loaded and ready to query");
   }
 
   /**
@@ -46,8 +48,17 @@ public class HelpSystem {
     try {
       for (String line : Files.readAllLines(Paths.get(KEYWORDS_FILE))) {
         String[] parts = line.split(":\\s*");
+
+        if (parts.length < 2) {
+          continue;
+        }
+
         String path = parts[0];
         String[] articleKeywords = parts[1].split("\\s+");
+
+        if (articleKeywords.length < 1) {
+          continue;
+        }
 
         // The first given keyword should always be unique to the path
         primaryKeyword.put(path, articleKeywords[0]);
@@ -84,9 +95,7 @@ public class HelpSystem {
     }
 
     try {
-      String article = new String(
-        Files.readAllBytes(Paths.get(HELP_PATH + path))
-      );
+      String article = Markdown.convertFile(HELP_PATH + path);
       articles.put(path, article);
       return article;
     }
@@ -141,7 +150,7 @@ public class HelpSystem {
     StringBuffer result = new StringBuffer();
     result.append("The following articles match your search:\n\r\n\r");
     for (String path : articlePaths) {
-      result.append("    {y" + primaryKeyword.get(path) + "{x\n\r");
+      result.append("  {y" + primaryKeyword.get(path) + "{x\n\r");
     }
     return result.toString();
   }
