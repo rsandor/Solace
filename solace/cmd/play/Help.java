@@ -6,7 +6,8 @@ import solace.cmd.*;
 import java.util.*;
 
 /**
- * Help command, allows players to browse articles in the solace help system.
+ * Help command, allows players to search for and browse
+ * articles in the solace help system.
  * @author Ryan Sandor Richards
  */
 public class Help extends AbstractCommand {

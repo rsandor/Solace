@@ -21,6 +21,7 @@ public class HelpSystem {
   protected static final String HELP_PATH = "data/help/";
 
   // Instance variables
+  TreeSet<String> keywords;
   Hashtable<String, List<String>> keywordIndex;
   Hashtable<String, String> primaryKeyword;
   Hashtable<String, String> articles;
@@ -38,6 +39,7 @@ public class HelpSystem {
    * the keywords file.
    */
   protected void generateKeywordIndex() {
+    keywords = new TreeSet<String>();
     keywordIndex = new Hashtable<String, List<String>>();
     primaryKeyword = new Hashtable<String, String>();
 
@@ -45,12 +47,14 @@ public class HelpSystem {
       for (String line : Files.readAllLines(Paths.get(KEYWORDS_FILE))) {
         String[] parts = line.split(":\\s*");
         String path = parts[0];
-        String[] keywords = parts[1].split("\\s+");
+        String[] articleKeywords = parts[1].split("\\s+");
 
         // The first given keyword should always be unique to the path
-        primaryKeyword.put(path, keywords[0]);
+        primaryKeyword.put(path, articleKeywords[0]);
 
-        for (String keyword : keywords) {
+        for (String keyword : articleKeywords) {
+          keywords.add(keyword);
+
           List<String> files;
           if (!keywordIndex.containsKey(keyword)) {
             files = new LinkedList<String>();
@@ -96,12 +100,25 @@ public class HelpSystem {
   /**
    * Queries the help system and attempts to find an article or set of artciles
    * that match the given keywords.
-   * @param keywords Keywords to use for the search
+   * @param input Prefix keywords to use for the search (given by user)
    * @return A list of articles matching the given keywords or the article
    */
-  public String query(List<String> keywords) {
+  public String query(List<String> input) {
     TreeSet<String> articlePaths = new TreeSet<String>();
+    TreeSet<String> validKeywords = new TreeSet<String>();
+
+    // See if any of the keywords given is a prefix to a keyword in the system
     for (String keyword : keywords) {
+      for (String prefix : input) {
+        if (keyword.startsWith(prefix)) {
+          validKeywords.add(keyword);
+          break;
+        }
+      }
+    }
+
+    for (String keyword : validKeywords) {
+      // This should never happen if we've parsed the files correctly...
       if (!keywordIndex.containsKey(keyword)) {
         continue;
       }
