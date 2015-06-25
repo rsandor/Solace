@@ -51,26 +51,6 @@ public class PlayController
   }
 
   /**
-   * Help Command. Currently only displays a list of commands available to the
-   * user.
-   * @author Ryan Sandor Richards
-   */
-  class Help extends AbstractCommand {
-    public Help() {
-      super("help");
-    }
-
-    public boolean run(Connection c, String []params) {
-      String commandText = "\n{cAvailable Commands:{x\n";
-      for (CommandTuple cmd : commands) {
-        commandText += cmd.getName() + " ";
-      }
-      c.sendln(commandText + "\n");
-      return true;
-    }
-  }
-
-  /**
    * Toggles the tick indication (shows ticks to admins).
    */
   class Tick extends AdminCommand {

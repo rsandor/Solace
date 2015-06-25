@@ -1,7 +1,9 @@
-stats/index.md: stats
-stats/hp.md: hp hit point
+stats/index.md: statistics stats
+stats/hp.md: hp hit points
 stats/mp.md: mp magic points
 stats/sp.md: sp stamina points
 stats/reource.md: resource
 stats/ability.md: ability
 commands/index.md: commands
+commands/help.md: help
+commands/quit.md: quit
