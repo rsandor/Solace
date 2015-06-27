@@ -161,9 +161,16 @@ public class HelpSystem {
   static HelpSystem instance = new HelpSystem();
 
   /**
+   * Reloads the game's help messages.
+   */
+  public static void reload() {
+    instance = new HelpSystem();
+  }
+
+  /**
    * @return the default help system instance.
    */
-  public static HelpSystem getInstance() {
+  public static synchronized HelpSystem getInstance() {
     return instance;
   }
 }

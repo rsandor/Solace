@@ -20,3 +20,9 @@ commands/index.md: commands
 commands/help.md: help
 commands/quit.md: quit
 commands/move.md: move go exit enter north south east west up down
+commands/look.md: look
+commands/scan.md: scan
+commands/inventory.md: inventory
+commands/get.md: get
+commands/drop.md: drop
+commands/say.md: say communication

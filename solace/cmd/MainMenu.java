@@ -366,6 +366,14 @@ public class MainMenu
       c.sendln("Game messages reloaded.");
     }
 
+    /**
+     * Reloads the game's help files.
+     * @param c Connection that initiated the reload.
+     */
+    protected void reloadHelp(Connection c) {
+      HelpSystem.reload();
+    }
+
     public boolean run(Connection c, String []params) {
       String errorStr = "";
 
@@ -373,15 +381,21 @@ public class MainMenu
         boolean hasParam = params.length > 1;
         boolean isAreas = false;
         boolean isMessages = false;
+        boolean isHelp = false;
 
         if (hasParam) {
           isAreas = new String("areas").startsWith(params[1]);
           isMessages = new String("messages").startsWith(params[1]);
+          isHelp = new String("help").startsWith(params[1]);
         }
 
         if (isAreas) {
           errorStr = "areas";
           reloadAreas(c);
+        }
+        else if (isHelp) {
+          errorStr = "help";
+          reloadHelp(c);
         }
         else if (isMessages || params.length == 1) {
           errorStr = "game messages";
