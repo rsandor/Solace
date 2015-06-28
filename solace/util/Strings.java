@@ -6,6 +6,9 @@ import java.util.StringTokenizer;
  * @author Ryan Sandor Richards.
  */
 public class Strings {
+  public static final String RULE =
+    "o------------------------------------------------------------------------------o\n\r";
+
   /**
    * Formats a string to a fixed width number of characters, useful for
    * paragraphs.
@@ -43,5 +46,18 @@ public class Strings {
    */
   public static String toFixedWidth(String s) {
     return toFixedWidth(s, 80);
+  }
+
+  /**
+   * Returns a string containing the given number of space characters.
+   * @param n Number of spaces for the string.
+   * @return A string with exactly the given number of spaces.
+   */
+  public static String spaces(int n) {
+    StringBuffer b = new StringBuffer();
+    for (int i = 0; i < n; i++) {
+      b.append(' ');
+    }
+    return b.toString();
   }
 }

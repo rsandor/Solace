@@ -22,15 +22,67 @@ public class Character {
 
   EventEmitter events;
 
+  int level;
+
+  // Stats
+  int hp;
+  int maxHp;
+  int mp;
+  int maxMp;
+  int sp;
+  int maxSp;
+
+  int strength;
+  int vitality;
+  int magic;
+  int speed;
+
   /**
    * Creates a new character.
    * @param n Name for the character;
    */
   public Character(String n) {
     name = n;
+    level = 1;
     inventory = Collections.synchronizedList(new ArrayList<Item>());
     events = new EventEmitter();
   }
+
+  // Statistic accessors and mutators
+  public int getHp() { return hp; }
+  public void setHp(int v) { hp = v; }
+  public int getMaxHp() { return maxHp; }
+  public void setMaxHp(int v) { maxHp = v; }
+
+  public int getMp() { return mp; }
+  public void setMp(int v) { mp = v; }
+  public int getMaxMp() { return maxMp; }
+  public void setMaxMp(int v) { maxMp = v; }
+
+  public int getSp() { return sp; }
+  public void setSp(int v) { sp = v; }
+  public int getMaxSp() { return maxSp; }
+  public void setMaxSp(int v) { maxSp = v; }
+
+  public int getStrength() { return strength; }
+  public void setStrength(int v) { strength = v; }
+  public int getVitality() { return vitality; }
+  public void setVitality(int v) { vitality = v; }
+  public int getMagic() { return magic; }
+  public void setMagic(int v) { magic = v; }
+  public int getSpeed() { return speed; }
+  public void setSpeed(int v) { speed = v; }
+
+  /**
+   * @return The character's level.
+   */
+  public int getLevel() { return level; }
+
+  /**
+   * Set the character's level.
+   * @param l Level to set for the character.
+   */
+  public void setLevel(int l) { level = l; }
 
   /**
    * Helper method to send messages to a character. This also resends their
@@ -134,7 +186,18 @@ public class Character {
    * @return XML representation of the character.
    */
   public String getXML() {
-    String xml = "<character name=\"" + name + "\">";
+    String xml = "<character name=\"" + name + "\" " +
+      "hp=\"" + hp + "\" " +
+      "maxhp=\"" + maxHp + "\" " +
+      "mp=\"" + mp + "\" " +
+      "maxmp=\"" + maxMp + "\" " +
+      "sp=\"" + sp + "\" " +
+      "maxsp=\"" + maxSp + "\" " +
+      "strength=\"" + strength + "\" " +
+      "vitality=\"" + vitality + "\" " +
+      "magic=\"" + magic + "\" " +
+      "speed=\"" + speed + "\" " +
+      ">";
     if (room != null) {
       xml += "<location area=\"" + room.getArea().getId() +
              "\" room=\"" + room.getId() + "\" />";

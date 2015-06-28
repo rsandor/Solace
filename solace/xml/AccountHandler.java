@@ -48,10 +48,68 @@ public class AccountHandler extends Handler {
     else if (name == "character") {
       String characterName = attrs.getValue("name");
       character = new solace.game.Character(characterName);
+      setStatsFromAttrs(attrs);
     }
     else if (name == "location") {
       area = World.getArea(attrs.getValue("area"));
       character.setRoom(area.getRoom(attrs.getValue("room")));
+    }
+  }
+
+  protected void setStatsFromAttrs(Attributes attrs) {
+    character.setLevel(1);
+    if (attrs.getValue("level") != null) {
+      character.setHp(Integer.parseInt(attrs.getValue("level")));
+    }
+
+    character.setHp(20);
+    if (attrs.getValue("hp") != null) {
+      character.setHp(Integer.parseInt(attrs.getValue("hp")));
+    }
+
+    character.setMaxHp(20);
+    if (attrs.getValue("maxhp") != null) {
+      character.setMaxHp(Integer.parseInt(attrs.getValue("maxhp")));
+    }
+
+    character.setMp(20);
+    if (attrs.getValue("mp") != null) {
+      character.setMp(Integer.parseInt(attrs.getValue("mp")));
+    }
+
+    character.setMaxMp(20);
+    if (attrs.getValue("maxmp") != null) {
+      character.setMaxMp(Integer.parseInt(attrs.getValue("maxmp")));
+    }
+
+    character.setSp(20);
+    if (attrs.getValue("sp") != null) {
+      character.setSp(Integer.parseInt(attrs.getValue("sp")));
+    }
+
+    character.setMaxSp(20);
+    if (attrs.getValue("maxsp") != null) {
+      character.setMaxSp(Integer.parseInt(attrs.getValue("maxsp")));
+    }
+
+    character.setStrength(8);
+    if (attrs.getValue("strength") != null) {
+      character.setStrength(Integer.parseInt(attrs.getValue("strength")));
+    }
+
+    character.setVitality(8);
+    if (attrs.getValue("vitality") != null) {
+      character.setVitality(Integer.parseInt(attrs.getValue("vitality")));
+    }
+
+    character.setMagic(8);
+    if (attrs.getValue("magic") != null) {
+      character.setMagic(Integer.parseInt(attrs.getValue("magic")));
+    }
+
+    character.setSpeed(8);
+    if (attrs.getValue("speed") != null) {
+      character.setSpeed(Integer.parseInt(attrs.getValue("speed")));
     }
   }
 

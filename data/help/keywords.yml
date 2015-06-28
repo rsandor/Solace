@@ -30,3 +30,4 @@ commands/inventory.md: inventory
 commands/get.md: get
 commands/drop.md: drop
 commands/say.md: say communication
+commands/score.md: score
