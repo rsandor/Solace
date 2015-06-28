@@ -21,7 +21,7 @@ public class Score extends PlayCommand {
     buf.append(Strings.RULE);
 
     String title = String.format(
-      "| {cName:{x %s | {cLevel:{x %d}",
+      "| {cName:{x %s | {cLevel:{x %d",
       character.getName(),
       character.getLevel()
     );

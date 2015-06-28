@@ -31,3 +31,5 @@ commands/get.md: get
 commands/drop.md: drop
 commands/say.md: say communication
 commands/score.md: score
+commands/worth.md: worth currency
+misc/gold.md: gold currency

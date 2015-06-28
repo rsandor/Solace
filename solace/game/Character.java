@@ -37,6 +37,9 @@ public class Character {
   int magic;
   int speed;
 
+  // Currency
+  long gold;
+
   /**
    * Creates a new character.
    * @param n Name for the character;
@@ -83,6 +86,32 @@ public class Character {
    * @param l Level to set for the character.
    */
   public void setLevel(int l) { level = l; }
+
+  /**
+   * @return The amount of gold the character is carrying.
+   */
+  public long getGold() { return gold; }
+
+  /**
+   * Sets the amount of gold the character is carrying.
+   * @param g Gold to set.
+   */
+  public void setGold(long g) { gold = g; }
+
+  /**
+   * Removes a given amount of gold from the character. Does nothing if the character
+   * doesn't have enough gold.
+   * @param g Gold to remove from the character.
+   * @throws CurrencyException If the player has less gold than what was given.
+   */
+  public void removeGold(long g)
+    throws CurrencyException
+  {
+    if (gold < g) {
+      throw new CurrencyException("Unable to remove " + g + " gold from " + name);
+    }
+    gold -= g;
+  }
 
   /**
    * Helper method to send messages to a character. This also resends their
@@ -197,6 +226,7 @@ public class Character {
       "vitality=\"" + vitality + "\" " +
       "magic=\"" + magic + "\" " +
       "speed=\"" + speed + "\" " +
+      "gold=\"" + gold + "\"" +
       ">";
     if (room != null) {
       xml += "<location area=\"" + room.getArea().getId() +

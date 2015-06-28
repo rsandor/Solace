@@ -130,5 +130,6 @@ public class PlayController
     addCommand(new Drop(character));
     addCommand(new Tick());
     addCommand(new Score(character));
+    addCommand(new Worth(character));
   }
 }

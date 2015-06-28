@@ -48,7 +48,7 @@ public class AccountHandler extends Handler {
     else if (name == "character") {
       String characterName = attrs.getValue("name");
       character = new solace.game.Character(characterName);
-      setStatsFromAttrs(attrs);
+      setValuesFromAttrs(attrs);
     }
     else if (name == "location") {
       area = World.getArea(attrs.getValue("area"));
@@ -56,7 +56,17 @@ public class AccountHandler extends Handler {
     }
   }
 
-  protected void setStatsFromAttrs(Attributes attrs) {
+  /**
+   * Sets various values on a character from the given attributes map.
+   * @param attrs Map of attributes from the XML that contain various values and
+   *   quantities for the character (stats, gold, level, etc.).
+   */
+  protected void setValuesFromAttrs(Attributes attrs) {
+    character.setGold(0);
+    if (attrs.getValue("gold") != null) {
+      character.setGold(Long.parseLong(attrs.getValue("gold")));
+    }
+
     character.setLevel(1);
     if (attrs.getValue("level") != null) {
       character.setHp(Integer.parseInt(attrs.getValue("level")));
