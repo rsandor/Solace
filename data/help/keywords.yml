@@ -11,11 +11,15 @@
 # the keywords 'some', 'key', and 'words'
 
 stats/index.md: statistics stats
-stats/hp.md: hp hit points
-stats/mp.md: mp magic points
-stats/sp.md: sp stamina points
 stats/resource.md: resource
 stats/ability.md: ability
+stats/hp.md: hp
+stats/mp.md: mp
+stats/sp.md: sp
+stats/strength.md: strength
+stats/magic.md: magic
+stats/vitality.md: vitality
+stats/speed.md: speed
 commands/index.md: commands
 commands/help.md: help
 commands/quit.md: quit

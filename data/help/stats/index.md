@@ -14,16 +14,5 @@ performing certain actions such as spells and skills. For more information
 please see `help ability`.
 
 There are help entries for each of the seven stats, to see those pages use
-`help <name>` where <name> is the name of stat.
-
-
-
-
-
-Strength
-  Primary stat for most physical attacks
-  Overall carrying weight
-
-Magic
-Vitality
-Speed
+`help <name>` where <name> is the name of stat (hp, mp, sp, strength, magic,
+vitality, or speed).
