@@ -11,6 +11,37 @@ import solace.util.EventListener;
  * @author Ryan Sandor Richards.
  */
 public class Character {
+  /**
+   * Unmodifiable list of all valid equipment slots for a given character.
+   */
+  public static final List<String> EQ_SLOTS = Collections.unmodifiableList(
+    new LinkedList<String>(Arrays.asList(
+      new String[] {
+        "helm",
+        "body",
+        "hands",
+        "waist",
+        "legs",
+        "feet",
+        "neck",
+        "ears",
+        "wrist",
+        "ring",
+        "weapon",
+        "off-hand"
+      }
+    ))
+  );
+
+  /**
+   * Determines if the given slot name is a valid equipment slot.
+   * @param name Name of the slot to check.
+   * @return `true` if the slot is valid, `false` otherwise.
+   */
+  public static boolean isValidEquipmentSlot(String name) {
+    return EQ_SLOTS.contains(name);
+  }
+
   // Instance Variables
   String id = null;
   String name;
@@ -39,6 +70,9 @@ public class Character {
 
   // Currency
   long gold;
+
+  // Equipment
+  Hashtable<String, Item> equipment = new Hashtable<String, Item>();
 
   /**
    * Creates a new character.
@@ -311,6 +345,62 @@ public class Character {
     // TODO: No limits on item removal yet, implement them when applicable
     inventory.remove(item);
     return true;
+  }
+
+  /**
+   * Equips a particular item onto the character. If a piece of equipment
+   * already inhabits the particular slot it is removed and returned to the
+   * character's inventory.
+   * @param item Item to equip.
+   * @return The item that was previously equipped.
+   */
+  public Item equip(Item item)
+    throws NotEquipmentException
+  {
+    String slot = item.get("slot");
+    if (slot == null) {
+      throw new NotEquipmentException("Unable to equip non-equipment item.");
+    }
+
+    Item old = null;
+    if (equipment.containsKey(slot)) {
+      old = equipment.get(slot);
+      addItem(old);
+    }
+    removeItem(item);
+    equipment.put(slot, item);
+    return old;
+  }
+
+  /**
+   * Removes the givem item from a character and places it in their inventory.
+   * @param item Item to remove.
+   * @throws NoSuchItemException If the character does not possess the item.
+   * @throws NotEquipmentException If the given item is not equipment.
+   */
+  public void unequip(Item item)
+    throws NotEquipmentException, NoSuchItemException
+  {
+    if (item.get("slot") == null) {
+      throw new NotEquipmentException("Given item was not equipment");
+    }
+
+    String slot = item.get("slot");
+    if (item != equipment.get(slot)) {
+      throw new NoSuchItemException("Player does not have the given item");
+    }
+
+    equipment.remove(slot);
+    addItem(item);
+  }
+
+  /**
+   * Returns the equipment at the given slot.
+   * @param slot Slot for which to retrive the item.
+   * @return The item at the given equipment slot.
+   */
+  public Item getEquipment(String slot) {
+    return equipment.get(slot);
   }
 
   /**

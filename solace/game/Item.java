@@ -1,10 +1,7 @@
 package solace.game;
 
 /**
- * Represents a type of item in the game world. It is important to note that
- * this is not a particular instance of an item (i.e. one that would be carried
- * by a character or placed in a room), but simply the the classification for
- * that type of item.
+ * Represents an item in the game world.
  * @author Ryan Sandor Richards
  */
 public class Item extends Template {
@@ -14,5 +11,20 @@ public class Item extends Template {
 
   public Item(String id, String names, Area area) {
     super(id, names, area);
+  }
+
+  /**
+   * Determines if an item can be equipped. An item is considered equipment if
+   * it has a "type" property of "equipment" and a valid equipment "slot"
+   * property.
+   * @return `true` if the item can be equipped, `false` otherwise.
+   */
+  public boolean isEquipment() {
+    String type = get("type");
+    String slot = get("slot");
+    if (type == null || !type.equals("equipment") || slot == null) {
+      return false;
+    }
+    return solace.game.Character.isValidEquipmentSlot(slot);
   }
 }

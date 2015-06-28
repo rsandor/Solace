@@ -47,7 +47,6 @@ public class TemplateFactory {
    */
   public void addMobileTemplate(String areaId, String id, Template t) {
     String globalId = areaId + '.' + id;
-    Log.info(globalId);
     mobiles.put(globalId, t);
   }
 

@@ -58,22 +58,45 @@ public class AreaHandler extends Handler {
 
     AREA() {
       public State start(String name, Attributes attrs) {
-        if (name == "room") {
+        if (name.equals("room")) {
           String id = attrs.getValue("id").trim();
           room = new Room(id);
           return ROOM;
         }
-        else if (name == "item" || name == "mobile") {
-          String id = attrs.getValue("id"),
-            names = attrs.getValue("names");
+        else if (name.equals("item") || name.equals("mobile")) {
+          String id = attrs.getValue("id");
+          String names = attrs.getValue("names");
+
+
           template = new Template(id, names, area);
 
-          if (name == "mobile") {
+
+
+          if (name.equals("mobile")) {
             String state = attrs.getValue("state");
             if (state == null) {
               state = "stationary";
             }
             template.set("state", state);
+          }
+          else if (name.equals("item")) {
+            template.set("type", "trash");
+
+            String type = attrs.getValue("type");
+            if (type != null) {
+              template.set("type", type);
+            }
+
+            if (type != null && type.equals("equipment")) {
+              String slot = attrs.getValue("slot");
+              template.set("slot", slot);
+              if (slot == null || !solace.game.Character.EQ_SLOTS.contains(slot)) {
+                Log.warning(
+                  "Invalid equipment slot encountered. Setting as type trash."
+                );
+                template.set("type", "trash");
+              }
+            }
           }
 
           return TEMPLATE;
@@ -89,22 +112,22 @@ public class AreaHandler extends Handler {
 
     ROOM() {
       public State start(String name, Attributes attrs) {
-        if (name == "title") {
+        if (name.equals("title")) {
           buffers.push(new StringBuffer());
           return TITLE;
         }
-        else if (name == "exit") {
+        else if (name.equals("exit")) {
           String names = attrs.getValue("names");
           String to = attrs.getValue("to");
           exit = new Exit(names, to);
           return EXIT;
         }
-        else if (name == "describe") {
+        else if (name.equals("describe")) {
           description = new StringBuffer();
           descriptionNames = attrs.getValue("names");
           return ROOM_DESCRIBE;
         }
-        else if (name == "instance") {
+        else if (name.equals("instance")) {
           String type = attrs.getValue("type"),
             globalId = attrs.getValue("id");
 
@@ -137,12 +160,12 @@ public class AreaHandler extends Handler {
 
     ROOM_DESCRIBE() {
       public State start(String name, Attributes attrs) {
-        if (name == "exit") {
+        if (name.equals("exit")) {
           String color = Config.get("world.colors.room.exit");
           description.append((color == null) ? "" : color);
           return ROOM_DESCRIBE_FEATURE;
         }
-        else if (name == "look") {
+        else if (name.equals("look")) {
           String color = Config.get("world.colors.room.look");
           description.append((color == null) ? "" : color);
           return ROOM_DESCRIBE_FEATURE;
@@ -181,7 +204,7 @@ public class AreaHandler extends Handler {
 
     TEMPLATE() {
       public State start(String name, Attributes attrs) {
-        if (name == "property") {
+        if (name.equals("property")) {
           propertyKey = attrs.getValue("key");
           buffers.push(new StringBuffer());
           return PROPERTY;
@@ -190,14 +213,14 @@ public class AreaHandler extends Handler {
       }
 
       public State end(String name) {
-        if (name == "item") {
+        if (name.equals("item")) {
           templates.addItemTemplate(
             area.getId(),
             template.getId(),
             template
           );
         }
-        else if (name == "mobile") {
+        else if (name.equals("mobile")) {
           templates.addMobileTemplate(
             area.getId(),
             template.getId(),
@@ -323,7 +346,7 @@ public class AreaHandler extends Handler {
 
     String str = desc.toString().trim();
 
-    if (str == "" || str == null || str.length() == 0)
+    if (str.equals("") || str == null || str.length() == 0)
       return;
 
     str = " " + str;

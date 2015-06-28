@@ -35,10 +35,10 @@ public class ConfigHandler extends Handler {
     String name,
     Attributes attrs
   ) {
-    if (name == "config") {
+    if (name.equals("config")) {
       config = new Configuration(attrs.getValue("name"));
     }
-    else if (name == "option") {
+    else if (name.equals("option")) {
       String n = attrs.getValue("name");
       String v = attrs.getValue("value");
       config.put(getScope()+n, v);

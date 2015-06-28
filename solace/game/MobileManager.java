@@ -24,7 +24,6 @@ public class MobileManager {
     public void instantiate() {
       try {
         Mobile mobile = TemplateFactory.getInstance().getMobile(mobileId);
-        Log.info("Found " + mobile);
         MobileManager.getInstance().add(mobile);
         mobile.place(room);
       }
@@ -52,7 +51,6 @@ public class MobileManager {
    * @param m Mobile to add.
    */
   public void add(Mobile m) {
-    Log.info("Added mobile " + m.getUUID());
     mobiles.add(m);
   }
 

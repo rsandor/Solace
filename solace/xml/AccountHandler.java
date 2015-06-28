@@ -39,18 +39,18 @@ public class AccountHandler extends Handler {
     String name,
     Attributes attrs
   ) {
-    if (name == "user") {
+    if (name.equals("user")) {
       String accountName = attrs.getValue("name");
       String admin = attrs.getValue("admin");
       String password = attrs.getValue("password");
       account = new Account(accountName, password, Boolean.parseBoolean(admin));
     }
-    else if (name == "character") {
+    else if (name.equals("character")) {
       String characterName = attrs.getValue("name");
       character = new solace.game.Character(characterName);
       setValuesFromAttrs(attrs);
     }
-    else if (name == "location") {
+    else if (name.equals("location")) {
       area = World.getArea(attrs.getValue("area"));
       character.setRoom(area.getRoom(attrs.getValue("room")));
     }
@@ -127,7 +127,7 @@ public class AccountHandler extends Handler {
    * @see org.xml.sax.helpers.DefaultHandler
    */
   public void endElement(String uri, String localName, String name) {
-    if (name == "character") {
+    if (name.equals("character")) {
       account.addCharacter(character);
     }
   }

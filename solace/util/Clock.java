@@ -89,7 +89,7 @@ public class Clock
     }
 
     int tickMs = Integer.parseInt(Config.get("world.clock.tick"));
-    Log.info("Starting game clock, with tick interval " + tickMs);
+    Log.info("Starting game clock, with tick interval " + tickMs + "ms");
     tickFuture = executor.scheduleAtFixedRate(
       this,
       0,

@@ -60,4 +60,35 @@ public class Strings {
     }
     return b.toString();
   }
+
+  /**
+   * Creates a centered title surrounded by rules.
+   * @param text Text for the centered title.
+   * @return The ascii art title.
+   */
+  public static String centerTitle(String text) {
+    StringBuffer b = new StringBuffer();
+    b.append(RULE);
+
+    int s = 80 - 2 - text.length();
+    String left;
+    String right;
+
+    if (s % 2 == 0) {
+      left = right = spaces(s/2);
+    }
+    else {
+      left = spaces(s/2);
+      right = spaces(s/2) + " ";
+    }
+
+    b.append("|");
+    b.append(left);
+    b.append(text);
+    b.append(right);
+    b.append("|\n\r");
+    b.append(RULE);
+    
+    return b.toString();
+  }
 }

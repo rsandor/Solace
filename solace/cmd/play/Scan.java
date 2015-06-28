@@ -37,7 +37,7 @@ public class Scan extends PlayCommand {
       }
     }
 
-    if (message == "") {
+    if (message.equals("")) {
       message = "There is nobody of interest in any direction.";
     }
 

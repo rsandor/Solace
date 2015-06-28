@@ -338,7 +338,6 @@ public class Room
     items = Collections.synchronizedList(new LinkedList<Item>());
     for (String id : itemInstances) {
       try {
-        Log.info("Instantiating item with id ["+id+"] into room ["+this.id+"]");
         addItem(TemplateFactory.getInstance().getItem(id));
       }
       catch (TemplateNotFoundException e) {

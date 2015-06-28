@@ -32,4 +32,7 @@ commands/drop.md: drop
 commands/say.md: say communication
 commands/score.md: score
 commands/worth.md: worth currency
+commands/wear.md: wear
+commands/equipment.md: equipment
+commands/remove.md: remove
 misc/gold.md: gold currency
