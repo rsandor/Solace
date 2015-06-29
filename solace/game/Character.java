@@ -246,30 +246,6 @@ public class Character {
   }
 
   /**
-   * @return XML representation of the character.
-   */
-  public String getXML() {
-    String xml = "<character name=\"" + name + "\" " +
-      "hp=\"" + hp + "\" " +
-      "maxhp=\"" + maxHp + "\" " +
-      "mp=\"" + mp + "\" " +
-      "maxmp=\"" + maxMp + "\" " +
-      "sp=\"" + sp + "\" " +
-      "maxsp=\"" + maxSp + "\" " +
-      "strength=\"" + strength + "\" " +
-      "vitality=\"" + vitality + "\" " +
-      "magic=\"" + magic + "\" " +
-      "speed=\"" + speed + "\" " +
-      "gold=\"" + gold + "\"" +
-      ">";
-    if (room != null) {
-      xml += "<location area=\"" + room.getArea().getId() +
-             "\" room=\"" + room.getId() + "\" />";
-    }
-    return xml + "</character>";
-  }
-
-  /**
    * @return The character's id.
    */
   public String getId() { return id; }
@@ -419,5 +395,50 @@ public class Character {
    */
   public void removeEventListener(String event, EventListener listener) {
     events.removeListener(event, listener);
+  }
+
+  /**
+   * @return XML representation of the character.
+   */
+  public String getXML() {
+    StringBuffer b = new StringBuffer();
+
+    b.append(String.format("<character name=\"%s\" ", name));
+
+    b.append(String.format(
+      "hp=\"%d\" maxhp=\"%d\" mp=\"%d\" maxmp=\"%d\" sp=\"%d\" maxsp=\"%d\" ",
+      hp, maxHp, mp, maxMp, sp, maxSp
+    ));
+
+    b.append(String.format(
+      "strength=\"%d\" vitality=\"%d\" magic=\"%d\" speed=\"%d\" gold=\"%d\">",
+      strength, vitality, magic, speed, gold
+    ));
+
+    // Game location
+    if (room != null) {
+      b.append(String.format(
+        "<location area=\"%s\" room=\"%s\" />",
+        room.getArea().getId(),
+        room.getId()
+      ));
+    }
+
+    // Inventory
+    b.append("<inventory>");
+    for (Item i : inventory) {
+      b.append(i.getXML());
+    }
+    b.append("</inventory>");
+
+    // Equipment
+    b.append("<equipment>");
+    for (String slot : equipment.keySet()) {
+      b.append(equipment.get(slot).getXML());
+    }
+    b.append("</equipment>");
+
+    b.append("</character>");
+    return b.toString();
   }
 }

@@ -249,7 +249,6 @@ public class Room
         if (n.startsWith(name)) {
           return item.get("description");
         }
-
     }
     return null;
   }

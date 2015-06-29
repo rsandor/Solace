@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <user name="ryan" admin="true" password="404c3e3f95246ec2a793b4a3a2ff5e6072613c63de034f63a99a0c2335b65ced">
-<characters>
-<character name="Hintos" hp="20" maxhp="20" mp="20" maxmp="20" sp="20" maxsp="20" strength="8" vitality="8" magic="8" speed="8" gold="10000"><location area="medius" room="prosperitas" /></character></characters>
+  <characters>
+    <character name="Hintos" hp="20" maxhp="20" mp="20" maxmp="20" sp="20" maxsp="20" strength="8" vitality="8" magic="8" speed="8" gold="10000">
+      <location area="medius" room="prosperitas"/>
+      <inventory/>
+      <equipment>
+        <item uuid="9ee0c8f3-ded2-41f2-baa5-d3978d6a8605" id="wooden-sword" names="wooden sword" area="medius">
+          <property key="hit">1</property>
+          <property key="level">1</property>
+          <property key="roll">1d6</property>
+          <property key="weight">2</property>
+          <property key="description.room">A sturdy wooden sword rests here.</property>
+          <property key="type">equipment</property>
+          <property key="damage">1</property>
+          <property key="slot">weapon</property>
+          <property key="description">A wooden practice sword made of sturdy oak. The blade has been carved with intricate patterns and its hilt wrapped in soft supple leather.</property>
+          <property key="description.inventory">A wooden sword.</property>
+        </item>
+      </equipment>
+    </character>
+  </characters>
 </user>

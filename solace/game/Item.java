@@ -27,4 +27,36 @@ public class Item extends Template {
     }
     return solace.game.Character.isValidEquipmentSlot(slot);
   }
+
+  /**
+   * Returns the XML describing the item (primarily used to save character
+   * inventory and equipment).
+   * @return The XML describing the item.
+   */
+  public String getXML() {
+    StringBuffer b = new StringBuffer();
+
+    StringBuffer names = new StringBuffer();
+    for (String name : getNames()) {
+      names.append(name + " ");
+    }
+
+    b.append(String.format(
+      "<item uuid=\"%s\" id=\"%s\" names=\"%s\" area=\"%s\">",
+      getUUID(),
+      getId(),
+      names.toString().trim(),
+      getArea().getId()
+    ));
+
+    for (String key : getProperties().keySet()) {
+      b.append(String.format(
+        "<property key=\"%s\">%s</property>", key, get(key)
+      ));
+    }
+
+    b.append("</item>");
+
+    return b.toString();
+  }
 }

@@ -188,7 +188,15 @@
 		<property key="weight">1</property>
 	</item>
 
-	<item id="wooden-sword" names="wooden sword" type="equipment" slot="weapon">
+	<item id="wooden-sword" names="wooden sword">
+		<property key="type">equipment</property>
+		<property key="slot">weapon</property>
+		<property key="weight">2</property>
+		<property key="level">1</property>
+		<property key="roll">1d6</property>
+		<property key="damage">1</property>
+		<property key="hit">1</property>
+		
 		<property key="description">
 			A wooden practice sword made of sturdy oak. The blade has been carved
 			with intricate patterns and its hilt wrapped in soft supple leather.
@@ -197,11 +205,6 @@
 		<property key="description.room">
 			A sturdy wooden sword rests here.
 		</property>
-		<property key="weight">2</property>
-		<property key="level">1</property>
-		<property key="roll">1d6</property>
-		<property key="damage">1</property>
-		<property key="hit">1</property>
 	</item>
 
 	<!-- Mobiles -->

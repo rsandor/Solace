@@ -20,7 +20,7 @@ public class Equipment extends PlayCommand {
     for (String slot : solace.game.Character.EQ_SLOTS) {
       Item item = character.getEquipment(slot);
       String name = (item == null) ?
-        "Nothing." : item.get("description.inventory");
+        "---" : item.get("description.inventory");
       String line = String.format("| [ {y%-8s{x ]: %s", slot, name);
       b.append(line);
       b.append(Strings.spaces(80 - 1 - Color.strip(line).length()) + "|\n\r");

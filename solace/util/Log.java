@@ -4,6 +4,10 @@ import java.util.Date;
 
 /**
  * Basic log class for logging events and errors in the system.
+ * 
+ * TODO Accept command-line LOG_LEVEL environment variable to control what is
+ *      actually displayed by the logger.
+ *
  * @author Ryan Sandor Richards (Gaius)
  */
 public class Log {
@@ -32,5 +36,14 @@ public class Log {
   public static void info(String s) {
     Date d = new Date();
     System.out.println("[INFO] ("+d+"): "+s);
+  }
+
+  /**
+   * Trace level log information.
+   * @param s Message.
+   */
+  public static void trace(String s) {
+    Date d = new Date();
+    System.out.println("[TRACE] ("+d+"): "+s);
   }
 }

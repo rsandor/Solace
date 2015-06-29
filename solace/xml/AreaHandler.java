@@ -5,8 +5,7 @@ import org.xml.sax.helpers.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import solace.game.*;
-import solace.util.Config;
-import solace.util.Log;
+import solace.util.*;
 import java.util.*;
 
 /**
@@ -66,11 +65,7 @@ public class AreaHandler extends Handler {
         else if (name.equals("item") || name.equals("mobile")) {
           String id = attrs.getValue("id");
           String names = attrs.getValue("names");
-
-
           template = new Template(id, names, area);
-
-
 
           if (name.equals("mobile")) {
             String state = attrs.getValue("state");
@@ -78,25 +73,6 @@ public class AreaHandler extends Handler {
               state = "stationary";
             }
             template.set("state", state);
-          }
-          else if (name.equals("item")) {
-            template.set("type", "trash");
-
-            String type = attrs.getValue("type");
-            if (type != null) {
-              template.set("type", type);
-            }
-
-            if (type != null && type.equals("equipment")) {
-              String slot = attrs.getValue("slot");
-              template.set("slot", slot);
-              if (slot == null || !solace.game.Character.EQ_SLOTS.contains(slot)) {
-                Log.warning(
-                  "Invalid equipment slot encountered. Setting as type trash."
-                );
-                template.set("type", "trash");
-              }
-            }
           }
 
           return TEMPLATE;
@@ -318,39 +294,7 @@ public class AreaHandler extends Handler {
   /**
    * @see org.xml.sax.helpers.DefaultHandler
    */
-  public void characters(char[] ch, int start, int length)
-  {
-    StringBuffer desc = new StringBuffer(length);
-    boolean space = false;
-
-    for (int i = start; i < start+length; i++) {
-      char a = ch[i];
-
-      if (a == '\n' && i > 0 && ch[i-1] == '\n') {
-        a = '\n';
-      }
-      else if (a == '\n' || a == ' ' || a == '\t') {
-        if (space)
-          continue;
-        a = ' ';
-        space = true;
-      }
-      else {
-        space = false;
-      }
-      desc.append(a);
-    }
-
-    if (desc.toString() == null)
-      return;
-
-    String str = desc.toString().trim();
-
-    if (str.equals("") || str == null || str.length() == 0)
-      return;
-
-    str = " " + str;
-
-    state.characters(str);
+  public void characters(char[] ch, int start, int length) {
+    state.characters(Strings.xmlCharacters(ch, start, length));
   }
 }

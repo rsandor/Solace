@@ -1,7 +1,7 @@
 package solace.game;
 
 import solace.xml.GameParser;
-import solace.util.Digest;
+import solace.util.*;
 import java.io.*;
 import java.util.*;
 import java.security.MessageDigest;
@@ -198,7 +198,7 @@ public class Account
   {
     File file = new File(Account.accountPath(name));
     PrintWriter out = new PrintWriter(new FileWriter(file));
-    out.print(getXML());
+    out.print(Strings.prettyXML(getXML()));
     out.close();
   }
 
@@ -206,21 +206,24 @@ public class Account
    * @return XML representing the account.
    */
   public String getXML() {
-    String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    StringBuffer b = new StringBuffer();
+    b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 
-    xml += "<user name=\"" + name +
-      "\" admin=\"" + admin +
-      "\" password=\"" + password + "\">\n";
+    b.append(String.format(
+      "<user name=\"%s\" admin=\"%s\" password=\"%s\">",
+      name, (admin ? "true" : "false"), password
+    ));
 
     // Characters
-    xml += "<characters>\n";
-    for (Character c : characters)
-      xml += c.getXML();
-    xml += "</characters>\n";
+    b.append("<characters>");
+    for (Character c : characters) {
+      b.append(c.getXML());
+    }
+    b.append("</characters>");
 
-    xml += "</user>";
+    b.append("</user>");
 
-    return xml;
+    return b.toString();
   }
 
   /**
