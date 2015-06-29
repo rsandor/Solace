@@ -35,4 +35,9 @@ commands/worth.md: worth currency
 commands/wear.md: wear
 commands/equipment.md: equipment
 commands/remove.md: remove
+commands/appraise.md: appraise
+commands/buy.md: buy
+commands/list.md: list
+commands/sell.md: sell
 misc/gold.md: gold currency
+misc/shops.md: shops

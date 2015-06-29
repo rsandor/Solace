@@ -39,7 +39,7 @@ public class ShopSell extends ShopCommand {
     long price = shop.buyPrice(item);
     if (price < 1) {
       character.wrapln(String.format(
-        "The store owner is uninterested in %s",
+        "The shop owner is uninterested in %s",
         item.get("description.inventory")
       ));
       return false;

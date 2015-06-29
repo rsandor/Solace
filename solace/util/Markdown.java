@@ -24,8 +24,8 @@ public class Markdown {
     for (String line : lines) {
 
       if (line.startsWith("##")) {
-        String hd = line.split("#\\s*")[1].trim();
-        buf.append("{b" + hd + "{x\n\r\n\r");
+        String hd = line.split("[#]+\\s*")[1].trim();
+        buf.append("{c# " + hd + "{x\n\r");
         continue;
       }
 
