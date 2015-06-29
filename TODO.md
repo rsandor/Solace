@@ -6,7 +6,7 @@ On Deck:
 - Battle system 1.0
 
 Bugs:
-- Mobile wander events are not re added upon area reload
+- Mobile wander events are not re-added upon area reload
 - Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory
@@ -24,6 +24,9 @@ Later:
 - Weather
 - Banks (items and gold)
 - Item weight & Carrying Capacity
+- Global communication channels
+- Player-to-player auction house
+- Scripting engine (embedded Lua)
 - Use a connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------
