@@ -37,7 +37,6 @@ public class World
       return;
 
     loadAreas();
-    MobileManager.getInstance().instantiate();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());
     oogChat = Collections.synchronizedList(new LinkedList<Connection>());
@@ -61,6 +60,16 @@ public class World
 
     File dir = new File(areaDir);
     String[] names = dir.list();
+
+    MobileManager.getInstance().clear();
+
+    if (areas != null) {
+      for (Area area : areas.values()) {
+        for (Shop shop : area.getShops()) {
+          shop.destroy();
+        }
+      }
+    }
 
     if (names != null) {
       // Try to load all the areas...
@@ -92,6 +101,7 @@ public class World
     }
 
     areas = newAreas;
+    MobileManager.getInstance().instantiate();
   }
 
   /**

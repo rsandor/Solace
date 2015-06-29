@@ -271,20 +271,6 @@ public class MainMenu
             con.setIgnoreInput(true);
           }
 
-          // Remove all pending game clock events tied with areas
-          for (Area area : World.getAreas()) {
-            for (Shop shop : area.getShops()) {
-              shop.destroy();
-            }
-
-            Collection<Mobile> mobs = area.getMobiles();
-            synchronized(mobs) {
-              for (Mobile mob : mobs) {
-                mob.cancelWanderEvent();
-              }
-            }
-          }
-
           // Reload all the areas
           World.loadAreas();
           Room defaultRoom = World.getDefaultRoom();

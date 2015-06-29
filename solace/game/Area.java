@@ -13,7 +13,6 @@ public class Area
   String author = "";
   Hashtable<String, Room> rooms = new Hashtable<String, Room>();
   List<Shop> shops = new LinkedList<Shop>();
-  Collection<Mobile> mobiles;
 
   /**
    * Creates a new area with the given name and name of the creator.
@@ -25,14 +24,6 @@ public class Area
     id = i;
     title = t;
     author = a;
-    mobiles = Collections.synchronizedCollection(new LinkedList<Mobile>());
-  }
-
-  /**
-   * @return A collection of all mobiles in this area.
-   */
-  public Collection<Mobile> getMobiles() {
-    return mobiles;
   }
 
   /**

@@ -89,6 +89,13 @@ public class MobileManager {
     }
   }
 
+  public void clear() {
+    for (Mobile mob : mobiles) {
+      mob.cancelWanderEvent();
+    }
+    mobiles.clear();
+  }
+
   /**
    * Singelton instance for the mobile manager.
    */

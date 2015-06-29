@@ -101,10 +101,6 @@ public class Mobile extends Template implements Comparable<Mobile> {
    * @param destination Room to put the mobile in.
    */
   protected void swapRooms(Room origin, Room destination) {
-    if (origin.getArea() != destination.getArea()) {
-      origin.getArea().getMobiles().remove(this);
-      destination.getArea().getMobiles().add(this);
-    }
     origin.getMobiles().remove(this);
     destination.getMobiles().add(this);
   }
@@ -150,7 +146,6 @@ public class Mobile extends Template implements Comparable<Mobile> {
     character.setRoom(room);
 
     room.getMobiles().add(this);
-    room.getArea().getMobiles().add(this);
     room.getCharacters().add(character);
   }
 
@@ -174,7 +169,6 @@ public class Mobile extends Template implements Comparable<Mobile> {
     Room room = character.getRoom();
     room.getCharacters().remove(character);
     room.getMobiles().remove(this);
-    room.getArea().getMobiles().remove(this);
     character.setRoom(null);
     isPlaced = false;
   }
