@@ -16,6 +16,8 @@ Later:
 - Banks (items and gold)
 
 Bugs:
+- Area reload must remove all shop events from the game (have World keep a
+  list of shops that gets populated during area parsing)
 - Move command will fail across areas (uses area.getRoom, need global lookup)
 - System log levels from env (e.g. `LOG_LEVEL=trace`)
 - Fix the look command

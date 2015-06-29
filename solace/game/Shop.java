@@ -173,16 +173,37 @@ public class Shop {
     return room;
   }
 
-  // /**
-  //  * Gets a new instance of an item for the given ShopItem index.
-  //  * @param index ShopItem index for the item.
-  //  */
-  // public void getItemByIndex(int index) {
-  // }
-  //
-  // public Item getItemByName(String name) {
-  //
-  // }
+  /**
+   * Gets a shop item with the associated index.
+   * @param index ShopItem index for the item.
+   * @return The store item at the given index, or null if the index is out of
+   *   bounds.
+   */
+  public ShopItem getItemByIndex(int index) {
+    index--;
+    if (index < 0 || index >= items.size()) {
+      return null;
+    }
+    return items.get(index);
+  }
+
+  /**
+   * Finds an item store item with the given name.
+   * @param  name Name of the item
+   * @return      The item with the given name, or null if none was found.
+   */
+  public ShopItem getItemByName(String name) {
+    for (ShopItem item : items) {
+      Item sample = item.getSampleItem();
+      if (sample == null) {
+        continue;
+      }
+      if (sample.hasName(name)) {
+        return item;
+      }
+    }
+    return null;
+  }
 
   /**
    * Adds a item and puts it up for sale in the shop.

@@ -45,7 +45,7 @@ public class ShopItem {
     }
 
     try {
-      sample = getItem();
+      sample = getInstance();
       registerRestockEvent();
     }
     catch (TemplateNotFoundException e) {
@@ -57,7 +57,7 @@ public class ShopItem {
    * @return a new instance of the item represented by this shop item.
    * @throws TemplateNotFoundException If no item with the given id exists.
    */
-  public Item getItem()
+  public Item getInstance()
     throws TemplateNotFoundException
   {
     return TemplateFactory.getInstance().getItem(itemId);

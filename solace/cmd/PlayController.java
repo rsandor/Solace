@@ -78,5 +78,6 @@ public class PlayController
     addCommand(new Equipment(character));
     addCommand(new Remove(character));
     addCommand(new ShopList(character));
+    addCommand(new ShopBuy(character));
   }
 }

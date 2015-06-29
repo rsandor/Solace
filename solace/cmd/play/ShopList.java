@@ -10,20 +10,17 @@ import solace.util.*;
  * List command, lists items for sale in shops to the player.
  * @author Ryan Sandor Richards
  */
-public class ShopList extends PlayCommand {
+public class ShopList extends ShopCommand {
   public ShopList(solace.game.Character ch) {
     super("list", ch);
   }
 
-  public boolean run(Connection c, String []params) {
-    Room room = character.getRoom();
-
-    // Ensure the room has a shop
-    if (room == null || !room.hasShop()) {
-      character.wrapln("There is no shop here.");
-      return false;
-    }
-
+  public boolean command(
+    Connection c,
+    String[] params,
+    Shop shop,
+    Room room
+  ) {
     character.sendln(room.getShop().list());
     return true;
   }
