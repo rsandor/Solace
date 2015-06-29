@@ -106,6 +106,13 @@ public class World
   }
 
   /**
+   * @return A collection of all game areas.
+   */
+  public static Collection<Area> getAreas() {
+    return areas.values();
+  }
+
+  /**
    * Determines if an account is currently logged in.
    * @param name Name of the account to check for.
    * @return True if an account with the given name is logged in.

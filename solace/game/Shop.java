@@ -54,6 +54,16 @@ public class Shop {
   }
 
   /**
+   * Tears down the shop removing all global references (such as restock events
+   * on each item).
+   */
+  public void destroy() {
+    for (ShopItem item : items) {
+      item.unregisterRestockEvent();
+    }
+  }
+
+  /**
    * Generates a list of the items in this shop.
    * @return [description]
    */

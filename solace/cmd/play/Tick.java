@@ -20,7 +20,7 @@ public class Tick extends AdminCommand {
   public boolean run(Connection c, String []params) {
     show = !show;
     if (show) {
-      tickEvent = clock.interval(1, new Runnable() {
+      tickEvent = clock.interval("admin.tick", 1, new Runnable() {
         public void run() {
           c.wrapln("-- TICK --");
         }

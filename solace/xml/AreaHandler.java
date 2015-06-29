@@ -329,6 +329,7 @@ public class AreaHandler extends Handler {
       public State end(String name) {
         if (name.equals("shop")) {
           room.setShop(shop);
+          area.getShops().add(shop);
           return ROOM;
         }
         return SHOP;

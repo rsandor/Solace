@@ -15,6 +15,8 @@ public class Clock
    * An event that can be scheduled on the game clock.
    */
   public class Event {
+    String id;
+    String label;
     long delay;
     long initialDelay;
     Runnable action;
@@ -22,16 +24,24 @@ public class Clock
 
     /**
      * Creates a new game clock event with the given delay.
+     * @param l Label for the event.
      * @param d Delay in game ticks.
      * @param a Action to perform.
      * @param i True if the action is a set interval, false otherwise.
      */
-    public Event(long d, Runnable a, boolean i) {
+    public Event(String l, long d, Runnable a, boolean i) {
+      id = UUID.randomUUID().toString();
+      label = l;
       initialDelay = d;
       delay = d;
       action = a;
       isInterval = i;
     }
+
+    /**
+     * @return The universally unique id for this event.
+     */
+    public String getId() { return id; }
 
     /**
      * Advances the delay clock forward by one tick. If the duration has
@@ -47,6 +57,9 @@ public class Clock
       }
 
       if (delay == 0) {
+        Log.trace(String.format(
+          "Running event %s (id: %s).", label, id
+        ));
         action.run();
         if (isInterval) {
           delay = initialDelay;
@@ -62,6 +75,9 @@ public class Clock
      * Cancels the game event.
      */
     public void cancel() {
+      Log.trace(String.format(
+        "Clock: cancelling event %s (id: %s).", label, id
+      ));
       isInterval = false;
       delay = -1;
     }
@@ -120,21 +136,38 @@ public class Clock
 
   /**
    * Schedules an event on the clock.
+   * @param label Label for the event (for ease of human readability).
    * @param delay Delay in ticks to wait before performing the action.
    * @param action Action to perform.
+   * @return Clock event that can be cancelled.
    */
-  public void schedule(long delay, Runnable action) {
-    events.add(new Event(delay, action, false));
+  public Event schedule(String label, long delay, Runnable action) {
+    Event event = new Event(label, delay, action, false);
+    Log.trace(String.format(
+      "Clock event %s (id: %s) scheduled with delay %d.",
+      label,
+      event.getId(),
+      delay
+    ));
+    events.add(event);
+    return event;
   }
 
   /**
    * Sets an event to be repeated periodically for a set interval.
+   * @param label Label for the event (for ease of human readability).
    * @param delay Length of the delay between each execution.
    * @param action Action to execute at the set interval.
    * @return Clock event that can be cancelled.
    */
-  public Event interval(long delay, Runnable action) {
-    Event event = new Event(delay, action, true);
+  public Event interval(String label, long delay, Runnable action) {
+    Event event = new Event(label, delay, action, true);
+    Log.trace(String.format(
+      "Clock interval %s (id: %s) scheduled with delay %d.",
+      label,
+      event.getId(),
+      delay
+    ));
     events.add(event);
     return event;
   }

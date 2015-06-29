@@ -9,12 +9,13 @@ import java.util.*;
  * Represents a mobile in the game world.
  * @author Ryan Sandor Richards
  */
-public class Mobile extends Template {
+public class Mobile extends Template implements Comparable<Mobile> {
   public enum State {
     STATIONARY,
     WANDERING
   }
 
+  private String id;
   private solace.game.Character character;
   private boolean isPlaced = false;
   private State state = State.STATIONARY;
@@ -31,6 +32,23 @@ public class Mobile extends Template {
     character = new solace.game.Character("");
     move = new Move(character);
     wanderEvent = null;
+    id = UUID.randomUUID().toString();
+  }
+
+  /**
+   * Compares two mobiles by their id.
+   * @param  m Mobile to compare this one against.
+   * @return   0 if the mobiles are the same, -1 or 1 otherwise.
+   */
+  public int compareTo(Mobile m) {
+    return id.compareTo(m.getId());
+  }
+
+  /**
+   * @return The mobile's unique identifier.
+   */
+  public String getId() {
+    return id;
   }
 
   /**
@@ -48,27 +66,31 @@ public class Mobile extends Template {
     }
     else if (state == State.WANDERING) {
       if (wanderEvent == null) {
-        wanderEvent = Clock.getInstance().interval(15, new Runnable() {
-          public void run() {
-            // Get a random exit and move there
-            Random rand = new Random();
+        wanderEvent = Clock.getInstance().interval(
+          "mobile.wander",
+          15,
+          new Runnable() {
+            public void run() {
+              // Get a random exit and move there
+              Random rand = new Random();
 
-            // 50-50 shot of just staying put
-            if (rand.nextInt(2) == 0) {
-              return;
-            }
+              // 50-50 shot of just staying put
+              if (rand.nextInt(2) == 0) {
+                return;
+              }
 
-            // Move to a random exit
-            Room origin = character.getRoom();
-            List<Exit> exits = origin.getExits();
-            Exit exit = exits.get(rand.nextInt(exits.size()));
-            String direction = exit.getNames().get(0);
-            Room destination = area.getRoom(exit.getToId());
-            if ( move.run(null, new String[] { direction }) ) {
-              swapRooms(origin, destination);
+              // Move to a random exit
+              Room origin = character.getRoom();
+              List<Exit> exits = origin.getExits();
+              Exit exit = exits.get(rand.nextInt(exits.size()));
+              String direction = exit.getNames().get(0);
+              Room destination = area.getRoom(exit.getToId());
+              if ( move.run(null, new String[] { direction }) ) {
+                swapRooms(origin, destination);
+              }
             }
           }
-        });
+        );
       }
     }
   }
@@ -124,6 +146,7 @@ public class Mobile extends Template {
     character.setRoom(room);
 
     room.getMobiles().add(this);
+    room.getArea().getMobiles().add(this);
     room.getCharacters().add(character);
   }
 
@@ -132,8 +155,15 @@ public class Mobile extends Template {
    */
   public void pluck() {
     if (!isPlaced) { return; }
-    character.getRoom().getCharacters().remove(character);
-    character.getRoom().getMobiles().remove(this);
+
+    if (wanderEvent != null) {
+      wanderEvent.cancel();
+    }
+
+    Room room = character.getRoom();
+    room.getCharacters().remove(character);
+    room.getMobiles().remove(this);
+    room.getArea().getMobiles().remove(this);
     character.setRoom(null);
     isPlaced = false;
   }

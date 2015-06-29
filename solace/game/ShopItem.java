@@ -118,6 +118,7 @@ public class ShopItem {
 
     // Register the event with the game clock
     restockEvent = Clock.getInstance().interval(
+      "shop.restock",
       restockInterval,
       new Runnable() {
         public void run() {
@@ -134,7 +135,9 @@ public class ShopItem {
    * game in any way (a memory leak leading to reduce performance).
    */
   public void unregisterRestockEvent() {
-    restockEvent.cancel();
+    if (restockEvent != null) {
+      restockEvent.cancel();
+    }
   }
 
   /**
