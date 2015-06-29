@@ -1,20 +1,18 @@
-Last: Save equipment and inventory to account character
-Next: Shops
+Last: Shops
+Next: Gold, items, and stats for mobiles
 
 On Deck:
-- Gold / items for mobiles
-- Stats for mobiles
 - Skills
 - Battle system 1.0
 
 Later:
 - Make screen width adjustable on connection (currently fixed to 80)
-- Spell Casting
-- Classes and Races
+- Spells, Scrolls, and Spell Casting
+- Classes (Collections of Skills?) and Races
 - Game world calendar
 - Weather
 - Banks (items and gold)
-- Account for item weight
+- Item weight & Carrying Capacity
 - Use a connection proxy so the game can be fully recompiled and reloaded
 
 Bugs:
@@ -26,3 +24,8 @@ Bugs:
 - Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory
+
+--------------------------------------------------------------------------------
+
+Done:
+- Save equipment and inventory to account character
