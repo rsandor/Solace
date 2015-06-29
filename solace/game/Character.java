@@ -148,6 +148,14 @@ public class Character {
   }
 
   /**
+   * Adds gold to a character.
+   * @param g Amount of gold to add.
+   */
+  public void addGold(long g) {
+    gold += g;
+  }
+
+  /**
    * Helper method to send messages to a character. This also resends their
    * prompt after the message has been sent.
    * @param msg Message to send.

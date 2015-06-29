@@ -79,5 +79,7 @@ public class PlayController
     addCommand(new Remove(character));
     addCommand(new ShopList(character));
     addCommand(new ShopBuy(character));
+    addCommand(new ShopAppraise(character));
+    addCommand(new ShopSell(character));
   }
 }

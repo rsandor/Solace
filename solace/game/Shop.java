@@ -107,7 +107,7 @@ public class Shop {
    * Determines how much an item sells for.
    * @param item Item to be sold.
    * @return The price for the item in gold.
-   * @throws TemplateNotFoundException If the itemId for this store item is
+   * @throws TemplateNotFoundException If the itemId for this shop item is
    *   invalid.
    */
   public long sellPrice(ShopItem item)
@@ -125,6 +125,19 @@ public class Shop {
       value = "1";
     }
     return (long)(sellMultiplier * Long.parseLong(value));
+  }
+
+  /**
+   * Determines the amount of gold paid by the shop when selling a given item.
+   * @param  item Item for the shop to buy.
+   * @return      The value in gold the shop will pay for the item.
+   */
+  public long buyPrice(Item item) {
+    String value = item.get("value");
+    if (value == null) {
+      value = "1";
+    }
+    return (long)(buyMultiplier * Long.parseLong(value));
   }
 
   /**
@@ -176,7 +189,7 @@ public class Shop {
   /**
    * Gets a shop item with the associated index.
    * @param index ShopItem index for the item.
-   * @return The store item at the given index, or null if the index is out of
+   * @return The shop item at the given index, or null if the index is out of
    *   bounds.
    */
   public ShopItem getItemByIndex(int index) {
@@ -188,7 +201,7 @@ public class Shop {
   }
 
   /**
-   * Finds an item store item with the given name.
+   * Finds an item shop item with the given name.
    * @param  name Name of the item
    * @return      The item with the given name, or null if none was found.
    */
