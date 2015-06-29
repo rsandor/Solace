@@ -1,9 +1,13 @@
+# Master TODO
+
 Next:
-- Gold, items, and stats for mobiles
+- Gold and stats for mobiles
 
 On Deck:
-- Skills System + A few Prototype Skills
+- Skills System + a few Prototype Skills
 - Battle system 1.0
+- Loot System 1.0
+- Mobile spawn points
 
 Bugs:
 - Fix the look command
@@ -16,11 +20,12 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
-- Make screen width adjustable on connection (currently fixed to 80)
+- Decorative banners for shops, inventory, character sheet, etc.
 - Spells, Scrolls, and Spell Casting
 - Classes (Collections of Skills?) and Races
-- Game world calendar
-- Weather
+- Game world calendar + Weather
+- Room lighting
+- Make screen width adjustable on connection (currently fixed to 80)
 - Banks (items and gold)
 - Item weight & Carrying Capacity
 - Global communication channels

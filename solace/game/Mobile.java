@@ -145,6 +145,21 @@ public class Mobile extends Template implements Comparable<Mobile> {
     room.sendMessage(spawn);
     character.setRoom(room);
 
+    // Generate gold to be carried by the mobile
+    String gold = get("gold");
+    if (gold != null) {
+      try {
+        character.addGold(Dice.roll(gold));
+      }
+      catch (DiceParseException dpe) {
+        Log.error(String.format(
+          "Gold string on mobile %s is invalid: %s", id, gold
+        ));
+      }
+    }
+
+    // TODO Generate stats based on level and power
+
     room.getMobiles().add(this);
     room.getCharacters().add(character);
   }

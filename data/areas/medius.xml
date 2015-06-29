@@ -265,6 +265,8 @@
 			conceals a serious grimace. Gray blue eyes peer calmly about the
 			establishment from sunken pits on his hard and worn face.
 		</property>
+		<property key="level">60</level>
+		<property key="power">65</level>
 		<property key="description.name">Duke Stabilis</property>
 		<property key="description.spawn">
 			Duke Stabilis, the proprieter of Contego Protectives, enters the shop.
@@ -281,6 +283,21 @@
 		<property key="description.spawn">
 			A pauper shambles slowly into the vicinity.
 		</property>
+		<property key="level">1</property>
+
+		<!--
+			Mobiles have a power rating from 1 to 100 that determines, along with
+			level, how tough they are in combat. An average mobile will have a power
+			of 25, a very weak mobile has a power of 1, and an incredibly stong mobile
+			will have a power of 100.
+		-->
+		<property key="power">1</level>
+
+		<!--
+			Mobiles always carry a random amount of gold, use the gold property to
+			set a die roll to detemine how much they carry when they are spawned.
+		-->
+		<property key="gold">1d3-1</property>
 	</mobile>
 
 
