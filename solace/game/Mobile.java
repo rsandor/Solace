@@ -101,6 +101,10 @@ public class Mobile extends Template implements Comparable<Mobile> {
    * @param destination Room to put the mobile in.
    */
   protected void swapRooms(Room origin, Room destination) {
+    if (origin.getArea() != destination.getArea()) {
+      origin.getArea().getMobiles().remove(this);
+      destination.getArea().getMobiles().add(this);
+    }
     origin.getMobiles().remove(this);
     destination.getMobiles().add(this);
   }
@@ -151,15 +155,22 @@ public class Mobile extends Template implements Comparable<Mobile> {
   }
 
   /**
+   * Cancels the wander event on this mobile if applicable.
+   */
+  public void cancelWanderEvent() {
+    if (wanderEvent != null) {
+      wanderEvent.cancel();
+    }
+  }
+
+  /**
    * Removes the mobile from the game world.
    */
   public void pluck() {
     if (!isPlaced) { return; }
-
     if (wanderEvent != null) {
       wanderEvent.cancel();
     }
-
     Room room = character.getRoom();
     room.getCharacters().remove(character);
     room.getMobiles().remove(this);

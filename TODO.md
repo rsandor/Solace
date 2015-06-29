@@ -6,6 +6,7 @@ On Deck:
 - Battle system 1.0
 
 Bugs:
+- Mobile wander events are not re added upon area reload
 - Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory
@@ -28,6 +29,7 @@ Later:
 --------------------------------------------------------------------------------
 
 Done:
+- Mobile wander events must be removed prior to reloading areas.
 - Area reload must remove all shop events from the game (have World keep a
   list of shops that gets populated during area parsing)
 - Shops

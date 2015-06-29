@@ -25,7 +25,7 @@ public class Area
     id = i;
     title = t;
     author = a;
-    mobiles = Collections.synchronizedCollection(new TreeSet<Mobile>());
+    mobiles = Collections.synchronizedCollection(new LinkedList<Mobile>());
   }
 
   /**

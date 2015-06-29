@@ -277,12 +277,12 @@ public class MainMenu
               shop.destroy();
             }
 
-            // Collection<Mobile> mobs = area.getMobiles();
-            // synchronized(mobs) {
-            //   for (Mobile mob : mobs) {
-            //     mob.pluck();
-            //   }
-            // }
+            Collection<Mobile> mobs = area.getMobiles();
+            synchronized(mobs) {
+              for (Mobile mob : mobs) {
+                mob.cancelWanderEvent();
+              }
+            }
           }
 
           // Reload all the areas
