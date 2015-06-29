@@ -5,6 +5,7 @@ import java.util.*;
 import solace.net.Connection;
 import solace.util.EventEmitter;
 import solace.util.EventListener;
+import solace.util.Log;
 
 /**
  * Represents a player character or actor in the game world.
@@ -68,6 +69,9 @@ public class Character {
   int magic;
   int speed;
 
+  String majorStat = "none";
+  String minorStat = "none";
+
   // Currency
   long gold;
 
@@ -109,6 +113,181 @@ public class Character {
   public void setMagic(int v) { magic = v; }
   public int getSpeed() { return speed; }
   public void setSpeed(int v) { speed = v; }
+
+  /**
+   * Sets the major statistic for the character. Major statistics grow the
+   * the fastest of all stats as a character progresses in level.
+   * @param name Name of the major stat.
+   */
+  public void setMajorStat(String name) {
+    majorStat = name;
+  }
+
+  /**
+   * Sets the minor stat for the character. Minor stats grow at a medium pace
+   * as a character levels.
+   * @param name [description]
+   */
+  public void setMinorStat(String name) {
+    minorStat = name;
+  }
+
+  /**
+   * @return The name of the character's major stat.
+   */
+  public String getMajorStat() {
+    return majorStat;
+  }
+
+  /**
+   * @return THe name of the character's minor stat.
+   */
+  public String getMinorStat() {
+    return minorStat;
+  }
+
+  /**
+   * Generates the character's stats based on level, given power, and focused
+   * stats.
+   * @param power Power level for the character.
+   */
+  public void generateStats(int power) {
+    // Power scale is 1 - 100:
+    double powerMod = getPowerModifier(power);
+    setStrength((int)((double)generateStat("strength") * (1.0 + powerMod)));
+    setVitality((int)((double)generateStat("vitality") * (1.0 + powerMod)));
+    setMagic((int)((double)generateStat("magic") * (1.0 + powerMod)));
+    setSpeed((int)((double)generateStat("speed") * (1.0 + powerMod)));
+
+    Log.trace(String.format(
+      "Stats generated: %d (str), %d (vit), %d (mag), %d (spe)",
+      strength, vitality, magic, speed
+    ));
+
+    // Set resources based on stats
+    // TODO Tweak these for lower levels (stays at minimums until level 10...)
+    hp = maxHp = (int)(
+      0.2 * (0.70 * getVitality() + 0.15 * getStrength() + 0.15 * getSpeed()) * level
+    );
+    mp = maxMp = (int)(
+      0.2 * (0.9 * getMagic() + 0.1 * getVitality()) * level
+    );
+    sp = maxSp = (int)(
+      0.2 * (0.5 * getVitality() + 0.5 * getSpeed()) * level
+    );
+
+    hp = Math.max(hp, 10);
+    mp = Math.max(mp, 10);
+    sp = Math.max(sp, 10);
+
+    Log.trace(String.format(
+      "Resources generated: %d (hp), %d (mp), %d (sp)",
+      hp, mp, sp
+    ));
+  }
+
+  /**
+   * Generates a stat for the character.
+   *
+   * Base Stat Progression: Levels 1 - 100
+   *         1.0x     0.65x   0.33..x
+   * Level   major    minor   tertiary
+   * 1       10       6       3
+   * 10      25       15      8
+   * 20      75       50      25
+   * 30      150      100     50
+   * 40      250      163     83
+   * 50      400      260     133
+   * 60      550      358     183
+   * 70      700      455     233
+   * 80      800      520     267
+   * 90      900      585     300
+   * 100     1000     650     333
+   *
+   * @param name Name of the stat being generated.
+   * @return A level appropriate stat.
+   */
+  public int generateStat(String name) {
+    int major = 10;
+
+    if (level >= 1 && level < 10) {
+      major = 10 + (int)(15.0 * (double)(level-1) / 10.0);
+    }
+    else if (level < 20) {
+      major = 25 + (int)(50.0 * (double)(level-10) / 10.0);
+    }
+    else if (level < 30) {
+      major = 75 + (int)(75.0 * (double)(level-20) / 10.0);
+    }
+    else if (level < 40) {
+      major = 150 + (int)(100.0 * (double)(level-30) / 10.0);
+    }
+    else if (level < 50) {
+      major = 250 + (int)(150.0 * (double)(level-40) / 10.0);
+    }
+    else if (level < 60) {
+      major = 400 + (int)(150.0 * (double)(level-50) / 10.0);
+    }
+    else if (level < 70) {
+      major = 550 + (int)(150.0 * (double)(level-60) / 10.0);
+    }
+    else if (level < 80) {
+      major = 700 + (int)(100.0 * (double)(level-70) / 10.0);
+    }
+    else if (level < 90) {
+      major = 800 + (int)(100.0 * (double)(level-80) / 10.0);
+    }
+    else if (level < 100) {
+      major = 900 + (int)(100.0 * (double)(level-90) / 10.0);
+    }
+    else if (level >= 100) {
+      major = 1000;
+    }
+
+    if (majorStat.equals(name)) {
+      return major;
+    }
+    if (minorStat.equals(name)) {
+      return (int)(0.65 * major);
+    }
+    return major / 3;
+  }
+
+  /**
+   * Generates power modifier based on the given power scale. Power modifiers
+   * are used when generating stats for mobiles to add variation to the mix
+   * making some mobiles stronger and some weaker at the same level.
+   *
+   * Below is the power modifier table mapping power levesl to modifiers:
+   *
+   * Power    Title         Modifier
+   * --------------------------------
+   * 1        weak          -0.25
+   * 25       average        0.00
+   * 50       strong        +0.15
+   * 75       boss          +0.30
+   * 100      legendary     +0.50
+   *
+   * @param power Level of the power on a scale of 1 to 100.
+   */
+ public double getPowerModifier(int power) {
+   // Ensure the levels is on the scale
+   if (power < 1) { power = 1; }
+   if (power > 100) { power = 100; }
+
+   // Calculate the power modifier
+   if (power >= 1 && power < 25) {
+     return -0.25 + 0.25 * (double)power / 25.0;
+   }
+   if (power < 50) {
+     return 0.15*((double)power - 25.0) / 25.0;
+   }
+   if (power < 75) {
+     return 0.15 + 0.15*((double)power - 50) / 25.0;
+   }
+   return 0.3 + 0.2*((double)power - 75) / 25.0;
+ }
+
 
   /**
    * @return The character's level.

@@ -1,13 +1,14 @@
 # Master TODO
 
 Next:
-- Gold and stats for mobiles
+- Skills System + a few Prototype Skills
 
 On Deck:
-- Skills System + a few Prototype Skills
 - Battle system 1.0
-- Loot System 1.0
 - Mobile spawn points
+- Loot System 1.0
+- Stats System 2.0
+- Leveling System 1.0
 
 Bugs:
 - Fix the look command
@@ -36,6 +37,8 @@ Later:
 --------------------------------------------------------------------------------
 
 Done:
+- Mobile stats generation
+- Mobile gold generation
 - Mobile wander events are not re-added upon area reload
 - Mobile wander events must be removed prior to reloading areas.
 - Area reload must remove all shop events from the game (have World keep a

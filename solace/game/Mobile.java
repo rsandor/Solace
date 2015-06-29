@@ -9,13 +9,12 @@ import java.util.*;
  * Represents a mobile in the game world.
  * @author Ryan Sandor Richards
  */
-public class Mobile extends Template implements Comparable<Mobile> {
+public class Mobile extends Template {
   public enum State {
     STATIONARY,
     WANDERING
   }
 
-  private String id;
   private solace.game.Character character;
   private boolean isPlaced = false;
   private State state = State.STATIONARY;
@@ -32,23 +31,6 @@ public class Mobile extends Template implements Comparable<Mobile> {
     character = new solace.game.Character("");
     move = new Move(character);
     wanderEvent = null;
-    id = UUID.randomUUID().toString();
-  }
-
-  /**
-   * Compares two mobiles by their id.
-   * @param  m Mobile to compare this one against.
-   * @return   0 if the mobiles are the same, -1 or 1 otherwise.
-   */
-  public int compareTo(Mobile m) {
-    return id.compareTo(m.getId());
-  }
-
-  /**
-   * @return The mobile's unique identifier.
-   */
-  public String getId() {
-    return id;
   }
 
   /**
@@ -145,6 +127,20 @@ public class Mobile extends Template implements Comparable<Mobile> {
     room.sendMessage(spawn);
     character.setRoom(room);
 
+    // Set the level of the mob
+    character.setLevel(1);
+    String levelString = get("level");
+    if (levelString != null) {
+      try {
+        character.setLevel(Integer.parseInt(levelString));
+      }
+      catch (NumberFormatException nfe) {
+        Log.error(String.format(
+          "Invalid level for mobile %s: %s", id, levelString
+        ));
+      }
+    }
+
     // Generate gold to be carried by the mobile
     String gold = get("gold");
     if (gold != null) {
@@ -158,7 +154,32 @@ public class Mobile extends Template implements Comparable<Mobile> {
       }
     }
 
-    // TODO Generate stats based on level and power
+    // Set major and minor stats
+    String statMajor = get("stat.major");
+    if (statMajor != null) {
+      character.setMajorStat(statMajor);
+    }
+
+    String statMinor = get("stat.minor");
+    if (statMinor != null) {
+      character.setMinorStat(statMinor);
+    }
+
+    // Generate stats based on level and power
+    String powerLevel = get("power");
+    int power = 25;
+    try {
+      if (powerLevel != null) {
+        power = Integer.parseInt(powerLevel);
+      }
+    }
+    catch (NumberFormatException nfe) {
+      Log.error(String.format(
+        "Invalid power for mobile %s: %s", id, levelString
+      ));
+    }
+
+    character.generateStats(power);
 
     room.getMobiles().add(this);
     room.getCharacters().add(character);

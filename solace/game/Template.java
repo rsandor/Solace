@@ -7,7 +7,7 @@ import java.util.*;
  * template. Examples of such objects include items, equipment, and mobiles.
  * @author Ryan Sandor Richards
  */
-public class Template {
+public class Template implements Comparable<Template> {
   Area area = null;
   String id = null;
   String uuid = null;
@@ -20,6 +20,15 @@ public class Template {
   public Template() {
     area = null;
     id = null;
+  }
+
+  /**
+   * Compares two templates by their uuid.
+   * @param  t Template to compare.
+   * @return   0 if the mobiles are the same, -1 or 1 otherwise.
+   */
+  public int compareTo(Template t) {
+    return uuid.compareTo(t.getUUID());
   }
 
   /**

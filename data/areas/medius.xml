@@ -265,8 +265,10 @@
 			conceals a serious grimace. Gray blue eyes peer calmly about the
 			establishment from sunken pits on his hard and worn face.
 		</property>
-		<property key="level">60</level>
-		<property key="power">65</level>
+		<property key="level">55</property>
+		<property key="power">75</property>
+		<property key="stat.major">vitality</property>
+		<property key="stat.minor">strength</property>
 		<property key="description.name">Duke Stabilis</property>
 		<property key="description.spawn">
 			Duke Stabilis, the proprieter of Contego Protectives, enters the shop.
@@ -285,13 +287,16 @@
 		</property>
 		<property key="level">1</property>
 
+		<property key="stat.major">speed</property>
+		<property key="stat.minor">vitality</property>
+
 		<!--
 			Mobiles have a power rating from 1 to 100 that determines, along with
 			level, how tough they are in combat. An average mobile will have a power
 			of 25, a very weak mobile has a power of 1, and an incredibly stong mobile
 			will have a power of 100.
 		-->
-		<property key="power">1</level>
+		<property key="power">100</property>
 
 		<!--
 			Mobiles always carry a random amount of gold, use the gold property to
