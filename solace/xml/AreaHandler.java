@@ -133,15 +133,12 @@ public class AreaHandler extends Handler {
           String sell = attrs.getValue("sell");
           String buy = attrs.getValue("buy");
 
-          // TODO Make the default buy and sell multipliers configurable in the
-          //      data/world.txt file.
-
           if (sell == null) {
-            sell = "1.5";
+            sell = Config.get("world.shop.default.sell");
           }
 
           if (buy == null) {
-            buy = "0.5";
+            buy = Config.get("world.shop.default.buy");
           }
 
           double buyM, sellM;

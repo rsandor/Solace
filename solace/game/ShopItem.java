@@ -200,8 +200,15 @@ public class ShopItem {
    * @param i Interval period to set.
    */
   public void setRestockInterval(int i) {
-    // TODO Set minimum restock time as an option in world.txt
-    restockInterval = (i < 1 || i >= 600) ? i : 600;
+    String restockMinStr = Config.get("world.shop.restock");
+    int min = 600;
+    try {
+      min = Integer.parseInt(restockMinStr);
+    }
+    catch (NumberFormatException nfe) {
+      Log.error("Configuration for world.shop.restock is not an integer.");
+    }
+    restockInterval = (i < 1 || i >= min) ? i : min;
   }
 
   /**

@@ -27,6 +27,21 @@ public class Shop {
     id = i;
     name = n;
     room = r;
+
+    String buyString = Config.get("world.shop.default.buy");
+    String sellString = Config.get("world.shop.default.sell");
+
+    try {
+      buyMultiplier = Double.parseDouble(buyString);
+      sellMultiplier = Double.parseDouble(sellString);
+    }
+    catch (NumberFormatException e) {
+      Log.error(String.format(
+        "Buy or sell modifier in config is not a double: %s, %s",
+        buyString,
+        sellString
+      ));
+    }
   }
 
   /**

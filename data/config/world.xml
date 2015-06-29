@@ -20,6 +20,13 @@
 		<option name="tick" value="1000" />
 	</clock>
 
+	<!-- Shop options -->
+	<shop>
+		<option name="default.buy" value="0.5" />
+		<option name="default.sell" value="0.5" />
+		<option name="restock" value="600" />
+	</shop>
+
 	<!-- Defines coloring for various game objects -->
 	<colors>
 		<room>
