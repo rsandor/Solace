@@ -1,14 +1,23 @@
 Last: Save equipment and inventory to account character
 Next: Shops
 
-Backlog:
-[ ] Gold / items for mobiles
-[ ] Stats for mobiles
-[ ] Skills
-[ ] Spells
+On Deck:
+- Gold / items for mobiles
+- Stats for mobiles
+- Skills
+- Battle system 1.0
 
-Whenever:
-[ ] System log levels from env (e.g. `LOG_LEVEL=trace`)
-[ ] Fix the look command
+Later:
+- Make screen width adjustable on connection (currently fixed to 80)
+- Spell Casting
+- Classes and Races
+- Game world calendar
+- Weather
+- Banks (items and gold)
+
+Bugs:
+- Move command will fail across areas (uses area.getRoom, need global lookup)
+- System log levels from env (e.g. `LOG_LEVEL=trace`)
+- Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory

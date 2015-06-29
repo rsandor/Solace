@@ -77,5 +77,6 @@ public class PlayController
     addCommand(new Wear(character));
     addCommand(new Equipment(character));
     addCommand(new Remove(character));
+    addCommand(new ShopList(character));
   }
 }

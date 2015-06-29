@@ -114,17 +114,28 @@
 			affixed to its front plainly reads "CONTEGO"
 		</describe>
 
-		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
+		<shop id="contego-shop" name="Contego Protectives" sell="1.5" buy="0.5">
+			<!-- Both of these items are unlimited -->
+			<stock id="leather-helm" />
+			<stock id="leather-jerkin" />
 
-		<!--
-		TODO Add shops!
-		<shop>
-			<item id="nickle" price="5" quantity="-1" />
-			<item id="yarn" price="1" quantity="-1" />
+			<!--
+			Stocked items can be restocked if given a quantity. Here's a rundown of
+			the expected attributes:
+
+				restock: 			  The restocking interval in game ticks.
+				restock-freq:   A number between 1 and 100 that gives the percentage
+				                chance an item will be restocked.
+				restock-amount: How many items should be added upon a restock event.
+
+			-->
+			<stock id="nickle" quantity="10" restock="1800"
+				     restock-freq="100" restock-amount="5" />
 		</shop>
-		-->
 
 		<instance type="mobile" id="duke" />
+
+		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
 	</room>
 
 	<room id="arma armarium">
@@ -183,7 +194,7 @@
 			intricate script which reads: Contego Protectives: Celebrating a Century
 			of fine Armors.
 		</property>
-		<property key="description.inventory">A wooden nickle.</property>
+		<property key="description.inventory">wooden nickle</property>
 		<property key="description.room">A small wooden nickle lies here.</property>
 		<property key="weight">1</property>
 	</item>
@@ -196,14 +207,53 @@
 		<property key="roll">1d6</property>
 		<property key="damage">1</property>
 		<property key="hit">1</property>
-		
+		<property key="value">5</property>
+
 		<property key="description">
 			A wooden practice sword made of sturdy oak. The blade has been carved
 			with intricate patterns and its hilt wrapped in soft supple leather.
 		</property>
-		<property key="description.inventory">A wooden sword.</property>
+		<property key="description.inventory">wooden sword</property>
 		<property key="description.room">
 			A sturdy wooden sword rests here.
+		</property>
+	</item>
+
+	<item id="leather-helm" names="leather helm">
+		<property key="type">equipment</property>
+		<property key="slot">head</property>
+		<property key="weight">3</property>
+		<property key="level">1</property>
+		<property key="value">20</property>
+		<property key="ac">1</property>
+
+		<property key="description">
+			A simple leather helmet made from cow's hide. The helmet is sturdy but
+			flexible allowing it to fit a variety of head sizes.
+		</property>
+		<property key="description.inventory">leather helm</property>
+		<property key="description.room">
+			A leather helmet lies here.
+		</property>
+	</item>
+
+	<item id="leather-jerkin" names="leather jerkin">
+		<property key="type">equipment</property>
+		<property key="slot">body</property>
+		<property key="weight">10</property>
+		<property key="level">1</property>
+		<property key="value">75</property>
+		<property key="ac">4</property>
+
+		<property key="description">
+			A leather jerkin for protecting the body. Made of cow's hide this jerkin
+			seems sturdy and sure to deflect a blow or two. Small rivets of metal
+			affixed to long iron strips have been sewn into the top layers of of the
+			jerkin and add extra protection to the chest, back, and shoulders.
+		</property>
+		<property key="description.inventory">leather jerkin</property>
+		<property key="description.room">
+			A leather jerkin lies here.
 		</property>
 	</item>
 
@@ -219,6 +269,7 @@
 		<property key="description.spawn">
 			Duke Stabilis, the proprieter of Contego Protectives, enters the shop.
 		</property>
+		<property key="shop-owner">contego-shop</property>
 	</mobile>
 
 	<mobile id="pauper" names="pauper" state="wandering">

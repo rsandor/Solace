@@ -11,16 +11,15 @@ public class Room
 {
   String id;
   String title = "";
+  String desc = "";
   Area area = null;
   LinkedList<Exit> exits = new LinkedList<Exit>();
-
-  String desc = "";
   Hashtable<String, String> features = new Hashtable<String, String>();
-
   List<String> itemInstances = new LinkedList<String>();
-
   List<solace.game.Character> characters;
   List<Item> items;
+  Shop shop = null;
+  List<Mobile> mobiles;
 
   /**
    * Creates a new room with the given id, title, and description.
@@ -31,6 +30,26 @@ public class Room
     characters = Collections.synchronizedList(
       new LinkedList<solace.game.Character>()
     );
+    mobiles = Collections.synchronizedList(new LinkedList<Mobile>());
+  }
+
+  /**
+   * Instantiates all templatable game objects for the room. This includes
+   * items, mobiles, etc.
+   */
+  public void instantiate() {
+    items = Collections.synchronizedList(new LinkedList<Item>());
+    for (String id : itemInstances) {
+      try {
+        addItem(TemplateFactory.getInstance().getItem(id));
+      }
+      catch (TemplateNotFoundException e) {
+        Log.error("Room.instantiate ("+this.id+"): " + e.getMessage());
+      }
+    }
+    if (hasShop()) {
+      shop.initialize();
+    }
   }
 
   /**
@@ -62,10 +81,17 @@ public class Room
   }
 
   /**
-   * Returns the list of users in the room.
+   * @return the list of users in the room.
    */
   public List<solace.game.Character> getCharacters() {
     return characters;
+  }
+
+  /**
+   * @return a list of the mobiles inhabiting the room.
+   */
+  public List<Mobile> getMobiles() {
+    return mobiles;
   }
 
   /**
@@ -330,18 +356,25 @@ public class Room
   }
 
   /**
-   * Instantiates all templatable game objects for the room. This includes
-   * items, mobiles, etc.
+   * Determine if the room has a shop.
+   * @return `true` if the room has a shop, `false` otherwise.
    */
-  public void instantiate() {
-    items = Collections.synchronizedList(new LinkedList<Item>());
-    for (String id : itemInstances) {
-      try {
-        addItem(TemplateFactory.getInstance().getItem(id));
-      }
-      catch (TemplateNotFoundException e) {
-        Log.error("Room.instantiate ("+this.id+"): " + e.getMessage());
-      }
-    }
+  public boolean hasShop() {
+    return shop != null;
+  }
+
+  /**
+   * @return The shop associated with the room.
+   */
+  public Shop getShop() {
+    return shop;
+  }
+
+  /**
+   * Sets the shop for the room.
+   * @param s The shop to set.
+   */
+  public void setShop(Shop s) {
+    shop = s;
   }
 }

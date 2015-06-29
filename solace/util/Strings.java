@@ -6,7 +6,12 @@ import javax.xml.transform.stream.*;
 import java.io.*;
 
 /**
- * Contains various helper methods for handling input and output
+ * Contains various helper methods for handling string manipulation.
+ *
+ * TODO It would be cool to have elaborate banner headers for the various
+ *      tabular game screens. We could save these as game messages and pull
+ *      them in via Strings library.
+ *
  * @author Ryan Sandor Richards.
  */
 public class Strings {
@@ -66,15 +71,22 @@ public class Strings {
   }
 
   /**
-   * Creates a centered title surrounded by rules.
-   * @param text Text for the centered title.
-   * @return The ascii art title.
+   * Centers the given text given a line width and padding.
+   * @param text Text to center.
+   * @param width Width of the line in characters over which to center.
+   * @param pre A prefix for the centered text.
+   * @param post A postfix for the centered text.
+   * @return A string containing the text centered by spaces.
    */
-  public static String centerTitle(String text) {
-    StringBuffer b = new StringBuffer();
-    b.append(RULE);
-
-    int s = 80 - 2 - text.length();
+  public static String centerText(
+    String text,
+    int width,
+    String pre,
+    String post
+  ) {
+    int leftPadding = Color.strip(pre).length();
+    int rightPadding = Color.strip(post).length();
+    int s = width - leftPadding - rightPadding - Color.strip(text).length();
     String left;
     String right;
 
@@ -83,16 +95,43 @@ public class Strings {
     }
     else {
       left = spaces(s/2);
-      right = spaces(s/2) + " ";
+      right = spaces(s/2 + 1);
     }
 
-    b.append("|");
+    StringBuffer b = new StringBuffer(width);
+    b.append(pre);
     b.append(left);
     b.append(text);
     b.append(right);
-    b.append("|\n\r");
-    b.append(RULE);
+    b.append(post);
+    b.append("\n\r");
+    
+    return b.toString();
+  }
 
+  /**
+   * Creates a centered title surrounded by rules.
+   * @param text Text for the centered title.
+   * @return The ascii art title.
+   */
+  public static String banner(String text) {
+    StringBuffer b = new StringBuffer();
+    b.append(RULE);
+    b.append(centerText(text, 80, "|", "|"));
+    b.append(RULE);
+    return b.toString();
+  }
+
+  /**
+   * Generates a stylized title banner for shops.
+   * @param text Name of the shop.
+   * @return A stylized banner for the shop with th given name.
+   */
+  public static String shopBanner(String name) {
+    StringBuffer b = new StringBuffer();
+    b.append(RULE);
+    b.append(centerText(name, 80, "| {g$$${x", "{r$$${x |"));
+    b.append(RULE);
     return b.toString();
   }
 

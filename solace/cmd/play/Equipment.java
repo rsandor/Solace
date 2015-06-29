@@ -15,7 +15,7 @@ public class Equipment extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     StringBuffer b = new StringBuffer();
-    b.append(Strings.centerTitle("Equipment"));
+    b.append(Strings.banner("Equipment"));
 
     for (String slot : solace.game.Character.EQ_SLOTS) {
       Item item = character.getEquipment(slot);

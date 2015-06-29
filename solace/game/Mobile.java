@@ -59,14 +59,28 @@ public class Mobile extends Template {
             }
 
             // Move to a random exit
-            List<Exit> exits = character.getRoom().getExits();
+            Room origin = character.getRoom();
+            List<Exit> exits = origin.getExits();
             Exit exit = exits.get(rand.nextInt(exits.size()));
             String direction = exit.getNames().get(0);
-            move.run(null, new String[] { direction });
+            Room destination = area.getRoom(exit.getToId());
+            if ( move.run(null, new String[] { direction }) ) {
+              swapRooms(origin, destination);
+            }
           }
         });
       }
     }
+  }
+
+  /**
+   * Moves a mobile from one room to another.
+   * @param origin Room to remove the mobile from.
+   * @param destination Room to put the mobile in.
+   */
+  protected void swapRooms(Room origin, Room destination) {
+    origin.getMobiles().remove(this);
+    destination.getMobiles().add(this);
   }
 
   /**
@@ -108,6 +122,8 @@ public class Mobile extends Template {
     }
     room.sendMessage(spawn);
     character.setRoom(room);
+
+    room.getMobiles().add(this);
     room.getCharacters().add(character);
   }
 
@@ -117,6 +133,7 @@ public class Mobile extends Template {
   public void pluck() {
     if (!isPlaced) { return; }
     character.getRoom().getCharacters().remove(character);
+    character.getRoom().getMobiles().remove(this);
     character.setRoom(null);
     isPlaced = false;
   }

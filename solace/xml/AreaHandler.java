@@ -10,12 +10,18 @@ import java.util.*;
 
 /**
  * Handles the parsing of area XML files.
+ *
+ * NOTE: This class uses quite a few static variables to get away with some
+ *       trickery with how we use and override states. This means you cannot
+ *       load two areas concurrently (via threading).
+ *
  * @author Ryan Sandor Richards.
  */
 public class AreaHandler extends Handler {
   static Area area = null;
   static Room room = null;
   static Exit exit = null;
+  static Shop shop = null;
 
   static Template template = null;
   static String propertyKey = null;
@@ -120,6 +126,43 @@ public class AreaHandler extends Handler {
           else if (type.startsWith("mobile")) {
             MobileManager.getInstance().addInstance(globalId, room);
           }
+        }
+        else if (name.equals("shop")) {
+          String id = attrs.getValue("id");
+          String shopName = attrs.getValue("name");
+          String sell = attrs.getValue("sell");
+          String buy = attrs.getValue("buy");
+
+          // TODO Make the default buy and sell multipliers configurable in the
+          //      data/world.txt file.
+
+          if (sell == null) {
+            sell = "1.5";
+          }
+
+          if (buy == null) {
+            buy = "0.5";
+          }
+
+          double buyM, sellM;
+          try {
+            buyM = Double.parseDouble(buy);
+            sellM = Double.parseDouble(sell);
+          }
+          catch (NumberFormatException nfe) {
+            Log.error(
+              "Error parsing a buy or sell multiplier: " + buy + ", " + sell +
+              ". Setting default."
+            );
+            buyM = 0.5;
+            sellM = 1.5;
+          }
+
+          shop = new Shop(id, shopName, room);
+          shop.setSellMultiplier(sellM);
+          shop.setBuyMultiplier(buyM);
+
+          return SHOP;
         }
 
         return ROOM;
@@ -244,6 +287,52 @@ public class AreaHandler extends Handler {
       public void characters(String str) {
         buffers.peek().append(str);
       }
+    },
+
+    SHOP() {
+      public State start(String name, Attributes attrs) {
+        if (name.equals("stock")) {
+          String itemId = attrs.getValue("id");
+          if (itemId.indexOf(".") < 0) {
+            itemId = area.getId() + "." + itemId;
+          }
+
+          if (itemId == null) {
+            Log.error(String.format(
+              "Unable to stock item in shop %s, missing id.", shop.getName()
+            ));
+            return SHOP;
+          }
+
+          // TODO Perhaps pull out the default values into constants on the
+          //      ShopItem class.
+          ShopItem shopItem = new ShopItem(shop, itemId);
+          shopItem.setQuantity(
+            parseAttr(attrs.getValue("quantity"), -1)
+          );
+          shopItem.setRestockInterval(
+            parseAttr(attrs.getValue("restock"), -1)
+          );
+          shopItem.setRestockFrequency(
+            parseAttr(attrs.getValue("restock-freq"), -1)
+          );
+          shopItem.setRestockAmount(
+            parseAttr(attrs.getValue("restock-amount"), -1)
+          );
+
+          shop.addItem(shopItem);
+        }
+
+        return SHOP;
+      }
+
+      public State end(String name) {
+        if (name.equals("shop")) {
+          room.setShop(shop);
+          return ROOM;
+        }
+        return SHOP;
+      }
     };
 
     State() {
@@ -263,6 +352,27 @@ public class AreaHandler extends Handler {
 
   // Instance variables
   State state = State.INIT;
+
+  /**
+   * Helper function for parsing integers from attributes.
+   * @param  a Attribute to parse.
+   * @param  def Default value if parsting fails.
+   * @return The parsed value, or the default if none could be parsed.
+   */
+  protected static int parseAttr(String a, int def) {
+    if (a == null) {
+      return def;
+    }
+    try {
+      return Integer.parseInt(a);
+    }
+    catch (NumberFormatException nfe) {
+      Log.error(String.format(
+        "Value contains unparsable quantity %s.", a
+      ));
+      return def;
+    }
+  }
 
   /**
    * @return The area as a result of the parse, or <code>null</code> if no area
