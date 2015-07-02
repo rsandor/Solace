@@ -289,7 +289,7 @@ public class Room
     for (Item item : items) {
       for (String n : item.getNames())
         if (n.startsWith(name)) {
-          return item.get("description");
+          return Strings.toFixedWidth(item.get("description"));
         }
     }
     return null;

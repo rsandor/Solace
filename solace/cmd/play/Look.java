@@ -32,21 +32,27 @@ public class Look extends PlayCommand {
 
     String name = params[1];
 
-    String feature = room.describeFeature(name);
-    if (feature != null) {
-      c.sendln(feature);
+    String featureDesc = room.describeFeature(name);
+    if (featureDesc != null) {
+      c.sendln(featureDesc);
       return true;
     }
 
-    String item = room.describeItem(name);
-    if (item != null) {
-      c.sendln(item);
+    String itemDesc = room.describeItem(name);
+    if (itemDesc != null) {
+      c.sendln(itemDesc);
       return true;
     }
 
-    String character = room.describeCharacter(name);
-    if (character != null) {
-      c.sendln(character);
+    String characterDesc = room.describeCharacter(name);
+    if (characterDesc != null) {
+      c.sendln(characterDesc);
+      return true;
+    }
+
+    Item inventoryItem = character.getItem(name);
+    if (inventoryItem != null) {
+      c.sendln(Strings.toFixedWidth(inventoryItem.get("description")));
       return true;
     }
 
