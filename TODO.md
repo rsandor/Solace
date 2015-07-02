@@ -1,9 +1,10 @@
 # Master TODO
 
 Next:
-- Skills System + a few Prototype Skills
+-  Prototype skills, passives, cooldowns, and proficiencies
 
 On Deck:
+- Character Creator 2.0
 - Battle system 1.0
 - Mobile spawn points
 - Loot System 1.0
@@ -44,6 +45,7 @@ Later:
 --------------------------------------------------------------------------------
 
 Done:
+- Skills System 1.0
 - Emotes 1.0 (small list to start, specifically scowl)
 - Mobile stats generation
 - Mobile gold generation

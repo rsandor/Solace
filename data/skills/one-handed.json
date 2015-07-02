@@ -1,0 +1,30 @@
+{
+  "id": "one-handed",
+  "name": "One-handed",
+  "proficiencies": [
+    {
+      "level": 1,
+      "types": ["dagger", "club", "shortsword"]
+    },
+    {
+      "level": 25,
+      "types": ["longsword", "axe", "mace", "hammer"]
+    },
+    {
+      "level": 50,
+      "types": ["nunchaku", "kukuri", "flail"]
+    }
+  ],
+  "passives": [
+    { "level": 15, "name": "parry" },
+    { "level": 40, "name": "second attack" },
+    { "level": 70, "name": "third attack" },
+    { "level": 100, "name": "battle trance" },
+  ],
+  "cooldowns": [
+    { "level": 10, "name": "flurry" },
+    { "level": 30, "name": "feign" },
+    { "level": 60, "name": "riposte" },
+    { "level": 90, "name": "coup de grace" }
+  ]
+}

@@ -3,6 +3,9 @@
     <character name="Hintos" hp="20" maxhp="20" mp="20" maxmp="20" sp="20" maxsp="20" strength="8" vitality="8" magic="8" speed="8" gold="9848">
       <location area="medius" room="contego protectives"/>
       <inventory/>
+      <skills>
+        <skill id="one-handed" level="50"/>
+      </skills>
       <equipment>
         <item uuid="f8dd1a76-1138-47a9-99a9-1a36a05c9cd1" id="leather-jerkin" names="leather jerkin" area="medius">
           <property key="level">1</property>

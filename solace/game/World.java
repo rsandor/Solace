@@ -36,6 +36,7 @@ public class World
     if (initialized)
       return;
 
+    Skills.initialize();
     loadAreas();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());

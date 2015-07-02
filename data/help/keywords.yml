@@ -40,5 +40,9 @@ commands/buy.md: buy
 commands/list.md: list
 commands/sell.md: sell
 commands/emote.md: emote joey scowl
+commands/skills.md: cmdskill
 misc/gold.md: gold currency
 misc/shops.md: shops
+skills/index.md: skills
+skills/one-handed.md: one-handed
+skills/block.md: block

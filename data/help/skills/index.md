@@ -17,5 +17,6 @@ Here is a list of each skill with a brief description:
 * Two-handed - proficiency with large two handed weapons fighting
 * Block - actions and passives that increase shield skill and utility
 * Light Armor - light armor proficiency (e.g. leathers, hides, etc.)
-* Medium Armor - medium armor proficiency (e.g. chain, splint, etc.)
 * Heavy Armor - heavey armor proficiency (e.g. plate, scale, etc.)
+
+See Also: `help cmdskills`

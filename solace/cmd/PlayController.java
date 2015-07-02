@@ -68,13 +68,14 @@ public class PlayController
     addCommand(new Look(character));
     addCommand(new Say(character));
     addCommand(new Scan(character));
-    addCommand(new Inventory(character));
     addCommand(new Get(character));
     addCommand(new Drop(character));
     addCommand(new Tick());
 
     addCommand(new Score(character));
     addCommand(new Worth(character));
+    addCommand(new Inventory(character));
+    addCommand(new ListSkills(character));
 
     addCommand(new Wear(character));
     addCommand(new Equipment(character));

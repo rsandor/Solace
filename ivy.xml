@@ -7,5 +7,7 @@
   <dependencies>
     <dependency org="junit" name="junit-dep" rev="4.8.2"/>
     <dependency org="org.mockito" name="mockito-all" rev="1.8.4"/>
+    <dependency org="org.json" name="json" rev="20090211"/>
+    <dependency org="com.google.guava" name="guava" rev="12.0" />
   </dependencies>
 </ivy-module>

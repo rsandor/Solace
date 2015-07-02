@@ -17,7 +17,8 @@ public class AccountHandler extends Handler {
    * Enumeration for the basic states handled by the parser.
    */
   private enum State {
-    INIT, USER, CHARACTERS, CHARACTER, INVENTORY, EQUIPMENT, ITEM, PROPERTY
+    INIT, USER, CHARACTERS, CHARACTER, INVENTORY,
+    EQUIPMENT, ITEM, PROPERTY, SKILLS
   };
 
   // Instance variables
@@ -55,6 +56,7 @@ public class AccountHandler extends Handler {
       case INVENTORY: state = startInventory(name, attrs); break;
       case EQUIPMENT: state = startEquipment(name, attrs); break;
       case ITEM: state = startItem(name, attrs); break;
+      case SKILLS: state = startSkills(name, attrs); break;
     }
   }
 
@@ -87,7 +89,11 @@ public class AccountHandler extends Handler {
       return;
     }
 
-    if (name.equals("inventory") || name.equals("equipment")) {
+    if (
+      name.equals("inventory") ||
+      name.equals("equipment") ||
+      name.equals("skills")
+    ) {
       state = State.CHARACTER;
       return;
     }
@@ -187,6 +193,9 @@ public class AccountHandler extends Handler {
     else if (name.equals("equipment")) {
       return State.EQUIPMENT;
     }
+    else if (name.equals("skills")) {
+      return State.SKILLS;
+    }
     return State.CHARACTER;
   }
 
@@ -230,6 +239,44 @@ public class AccountHandler extends Handler {
     propertyKey = attrs.getValue("key");
     propertyBuffer = new StringBuffer();
     return State.PROPERTY;
+  }
+
+  /**
+   * Handles start elements for the skills state.
+   * @param name Name of the element.
+   * @param attrs Attributes for the element.
+   */
+  protected State startSkills(String name, Attributes attrs) {
+    if (name.equals("skill")) {
+      String id = attrs.getValue("id");
+      String level = attrs.getValue("level");
+
+      if (level == null) {
+        Log.error(String.format(
+          "Skill %s missing level, setting to 1.",
+          id
+        ));
+        level = "1";
+      }
+
+      try {
+        character.addSkill(id, Integer.parseInt(level));
+      }
+      catch (SkillNotFoundException snfe) {
+        Log.error(String.format(
+          "Skill with id %s could not be found, skipping.", id
+        ));
+      }
+      catch (NumberFormatException nfe) {
+        Log.error(String.format(
+          "Could not parse skill level '%s' for skill %s and character %s",
+          level,
+          id,
+          character.getName()
+        ));
+      }
+    }
+    return State.SKILLS;
   }
 
   /**

@@ -202,6 +202,7 @@
 	<item id="wooden-sword" names="wooden sword">
 		<property key="type">equipment</property>
 		<property key="slot">weapon</property>
+		<property key="weapon-type">shortsword</property>
 		<property key="weight">2</property>
 		<property key="level">1</property>
 		<property key="roll">1d6</property>

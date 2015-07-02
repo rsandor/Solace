@@ -6,6 +6,8 @@ import solace.net.Connection;
 import solace.util.EventEmitter;
 import solace.util.EventListener;
 import solace.util.Log;
+import solace.util.SkillNotFoundException;
+import solace.util.Skills;
 
 /**
  * Represents a player character or actor in the game world.
@@ -44,39 +46,32 @@ public class Character {
   }
 
   // Instance Variables
+  Account account = null;
   String id = null;
   String name;
   String description;
-
   Room room = null;
-  Account account = null;
-  List<Item> inventory = null;
-
   EventEmitter events;
 
   int level;
-
-  // Stats
   int hp;
   int maxHp;
   int mp;
   int maxMp;
   int sp;
   int maxSp;
-
   int strength;
   int vitality;
   int magic;
   int speed;
-
   String majorStat = "none";
   String minorStat = "none";
 
-  // Currency
   long gold;
-
-  // Equipment
+  List<Item> inventory = null;
   Hashtable<String, Item> equipment = new Hashtable<String, Item>();
+  TreeSet<String> skillIds = new TreeSet<String>();
+  List<Skill> skills = new ArrayList<Skill>();
 
   /**
    * Creates a new character.
@@ -89,30 +84,28 @@ public class Character {
     events = new EventEmitter();
   }
 
-  // Statistic accessors and mutators
-  public int getHp() { return hp; }
-  public void setHp(int v) { hp = v; }
-  public int getMaxHp() { return maxHp; }
-  public void setMaxHp(int v) { maxHp = v; }
+  /**
+   * Adds a skill to the character with the given id and level.
+   * @param id Id of the skill to add.
+   * @param level Level of the skill.
+   * @throws SkillNotFoundException If there is no skill with the given id.
+   */
+  public void addSkill(String id, int level)
+    throws SkillNotFoundException
+  {
+    if (skillIds.contains(id)) {
+      return;
+    }
+    Skill skill = Skills.cloneSkill(id);
+    skill.setLevel(level);
+    skillIds.add(id);
+    skills.add(skill);
+  }
 
-  public int getMp() { return mp; }
-  public void setMp(int v) { mp = v; }
-  public int getMaxMp() { return maxMp; }
-  public void setMaxMp(int v) { maxMp = v; }
-
-  public int getSp() { return sp; }
-  public void setSp(int v) { sp = v; }
-  public int getMaxSp() { return maxSp; }
-  public void setMaxSp(int v) { maxSp = v; }
-
-  public int getStrength() { return strength; }
-  public void setStrength(int v) { strength = v; }
-  public int getVitality() { return vitality; }
-  public void setVitality(int v) { vitality = v; }
-  public int getMagic() { return magic; }
-  public void setMagic(int v) { magic = v; }
-  public int getSpeed() { return speed; }
-  public void setSpeed(int v) { speed = v; }
+  /**
+   * @return The character's skills.
+   */
+  public Collection<Skill> getSkills() { return skills; };
 
   /**
    * Sets the major statistic for the character. Major statistics grow the
@@ -566,6 +559,32 @@ public class Character {
     return equipment.get(slot);
   }
 
+  // Statistic accessors and mutators
+  // TODO Document me
+  public int getHp() { return hp; }
+  public void setHp(int v) { hp = v; }
+  public int getMaxHp() { return maxHp; }
+  public void setMaxHp(int v) { maxHp = v; }
+
+  public int getMp() { return mp; }
+  public void setMp(int v) { mp = v; }
+  public int getMaxMp() { return maxMp; }
+  public void setMaxMp(int v) { maxMp = v; }
+
+  public int getSp() { return sp; }
+  public void setSp(int v) { sp = v; }
+  public int getMaxSp() { return maxSp; }
+  public void setMaxSp(int v) { maxSp = v; }
+
+  public int getStrength() { return strength; }
+  public void setStrength(int v) { strength = v; }
+  public int getVitality() { return vitality; }
+  public void setVitality(int v) { vitality = v; }
+  public int getMagic() { return magic; }
+  public void setMagic(int v) { magic = v; }
+  public int getSpeed() { return speed; }
+  public void setSpeed(int v) { speed = v; }
+
   /**
    * Adds an event listener to the character.
    * @param event Name of the event.
@@ -617,6 +636,17 @@ public class Character {
       b.append(i.getXML());
     }
     b.append("</inventory>");
+
+    // Skills
+    b.append("<skills>");
+    for (Skill s : skills) {
+      b.append(String.format(
+        "<skill id=\"%s\" level=\"%d\" />",
+        s.getId(),
+        s.getLevel()
+      ));
+    }
+    b.append("</skills>");
 
     // Equipment
     b.append("<equipment>");
