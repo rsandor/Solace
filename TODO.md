@@ -13,7 +13,6 @@ On Deck:
 - Leveling System 1.0
 
 Bugs:
-- System log levels from env (e.g. `LOG_LEVEL=trace`)
 - Entering game message does not appear, player doesn't seem to get messages
   in the same room.
 - Login shouldn't load characters until after user authenticates with password
@@ -51,6 +50,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- System log levels from env (e.g. `LOG_LEVEL=trace`)
 - Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory
