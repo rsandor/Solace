@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Customizable character equipment slot names. -->
+<equipment>
+	<slot name="head"/>
+	<slot name="body"/>
+	<slot name="hands"/>
+	<slot name="waist"/>
+	<slot name="legs"/>
+	<slot name="feet"/>
+	<slot name="neck"/>
+	<slot name="ears"/>
+	<slot name="wrist"/>
+	<slot name="ring"/>
+	<slot name="weapon"/>
+	<slot name="off-hand"/>
+</equipment>

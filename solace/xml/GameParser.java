@@ -14,6 +14,8 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class GameParser {
+  protected static final String EQUIPMENT_PATH = "data/config/equipment.xml";
+
   /**
    * Parses a generic XML file with a given handler and returns the result.
    * @param fileName Name of the file being parsed.
@@ -40,13 +42,31 @@ public class GameParser {
   }
 
   /**
-   * Parses a configuration file.
+   * Parses a key-value configuration file.
    * @param fileName Name of the file to parse.
    * @return The configuration hash parsed from the file.
    */
   public static Configuration parseConfiguration(String fileName)
-    throws IOException {
+    throws IOException
+  {
     return (Configuration)parse(fileName, new ConfigHandler());
+  }
+
+  /**
+   * Parses the game's equipment configuration file.
+   */
+  public static Collection<String> parseEquipment() {
+    Log.info("Loading equipment slots");
+    try {
+      return (Collection<String>)parse(EQUIPMENT_PATH, new EquipmentHandler());
+    }
+    catch (IOException ioe) {
+      Log.fatal(String.format(
+        "Could not load %s: %s", EQUIPMENT_PATH, ioe.getMessage()
+      ));
+      System.exit(1);
+    }
+    return null;
   }
 
   /**

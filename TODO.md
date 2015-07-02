@@ -1,6 +1,6 @@
 # Master TODO
 
-Next:
+Next Feature:
 - Passives abstraction & Cooldown abstraction
 
 On Deck:
@@ -22,7 +22,6 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
-- Make equipment slots configurable in world.xml
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names
@@ -50,6 +49,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Make equipment slots configurable in world.xml
 - System log levels from env (e.g. `LOG_LEVEL=trace`)
 - Fix the look command
   - Doesn't wrap item descriptions

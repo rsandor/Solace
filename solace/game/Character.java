@@ -8,6 +8,7 @@ import solace.util.EventListener;
 import solace.util.Log;
 import solace.util.SkillNotFoundException;
 import solace.util.Skills;
+import solace.xml.GameParser;
 
 /**
  * Represents a player character or actor in the game world.
@@ -15,26 +16,10 @@ import solace.util.Skills;
  */
 public class Character {
   /**
-   * Unmodifiable list of all valid equipment slots for a given character.
+   * Unmodifiable collection of all valid equipment slots for a given character.
    */
-  public static final List<String> EQ_SLOTS = Collections.unmodifiableList(
-    new LinkedList<String>(Arrays.asList(
-      new String[] {
-        "head",
-        "body",
-        "hands",
-        "waist",
-        "legs",
-        "feet",
-        "neck",
-        "ears",
-        "wrist",
-        "ring",
-        "weapon",
-        "off-hand"
-      }
-    ))
-  );
+  public static final Collection<String> EQ_SLOTS =
+    Collections.unmodifiableCollection(GameParser.parseEquipment());
 
   /**
    * Determines if the given slot name is a valid equipment slot.

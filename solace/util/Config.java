@@ -42,8 +42,12 @@ public class Config {
     File dir = new File(configPath);
     String[] names = dir.list();
     if (names != null) {
-      for (String name : names)
+      for (String name : names) {
+        if (name.equals("equipment.xml")) {
+          continue;
+        }
         loadFile(name);
+      }
     }
     else {
       Log.info("No configurations to load.");
