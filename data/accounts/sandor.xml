@@ -2,6 +2,7 @@
   <characters>
     <character name="kilgore" hp="20" maxhp="20" mp="20" maxmp="20" sp="20" maxsp="20" strength="8" vitality="8" magic="8" speed="8" gold="0">
       <location area="medius" room="contego protectives"/>
+      <skills/>
       <inventory/>
       <equipment/>
     </character>

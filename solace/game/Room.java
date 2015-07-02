@@ -306,7 +306,11 @@ public class Room
         String[] names = ch.getName().split("\\s+");
         for (String n : names) {
           if (n.toLowerCase().startsWith(name.toLowerCase())) {
-            return "\n\r" + Strings.toFixedWidth(ch.getDescription()) + "\n\r";
+            String desc = ch.getDescription();
+            if (desc == null) {
+              desc = "They are nondescript.";
+            }
+            return "\n\r" + Strings.toFixedWidth(desc) + "\n\r";
           }
         }
       }

@@ -4,17 +4,15 @@ Next Feature:
 - Passives abstraction & Cooldown abstraction
 
 On Deck:
+- Battle system 1.0
 - More skills
 - Character Creator 2.0
-- Battle system 1.0
 - Mobile spawn points
 - Loot System 1.0
 - Stats System 2.0
 - Leveling System 1.0
 
 Bugs:
-- Entering game message does not appear, player doesn't seem to get messages
-  in the same room.
 - Login shouldn't load characters until after user authenticates with password
 - Shops commands should refer to the shop owner and be more flavorful
 - Move command will fail across areas (uses area.getRoom, need global lookup)
@@ -49,6 +47,8 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Entering game message does not appear, player doesn't seem to get messages
+  in the same room.
 - Make equipment slots configurable in world.xml
 - System log levels from env (e.g. `LOG_LEVEL=trace`)
 - Fix the look command

@@ -118,9 +118,17 @@ public class MainMenu
           ch = act.getCharacter(name);
         }
 
+        Room room = ch.getRoom();
+        if (room == null) {
+          room = World.getDefaultRoom();
+          ch.setRoom(room);
+        }
+        room.sendMessage(ch.getName() + " enters the realm.");
+        room.getCharacters().add(ch);
 
         act.setActiveCharacter(ch);
         c.setStateController(new PlayController(c, ch));
+
         return true;
       }
       catch (GameException ge) {
