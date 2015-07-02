@@ -36,8 +36,8 @@
           <property key="description.room">A sturdy wooden sword rests here.</property>
           <property key="type">equipment</property>
           <property key="damage">1</property>
-          <property key="slot">weapon</property>
           <property key="value">5</property>
+          <property key="slot">weapon</property>
           <property key="description">A wooden practice sword made of sturdy oak. The blade has been carved with intricate patterns and its hilt wrapped in soft supple leather.</property>
           <property key="description.inventory">wooden sword</property>
         </item>

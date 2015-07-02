@@ -1,16 +1,18 @@
 # Master TODO
 
 Next Feature:
-- Passives abstraction & Cooldown abstraction
+- Cooldown abstraction
 
-On Deck:
+Features:
 - Battle system 1.0
 - More skills
+- Races & Classes
 - Character Creator 2.0
 - Mobile spawn points
 - Loot System 1.0
 - Stats System 2.0
 - Leveling System 1.0
+- Tactics System 1.0
 
 Bugs:
 - Login shouldn't load characters until after user authenticates with password
@@ -25,7 +27,6 @@ Later:
   - articles should have unique names
 - Decorative banners for shops, inventory, character sheet, etc.
 - Spells, Scrolls, and Spell Casting
-- Classes (Collections of Skills?) and Races
 - Game world calendar + Weather
 - Room lighting
 - Make screen width adjustable on connection (currently fixed to 80)
@@ -40,13 +41,14 @@ Later:
 
 Help Files:
 - expand upon skills
-- proficiencies
+- proficiencies (profs)
 - passive enhancements (passives)
 - cooldown actions (cooldowns)
 
 --------------------------------------------------------------------------------
 
 Done:
+- Level offset for equipment is now configurable in world.xml
 - Entering game message does not appear, player doesn't seem to get messages
   in the same room.
 - Make equipment slots configurable in world.xml

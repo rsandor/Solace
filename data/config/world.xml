@@ -35,4 +35,9 @@
 			<option name="look" value="{g" />
 		</room>
 	</colors>
+
+	<item>
+		<!-- How many levels below an ithem's level you can be to wear it -->
+		<option name="level-offset" value="10"/>
+	</item>
 </config>

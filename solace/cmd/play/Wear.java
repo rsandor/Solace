@@ -38,12 +38,23 @@ public class Wear extends PlayCommand {
     }
 
     // Are they high enough level to wear it?
-    // TODO Move the item level offset out into the world configuration
-    if (itemLevel != null) {
-      if (Integer.parseInt(itemLevel) > 10 + character.getLevel()) {
-        character.sendln("You are not powerful enough to wear " + itemDesc);
-        return false;
+    try {
+      int levelOffset;
+      if (Config.get("item.level-offset") == null) {
+        levelOffset = 10;
       }
+      else {
+        levelOffset = Integer.parseInt(Config.get("world.item.level-offset"));
+      }
+      if (itemLevel != null) {
+        if (Integer.parseInt(itemLevel) > levelOffset + character.getLevel()) {
+          character.sendln("You are not powerful enough to wear " + itemDesc);
+          return false;
+        }
+      }
+    }
+    catch (NumberFormatException nfe) {
+      Log.warn("Config: world.item.level-offset is not an integer");
     }
 
     // Do they have the proficiency to equip the item?
