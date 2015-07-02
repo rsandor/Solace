@@ -72,14 +72,21 @@ public class PlayController
     addCommand(new Get(character));
     addCommand(new Drop(character));
     addCommand(new Tick());
+
     addCommand(new Score(character));
     addCommand(new Worth(character));
+
     addCommand(new Wear(character));
     addCommand(new Equipment(character));
     addCommand(new Remove(character));
+
     addCommand(new ShopList(character));
     addCommand(new ShopBuy(character));
     addCommand(new ShopAppraise(character));
     addCommand(new ShopSell(character));
+
+    Emote emote = new Emote(character);
+    addCommand(emote);
+    addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
   }
 }

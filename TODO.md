@@ -10,7 +10,12 @@ On Deck:
 - Stats System 2.0
 - Leveling System 1.0
 
+
 Bugs:
+- Entering game message does not appear, player doesn't seem to get messages
+  in the same room.
+- Helmet item is broken
+- Login shouldn't load characters until after user authenticates with password
 - Fix the look command
   - Doesn't wrap item descriptions
   - Cannot look at items in inventory
@@ -37,6 +42,7 @@ Later:
 --------------------------------------------------------------------------------
 
 Done:
+- Emotes 1.0 (small list to start, specifically scowl)
 - Mobile stats generation
 - Mobile gold generation
 - Mobile wander events are not re-added upon area reload

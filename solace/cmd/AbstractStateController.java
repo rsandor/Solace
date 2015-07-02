@@ -151,6 +151,17 @@ public abstract class AbstractStateController
   }
 
   /**
+   * Adds a command to the controller under each given alias.
+   * @param aliases Alias names for the command.
+   * @param c Command to add.
+   */
+  public void addCommand(Collection<String> aliases, Command c) {
+    for (String alias : aliases) {
+      commands.add(new CommandTuple(alias, c));
+    }
+  }
+
+  /**
    * Attempts to find a command that matches with the given string.
    * @param c Search criteria.
    * @return A command that matches, or null if no commands match the string.

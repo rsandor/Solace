@@ -114,6 +114,22 @@ public class Room
   }
 
   /**
+   * Finds a character in the room with the given name prefix.
+   * @param namePrefix Name prefix for the character to find.
+   * @return The character or null if none was found.
+   */
+  public solace.game.Character findCharacter(String namePrefix) {
+    synchronized (characters) {
+      for (solace.game.Character ch : characters) {
+        if (ch.getName().toLowerCase().startsWith(namePrefix)) {
+          return ch;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
    * @return the area the room belongs to.
    */
   public Area getArea() {
