@@ -6,20 +6,7 @@
         <skill id="one-handed" level="50"/>
         <skill id="light-armor" level="1"/>
       </skills>
-      <inventory>
-        <item uuid="5addfe93-2ee8-443c-91f3-205a9b7ff833" id="leather-helm" names="leather helm" area="medius">
-          <property key="level">1</property>
-          <property key="proficiency">light-armor</property>
-          <property key="weight">3</property>
-          <property key="description.room">A leather helmet lies here.</property>
-          <property key="type">equipment</property>
-          <property key="slot">head</property>
-          <property key="value">20</property>
-          <property key="description">A simple leather helmet made from cow's hide. The helmet is sturdy but flexible allowing it to fit a variety of head sizes.</property>
-          <property key="ac">1</property>
-          <property key="description.inventory">leather helm</property>
-        </item>
-      </inventory>
+      <inventory/>
       <equipment>
         <item uuid="3c4c2540-fb0c-46d9-96c7-3113912542ad" id="leather-jerkin" names="leather jerkin" area="medius">
           <property key="level">1</property>
@@ -33,6 +20,18 @@
           <property key="ac">4</property>
           <property key="description.inventory">leather jerkin</property>
         </item>
+        <item uuid="5addfe93-2ee8-443c-91f3-205a9b7ff833" id="leather-helm" names="leather helm" area="medius">
+          <property key="level">1</property>
+          <property key="proficiency">light-armor</property>
+          <property key="weight">3</property>
+          <property key="description.room">A leather helmet lies here.</property>
+          <property key="type">equipment</property>
+          <property key="slot">head</property>
+          <property key="value">20</property>
+          <property key="description">A simple leather helmet made from cow's hide. The helmet is sturdy but flexible allowing it to fit a variety of head sizes.</property>
+          <property key="ac">1</property>
+          <property key="description.inventory">leather helm</property>
+        </item>
         <item uuid="2e93e0b3-1523-48b7-9c08-f1d15e758de3" id="wooden-sword" names="wooden sword" area="medius">
           <property key="hit">1</property>
           <property key="level">1</property>
@@ -42,8 +41,8 @@
           <property key="description.room">A sturdy wooden sword rests here.</property>
           <property key="type">equipment</property>
           <property key="damage">1</property>
-          <property key="value">5</property>
           <property key="slot">weapon</property>
+          <property key="value">5</property>
           <property key="description">A wooden practice sword made of sturdy oak. The blade has been carved with intricate patterns and its hilt wrapped in soft supple leather.</property>
           <property key="description.inventory">wooden sword</property>
         </item>
