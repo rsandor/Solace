@@ -20,7 +20,7 @@ public class Character {
   public static final List<String> EQ_SLOTS = Collections.unmodifiableList(
     new LinkedList<String>(Arrays.asList(
       new String[] {
-        "helm",
+        "head",
         "body",
         "hands",
         "waist",
@@ -106,6 +106,28 @@ public class Character {
    * @return The character's skills.
    */
   public Collection<Skill> getSkills() { return skills; };
+
+  /**
+   * @return true if the player can equip the item, false otherwise.
+   */
+  public boolean canEquip(Item i) {
+    if (!i.isEquipment()) {
+      return false;
+    }
+
+    String proficiency = i.get("proficiency");
+    if (proficiency == null || proficiency.equals("")) {
+      return true;
+    }
+
+    for (Skill s : skills) {
+      if (s.grantsProficiency(proficiency)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   /**
    * Sets the major statistic for the character. Major statistics grow the
@@ -630,13 +652,6 @@ public class Character {
       ));
     }
 
-    // Inventory
-    b.append("<inventory>");
-    for (Item i : inventory) {
-      b.append(i.getXML());
-    }
-    b.append("</inventory>");
-
     // Skills
     b.append("<skills>");
     for (Skill s : skills) {
@@ -647,6 +662,13 @@ public class Character {
       ));
     }
     b.append("</skills>");
+
+    // Inventory
+    b.append("<inventory>");
+    for (Item i : inventory) {
+      b.append(i.getXML());
+    }
+    b.append("</inventory>");
 
     // Equipment
     b.append("<equipment>");

@@ -139,6 +139,15 @@ public class Skill {
   }
 
   /**
+   * Determine whether the skill grants the given passive at its current level.
+   * @param name Name of the passive enhancement.
+   * @return True if it grants the passive, false otherwise.
+   */
+  public boolean grantsPassive(String name) {
+    return getPassives().contains(name);
+  }
+
+  /**
    * @return A list of the cooldowns granted by the skill at its current level.
    */
   public Collection<String> getCooldowns() {
@@ -146,10 +155,29 @@ public class Skill {
   }
 
   /**
+   * Determine whether the skill grants the given cooldown at its current level.
+   * @param name Name of the cooldown action.
+   * @return True if it grants the cooldown, false otherwise.
+   */
+  public boolean grantsCooldown(String name) {
+    return getCooldowns().contains(name);
+  }
+
+  /**
    * @return List of the proficiencies granted by the skill at its current level.
    */
   public Collection<String> getProficiencies() {
     return getNamesForLevel(proficiencies);
+  }
+
+  /**
+   * Determine whether the skill grants the given proficiency at its current
+   * level.
+   * @param name Name of the proficiency.
+   * @return True if it grants the proficiency, false otherwise.
+   */
+  public boolean grantsProficiency(String name) {
+    return getProficiencies().contains(name);
   }
 
   /**

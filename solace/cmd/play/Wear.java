@@ -46,6 +46,12 @@ public class Wear extends PlayCommand {
       }
     }
 
+    // Do they have the proficiency to equip the item?
+    if (!character.canEquip(item)) {
+      character.sendln("You are not proficient in using " + itemDesc);
+      return false;
+    }
+
     // Attempt to equip the item
     try {
       Item old = character.equip(item);

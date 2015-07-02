@@ -1,0 +1,12 @@
+{
+  "id": "light-armor",
+  "name": "Light Armor",
+  "proficiencies": [
+    {
+      "level": 1,
+      "types": ["light-armor"]
+    }
+  ],
+  "passives": [],
+  "cooldowns": []
+}

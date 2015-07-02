@@ -1,9 +1,10 @@
 # Master TODO
 
 Next:
--  Prototype skills, passives, cooldowns, and proficiencies
+- Passives abstraction & Cooldown abstraction
 
 On Deck:
+- More skills
 - Character Creator 2.0
 - Battle system 1.0
 - Mobile spawn points
@@ -14,7 +15,6 @@ On Deck:
 Bugs:
 - Entering game message does not appear, player doesn't seem to get messages
   in the same room.
-- Helmet item is broken
 - Login shouldn't load characters until after user authenticates with password
 - Fix the look command
   - Doesn't wrap item descriptions
@@ -44,7 +44,17 @@ Later:
 
 --------------------------------------------------------------------------------
 
+Help Files:
+- expand upon skills
+- proficiencies
+- passive enhancements (passives)
+- cooldown actions (cooldowns)
+
+--------------------------------------------------------------------------------
+
 Done:
+- Equipment proficiencies
+- Helmet item is broken
 - Skills System 1.0
 - Emotes 1.0 (small list to start, specifically scowl)
 - Mobile stats generation
