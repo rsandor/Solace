@@ -10,7 +10,6 @@ On Deck:
 - Stats System 2.0
 - Leveling System 1.0
 
-
 Bugs:
 - Entering game message does not appear, player doesn't seem to get messages
   in the same room.
@@ -26,6 +25,9 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
+- Help system 2.0
+  - use an actual text search algorithm instead of a keywords file
+  - articles should have unique names
 - Decorative banners for shops, inventory, character sheet, etc.
 - Spells, Scrolls, and Spell Casting
 - Classes (Collections of Skills?) and Races

@@ -39,5 +39,6 @@ commands/appraise.md: appraise
 commands/buy.md: buy
 commands/list.md: list
 commands/sell.md: sell
+commands/emote.md: emote joey scowl
 misc/gold.md: gold currency
 misc/shops.md: shops
