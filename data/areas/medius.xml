@@ -300,13 +300,7 @@
 			of 25, a very weak mobile has a power of 1, and an incredibly stong mobile
 			will have a power of 100.
 		-->
-		<property key="power">100</property>
-
-		<!--
-			Mobiles always carry a random amount of gold, use the gold property to
-			set a die roll to detemine how much they carry when they are spawned.
-		-->
-		<property key="gold">1d3-1</property>
+		<property key="power">10</property>
 	</mobile>
 
 

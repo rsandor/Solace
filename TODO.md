@@ -1,16 +1,16 @@
 # Master TODO
 
 Next Feature:
-- Cooldown abstraction
+- Stats System 2.0
 
 Features:
+- Cooldown abstraction
 - Battle system 1.0
 - More skills
 - Races & Classes
 - Character Creator 2.0
 - Mobile spawn points
 - Loot System 1.0
-- Stats System 2.0
 - Leveling System 1.0
 - Tactics System 1.0
 

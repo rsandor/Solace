@@ -54,16 +54,16 @@ public class Emote extends PlayCommand {
 
       String emote = params[0];
       String targetName = params[1];
-      solace.game.Character target = room.findCharacter(targetName);
+      Movable target = room.findCharacter(targetName);
 
       if (target == null) {
         character.wrapln("You do not see " + targetName + " here.");
         return false;
       }
 
-      Collection<solace.game.Character> roomChars = room.getCharacters();
+      Collection<Movable> roomChars = room.getCharacters();
       synchronized(roomChars) {
-        for (solace.game.Character ch : roomChars) {
+        for (Movable ch : roomChars) {
           if (ch == character || ch == target) {
             continue;
           }

@@ -3,8 +3,6 @@ package solace.game;
 import java.util.*;
 
 import solace.net.Connection;
-import solace.util.EventEmitter;
-import solace.util.EventListener;
 import solace.util.Log;
 import solace.util.SkillNotFoundException;
 import solace.util.Skills;
@@ -14,7 +12,8 @@ import solace.xml.GameParser;
  * Represents a player character or actor in the game world.
  * @author Ryan Sandor Richards.
  */
-public class Character {
+public class Character implements Movable
+{
   public static final double DAMAGE_MOD_SCALE = 0.81;
   public static final double DAMAGE_MOD_SHIFT = -1.0;
 
@@ -48,7 +47,6 @@ public class Character {
   public static final double SP_STRENGTH_SCALE = 0.9;
   public static final double SP_STRENGTH_LOG_BASE = 2.8;
   public static final double SP_SHIFT = 2;
-
 
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
@@ -85,8 +83,8 @@ public class Character {
   List<Skill> skills = new ArrayList<Skill>();
 
   Room room = null;
+
   Account account = null;
-  EventEmitter events;
 
   /**
    * Creates a new character.
@@ -96,7 +94,6 @@ public class Character {
     name = n;
     level = 1;
     inventory = Collections.synchronizedList(new ArrayList<Item>());
-    events = new EventEmitter();
   }
 
   /**
@@ -606,75 +603,32 @@ public class Character {
    */
   public void sendMessage(String msg) {
     Connection c = getConnection();
-
-    // The connection could be null, if the character is an actor and not a
-    // player...
-    if (c != null) {
-      c.sendln("\n" + msg);
-      c.send(c.getPrompt());
-    }
-
-    events.trigger("message", new Object[] { msg });
+    c.sendln("\n" + msg);
+    c.send(c.getPrompt());
   }
 
   /**
-   * Sends a string to the character. This method is preferred over
-   * `Connection.send` since it allows non-player characters to recieve game
-   * messages.
+   * Sends a string to the character.
    * @param msg Message to send the character.
    */
   public void send(String msg) {
-    Connection c = getConnection();
-    if (c != null) {
-      c.send(msg);
-    }
-    events.trigger("message", new Object[] { msg });
+    getConnection().send(msg);
   }
 
   /**
-   * Sends a string to the character append with a newline. This method is
-   * preferred over `Connection.send` since it allows non-player characters to
-   * recieve game messages.
+   * Sends a string to the character append with a newline.
    * @param msg Message to send the character.
    */
   public void sendln(String msg) {
-    Connection c = getConnection();
-    if (c != null) {
-      c.sendln(msg);
-    }
-    events.trigger("message", new Object[] { msg });
+    getConnection().sendln(msg);
   }
 
   /**
-   * Sends a string to the character wrapped with newlines. This method is
-   * preferred over `Connection.send` since it allows non-player characters to
-   * recieve game messages.
+   * Sends a string to the character wrapped with newlines.
    * @param msg Message to send the character.
    */
   public void wrapln(String msg) {
-    Connection c = getConnection();
-    if (c != null) {
-      c.wrapln(msg);
-    }
-    events.trigger("message", new Object[] { msg });
-  }
-
-  /**
-   * Adds an event listener to the character.
-   * @param event Name of the event.
-   * @param listener Listener for the event.
-   */
-  public void addEventListener(String event, EventListener listener) {
-    events.addListener(event, listener);
-  }
-
-  /**
-   * Removes an event listener from the character.
-   * @param event Name of the event.
-   * @param listener Listener for the event.
-   */
-  public void removeEventListener(String event, EventListener listener) {
-    events.removeListener(event, listener);
+    getConnection().wrapln(msg);
   }
 
   /**

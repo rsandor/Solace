@@ -16,7 +16,7 @@ public class Room
   LinkedList<Exit> exits = new LinkedList<Exit>();
   Hashtable<String, String> features = new Hashtable<String, String>();
   List<String> itemInstances = new LinkedList<String>();
-  List<solace.game.Character> characters;
+  List<Movable> characters;
   List<Item> items;
   Shop shop = null;
   List<Mobile> mobiles;
@@ -27,9 +27,7 @@ public class Room
    */
   public Room(String i) {
     id = i;
-    characters = Collections.synchronizedList(
-      new LinkedList<solace.game.Character>()
-    );
+    characters = Collections.synchronizedList(new LinkedList<Movable>());
     mobiles = Collections.synchronizedList(new LinkedList<Mobile>());
   }
 
@@ -58,8 +56,9 @@ public class Room
    */
   public void sendMessage(String message) {
     synchronized(characters) {
-      for (solace.game.Character ch : characters)
+      for (Movable ch : characters) {
         ch.sendMessage(message);
+      }
     }
   }
 
@@ -70,9 +69,9 @@ public class Room
    * @param message Message to send.
    * @param exclude Player to exclude when sending the message.
    */
-  public void sendMessage(String message, solace.game.Character exclude) {
+  public void sendMessage(String message, Movable exclude) {
     synchronized(characters) {
-      for (solace.game.Character ch : characters) {
+      for (Movable ch : characters) {
         if (ch == exclude)
           continue;
         ch.sendMessage(message);
@@ -81,30 +80,27 @@ public class Room
   }
 
   /**
-   * @return the list of users in the room.
+   * @return The list of characters and mobiles in the room.
    */
-  public List<solace.game.Character> getCharacters() {
+  public List<Movable> getCharacters() {
     return characters;
   }
 
   /**
-   * @return a list of the mobiles inhabiting the room.
+   * @return The list of the mobiles in the room.
    */
   public List<Mobile> getMobiles() {
     return mobiles;
   }
 
   /**
-   * @param exclude Character to exclude.
-   * @return a list of characters excluding the given character.
+   * @param exclude Character or mobile to exclude.
+   * @return A list of characters or mobiles excluding the one given.
    */
-  public List<solace.game.Character> getOtherCharacters(
-    solace.game.Character exclude
-  ) {
-    List<solace.game.Character> others =
-      new LinkedList<solace.game.Character>();
+  public List<Movable> getOtherCharacters(Movable exclude) {
+    List<Movable> others = new LinkedList<Movable>();
     synchronized (characters) {
-      for (solace.game.Character ch : characters) {
+      for (Movable ch : characters) {
         if (ch == exclude)
           continue;
         others.add(ch);
@@ -114,13 +110,13 @@ public class Room
   }
 
   /**
-   * Finds a character in the room with the given name prefix.
+   * Finds a character or mobile in the room with the given name prefix.
    * @param namePrefix Name prefix for the character to find.
    * @return The character or null if none was found.
    */
-  public solace.game.Character findCharacter(String namePrefix) {
+  public Movable findCharacter(String namePrefix) {
     synchronized (characters) {
-      for (solace.game.Character ch : characters) {
+      for (Movable ch : characters) {
         if (ch.getName().toLowerCase().startsWith(namePrefix)) {
           return ch;
         }
@@ -226,7 +222,7 @@ public class Room
    * @return A string describing the room.
    */
   public String describeTo(solace.game.Character ch) {
-    List<solace.game.Character> others = getOtherCharacters(ch);
+    List<Movable> others = getOtherCharacters(ch);
 
     // Title and description of the room
     StringBuffer buffer = new StringBuffer();
@@ -251,7 +247,7 @@ public class Room
     // Show a list of characters in the room
     if (others.size() > 0) {
       buffer.append("{cThe following characters are present:{x\n\r");
-      for (solace.game.Character c : others) {
+      for (Movable c : others) {
         buffer.append("    " + c.getName() + "\n\r");
       }
     }
@@ -302,7 +298,7 @@ public class Room
    */
   public String describeCharacter(String name) {
     synchronized(characters) {
-      for (solace.game.Character ch : characters) {
+      for (Movable ch : characters) {
         String[] names = ch.getName().split("\\s+");
         for (String n : names) {
           if (n.toLowerCase().startsWith(name.toLowerCase())) {
