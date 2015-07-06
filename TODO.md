@@ -6,22 +6,24 @@ Next Feature:
 Features:
 - Cooldown abstraction
 - Battle system 1.0
-- More skills
-- Races & Classes
-- Character Creator 2.0
-- Mobile spawn points
 - Loot System 1.0
+- More skills
+- Character Creator 2.0 (Races & Suggested Classes)
+- Mobile spawn points
 - Leveling System 1.0
 - Tactics System 1.0
+- Account System 2.0
+  - Login shouldn't load characters until after user authenticates with password
 
 Bugs:
-- Login shouldn't load characters until after user authenticates with password
 - Shops commands should refer to the shop owner and be more flavorful
 - Move command will fail across areas (uses area.getRoom, need global lookup)
 
 --------------------------------------------------------------------------------
 
 Later:
+- Emotes 2.0 (better parameters, add tons of emotes)
+- Stats 2.1 (caching)
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names

@@ -14,40 +14,6 @@ import solace.xml.GameParser;
  */
 public class Character implements Movable
 {
-  public static final double DAMAGE_MOD_SCALE = 0.81;
-  public static final double DAMAGE_MOD_SHIFT = -1.0;
-
-  public static final double HIT_MOD_SCALE = 0.7;
-  public static final double HIT_MOD_SHIFT = 0;
-
-  public static final double AC_MOD_SCALE = 0.8;
-  public static final double AC_MOD_SHIFT = 0;
-  public static final double AC_SPEED_SCALE = 0.2;
-  public static final double AC_SPEED_POWER = 1.1205;
-
-  public static final double ABILITY_MAJOR_MINIMUM = 10.0;
-  public static final double ABILITY_LOG_BASE = 2.555;
-  public static final double ABILITY_MINOR_SCALAR = 0.7;
-  public static final double ABILITY_TERTIARY_SCALAR = 0.4;
-
-  public static final double HP_VITALITY_SCALE = 1.0;
-  public static final double HP_VITALITY_LOG_BASE = 2.1;
-  public static final double HP_STRENGTH_SCALE = 0.5;
-  public static final double HP_STRENGTH_LOG_BASE = 3.5;
-  public static final double HP_SHIFT = -3.0;
-
-  public static final double MP_MAGIC_SCALE = 1.1;
-  public static final double MP_MAGIC_LOG_BASE = 1.65;
-  public static final double MP_VITALITY_SCALE = 0.5;
-  public static final double MP_VITALITY_LOG_BASE = 4.0;
-  public static final double MP_SHIFT = 0;
-
-  public static final double SP_SPEED_SCALE = 1.0;
-  public static final double SP_SPEED_LOG_BASE = 2.0;
-  public static final double SP_STRENGTH_SCALE = 0.9;
-  public static final double SP_STRENGTH_LOG_BASE = 2.8;
-  public static final double SP_SHIFT = 2;
-
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
    */
@@ -124,36 +90,14 @@ public class Character implements Movable
   }
 
   /**
-   * Gets an ability stat for the character. The engine uses the following
-   * formulas:
-   *
-   *    Major(level) = (level) * log_{logBase}(level) + majorMin
-   *    Minor(level) = minorScale * Major(level)
-   * Tertiary(level) = tertiaryScale * Major(level)
-   *
-   * With parameters:
-   *
-   *       logBase - Base of the log to use for the major formula
-   *      majorMin - Minimum stat for the major ability score
-   *    minorScale - How to scale the formula for minor abilities
-   * tertiarySCale - How to scale the formulat for tertiary abilities
-   *
+   * Gets an ability stat for the character.
    * @param name Name of the stat being generated.
    * @return A level appropriate stat.
+   * @see solace.game.Stats
    */
   protected int getAbility(String name) {
-    int stat = (int)(
-      level * Math.log((double)level) / Math.log(ABILITY_LOG_BASE) +
-      ABILITY_MAJOR_MINIMUM
-    );
-    int equipmentMod = getModFromEquipment(name);
-    if (majorStat.equals(name)) {
-      return stat + equipmentMod;
-    }
-    if (minorStat.equals(name)) {
-      return (int)(ABILITY_MINOR_SCALAR * stat) + equipmentMod;
-    }
-    return (int)(ABILITY_TERTIARY_SCALAR * stat) + equipmentMod;
+    int ability = Stats.getAbility(this, name);
+    return ability + getModFromEquipment(name);
   }
 
   /**
@@ -223,33 +167,25 @@ public class Character implements Movable
 
   /**
    * @return the damage modifier for the character.
+   * @see solace.game.Stats
    */
   public int getDamageMod() {
-    return (int)(
-      Math.pow((double)level, DAMAGE_MOD_SCALE) + DAMAGE_MOD_SHIFT
-    ) + getModFromEquipment("damage");
+    return Stats.getDamageMod(this) + getModFromEquipment("damage");
   }
 
   /**
    * @return the hit modifier for the character.
+   * @see solace.game.Stats
    */
   public int getHitMod() {
-    return (int)(
-      Math.pow((double)level, HIT_MOD_SCALE) + HIT_MOD_SHIFT
-    ) + getModFromEquipment("hit");
+    return Stats.getHitMod(this) + getModFromEquipment("hit");
   }
 
   /**
    * @return The character's armor class.
    */
   public int getAC() {
-    int speed = getSpeed();
-    int speedAC = (int)(
-      AC_SPEED_SCALE * Math.pow(speed, AC_SPEED_POWER)
-    );
-    return (int)(
-      Math.pow((double)level, AC_MOD_SHIFT) + AC_MOD_SHIFT
-    ) + speedAC + getModFromEquipment("ac");
+    return Stats.getAC(this) + getModFromEquipment("ac");
   }
 
   /**
@@ -284,29 +220,11 @@ public class Character implements Movable
   public void setHp(int v) { hp = v; }
 
   /**
-   * Max HP = a × Vit × Log(Vit, v) + b x Str × Log(Str, s) + E + H
-   *
-   *   a - Vitality scalar
-   *   v - Vitality log base
-   *   b - Strength scalar
-   *   s - Strength log base
-   *   E - HP granted by equipment
-   *   H - Global HP shift
-   *
    * @return The player's maximum hit points.
+   * @see solace.game.Stats
    */
   public int getMaxHp() {
-    int vitality = getVitality();
-    int strength = getStrength();
-    int equipmentHP = getModFromEquipment("hp");
-    double vitalityHP = HP_VITALITY_SCALE * vitality *
-      Math.log(vitality) / Math.log(HP_VITALITY_LOG_BASE);
-    double strengthHP = HP_STRENGTH_SCALE * strength *
-      Math.log(strength) / Math.log(HP_STRENGTH_LOG_BASE);
-
-    System.out.println(vitalityHP + "\n" + strengthHP + "\n" + equipmentHP + "\n");
-
-    return (int)(vitalityHP + strengthHP + equipmentHP + HP_SHIFT);
+    return Stats.getMaxHp(this) + getModFromEquipment("hp");
   }
 
   /**
@@ -321,25 +239,11 @@ public class Character implements Movable
   public void setMp(int v) { mp = v; }
 
   /**
-   * MP = a × Mag × Log(Mag, m) + b × Vit × Log(Vit, v) + M
-   *
-   *   a - Magic scalar
-   *   m - Magic log base
-   *   b - Vitality scalar
-   *   v - Vitality log base
-   *   M - MP shift
-   *
    * @return The player's maximum MP.
+   * @see solace.game.Stats
    */
   public int getMaxMp() {
-    int magic = getMagic();
-    int vitality = getVitality();
-    int equipmentMP = getModFromEquipment("mp");
-    double magicMP = MP_MAGIC_SCALE * magic *
-      Math.log(magic) / Math.log(MP_MAGIC_LOG_BASE);
-    double vitalityMP = MP_VITALITY_SCALE * vitality *
-      Math.log(vitality) / Math.log(MP_VITALITY_LOG_BASE);
-    return (int)(magicMP + vitalityMP + equipmentMP + MP_SHIFT);
+    return Stats.getMaxMp(this) + getModFromEquipment("mp");
   }
 
   /**
@@ -354,25 +258,11 @@ public class Character implements Movable
   public void setSp(int v) { sp = v; }
 
   /**
-   * SP = a × Spe × Log(Spe, e) + b × Str × Log(Str, s) + S
-   *
-   *   a - Speed scalar
-   *   e - Speed log base
-   *   b - Strength scalar
-   *   s - Strength log base
-   *   S - SP Shift
-   *
    * @return The character's maximum sp.
+   * @see soalce.game.Stats
    */
   public int getMaxSp() {
-    int speed = getSpeed();
-    int strength = getStrength();
-    int equipmentSP = getModFromEquipment("sp");
-    double speedSP = SP_SPEED_SCALE * speed *
-      Math.log(speed) / Math.log(SP_SPEED_LOG_BASE);
-    double strengthSP = SP_STRENGTH_SCALE * strength *
-      Math.log(strength) / Math.log(SP_STRENGTH_LOG_BASE);
-    return (int)(speedSP + strengthSP + equipmentSP + SP_SHIFT);
+    return Stats.getMaxSp(this) + getModFromEquipment("sp");
   }
 
   /**
@@ -410,8 +300,8 @@ public class Character implements Movable
   public void setGold(long g) { gold = g; }
 
   /**
-   * Removes a given amount of gold from the character. Does nothing if the character
-   * doesn't have enough gold.
+   * Removes a given amount of gold from the character. Does nothing if the
+   * character doesn't have enough gold.
    * @param g Gold to remove from the character.
    * @throws CurrencyException If the player has less gold than what was given.
    */
@@ -419,7 +309,9 @@ public class Character implements Movable
     throws CurrencyException
   {
     if (gold < g) {
-      throw new CurrencyException("Unable to remove " + g + " gold from " + name);
+      throw new CurrencyException(String.format(
+        "Unable to remove %d gold from %s.", g, name
+      ));
     }
     gold -= g;
   }

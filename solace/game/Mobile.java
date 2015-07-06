@@ -13,7 +13,7 @@ import solace.util.EventListener;
  */
 public class Mobile extends Template implements Movable
 {
-  public enum State { STATIONARY, WANDERING }
+  enum State { STATIONARY, WANDERING }
 
   int level;
   int power;
@@ -65,6 +65,24 @@ public class Mobile extends Template implements Movable
    * @return The level of the mobile.
    */
   public int getLevel() { return level; }
+
+  /**
+   * @return The power level for the mobile. The power level is an additional
+   * parameter that tweaks the overall power between mobiles of the same level.
+   */
+  public int getPower() { return power; }
+
+  /**
+   * @return The maximum HP for the mobile.
+   * @see solace.game.Stats
+   */
+  public int getMaxHp() { return Stats.getMaxHp(this); }
+
+  /**
+   * @return The armor class for the mobile.
+   * @see solace.game.Stats
+   */
+  public int getAC() { return Stats.getAC(this); }
 
   /**
    * Sets the state of the mobile.
@@ -175,7 +193,6 @@ public class Mobile extends Template implements Movable
 
     // TODO Add loot information to mobiles
 
-    // Generate stats based on level and power
     power = 25;
     String powerLevel = get("power");
     try {
@@ -189,7 +206,7 @@ public class Mobile extends Template implements Movable
       ));
     }
 
-    // TODO Need to generate other statistics for the mobile
+    hp = getMaxHp();
 
     room.getMobiles().add(this);
     room.getCharacters().add(this);
