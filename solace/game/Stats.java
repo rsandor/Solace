@@ -56,8 +56,8 @@ public class Stats {
   public static final double CH_SP_SHIFT = 2;
 
   // Character saving throw parameters
-  public static final double CH_SAVING_THROW_SCALAR = 0.3;
-  public static final double CH_SAVING_THROW_LEVEL_POWER = 0.1;
+  public static final double CH_SAVING_THROW_SCALAR = 0.21;
+  public static final double CH_SAVING_THROW_LEVEL_POWER = 0.05;
   public static final Collection<String> CH_SAVING_THROW_NAMES =
     Collections.unmodifiableCollection(
       Arrays.asList(
