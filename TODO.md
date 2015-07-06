@@ -22,6 +22,7 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
+- Prompts 2.0 (parametric, user defined, gameplay prompts)
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
 - Help system 2.0
@@ -36,7 +37,7 @@ Later:
 - Item weight & Carrying Capacity
 - Global communication channels
 - Player-to-player auction house
-- Scripting engine (embedded Lua)
+- Scripting engine (embedded Scala)
 - Use a connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------

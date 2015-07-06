@@ -286,44 +286,32 @@ public class Character implements Movable
   /**
    * @return The character's will saving throw.
    */
-  public int getWillSave() {
-    return getSavingThrow("will");
-  }
+  public int getWillSave() { return getSavingThrow("will"); }
 
   /**
    * @return The character's reflex saving throw.
    */
-  public int getReflexSave() {
-    return getSavingThrow("reflex");
-  }
+  public int getReflexSave() { return getSavingThrow("reflex"); }
 
   /**
    * @return The character's resolve saving throw.
    */
-  public int getResolveSave() {
-    return getSavingThrow("resolve");
-  }
+  public int getResolveSave() { return getSavingThrow("resolve"); }
 
   /**
    * @return The character's vigor saving throw.
    */
-  public int getVigorSave() {
-    return getSavingThrow("vigor");
-  }
+  public int getVigorSave() { return getSavingThrow("vigor"); }
 
   /**
    * @return The character's prudence saving throw.
    */
-  public int getPrudenceSave() {
-    return getSavingThrow("prudence");
-  }
+  public int getPrudenceSave() { return getSavingThrow("prudence"); }
 
   /**
    * @return The character's guile saving throw.
    */
-  public int getGuileSave() {
-    return getSavingThrow("guile");
-  }
+  public int getGuileSave() { return getSavingThrow("guile"); }
 
   /**
    * Adds a skill to the character with the given id and level.
@@ -344,9 +332,11 @@ public class Character implements Movable
   }
 
   /**
-   * @return The character's skills.
+   * @return An unmodifiable collection of the character's skills.
    */
-  public Collection<Skill> getSkills() { return skills; };
+  public Collection<Skill> getSkills() {
+    return Collections.unmodifiableCollection(skills);
+  };
 
   /**
    * @return The amount of gold the character is carrying.
