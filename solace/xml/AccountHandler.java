@@ -173,7 +173,42 @@ public class AccountHandler extends Handler {
     }
     String characterName = attrs.getValue("name");
     character = new solace.game.Character(characterName);
-    setValuesFromAttrs(attrs);
+
+    character.setGold(0);
+    if (attrs.getValue("gold") != null) {
+      character.setGold(Long.parseLong(attrs.getValue("gold")));
+    }
+
+    character.setLevel(1);
+    if (attrs.getValue("level") != null) {
+      character.setHp(Integer.parseInt(attrs.getValue("level")));
+    }
+
+    character.setHp(20);
+    if (attrs.getValue("hp") != null) {
+      character.setHp(Integer.parseInt(attrs.getValue("hp")));
+    }
+
+    character.setMp(20);
+    if (attrs.getValue("mp") != null) {
+      character.setMp(Integer.parseInt(attrs.getValue("mp")));
+    }
+
+    character.setSp(20);
+    if (attrs.getValue("sp") != null) {
+      character.setSp(Integer.parseInt(attrs.getValue("sp")));
+    }
+
+    character.setMajorStat("strength");
+    if (attrs.getValue("major-stat") != null) {
+      character.setMajorStat(attrs.getValue("major-stat"));
+    }
+
+    character.setMinorStat("vitality");
+    if (attrs.getValue("minor-stat") != null) {
+      character.setMinorStat(attrs.getValue("minor-stat"));
+    }
+
     return State.CHARACTER;
   }
 
@@ -296,72 +331,5 @@ public class AccountHandler extends Handler {
 
     item = new Item(id, names, World.getArea(areaId));
     item.setUUID(uuid);
-  }
-
-  /**
-   * Sets various values on a character from the given attributes map.
-   * @param attrs Map of attributes from the XML that contain various values and
-   *   quantities for the character (stats, gold, level, etc.).
-   */
-  protected void setValuesFromAttrs(Attributes attrs) {
-    character.setGold(0);
-    if (attrs.getValue("gold") != null) {
-      character.setGold(Long.parseLong(attrs.getValue("gold")));
-    }
-
-    character.setLevel(1);
-    if (attrs.getValue("level") != null) {
-      character.setHp(Integer.parseInt(attrs.getValue("level")));
-    }
-
-    character.setHp(20);
-    if (attrs.getValue("hp") != null) {
-      character.setHp(Integer.parseInt(attrs.getValue("hp")));
-    }
-
-    character.setMaxHp(20);
-    if (attrs.getValue("maxhp") != null) {
-      character.setMaxHp(Integer.parseInt(attrs.getValue("maxhp")));
-    }
-
-    character.setMp(20);
-    if (attrs.getValue("mp") != null) {
-      character.setMp(Integer.parseInt(attrs.getValue("mp")));
-    }
-
-    character.setMaxMp(20);
-    if (attrs.getValue("maxmp") != null) {
-      character.setMaxMp(Integer.parseInt(attrs.getValue("maxmp")));
-    }
-
-    character.setSp(20);
-    if (attrs.getValue("sp") != null) {
-      character.setSp(Integer.parseInt(attrs.getValue("sp")));
-    }
-
-    character.setMaxSp(20);
-    if (attrs.getValue("maxsp") != null) {
-      character.setMaxSp(Integer.parseInt(attrs.getValue("maxsp")));
-    }
-
-    character.setStrength(8);
-    if (attrs.getValue("strength") != null) {
-      character.setStrength(Integer.parseInt(attrs.getValue("strength")));
-    }
-
-    character.setVitality(8);
-    if (attrs.getValue("vitality") != null) {
-      character.setVitality(Integer.parseInt(attrs.getValue("vitality")));
-    }
-
-    character.setMagic(8);
-    if (attrs.getValue("magic") != null) {
-      character.setMagic(Integer.parseInt(attrs.getValue("magic")));
-    }
-
-    character.setSpeed(8);
-    if (attrs.getValue("speed") != null) {
-      character.setSpeed(Integer.parseInt(attrs.getValue("speed")));
-    }
   }
 }

@@ -179,7 +179,10 @@ public class Mobile extends Template {
       ));
     }
 
-    character.generateStats(power);
+    // TODO Need to take power into consideration here. Not sure if we are
+    // going to keep player characters and mobiles so tightly bounded by the
+    // solace.game.Character class.
+    //character.generateStats(power);
 
     room.getMobiles().add(this);
     room.getCharacters().add(character);

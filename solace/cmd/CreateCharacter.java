@@ -33,15 +33,15 @@ class CreateCharacter implements StateController {
             solace.game.Character ch = new solace.game.Character(input);
 
             // TODO Need to flesh out the character creation once we have
-            // classes and races. This will do for now to ensure each character
-            // has basic stats.
-            ch.setHp(20); ch.setMaxHp(20);
-            ch.setMp(20); ch.setMaxMp(20);
-            ch.setSp(20); ch.setMaxSp(20);
-            ch.setStrength(8);
-            ch.setVitality(8);
-            ch.setMagic(8);
-            ch.setSpeed(8);
+            // classes, skills and races. This will do for now to ensure each
+            // character has basic stats.
+
+            ch.setMajorStat("strength");
+            ch.setMinorStat("vitality");
+
+            ch.setHp(ch.getMaxHp());
+            ch.setMp(ch.getMaxMp());
+            ch.setSp(ch.getMaxSp());
 
             act.addCharacter(ch);
             act.save();

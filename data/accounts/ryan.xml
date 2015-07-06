@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><user name="ryan" admin="true" password="404c3e3f95246ec2a793b4a3a2ff5e6072613c63de034f63a99a0c2335b65ced">
   <characters>
-    <character name="Hintos" hp="20" maxhp="20" mp="20" maxmp="20" sp="20" maxsp="20" strength="8" vitality="8" magic="8" speed="8" gold="9705">
+    <character name="Hintos" hp="9" mp="14" sp="47" gold="9705" major-stat="speed" minor-stat="strength">
       <location area="medius" room="contego protectives"/>
       <skills>
         <skill id="one-handed" level="50"/>
@@ -27,20 +27,6 @@
           <property key="ac">4</property>
           <property key="description.inventory">leather jerkin</property>
         </item>
-        <item uuid="2e93e0b3-1523-48b7-9c08-f1d15e758de3" id="wooden-sword" names="wooden sword" area="medius">
-          <property key="hit">1</property>
-          <property key="level">1</property>
-          <property key="roll">1d6</property>
-          <property key="proficiency">shortsword</property>
-          <property key="weight">2</property>
-          <property key="description.room">A sturdy wooden sword rests here.</property>
-          <property key="type">equipment</property>
-          <property key="damage">1</property>
-          <property key="value">5</property>
-          <property key="slot">weapon</property>
-          <property key="description">A wooden practice sword made of sturdy oak. The blade has been carved with intricate patterns and its hilt wrapped in soft supple leather.</property>
-          <property key="description.inventory">wooden sword</property>
-        </item>
         <item uuid="5addfe93-2ee8-443c-91f3-205a9b7ff833" id="leather-helm" names="leather helm" area="medius">
           <property key="level">1</property>
           <property key="proficiency">light-armor</property>
@@ -52,6 +38,20 @@
           <property key="description">A simple leather helmet made from cow's hide. The helmet is sturdy but flexible allowing it to fit a variety of head sizes.</property>
           <property key="ac">1</property>
           <property key="description.inventory">leather helm</property>
+        </item>
+        <item uuid="2e93e0b3-1523-48b7-9c08-f1d15e758de3" id="wooden-sword" names="wooden sword" area="medius">
+          <property key="hit">1</property>
+          <property key="level">1</property>
+          <property key="roll">1d6</property>
+          <property key="proficiency">shortsword</property>
+          <property key="weight">2</property>
+          <property key="description.room">A sturdy wooden sword rests here.</property>
+          <property key="type">equipment</property>
+          <property key="damage">1</property>
+          <property key="slot">weapon</property>
+          <property key="value">5</property>
+          <property key="description">A wooden practice sword made of sturdy oak. The blade has been carved with intricate patterns and its hilt wrapped in soft supple leather.</property>
+          <property key="description.inventory">wooden sword</property>
         </item>
       </equipment>
     </character>
