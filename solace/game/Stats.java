@@ -1,5 +1,7 @@
 package solace.game;
 
+import java.util.*;
+
 /**
  * Class used to generate various stats for characters, mobiles, items, etc.
  * in the game world. This class gives the game's combat it's intrinsic feel
@@ -52,6 +54,16 @@ public class Stats {
   public static final double CH_SP_STRENGTH_SCALE = 0.9;
   public static final double CH_SP_STRENGTH_LOG_BASE = 2.8;
   public static final double CH_SP_SHIFT = 2;
+
+  // Character saving throw parameters
+  public static final double CH_SAVING_THROW_SCALAR = 0.3;
+  public static final double CH_SAVING_THROW_LEVEL_POWER = 0.1;
+  public static final Collection<String> CH_SAVING_THROW_NAMES =
+    Collections.unmodifiableCollection(
+      Arrays.asList(
+        "will", "reflex", "resolve", "vigor", "prudence", "guile"
+      )
+    );
 
   // Mobile AC Parameters
   public static double MOB_AC_BASE = 4.0;
@@ -200,6 +212,67 @@ public class Stats {
     double strengthSP = CH_SP_STRENGTH_SCALE * strength *
       Math.log(strength) / Math.log(CH_SP_STRENGTH_LOG_BASE);
     return (int)(speedSP + strengthSP + CH_SP_SHIFT);
+  }
+
+  /**
+   * Determines the saving throw of the given name for the given character.
+   * There are six different saving throws, each calculated using two character
+   * ability scores:
+   *
+   *   Str/Vit - Will
+   *   Str/Spe - Reflex
+   *   Str/Mag - Resolve
+   *   Vit/Spe - Vigor
+   *   Vit/Mag - Prudence
+   *   Spe/Mag - Guile
+   *
+   * Each saving throw is determined via the following formula:
+   *
+   *   throw = s x (stat[a] + stat[b]) x (level ^ p)
+   *
+   * @param ch Character for which to determine the saving throw.
+   * @param name Name of the saving throw.
+   * @return The value of the saving throw.
+   */
+  public static int getSavingThrow(solace.game.Character ch, String name)
+    throws InvalidSavingThrowException
+  {
+    if (!CH_SAVING_THROW_NAMES.contains(name)) {
+      throw new InvalidSavingThrowException(name);
+    }
+
+    double level = (double)ch.getLevel();
+    double a = 1, b = 1;
+
+    if (name.equals("will")) {
+      a = (double)ch.getStrength();
+      b = (double)ch.getVitality();
+    }
+    else if (name.equals("reflex")) {
+      a = (double)ch.getStrength();
+      b = (double)ch.getSpeed();
+    }
+    else if (name.equals("resolve")) {
+      a = (double)ch.getStrength();
+      b = (double)ch.getMagic();
+    }
+    else if (name.equals("vigor")) {
+      a = (double)ch.getVitality();
+      b = (double)ch.getSpeed();
+    }
+    else if (name.equals("prudence")) {
+      a = (double)ch.getVitality();
+      b = (double)ch.getMagic();
+    }
+    else if (name.equals("guile")) {
+      a = (double)ch.getSpeed();
+      b = (double)ch.getMagic();
+    }
+
+    double savingThrow = CH_SAVING_THROW_SCALAR * (a + b) * (
+      Math.pow(level, CH_SAVING_THROW_LEVEL_POWER)
+    );
+    return (int)savingThrow;
   }
 
   /**

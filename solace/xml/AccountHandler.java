@@ -181,20 +181,20 @@ public class AccountHandler extends Handler {
 
     character.setLevel(1);
     if (attrs.getValue("level") != null) {
-      character.setHp(Integer.parseInt(attrs.getValue("level")));
+      character.setLevel(Integer.parseInt(attrs.getValue("level")));
     }
 
-    character.setHp(20);
+    character.setHp(character.getMaxHp());
     if (attrs.getValue("hp") != null) {
       character.setHp(Integer.parseInt(attrs.getValue("hp")));
     }
 
-    character.setMp(20);
+    character.setMp(character.getMaxMp());
     if (attrs.getValue("mp") != null) {
       character.setMp(Integer.parseInt(attrs.getValue("mp")));
     }
 
-    character.setSp(20);
+    character.setSp(character.getMaxSp());
     if (attrs.getValue("sp") != null) {
       character.setSp(Integer.parseInt(attrs.getValue("sp")));
     }

@@ -101,6 +101,24 @@ public class Character implements Movable
   }
 
   /**
+   * Gets the saving throw with the given name.
+   * @param name Name of the saving throw.
+   * @return The saving throw.
+   * @see solace.game.Stats
+   */
+  protected int getSavingThrow(String name) {
+    try {
+      return Stats.getSavingThrow(this, name) + getModFromEquipment(name);
+    }
+    catch (InvalidSavingThrowException iste) {
+      Log.error(String.format(
+        "Invalid saving throw name encountered: %s", name
+      ));
+    }
+    return 0;
+  }
+
+  /**
    * @return The character's id.
    */
   public String getId() { return id; }
@@ -263,6 +281,48 @@ public class Character implements Movable
    */
   public int getMaxSp() {
     return Stats.getMaxSp(this) + getModFromEquipment("sp");
+  }
+
+  /**
+   * @return The character's will saving throw.
+   */
+  public int getWillSave() {
+    return getSavingThrow("will");
+  }
+
+  /**
+   * @return The character's reflex saving throw.
+   */
+  public int getReflexSave() {
+    return getSavingThrow("reflex");
+  }
+
+  /**
+   * @return The character's resolve saving throw.
+   */
+  public int getResolveSave() {
+    return getSavingThrow("resolve");
+  }
+
+  /**
+   * @return The character's vigor saving throw.
+   */
+  public int getVigorSave() {
+    return getSavingThrow("vigor");
+  }
+
+  /**
+   * @return The character's prudence saving throw.
+   */
+  public int getPrudenceSave() {
+    return getSavingThrow("prudence");
+  }
+
+  /**
+   * @return The character's guile saving throw.
+   */
+  public int getGuileSave() {
+    return getSavingThrow("guile");
   }
 
   /**
@@ -530,9 +590,9 @@ public class Character implements Movable
     StringBuffer b = new StringBuffer();
 
     b.append(String.format(
-      "<character name=\"%s\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
+      "<character name=\"%s\" level=\"%d\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
       "major-stat=\"%s\" minor-stat=\"%s\">",
-      name, hp, mp, sp, gold, majorStat, minorStat
+      name, level, hp, mp, sp, gold, majorStat, minorStat
     ));
 
     // Game location
