@@ -4,14 +4,18 @@ Next Feature:
 - Battle system 1.0
 
 Features:
-- Cooldown abstraction
 - Loot System 1.0
-- Scripting engine (embedded Scala)
-- Skills 2.0 (Flesh out game skills)
+- Scripting engine 1.0 (embedded Scala)
+- Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Character Creator 2.0 (Races & Suggested Classes)
 - Battle System 2.0 (incorporate skills & balance)
-- Mobile spawn points
+- Mobiles 2.0
+  - Spawn Points
+  - Better Wandering
 - Leveling System 1.0
+- Dungeon Instances 1.0
+- Quest System 1.0
+  - Mobile, item, & room scripting
 - Dungeon Instances 1.0
 - Tactics System 1.0
 
