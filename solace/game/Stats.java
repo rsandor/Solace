@@ -4,16 +4,22 @@ import java.util.*;
 
 /**
  * Class used to generate various stats for characters, mobiles, items, etc.
- * in the game world. This class gives the game's combat it's intrinsic feel
- * and is used to determine everything from overall power level for mobiles
- * to base statistics for player characters.
+ * in the game world. In short: this is the master mathematics engine behind the
+ * entire game.
  *
- * On Mac OSX you can view tables representing the formulas used in this class
- * by opening the `gamemath.numbers` file in the program Numbers.
+ * The stats engine is designed to be customizable and tweakable via a long
+ * list of parametric control constants. The base values for these constants
+ * were chosen by constructing a rather elaborate spreadsheet in the Mac OSX
+ * "Numbers" program.
+ *
+ * The spreadsheet used to construct the formulae and constants here is included
+ * in the distrubution of this software and is entitled `gamemath.numbers`.
  *
  * @author Ryan Sandor Richards
  */
 public class Stats {
+  public enum AbilityType { MAJOR, MINOR, TERTIARY };
+
   // Player character damage modifier parameters
   public static final double CH_DAMAGE_MOD_SCALE = 0.81;
   public static final double CH_DAMAGE_MOD_SHIFT = -1.0;
@@ -25,8 +31,8 @@ public class Stats {
   // Player character armor class parameters
   public static final double CH_AC_MOD_SCALE = 0.8;
   public static final double CH_AC_MOD_SHIFT = 0;
-  public static final double CH_AC_SPEED_SCALE = 0.2;
-  public static final double CH_AC_SPEED_POWER = 1.1205;
+  public static final double CH_AC_MOD_SPEED_SCALE = 0.2;
+  public static final double CH_AC_MOD_SPEED_POWER = 1.1205;
 
   // Player character ability score parameters
   public static final double CH_ABILITY_MAJOR_MINIMUM = 10.0;
@@ -80,6 +86,39 @@ public class Stats {
   public static double MOB_HP_SHIFT = 10.0;
   public static double MOB_HP_POWER_EXPONENT = 1.7;
 
+  // Mobile Attack Roll Parameters
+  public static double MOB_ATTACK_ROLL_MIN = 0.4;
+  public static double MOB_ATTACK_ROLL_MAX = 0.85;
+  public static double MOB_ATTACK_ROLL_EXPONENT = 1.2;
+
+  // Mobile Average Damage Parameters
+  public static double MOB_DAMAGE_MAX_TO_KILL_PLAYER = 30.0;
+  public static double MOB_DAMAGE_MIN_TO_KILL_PLAYER	= 8.0;
+  public static double MOB_DAMAGE_EXPONENT = 1.3;
+
+  // Armor Class Bases by Armor Type
+  public static double ARMOR_BASE_AC_HEAD = 2.0;
+  public static double ARMOR_BASE_AC_BODY = 5.0;
+  public static double ARMOR_BASE_AC_HANDS = 1.0;
+  public static double ARMOR_BASE_AC_LEGS = 3.0;
+  public static double ARMOR_BASE_AC_WAIST = 1.0;
+  public static double ARMOR_BASE_AC_FEET = 2.0;
+  public static double ARMOR_BASE_AC_SHIELD = 3.0;
+
+  // Armor Class Exponent by Level for all Armor Types
+  public static double ARMOR_LEVEL_EXPONENT = 0.68;
+
+  // Weapon parameters
+  public static double WEAPON_CHANCE_TO_HIT_P35 = 0.65;
+  public static double WEAPON_MIN_DAMAGE = 4.0;
+
+  // Battle time estimates
+  public static int BATTLE_TIME_P35 = 40;
+
+  // Static caches
+  protected static Hashtable<Integer, Double> cacheAverageHpByLevel =
+    new Hashtable<Integer, Double>();
+
   /**
    * Determines a player character ability.
    *
@@ -98,18 +137,36 @@ public class Stats {
    * @param name Name of the ability.
    */
   public static int getAbility(solace.game.Character ch, String name) {
-    double level = (double)ch.getLevel();
     String major = ch.getMajorStat();
     String minor = ch.getMinorStat();
+    AbilityType t = AbilityType.MAJOR;
+    if (major.equals(name)) {
+      t = AbilityType.MAJOR;
+    }
+    else if (minor.equals(name)) {
+      t = AbilityType.MINOR;
+    }
+    else {
+      t = AbilityType.TERTIARY;
+    }
+    return getAbility(ch.getLevel(), t);
+  }
 
+  /**
+   * Gets the value for a player character ability score at the given level with
+   * the given ability type (major, minor, or tertiary).
+   * @param level Level of the player character.
+   * @param t Type of the ability (major, minor, or tertiary).
+   * @return The standard value for the ability score.
+   */
+  public static int getAbility(int level, AbilityType t) {
     double ability = CH_ABILITY_MAJOR_MINIMUM + level * (
       Math.log((double)level) / Math.log(CH_ABILITY_LOG_BASE)
     );
-
-    if (major.equals(name)) {
+    if (t == AbilityType.MAJOR) {
       return (int)ability;
     }
-    if (minor.equals(name)) {
+    if (t == AbilityType.MINOR) {
       return (int)(CH_ABILITY_MINOR_SCALAR * ability);
     }
     return (int)(CH_ABILITY_TERTIARY_SCALAR * ability);
@@ -133,21 +190,52 @@ public class Stats {
    * @return The hit modifier.
    */
   public static int getHitMod(solace.game.Character ch) {
-    double level = ch.getLevel();
+    return getHitMod(ch.getLevel());
+  }
+
+  /**
+   * Determines the hit modifier for a player character of the given level.
+   * @param  level Level of the player character.
+   * @return       The character's hit modifier.
+   */
+  public static int getHitMod(int level) {
     double hitModifier = Math.pow(level, CH_HIT_MOD_SCALE) + CH_HIT_MOD_SHIFT;
     return (int)hitModifier;
   }
 
   /**
-   * Determines the armor class for a given character.
-   * @param  ch Character for which to determine the armor class.
-   * @return The armor class for the character.
+   * Determines the armor class bonus for a given character.
+   * @param ch Character for which to determine the armor class bonus.
+   * @return The armor class bonus for the character.
    */
   public static int getAC(solace.game.Character ch) {
-    double level = (double)ch.getLevel();
-    double speed = (double)ch.getSpeed();
-    double speedAC = CH_AC_SPEED_SCALE * Math.pow(speed, CH_AC_SPEED_POWER);
-    double levelAC = Math.pow(level, CH_AC_MOD_SHIFT) + CH_AC_MOD_SHIFT;
+    return getAC(ch.getLevel(), ch.getSpeed());
+  }
+
+  /**
+   * Determines the armor class bonus modifier for a character of the given
+   * level with the given speed statistics. This is determined by the following
+   * formula:
+   *
+   *   Bonus(l, s) = a * s^x + l^y + A
+   *
+   * With parametric constants:
+   *
+   *   a - Speed scale     (CH_AC_MOD_SPEED_SCALE)
+   *   x - Speed exponent  (CH_AC_MOD_SPEED_POWER)
+   *   y - Level exponent  (CH_AC_MOD_SCALE)
+   *   A - AC Shift        (CH_AC_MOD_SHIFT)
+   *
+   * @param level Level of the character.
+   * @param speed Speed of the character.
+   * @return The AC bonus.
+   */
+  public static int getAC(int level, int speed) {
+    double speedAC = CH_AC_MOD_SPEED_SCALE * Math.pow(
+      speed,
+      CH_AC_MOD_SPEED_POWER
+    );
+    double levelAC = Math.pow(level, CH_AC_MOD_SCALE) + CH_AC_MOD_SHIFT;
     return (int)(levelAC + speedAC);
   }
 
@@ -157,13 +245,58 @@ public class Stats {
    * @return The maximum HP.
    */
   public static int getMaxHp(solace.game.Character ch) {
-    double vitality = (double)ch.getVitality();
-    double strength = (double)ch.getStrength();
+    return getMaxHp(ch.getVitality(), ch.getStrength());
+  }
+
+  /**
+   * Calculates the maximum HP for a player character with the given vitality
+   * and strength. Maximum HP is determined by the following formula:
+   *
+   *   MaxHP(v, s) = a * v * log(v, x) + b * s * log(s, y) + H
+   *
+   * Using the parametric constants:
+   *
+   *   a - Vitality scale     (CH_HP_VITALITY_SCALE)
+   *   x - Vitality log base  (CH_HP_VITALITY_LOG_BASE)
+   *   b - Strength scale     (CH_HP_STRENGTH_SCALE)
+   *   y - Strength log base  (CH_HP_STRENGTH_LOG_BASE)
+   *   H - Hit point shift    (CH_HP_SHIFT)
+   *
+   * @param vitality Vitality ability score for the character.
+   * @param strength Strength ability score for the character.
+   * @return The maximum hit points for a the character.
+   */
+  public static int getMaxHp(int vitality, int strength) {
     double vitalityHP = CH_HP_VITALITY_SCALE * vitality *
       Math.log(vitality) / Math.log(CH_HP_VITALITY_LOG_BASE);
     double strengthHP = CH_HP_STRENGTH_SCALE * strength *
       Math.log(strength) / Math.log(CH_HP_STRENGTH_LOG_BASE);
     return (int)(vitalityHP + strengthHP + CH_HP_SHIFT);
+  }
+
+  /**
+   * Determines average hp for a player character at the given level.
+   * @param level Level of the character.
+   * @return The average hp for a player of the given level.
+   */
+  public static double getAvgHP(int level) {
+    if (cacheAverageHpByLevel.containsKey(level)) {
+      return cacheAverageHpByLevel.get(level);
+    }
+    int major = getAbility(level, AbilityType.MAJOR);
+    int minor = getAbility(level, AbilityType.MINOR);
+    int tertiary = getAbility(level, AbilityType.TERTIARY);
+    double avg = (
+      getMaxHp(major, minor) +
+      getMaxHp(major, tertiary) +
+      getMaxHp(minor, major) +
+      getMaxHp(minor, tertiary) +
+      getMaxHp(tertiary, major) +
+      getMaxHp(tertiary, minor) +
+      getMaxHp(tertiary, tertiary)
+    ) / 7.0;
+    cacheAverageHpByLevel.put(level, avg);
+    return avg;
   }
 
   /**
@@ -286,8 +419,16 @@ public class Stats {
    * @return The maximum HP for the given mobile.
    */
   public static int getMaxHp(Mobile m) {
-    double level = (double)m.getLevel();
-    double power = (double)m.getPower();
+    return getMobileMaxHP(m.getLevel(), m.getPower());
+  }
+
+  /**
+   * Determines the maximum HP for a mobile of the given level and power.
+   * @param   level Level of the mobile.
+   * @param   power Power of the mobile.
+   * @return  The maximum HP for the mobile.
+   */
+  public static int getMobileMaxHP(int level, int power) {
     double hp = MOB_HP_SHIFT + MOB_HP_SCALE * (
       ((1 + Math.pow(power, MOB_HP_POWER_EXPONENT)) / MOB_HP_POWER_DIVISOR) *
       level * Math.log(level) / Math.log(MOB_HP_LOG_BASE)
@@ -307,8 +448,16 @@ public class Stats {
    * @return The armor class of the mobile.
    */
   public static int getAC(Mobile m) {
-    double level = (double)m.getLevel();
-    double power = (double)m.getPower();
+    return getMobileAC(m.getLevel(), m.getPower());
+  }
+
+  /**
+   * Determines the AC for a mobile of the given level and power.
+   * @param   level Level of the mobile.
+   * @param   power Power of the mobile.
+   * @return  The AC for the mobile.
+   */
+  public static int getMobileAC(int level, int power) {
     double ac = MOB_AC_BASE + MOB_AC_SCALAR * (
       MOB_AC_POWER_SCALE * Math.pow(power, 1 + (level / MOB_AC_POWER_DIVISOR)) +
       MOB_AC_LEVEL_SCALE * Math.pow(level, 1 + (level / MOB_AC_LEVEL_DIVSOR))
@@ -316,4 +465,161 @@ public class Stats {
     return (int)ac;
   }
 
+  /**
+   * Determines a mobile's chance to hit a player of the same level at a given
+   * mobile power. This is calculated using the following formula:
+   *
+   *   (M-m)*(power / 100)^k + m
+   *
+   * With the given parametric constants:
+   *
+   * 	 M - maximum chance to hit the player at the given power
+   * 	 m - minimum chance to hit the player at the given power
+   * 	 k - power curve shape exponent
+   *
+   * @param level Level of the mobile.
+   * @param power Power of the mobile.
+   * @return The mobile's chance to hit a player of the same level.
+   */
+  public static double getMobileChanceToHit(int power) {
+    double max = MOB_ATTACK_ROLL_MAX;
+    double min = MOB_ATTACK_ROLL_MIN;
+    return (max - min) * Math.pow(power, MOB_ATTACK_ROLL_EXPONENT) + min;
+  }
+
+  /**
+   * Determines the attack roll for a mobile.
+   * @param  m The mobile.
+   * @return   The attack roll for the mobile.
+   */
+  public static int getAttackRoll(Mobile m) {
+    return getMobileAttackRoll(m.getLevel(), m.getPower());
+  }
+
+  /**
+   * Determines the attack roll for a mobile with the given level and power. The
+   * attack roll is determined using the following formula:
+   *
+   *   Roll = AvgPlayerAC(level) / (1 - ChanceToHit(power))
+   *
+   * @param level Level of the mobile.
+   * @param power Power of the mobile.
+   * @return The mobile's attack roll.
+   */
+  public static int getMobileAttackRoll(int level, int power) {
+    double ac = getAverageACByLevel(level);
+    double chance = getMobileChanceToHit(power);
+    return (int)(ac / (1 - chance));
+  }
+
+  /**
+   * Determines the average damage a mobile inflicts on a successful attack.
+   * @param  m The mobile.
+   * @return   The average damage the mobile inflicts.
+   */
+  public static int getAverageDamage(Mobile m) {
+    return getMobileAverageDamage(m.getLevel(), m.getPower());
+  }
+
+  /**
+   * Determines the average damage a mobile inflicts given its level and power.
+   * The following formula is used to determine the damage:
+   *
+   *   damage = CEIL(
+	 *     AvgPlayerHP[l] / [(M-m) × [1-(p/100)^k] + m]] / ChanceToHitPlayer[l]
+   *   )
+   *
+   * With the following parametric constants:
+   *
+   *   M - Maximum number of hits a player should take before death
+   *   m - Minimum number of hits a player should take before death
+   *   k - Power curve exponent (shape)
+   *
+   * @param   level Level of the mobile.
+   * @param   power Power of the mobile.
+   * @return  The average damage the mobile inflicts.
+   */
+  public static int getMobileAverageDamage(int level, int power) {
+    double hp = getAvgHP(level);
+    double chance = getMobileChanceToHit(power);
+    double M = MOB_DAMAGE_MAX_TO_KILL_PLAYER;
+    double m = MOB_DAMAGE_MIN_TO_KILL_PLAYER;
+    double k = MOB_DAMAGE_EXPONENT;
+    return (int)Math.ceil(
+      hp / ((M-m) * (1-Math.pow(power/100.0, k) + m)) / chance
+    );
+  }
+
+  /**
+   * Determines the base AC for a piece of armor of the given slot at the given
+   * level. The base AC acts as a mean for equipment and can be used to generate
+   * equipment loot ranging from the mundane to the truly extraordinary.
+   * @param level Level of the armor.
+   * @param slot Slot for the armor.
+   * @return The armor's base AC bonus.
+   */
+  public static int getArmorBaseAC(int level, String slot) {
+    double base = 0;
+    if (slot.equals("head")) {
+      base = ARMOR_BASE_AC_HEAD;
+    }
+    else if (slot.equals("body")) {
+      base = ARMOR_BASE_AC_BODY;
+    }
+    else if (slot.equals("hands")) {
+      base = ARMOR_BASE_AC_HANDS;
+    }
+    else if (slot.equals("legs")) {
+      base = ARMOR_BASE_AC_LEGS;
+    }
+    else if (slot.equals("waist")) {
+      base = ARMOR_BASE_AC_WAIST;
+    }
+    else if (slot.equals("feet")) {
+      base = ARMOR_BASE_AC_FEET;
+    }
+    else if (slot.equals("off-hand")) {
+      base = ARMOR_BASE_AC_SHIELD;
+    }
+    return (int)(base * Math.pow(level, ARMOR_LEVEL_EXPONENT));
+  }
+
+  /**
+   * Determines the expected average AC for a fully equipped character at the
+   * given level. Assumes the player has chosen speed as their minor ability
+   * score.
+   * @param level Level of the character.
+   * @return Expected average AC for a character of the given level.
+   */
+  public static double getAverageACByLevel(int level) {
+    String[] slots = new String[] {
+      "head", "body", "hands", "legs", "waist", "feet", "off-hand"
+    };
+    int ac = 0;
+    for (String slot : slots) {
+      ac += getArmorBaseAC(level, slot);
+    }
+    return ac + getAC(level, getAbility(level, AbilityType.MINOR));
+  }
+
+  /**
+   * Determines the base attack roll for a weapon.
+   * @param level Level of the weapon.
+   * @return The base attack roll for a weapon of the given level.
+   */
+  public static int getWeaponAttackRoll(int level) {
+    int mobAc = getMobileAC(level, 35);
+    int hitMod = getHitMod(level);
+    return (int)((mobAc - hitMod) / (1.0 - WEAPON_CHANCE_TO_HIT_P35));
+  }
+
+  /**
+   * Determines the average damage for a weapon of the given level.
+   * @param  level Level of the weapon.
+   * @return       Average damage for the weapon.
+   */
+  public static int getWeaponAverageDamage(int level) {
+    int mobHP = getMobileMaxHP(level, 35);
+    return (int)((1 / WEAPON_CHANCE_TO_HIT_P35) * mobHP / (BATTLE_TIME_P35 / 2));
+  }
 }

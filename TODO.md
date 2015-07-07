@@ -2,18 +2,19 @@
 
 Next Feature:
 - Stats System 2.0
+  - Mob attack stats
 
 Features:
 - Cooldown abstraction
 - Battle system 1.0
 - Loot System 1.0
-- More skills
+- Scripting engine (embedded Scala)
+- Skills 2.0 (Flesh out game skills)
 - Character Creator 2.0 (Races & Suggested Classes)
 - Mobile spawn points
 - Leveling System 1.0
+- Dungeon Instances 1.0
 - Tactics System 1.0
-- Account System 2.0
-  - Login shouldn't load characters until after user authenticates with password
 
 Bugs:
 - Shops commands should refer to the shop owner and be more flavorful
@@ -22,6 +23,9 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
+- Account System 2.0
+  - Master account XML with characters in separate files
+  - Login shouldn't load characters until after user authenticates with password
 - Prompts 2.0 (parametric, user defined, gameplay prompts)
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
@@ -37,7 +41,6 @@ Later:
 - Item weight & Carrying Capacity
 - Global communication channels
 - Player-to-player auction house
-- Scripting engine (embedded Scala)
 - Use a connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------

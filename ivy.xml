@@ -9,5 +9,6 @@
     <dependency org="org.mockito" name="mockito-all" rev="1.8.4"/>
     <dependency org="org.json" name="json" rev="20090211"/>
     <dependency org="com.google.guava" name="guava" rev="12.0" />
+    <dependency org="org.scala-lang" name="scala-xml" rev="2.11.0-M4"/>
   </dependencies>
 </ivy-module>
