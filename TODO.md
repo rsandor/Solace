@@ -16,8 +16,12 @@ Features:
 - Dungeon Instances 1.0
 - Quest System 1.0
   - Mobile, item, & room scripting
+- Help system 2.0
+  - use an actual text search algorithm instead of a keywords file
+  - articles should have unique names
 - Dungeon Instances 1.0
 - Tactics System 1.0
+- Single Player Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
 - Shops commands should refer to the shop owner and be more flavorful
@@ -32,13 +36,10 @@ Later:
 - Prompts 2.0 (parametric, user defined, gameplay prompts)
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
-- Help system 2.0
-  - use an actual text search algorithm instead of a keywords file
-  - articles should have unique names
 - Decorative banners for shops, inventory, character sheet, etc.
 - Spells, Scrolls, and Spell Casting
 - Game world calendar + Weather
-- Room lighting
+- Room lighting, equipable light sources, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
 - Banks (items and gold)
 - Item weight & Carrying Capacity
