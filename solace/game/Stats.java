@@ -13,7 +13,7 @@ import java.util.*;
  * "Numbers" program.
  *
  * The spreadsheet used to construct the formulae and constants here is included
- * in the distrubution of this software and is entitled `gamemath.numbers`.
+ * in the distrubution of this software and is entitled `spreadsheets/gamemath.numbers`.
  *
  * @author Ryan Sandor Richards
  */
