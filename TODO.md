@@ -1,8 +1,7 @@
 # Master TODO
 
 Next Feature:
-- Stats System 2.0
-  - Mob attack stats
+- Random Number Generation
 
 Features:
 - Cooldown abstraction
@@ -54,6 +53,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Stats System 2.0
 - Level offset for equipment is now configurable in world.xml
 - Entering game message does not appear, player doesn't seem to get messages
   in the same room.
