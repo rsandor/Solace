@@ -1,15 +1,15 @@
 # Master TODO
 
 Next Feature:
-- Random Number Generation
+- Battle system 1.0
 
 Features:
 - Cooldown abstraction
-- Battle system 1.0
 - Loot System 1.0
 - Scripting engine (embedded Scala)
 - Skills 2.0 (Flesh out game skills)
 - Character Creator 2.0 (Races & Suggested Classes)
+- Battle System 2.0 (incorporate skills & balance)
 - Mobile spawn points
 - Leveling System 1.0
 - Dungeon Instances 1.0
@@ -53,6 +53,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Random Number Generation
 - Stats System 2.0
 - Level offset for equipment is now configurable in world.xml
 - Entering game message does not appear, player doesn't seem to get messages
