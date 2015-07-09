@@ -1,19 +1,23 @@
 package solace.util;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 /**
  * Random number utility class.
  * @author Ryan Sandor Richards
  */
-public class Rand {
-  protected static final int NORMAL_ROLLS = 12;
+public class Roll {
+  /**
+   * Number of rolls to perform to generate a normal-ish distribution.
+   */
+  static final int NORMAL_ROLLS = 12;
+  static final Random random = new Random();
 
   /**
    * @return A uniform random number.
    */
   public static double uniform() {
-    return ThreadLocalRandom.current().nextDouble(0, 1);
+    return random.nextDouble();
   }
 
   /**
@@ -23,8 +27,8 @@ public class Rand {
    * @param  max Maximum for the roll.
    * @return A random number from 1 to the given maximum.
    */
-  public static int uniformRoll(int max) {
-    return ThreadLocalRandom.current().nextInt(1, max + 1);
+  public static int uniform(int max) {
+    return random.nextInt(max + 1) + 1;
   }
 
   /**
@@ -39,7 +43,7 @@ public class Rand {
    * @param mean Mean value for the distribution.
    * @return A psuedo-normal random number.
    */
-  public static int normalRoll(int mean) {
+  public static int normal(int mean) {
     double sum = 0.0;
     for (int i = 0; i < NORMAL_ROLLS; i++) {
       sum += uniform();

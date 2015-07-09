@@ -7,8 +7,7 @@ import solace.util.*;
  * Basic room class for the engine.
  * @author Ryan Sandor Richards (Gaius)
  */
-public class Room
-{
+public class Room {
   String id;
   String title = "";
   String desc = "";
@@ -16,7 +15,7 @@ public class Room
   LinkedList<Exit> exits = new LinkedList<Exit>();
   Hashtable<String, String> features = new Hashtable<String, String>();
   List<String> itemInstances = new LinkedList<String>();
-  List<Movable> characters;
+  List<Player> characters;
   List<Item> items;
   Shop shop = null;
   List<Mobile> mobiles;
@@ -27,7 +26,7 @@ public class Room
    */
   public Room(String i) {
     id = i;
-    characters = Collections.synchronizedList(new LinkedList<Movable>());
+    characters = Collections.synchronizedList(new LinkedList<Player>());
     mobiles = Collections.synchronizedList(new LinkedList<Mobile>());
   }
 
@@ -56,7 +55,7 @@ public class Room
    */
   public void sendMessage(String message) {
     synchronized(characters) {
-      for (Movable ch : characters) {
+      for (Player ch : characters) {
         ch.sendMessage(message);
       }
     }
@@ -69,9 +68,9 @@ public class Room
    * @param message Message to send.
    * @param exclude Player to exclude when sending the message.
    */
-  public void sendMessage(String message, Movable exclude) {
+  public void sendMessage(String message, Player exclude) {
     synchronized(characters) {
-      for (Movable ch : characters) {
+      for (Player ch : characters) {
         if (ch == exclude)
           continue;
         ch.sendMessage(message);
@@ -82,7 +81,7 @@ public class Room
   /**
    * @return The list of characters and mobiles in the room.
    */
-  public List<Movable> getCharacters() {
+  public List<Player> getCharacters() {
     return characters;
   }
 
@@ -97,10 +96,10 @@ public class Room
    * @param exclude Character or mobile to exclude.
    * @return A list of characters or mobiles excluding the one given.
    */
-  public List<Movable> getOtherCharacters(Movable exclude) {
-    List<Movable> others = new LinkedList<Movable>();
+  public List<Player> getOtherCharacters(Player exclude) {
+    List<Player> others = new LinkedList<Player>();
     synchronized (characters) {
-      for (Movable ch : characters) {
+      for (Player ch : characters) {
         if (ch == exclude)
           continue;
         others.add(ch);
@@ -114,9 +113,9 @@ public class Room
    * @param namePrefix Name prefix for the character to find.
    * @return The character or null if none was found.
    */
-  public Movable findCharacter(String namePrefix) {
+  public Player findCharacter(String namePrefix) {
     synchronized (characters) {
-      for (Movable ch : characters) {
+      for (Player ch : characters) {
         if (ch.getName().toLowerCase().startsWith(namePrefix)) {
           return ch;
         }
@@ -222,7 +221,7 @@ public class Room
    * @return A string describing the room.
    */
   public String describeTo(solace.game.Character ch) {
-    List<Movable> others = getOtherCharacters(ch);
+    List<Player> others = getOtherCharacters(ch);
 
     // Title and description of the room
     StringBuffer buffer = new StringBuffer();
@@ -247,7 +246,7 @@ public class Room
     // Show a list of characters in the room
     if (others.size() > 0) {
       buffer.append("{cThe following characters are present:{x\n\r");
-      for (Movable c : others) {
+      for (Player c : others) {
         buffer.append("    " + c.getName() + "\n\r");
       }
     }
@@ -298,7 +297,7 @@ public class Room
    */
   public String describeCharacter(String name) {
     synchronized(characters) {
-      for (Movable ch : characters) {
+      for (Player ch : characters) {
         String[] names = ch.getName().split("\\s+");
         for (String n : names) {
           if (n.toLowerCase().startsWith(name.toLowerCase())) {

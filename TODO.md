@@ -30,6 +30,7 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
+- Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - Account System 2.0
   - Master account XML with characters in separate files
   - Login shouldn't load characters until after user authenticates with password

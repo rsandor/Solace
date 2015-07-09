@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><user name="ryan" admin="true" password="404c3e3f95246ec2a793b4a3a2ff5e6072613c63de034f63a99a0c2335b65ced">
   <characters>
-    <character name="Hintos" level="100" hp="9" mp="14" sp="47" gold="9705" major-stat="speed" minor-stat="strength">
+    <character name="Hintos" level="100" hp="8890" mp="10000" sp="10000" gold="9705" major-stat="speed" minor-stat="strength">
       <location area="medius" room="contego protectives"/>
       <skills>
         <skill id="one-handed" level="50"/>
@@ -29,8 +29,7 @@
         </item>
         <item uuid="2e93e0b3-1523-48b7-9c08-f1d15e758de3" id="wooden-sword" names="wooden sword" area="medius">
           <property key="hit">1</property>
-          <property key="level">1</property>
-          <property key="roll">1d6</property>
+          <property key="level">55</property>
           <property key="proficiency">shortsword</property>
           <property key="weight">2</property>
           <property key="description.room">A sturdy wooden sword rests here.</property>

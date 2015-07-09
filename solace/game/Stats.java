@@ -438,12 +438,6 @@ public class Stats {
 
   /**
    * Determines the AC for the given mobile.
-   *
-   * mobAC(L,P) = $base + $scalar × [
-   *    $powerScale × P^(1 + L ÷ $powerDivisor) +
-   *    $levelScale × L^(1 + L ÷ $levelDivisor)
-   * ]
-   *
    * @param m Mobile for which to determine the armor class.
    * @return The armor class of the mobile.
    */
@@ -458,10 +452,9 @@ public class Stats {
    * @return  The AC for the mobile.
    */
   public static int getMobileAC(int level, int power) {
-    double ac = MOB_AC_BASE + MOB_AC_SCALAR * (
-      MOB_AC_POWER_SCALE * Math.pow(power, 1 + (level / MOB_AC_POWER_DIVISOR)) +
-      MOB_AC_LEVEL_SCALE * Math.pow(level, 1 + (level / MOB_AC_LEVEL_DIVSOR))
-    );
+    double ac = MOB_AC_BASE + MOB_AC_SCALAR * power *
+      Math.pow(MOB_AC_POWER_SCALE, 1 + (level / MOB_AC_POWER_DIVISOR)) +
+      MOB_AC_LEVEL_SCALE * Math.pow(level, 1 + (level / MOB_AC_LEVEL_DIVSOR));
     return (int)ac;
   }
 
@@ -484,7 +477,7 @@ public class Stats {
   public static double getMobileChanceToHit(int power) {
     double max = MOB_ATTACK_ROLL_MAX;
     double min = MOB_ATTACK_ROLL_MIN;
-    return (max - min) * Math.pow(power, MOB_ATTACK_ROLL_EXPONENT) + min;
+    return (max - min) * Math.pow(power/100.0, MOB_ATTACK_ROLL_EXPONENT) + min;
   }
 
   /**

@@ -21,7 +21,7 @@ public class HelpSystem {
   protected static final String HELP_PATH = "data/help/";
 
   // Instance variables
-  TreeSet<String> keywords;
+  HashSet<String> keywords;
   Hashtable<String, List<String>> keywordIndex;
   Hashtable<String, String> primaryKeyword;
   Hashtable<String, String> articles;
@@ -41,7 +41,7 @@ public class HelpSystem {
    * the keywords file.
    */
   protected void generateKeywordIndex() {
-    keywords = new TreeSet<String>();
+    keywords = new HashSet<String>();
     keywordIndex = new Hashtable<String, List<String>>();
     primaryKeyword = new Hashtable<String, String>();
 

@@ -31,7 +31,7 @@ public class Scan extends PlayCommand {
       message += ex.getDescription().trim() + ":\n\r";
 
       synchronized(r.getCharacters()) {
-        for (Movable ch : r.getCharacters()) {
+        for (Player ch : r.getCharacters()) {
           message += "  " + ch.getName() + "\n\r";
         }
       }

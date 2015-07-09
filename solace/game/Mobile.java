@@ -11,7 +11,7 @@ import solace.util.EventListener;
  * Represents a mobile in the game world.
  * @author Ryan Sandor Richards
  */
-public class Mobile extends Template implements Movable
+public class Mobile extends Template implements Player
 {
   enum State { STATIONARY, WANDERING }
 
@@ -21,6 +21,7 @@ public class Mobile extends Template implements Movable
 
   boolean isPlaced = false;
   State state = State.STATIONARY;
+  PlayState playState = PlayState.STANDING;
   Clock.Event wanderEvent;
   Room room;
   EventEmitter events;
@@ -35,31 +36,50 @@ public class Mobile extends Template implements Movable
   }
 
   /**
-   * @see solace.game.Movable
+   * @see solace.game.Player
+   */
+  public PlayState getPlayState() {
+    return playState;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setPlayState(PlayState s) {
+    playState = s;
+  }
+
+  /**
+   * @see solace.game.Player
    */
   public String getName() { return get("description.name"); }
 
   /**
-   * @see solace.game.Movable
+   * @see solace.game.Player
    */
   public String getDescription() { return get("description"); }
 
   /**
-   * @see solace.game.Movable
+   * @see solace.game.Player
    */
   public void sendMessage(String msg) {
     events.trigger("message", new Object[] { msg });
   }
 
   /**
-   * @see solace.game.Movable
+   * @see solace.game.Player
    */
   public Room getRoom() { return room; }
 
   /**
-   * @see solace.game.Movable
+   * @see solace.game.Player
    */
   public void setRoom(Room r) { room = r; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isMobile() { return true; }
 
   /**
    * @return The level of the mobile.
@@ -83,6 +103,70 @@ public class Mobile extends Template implements Movable
    * @see solace.game.Stats
    */
   public int getAC() { return Stats.getAC(this); }
+
+  /**
+   * @return The mobile's attack roll.
+   * @see solace.game.Stats
+   */
+  public int getAttackRoll() { return Stats.getAttackRoll(this); }
+
+  /**
+   * TODO Should we include a mobile hit modifier in the stats engine?
+   * @return The mobile's hit modifier.
+   */
+  public int getHitMod() { return 0; }
+
+  /**
+   * @return The mobile's average damage per attack.
+   * @see solace.game.Stats
+   */
+  public int getAverageDamage() { return Stats.getAverageDamage(this); }
+
+  /**
+   * TODO Should we include a mobile damage modifier in the stats engine?
+   * @return The mobile's damage modifier.
+   * @see solace.game.Player
+   */
+  public int getDamageMod() { return 0; }
+
+  /**
+   * TODO Should we include multiple attacks for mobiles?
+   * @see solace.game.Player
+   */
+  public int getNumberOfAttacks() { return 1; }
+
+  /**
+   * TODO We should add damage resistances to mobiles.
+   * @see solace.game.Player
+   */
+  public int applyDamage(int damage) {
+    hp -= damage;
+    return damage;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void die() {
+    setPlayState(PlayState.DEAD);
+    MobileManager.getInstance().remove(this);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isDead() { return getHp() <= 0; }
+
+  /**
+   * @return The mobile's current hit points.
+   */
+  public int getHp() { return hp; }
+
+  /**
+   * Sets the mobiles current hp.
+   * @param h Hit points to set.
+   */
+  public void setHp(int h) { hp = h; }
 
   /**
    * Sets the state of the mobile.

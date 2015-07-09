@@ -86,6 +86,8 @@ public class PlayController
     addCommand(new ShopAppraise(character));
     addCommand(new ShopSell(character));
 
+    addCommand(new Attack(character));
+
     Emote emote = new Emote(character);
     addCommand(emote);
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));

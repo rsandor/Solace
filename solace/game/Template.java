@@ -185,4 +185,31 @@ public class Template implements Comparable<Template> {
   public String get(String key) {
     return properties.get(key);
   }
+
+  /**
+   * Gets a property of the template as an integer. If the value is null or
+   * fails to parse then this will return 0.
+   * @param key Key for the property to retrieve.
+   * @return The property as an integer, or 0 if it could not be converted.
+   */
+  public int getInt(String key) {
+    return getInt(key, 0);
+  }
+
+  /**
+   * Attempts to get the value for the given key as an integer, but returns the
+   * given default if the property could not be parsed.
+   * @param key Name of the property to fetch.
+   * @param def Default value for the property.
+   * @return The value, or the default if a value could not be parsed.
+   */
+  public int getInt(String key, int def) {
+    try {
+      String value = get(key);
+      return (value != null) ? Integer.parseInt(value) : def;
+    }
+    catch (NumberFormatException nfe) {
+      return def;
+    }
+  }
 }

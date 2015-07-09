@@ -47,6 +47,8 @@ public class World
     namesToAccounts = new Hashtable<String, Account>();
     accountsToConnections = new Hashtable<Account, Connection>();
 
+    BattleManager.start();
+
     Log.info("Game world loaded");
 
     initialized = true;

@@ -7,12 +7,13 @@ import solace.util.Log;
 import solace.util.SkillNotFoundException;
 import solace.util.Skills;
 import solace.xml.GameParser;
+import solace.cmd.GameException;
 
 /**
- * Represents a player character or actor in the game world.
+ * Represents a player character in the game world.
  * @author Ryan Sandor Richards.
  */
-public class Character implements Movable
+public class Character implements Player
 {
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
@@ -31,6 +32,8 @@ public class Character implements Movable
 
   // Instance Variables
   String id = null;
+  PlayState state = PlayState.STANDING;
+
   String name;
   String description;
 
@@ -45,7 +48,7 @@ public class Character implements Movable
   long gold;
   List<Item> inventory = null;
   Hashtable<String, Item> equipment = new Hashtable<String, Item>();
-  TreeSet<String> skillIds = new TreeSet<String>();
+  HashSet<String> skillIds = new HashSet<String>();
   List<Skill> skills = new ArrayList<Skill>();
 
   Room room = null;
@@ -119,6 +122,20 @@ public class Character implements Movable
   }
 
   /**
+   * @see solace.game.Player
+   */
+  public PlayState getPlayState() {
+    return state;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setPlayState(PlayState s) {
+    state = s;
+  }
+
+  /**
    * @return The character's id.
    */
   public String getId() { return id; }
@@ -182,22 +199,6 @@ public class Character implements Movable
    * @return THe name of the character's minor stat.
    */
   public String getMinorStat() { return minorStat; }
-
-  /**
-   * @return the damage modifier for the character.
-   * @see solace.game.Stats
-   */
-  public int getDamageMod() {
-    return Stats.getDamageMod(this) + getModFromEquipment("damage");
-  }
-
-  /**
-   * @return the hit modifier for the character.
-   * @see solace.game.Stats
-   */
-  public int getHitMod() {
-    return Stats.getHitMod(this) + getModFromEquipment("hit");
-  }
 
   /**
    * @return The character's armor class.
@@ -312,6 +313,81 @@ public class Character implements Movable
    * @return The character's guile saving throw.
    */
   public int getGuileSave() { return getSavingThrow("guile"); }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getAttackRoll() {
+    Item weapon = getEquipment("weapon");
+    // TODO Need better unarmed calculations here
+    if (weapon == null) {
+      return (int)(level * 1.5);
+    }
+    return Stats.getWeaponAttackRoll(weapon.getInt("level"));
+  }
+
+  /**
+   * @return the hit modifier for the character.
+   * @see solace.game.Stats
+   */
+  public int getHitMod() {
+    return Stats.getHitMod(this) + getModFromEquipment("hit");
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getAverageDamage() {
+    Item weapon = getEquipment("weapon");
+    if (weapon == null) {
+      return (int)(level * 1.5 + 1);
+    }
+    return Stats.getWeaponAverageDamage(weapon.getInt("level"));
+  }
+
+  /**
+   * @return the damage modifier for the character.
+   * @see solace.game.Stats
+   */
+  public int getDamageMod() {
+    return Stats.getDamageMod(this) + getModFromEquipment("damage");
+  }
+
+  /**
+   * @return The number of attacks for the character.
+   * @see solace.game.Player
+   */
+  public int getNumberOfAttacks() { return 1; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int applyDamage(int damage) {
+    hp -= damage;
+    return damage;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isDead() { return getHp() <= 0; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void die() {
+    try {
+      // TODO Flesh this out in the future.
+      sendMessage("\n\rYou have {Rdied{x!\n\r");
+      hp = 1;
+      mp = 1;
+      sp = 1;
+      setRoom(World.getDefaultRoom());
+    }
+    catch (GameException ge) {
+      Log.error("World does not define a default room.");
+    }
+  }
 
   /**
    * Adds a skill to the character with the given id and level.
@@ -536,6 +612,13 @@ public class Character implements Movable
    */
   public Room getRoom() {
     return room;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isMobile() {
+    return false;
   }
 
   /**
