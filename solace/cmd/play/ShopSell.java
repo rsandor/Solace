@@ -21,6 +21,11 @@ public class ShopSell extends ShopCommand {
     Shop shop,
     Room room
   ) {
+    if (character.getPlayState() == PlayState.FIGHTING) {
+      character.sendln("You're too distracted to sell items while fighting!");
+      return false;
+    }
+
     if (params.length < 2) {
       character.wrapln("What item would you like to sell?");
       return false;

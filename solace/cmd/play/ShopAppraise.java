@@ -22,6 +22,11 @@ public class ShopAppraise extends ShopCommand {
     Shop shop,
     Room room
   ) {
+    if (character.getPlayState() == PlayState.FIGHTING) {
+      character.sendln("You cannot have items appraised while fighting!");
+      return false;
+    }
+
     if (params.length < 2) {
       character.wrapln("What item would you like appraised?");
       return false;

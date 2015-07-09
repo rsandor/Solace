@@ -250,6 +250,10 @@ public abstract class AbstractStateController
     if (input == null || connection == null)
       return;
 
+    if (input.length() < 1) {
+      return;
+    }
+
     String []params = input.split("\\s+");
 
     if (params.length < 1)

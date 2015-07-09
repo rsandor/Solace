@@ -27,6 +27,13 @@ public class Move extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
+    PlayState state = character.getPlayState();
+
+    if (state == PlayState.FIGHTING) {
+      character.sendln("You cannot leave while engaged in battle!");
+      return false;
+    }
+
     String cmd = params[0];
     String direction;
     boolean notEast = !(new String("east").startsWith(cmd));

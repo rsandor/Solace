@@ -3,6 +3,7 @@
 Next Feature:
 - Battle system 1.0
 
+
 Features:
 - Loot System 1.0
 - Scripting engine 1.0 (embedded Scala)
@@ -24,7 +25,6 @@ Features:
 - Single Player Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
-- Pressing enter without a command quits the game to the main menu 
 - Shops commands should refer to the shop owner and be more flavorful
 - Move command will fail across areas (uses area.getRoom, need global lookup)
 
@@ -60,6 +60,8 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Certain commands (such as quit) should be disabled when in battle
+- Pressing enter without a command quits the game to the main menu
 - Random Number Generation
 - Stats System 2.0
 - Level offset for equipment is now configurable in world.xml

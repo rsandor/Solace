@@ -21,6 +21,11 @@ public class ShopBuy extends ShopCommand {
     Shop shop,
     Room room
   ) {
+    if (character.getPlayState() == PlayState.FIGHTING) {
+      character.sendln("You cannot buy items while in battle!");
+      return false;
+    }
+
     if (params.length < 2) {
       character.wrapln("What would you like to buy?");
       return false;

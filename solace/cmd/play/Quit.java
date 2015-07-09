@@ -15,6 +15,11 @@ public class Quit extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
+    if (character.getPlayState() == PlayState.FIGHTING) {
+      character.sendln("You cannot quit, you are in BATTLE!");
+      return false;
+    }
+
     Room room = character.getRoom();
     room.getCharacters().remove(character);
 

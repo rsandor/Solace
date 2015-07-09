@@ -22,6 +22,10 @@ public class PlayController
     "exit", "enter"
   };
 
+  static final String[] attackAliases = {
+    "attack", "kill", "fight"
+  };
+
   /**
    * Creates a new game play controller.
    * @param c The connection.
@@ -86,7 +90,7 @@ public class PlayController
     addCommand(new ShopAppraise(character));
     addCommand(new ShopSell(character));
 
-    addCommand(new Attack(character));
+    addCommand(attackAliases, new Attack(character));
 
     Emote emote = new Emote(character);
     addCommand(emote);
