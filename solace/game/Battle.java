@@ -87,7 +87,7 @@ public class Battle {
 
         if (hits == 0) {
           messageBuffers.get(attacker).append(String.format(
-            "[{rmiss{x] Your attacks missed %s.\n\r",
+            "Your attack missed %s.\n\r",
             target.getName()
           ));
           messageBuffers.get(target).append(String.format(
@@ -97,27 +97,30 @@ public class Battle {
         }
         else if (hits == 1) {
           messageBuffers.get(attacker).append(String.format(
-            "[{ghit{x] dealing %d damage to %s!\n\r",
+            "[{g%d{x] You hit %s!\n\r",
             actualDamage, target.getName()
           ));
           messageBuffers.get(target).append(String.format(
-            "%s {rhit{x you dealing %d damage.\n\r",
-            attacker.getName(), damage
+            "<{r%d{x> %s hit you!\n\r",
+            actualDamage, attacker.getName()
           ));
         }
         else {
           messageBuffers.get(attacker).append(String.format(
-            "[{ghit{x] %d attacks dealing %d damage to %s!\n\r",
-            hits, actualDamage, target.getName()
+            "[{g%d{x] You hit %s %d times!\n\r",
+            actualDamage, target.getName(), hits
           ));
           messageBuffers.get(target).append(String.format(
-            "%s {rhit{x you with %d attacks, dealing %d damage.\n\r",
-            attacker.getName(), hits, damage
+            "<{r%d{x> %s hit you %d times!\n\r",
+            actualDamage, attacker.getName(), hits
           ));
         }
 
         if (target.isDead()) {
           dead.add(target);
+          messageBuffers.get(attacker).append(String.format(
+            "You {Rkilled{x %s!", target.getName()
+          ));
         }
       }
 

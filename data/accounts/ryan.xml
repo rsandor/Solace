@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><user name="ryan" admin="true" password="404c3e3f95246ec2a793b4a3a2ff5e6072613c63de034f63a99a0c2335b65ced">
   <characters>
-    <character name="Hintos" level="100" hp="8890" mp="10000" sp="10000" gold="9705" major-stat="speed" minor-stat="strength">
+    <character name="Hintos" level="100" hp="8582" mp="10000" sp="10000" gold="9705" major-stat="speed" minor-stat="strength">
       <location area="medius" room="contego protectives"/>
       <skills>
         <skill id="one-handed" level="50"/>

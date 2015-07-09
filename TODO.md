@@ -24,6 +24,7 @@ Features:
 - Single Player Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
+- Pressing enter without a command quits the game to the main menu 
 - Shops commands should refer to the shop owner and be more flavorful
 - Move command will fail across areas (uses area.getRoom, need global lookup)
 
