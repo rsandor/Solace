@@ -21,12 +21,19 @@
   <property name="classes.dir" value="${build.dir}/classes" />
   <property name="jar.dir" value="${build.dir}/jar" />
   <property name="lib.dir" value="lib" />
+  <property name="test.dir" value="test"/>
+  <property name="test.report.dir" value="report"/>
   <property name="main-class" value="solace.game.Game" />
 
-  <!-- 3rd party jars -->
   <path id="3rd-party-classpath">
     <fileset dir="${lib.dir}">
-      <include name="**/*.jar" />
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <path id="solace-classpath">
+    <fileset dir="${jar.dir}">
+      <include name="solace.jar"/>
     </fileset>
   </path>
 
@@ -63,6 +70,26 @@
         <attribute name="Class-Path" value="${lib.list}"/>
       </manifest>
     </jar>
+  </target>
+
+  <!-- Test compile target -->
+
+  <!-- JUnit test run target -->
+  <target name="test" depends="jar" description="--> Running unit tests">
+    <mkdir dir="${test.report.dir}"/>
+    <junit printsummary="on" fork="true" haltonfailure="no" haltonerror="yes" timeout="2000">
+      <classpath refid="3rd-party-classpath"/>
+      <classpath refid="solace-classpath"/>
+      <classpath>
+        <pathelement location="${test.build.dir}"/>
+      </classpath>
+      <formatter type="plain"/>
+      <batchtest todir="${test.report.dir}">
+        <fileset dir="${test.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
   </target>
 
   <!-- Run target -->

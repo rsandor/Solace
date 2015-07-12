@@ -55,6 +55,7 @@ public class GameParser {
   /**
    * Parses the game's equipment configuration file.
    */
+  @SuppressWarnings("unchecked")
   public static Collection<String> parseEquipment() {
     Log.info("Loading equipment slots");
     try {

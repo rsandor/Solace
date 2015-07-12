@@ -1,8 +1,7 @@
 # Master TODO
 
 Next Feature:
-- Battle system 1.0
-
+- Stats Unit Testing
 
 Features:
 - Loot System 1.0
@@ -52,6 +51,7 @@ Later:
 --------------------------------------------------------------------------------
 
 Help Files:
+- expand upon battle
 - expand upon skills
 - proficiencies (profs)
 - passive enhancements (passives)
@@ -60,6 +60,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Battle system 1.0
 - Certain commands (such as quit) should be disabled when in battle
 - Pressing enter without a command quits the game to the main menu
 - Random Number Generation
