@@ -52,7 +52,7 @@ public class Stats {
   public static final double CH_MP_MAGIC_LOG_BASE = 1.65;
   public static final double CH_MP_VITALITY_SCALE = 0.5;
   public static final double CH_MP_VITALITY_LOG_BASE = 4.0;
-  public static final double CH_MP_SHIFT = 0;
+  public static final double CH_MP_SHIFT = -3.0;
 
   // Player character stamina point parameters
   public static final double CH_SP_SPEED_SCALE = 1.0;
@@ -92,8 +92,8 @@ public class Stats {
   public static double MOB_ATTACK_ROLL_EXPONENT = 1.2;
 
   // Mobile Average Damage Parameters
-  public static double MOB_DAMAGE_MAX_TO_KILL_PLAYER = 30.0;
-  public static double MOB_DAMAGE_MIN_TO_KILL_PLAYER	= 8.0;
+  public static double MOB_DAMAGE_MAX_TO_KILL_PLAYER = 20.0;
+  public static double MOB_DAMAGE_MIN_TO_KILL_PLAYER	= 6.0;
   public static double MOB_DAMAGE_EXPONENT = 1.3;
 
   // Armor Class Bases by Armor Type
@@ -160,16 +160,16 @@ public class Stats {
    * @return The standard value for the ability score.
    */
   public static int getAbility(int level, AbilityType t) {
-    double ability = CH_ABILITY_MAJOR_MINIMUM + level * (
+    int ability = (int)Math.floor(CH_ABILITY_MAJOR_MINIMUM + level * (
       Math.log((double)level) / Math.log(CH_ABILITY_LOG_BASE)
-    );
+    ));
     if (t == AbilityType.MAJOR) {
-      return (int)ability;
+      return ability;
     }
     if (t == AbilityType.MINOR) {
-      return (int)(CH_ABILITY_MINOR_SCALAR * ability);
+      return (int)Math.floor(CH_ABILITY_MINOR_SCALAR * ability);
     }
-    return (int)(CH_ABILITY_TERTIARY_SCALAR * ability);
+    return (int)Math.floor(CH_ABILITY_TERTIARY_SCALAR * ability);
   }
 
   /**
@@ -178,10 +178,16 @@ public class Stats {
    * @return The damage modifier.
    */
   public static int getDamageMod(solace.game.Character ch) {
-    double level = ch.getLevel();
-    double damageMod = Math.pow(level, CH_DAMAGE_MOD_SCALE) +
-      CH_DAMAGE_MOD_SHIFT;
-    return (int)damageMod;
+    return getDamageMod(ch.getLevel());
+  }
+
+  /**
+   * Calculates the damage modifier for a player character of the given level.
+   * @param level Level of the player character.
+   * @return The damage mod for that level.
+   */
+  public static int getDamageMod(int level) {
+    return (int)(Math.pow(level, CH_DAMAGE_MOD_SCALE) + CH_DAMAGE_MOD_SHIFT);
   }
 
   /**
@@ -199,8 +205,7 @@ public class Stats {
    * @return       The character's hit modifier.
    */
   public static int getHitMod(int level) {
-    double hitModifier = Math.pow(level, CH_HIT_MOD_SCALE) + CH_HIT_MOD_SHIFT;
-    return (int)hitModifier;
+    return (int)(Math.pow(level, CH_HIT_MOD_SCALE) + CH_HIT_MOD_SHIFT);
   }
 
   /**
@@ -231,12 +236,12 @@ public class Stats {
    * @return The AC bonus.
    */
   public static int getAC(int level, int speed) {
-    double speedAC = CH_AC_MOD_SPEED_SCALE * Math.pow(
+    int speedAC = (int)Math.floor(CH_AC_MOD_SPEED_SCALE * Math.pow(
       speed,
       CH_AC_MOD_SPEED_POWER
-    );
-    double levelAC = Math.pow(level, CH_AC_MOD_SCALE) + CH_AC_MOD_SHIFT;
-    return (int)(levelAC + speedAC);
+    ));
+    int levelAC = (int)(Math.pow(level, CH_AC_MOD_SCALE) + CH_AC_MOD_SHIFT);
+    return levelAC + speedAC;
   }
 
   /**
@@ -271,7 +276,7 @@ public class Stats {
       Math.log(vitality) / Math.log(CH_HP_VITALITY_LOG_BASE);
     double strengthHP = CH_HP_STRENGTH_SCALE * strength *
       Math.log(strength) / Math.log(CH_HP_STRENGTH_LOG_BASE);
-    return (int)(vitalityHP + strengthHP + CH_HP_SHIFT);
+    return (int)(Math.floor(vitalityHP + strengthHP) + CH_HP_SHIFT);
   }
 
   /**
@@ -314,8 +319,17 @@ public class Stats {
    * @return The maximum MP.
    */
   public static int getMaxMp(solace.game.Character ch) {
-    double magic = (double)ch.getMagic();
-    double vitality = (double)ch.getVitality();
+    return getMaxMp(ch.getMagic(), ch.getVitality());
+  }
+
+  /**
+   * Determines maximum MP for a player character by magic and vitality ability
+   * scores.
+   * @param   magic Magic ability score for the character.
+   * @param   vitality Vitality ability score for the character.
+   * @return  The maximum mp for the character.
+   */
+  public static int getMaxMp(int magic, int vitality) {
     double magicMP = CH_MP_MAGIC_SCALE * magic *
       Math.log(magic) / Math.log(CH_MP_MAGIC_LOG_BASE);
     double vitalityMP = CH_MP_VITALITY_SCALE * vitality *
@@ -338,8 +352,16 @@ public class Stats {
    * @return The maximum SP.
    */
   public static int getMaxSp(solace.game.Character ch) {
-    double speed = (double)ch.getSpeed();
-    double strength = (double)ch.getStrength();
+    return getMaxSp(ch.getSpeed(), ch.getStrength());
+  }
+
+  /**
+   * Determines a player character's maximum sp by speed and strength.
+   * @param   speed Speed of the character.
+   * @param   strength Strength of the character.
+   * @return  The character's maximum sp.
+   */
+  public static int getMaxSp(int speed, int strength) {
     double speedSP = CH_SP_SPEED_SCALE * speed *
       Math.log(speed) / Math.log(CH_SP_SPEED_LOG_BASE);
     double strengthSP = CH_SP_STRENGTH_SCALE * strength *
@@ -429,10 +451,12 @@ public class Stats {
    * @return  The maximum HP for the mobile.
    */
   public static int getMobileMaxHP(int level, int power) {
-    double hp = MOB_HP_SHIFT + MOB_HP_SCALE * (
-      ((1 + Math.pow(power, MOB_HP_POWER_EXPONENT)) / MOB_HP_POWER_DIVISOR) *
-      level * Math.log(level) / Math.log(MOB_HP_LOG_BASE)
-    );
+    double hp =
+      (1 + (Math.pow(power, MOB_HP_POWER_EXPONENT) / MOB_HP_POWER_DIVISOR)) *
+      MOB_HP_SCALE *
+      level *
+      (Math.log(level) / Math.log(MOB_HP_LOG_BASE)) +
+      MOB_HP_SHIFT;
     return (int)hp;
   }
 
@@ -477,7 +501,8 @@ public class Stats {
   public static double getMobileChanceToHit(int power) {
     double max = MOB_ATTACK_ROLL_MAX;
     double min = MOB_ATTACK_ROLL_MIN;
-    return (max - min) * Math.pow(power/100.0, MOB_ATTACK_ROLL_EXPONENT) + min;
+    double p = MOB_ATTACK_ROLL_EXPONENT;
+    return (max - min) * Math.pow(power/100.0, p) + min;
   }
 
   /**
@@ -502,7 +527,10 @@ public class Stats {
   public static int getMobileAttackRoll(int level, int power) {
     double ac = getAverageACByLevel(level);
     double chance = getMobileChanceToHit(power);
-    return (int)(ac / (1 - chance));
+
+    //System.out.format("\t%.2f %.2f\n", ac, chance);
+
+    return (int)((double)ac / (1 - chance));
   }
 
   /**
@@ -519,7 +547,7 @@ public class Stats {
    * The following formula is used to determine the damage:
    *
    *   damage = CEIL(
-	 *     AvgPlayerHP[l] / [(M-m) × [1-(p/100)^k] + m]] / ChanceToHitPlayer[l]
+	 *     AvgPlayerHP[l] / [(M-m) × [1-(p/100)^k] + m]]
    *   )
    *
    * With the following parametric constants:
@@ -538,9 +566,10 @@ public class Stats {
     double M = MOB_DAMAGE_MAX_TO_KILL_PLAYER;
     double m = MOB_DAMAGE_MIN_TO_KILL_PLAYER;
     double k = MOB_DAMAGE_EXPONENT;
-    return (int)Math.ceil(
-      hp / ((M-m) * (1-Math.pow(power/100.0, k) + m)) / chance
+    int result = (int)Math.ceil(
+      (hp / ((M - m) * (1 - Math.pow(((double)power/100.0), k)) + m))
     );
+    return result;
   }
 
   /**
@@ -579,8 +608,7 @@ public class Stats {
 
   /**
    * Determines the expected average AC for a fully equipped character at the
-   * given level. Assumes the player has chosen speed as their minor ability
-   * score.
+   * given level. Assumes a minor speed attribute bonus to the AC modifier.
    * @param level Level of the character.
    * @return Expected average AC for a character of the given level.
    */
@@ -613,6 +641,13 @@ public class Stats {
    */
   public static int getWeaponAverageDamage(int level) {
     int mobHP = getMobileMaxHP(level, 35);
-    return (int)((1 / WEAPON_CHANCE_TO_HIT_P35) * mobHP / (BATTLE_TIME_P35 / 2));
+
+    int result = (int)Math.ceil(
+      WEAPON_MIN_DAMAGE + (
+        (1 / WEAPON_CHANCE_TO_HIT_P35) * mobHP / (BATTLE_TIME_P35 / 2)
+      )
+    );
+
+    return result;
   }
 }

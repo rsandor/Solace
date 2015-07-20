@@ -1,11 +1,11 @@
 # Master TODO
 
 Next Feature:
-- Stats Unit Testing
+- Scripting engine 1.0 (embedded Scala)
 
 Features:
+- Protected mobiles (cannot be attacked)
 - Loot System 1.0
-- Scripting engine 1.0 (embedded Scala)
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Character Creator 2.0 (Races & Suggested Classes)
 - Battle System 2.0 (incorporate skills & balance)
@@ -30,6 +30,7 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
+- Saving Throws unit testing (not really needed until we have magic)
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - Account System 2.0
   - Master account XML with characters in separate files
@@ -60,6 +61,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Stats Unit Testing
 - Battle system 1.0
 - Certain commands (such as quit) should be disabled when in battle
 - Pressing enter without a command quits the game to the main menu
