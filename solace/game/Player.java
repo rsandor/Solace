@@ -7,17 +7,6 @@ package solace.game;
  */
 public interface Player {
   /**
-   * @return The state of the player.
-   */
-  public PlayState getPlayState();
-
-  /**
-   * Sets the state for the player.
-   * @param s Play state to set.
-   */
-  public void setPlayState(PlayState s);
-
-  /**
    * @return A name by which the object is referenced.
    */
   public String getName();
@@ -26,13 +15,6 @@ public interface Player {
    * @return A string describing the object.
    */
   public String getDescription();
-
-  /**
-   * Sends the Player a message coming from the room they inhabit. Examples
-   * include player communication, another Player entering the room, etc.
-   * @param s Message to sent the Player.
-   */
-  public void sendMessage(String s);
 
   /**
    * @return The room the Player currently occupies.
@@ -44,6 +26,13 @@ public interface Player {
    * @param r Room to set.
    */
   public void setRoom(Room r);
+
+  /**
+   * Sends the Player a message coming from the room they inhabit. Examples
+   * include player communication, another Player entering the room, etc.
+   * @param s Message to sent the Player.
+   */
+  public void sendMessage(String s);
 
   /**
    * Determines if the Player is a mobile.
@@ -98,6 +87,17 @@ public interface Player {
    * Manages player death in the game world.
    */
   public void die();
+
+  /**
+   * @return The state of the player.
+   */
+  public PlayState getPlayState();
+
+  /**
+   * Sets the state for the player.
+   * @param s Play state to set.
+   */
+  public void setPlayState(PlayState s);
 
   /**
    * @return `true` if the player is sleeping, `false` otherwise.
