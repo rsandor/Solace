@@ -48,7 +48,7 @@ public class BattleManager {
    */
   protected static void cleanup(Battle b) {
     for (Player p : b.getParticipants()) {
-      p.setPlayState(PlayState.STANDING);
+      p.setStanding();
     }
   }
 
@@ -74,8 +74,8 @@ public class BattleManager {
       target.getName()
     ));
 
-    attacker.setPlayState(PlayState.FIGHTING);
-    target.setPlayState(PlayState.FIGHTING);
+    attacker.setFighting();
+    target.setFighting();
 
     Battle battle = new Battle();
     battle.add(attacker);

@@ -19,7 +19,7 @@ public class Wake extends PlayCommand {
     PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
-    if (state != PlayState.SLEEPING) {
+    if (!character.isSleeping()) {
       character.sendln("You are already awake.");
       return false;
     }
@@ -29,7 +29,7 @@ public class Wake extends PlayCommand {
       character
     );
     character.sendln("You wake and stand up.");
-    character.setPlayState(PlayState.STANDING);
+    character.setStanding();
 
     return true;
   }

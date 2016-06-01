@@ -18,15 +18,14 @@ public class Sleep extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
-    PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
-    if (state == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You are already asleep.");
       return false;
     }
 
-    if (state == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("Are you daft? You cannot sleep while fighting!");
       return false;
     }
@@ -34,13 +33,13 @@ public class Sleep extends PlayCommand {
     String characterMessage = "";
     String roomFormat = "";
 
-    if (state == PlayState.SITTING) {
+    if (character.isSitting()) {
       characterMessage = "You fall asleep.";
       roomFormat = "%s falls asleep.";
-    } else if (state == PlayState.RESTING) {
+    } else if (character.isResting()) {
       characterMessage = "While comfortable resting, you doze off.";
       roomFormat = "%s gets a bit too comfortable resting and dozes off.";
-    } else if (state == PlayState.STANDING) {
+    } else if (character.isStanding()) {
       characterMessage = "You sit, lie back, and fall immediately asleep.";
       roomFormat = "Exhausted, %s sits, lies back, and falls fast asleep.";
     }
@@ -50,7 +49,7 @@ public class Sleep extends PlayCommand {
       character
     );
     character.sendln(characterMessage);
-    character.setPlayState(PlayState.SLEEPING);
+    character.setSleeping();
 
     return true;
   }

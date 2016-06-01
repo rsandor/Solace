@@ -705,4 +705,88 @@ public class Character implements Player {
     b.append("</character>");
     return b.toString();
   }
+
+  /**
+   * @return `true` if the player is sleeping, `false` otherwise.
+   */
+  public boolean isSleeping() {
+    return state == PlayState.SLEEPING;
+  }
+
+  /**
+   * Sets the character to be in the sleeping play state.
+   */
+  public void setSleeping() {
+    state = PlayState.SLEEPING;
+  }
+
+  /**
+   * @return `true` if the player is resting, `false` otherwise.
+   */
+  public boolean isResting() {
+    return state == PlayState.RESTING;
+  }
+
+  /**
+   * Sets the character to be in the resting play state.
+   */
+  public void setResting() {
+    state = PlayState.RESTING;
+  }
+
+  /**
+   * @return `true` if the player is sitting, `false` otherwise.
+   */
+  public boolean isSitting() {
+    return state == PlayState.SITTING;
+  }
+
+  /**
+   * Sets the character to be in the sitting play state.
+   */
+  public void setSitting() {
+    state = PlayState.SITTING;
+  }
+
+  /**
+   * @return `true` if the player is resting or sitting, `false` otherwise.
+   */
+  public boolean isRestingOrSitting() {
+    return state == PlayState.RESTING || state == PlayState.SITTING;
+  }
+
+  /**
+   * @return `true` if the player is standing, `false` otherwise.
+   */
+  public boolean isStanding() {
+    return state == PlayState.STANDING;
+  }
+
+  /**
+   * Sets the character to be in the standing play state.
+   */
+  public void setStanding() {
+    state = PlayState.STANDING;
+  }
+
+  /**
+   * @return `true` if the player is fighting, `false` otherwise.
+   */
+  public boolean isFighting() {
+    return state == PlayState.FIGHTING;
+  }
+
+  /**
+   * Sets the character to be in the fighting play state.
+   */
+  public void setFighting() {
+    state = PlayState.FIGHTING;
+  }
+
+  /**
+   * @return `true` if the character is standing or fighting, `false` otherwise.
+   */
+  public boolean isStandingOrFighting() {
+    return state == PlayState.FIGHTING || state == PlayState.STANDING;
+  }
 }

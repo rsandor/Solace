@@ -17,19 +17,18 @@ public abstract class ShopCommand extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
-    PlayState state = character.getPlayState();
 
-    if (state == PlayState.SITTING || state == PlayState.RESTING) {
+    if (character.isRestingOrSitting()) {
       character.sendln("You cannot shop unless standing.");
       return false;
     }
 
-    if (state == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You dream about shopping, whilst asleep.");
       return false;
     }
 
-    if (state == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You don't have time for shopping, you're in combat!");
       return false;
     }

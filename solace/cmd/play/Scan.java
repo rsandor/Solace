@@ -16,19 +16,17 @@ public class Scan extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
-    PlayState state = character.getPlayState();
-
-    if (state == PlayState.SITTING || state == PlayState.RESTING) {
+    if (character.isRestingOrSitting()) {
       character.sendln("You cannot scan around unless standing.");
       return false;
     }
 
-    if (state == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You are too busy to scan while engaged in combat!");
       return false;
     }
 
-    if (state == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You cannot scan whilst asleep.");
       return false;
     }

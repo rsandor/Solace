@@ -21,7 +21,7 @@ public class ShopList extends ShopCommand {
     Shop shop,
     Room room
   ) {
-    if (character.getPlayState() == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You cannot browse a shop while fighting!");
       return false;
     }

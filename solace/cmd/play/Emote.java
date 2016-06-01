@@ -23,7 +23,7 @@ public class Emote extends PlayCommand {
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
 
-    if (character.getPlayState() == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You cannot display emotes while asleep.");
       return false;
     }

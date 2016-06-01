@@ -59,7 +59,7 @@ public class PlayController
     c.setPrompt("{c>{x ");
 
     // Describe the room to the player
-    if (ch.getPlayState() == PlayState.SLEEPING) {
+    if (ch.isSleeping()) {
       ch.sendln("You are fast asleep.");
     } else {
       c.sendln(ch.getRoom().describeTo(ch));

@@ -18,19 +18,18 @@ public class Attack extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
-    PlayState state = character.getPlayState();
-
-    if (state == PlayState.FIGHTING) {
+    
+    if (character.isFighting()) {
       character.sendln("You are already in battle!");
       return false;
     }
 
-    if (state == PlayState.SITTING || state == PlayState.RESTING) {
+    if (character.isRestingOrSitting()) {
       character.sendln("You cannot initiate battle unless standing and alert.");
       return false;
     }
 
-    if (state == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You dream of attacking, as you are asleep.");
       return false;
     }
@@ -58,7 +57,7 @@ public class Attack extends PlayCommand {
     //   return "You cannot attack ${M.name}"
 
     // TODO going to have to modify this when player groups come along
-    if (target.getPlayState() == PlayState.FIGHTING) {
+    if (target.isFighting()) {
       character.sendln(
         String.format("%s is already engaged in battle.",
         target.getName()

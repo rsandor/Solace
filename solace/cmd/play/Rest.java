@@ -17,15 +17,14 @@ public class Rest extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
-    PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
-    if (state == PlayState.RESTING) {
+    if (character.isResting()) {
       character.sendln("You are already resting.");
       return false;
     }
 
-    if (state == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You cannot rest while fighting!");
       return false;
     }
@@ -33,13 +32,13 @@ public class Rest extends PlayCommand {
     String characterMessage = "";
     String roomFormat = "";
 
-    if (state == PlayState.SITTING) {
+    if (character.isSitting()) {
       characterMessage = "You lie back and rest.";
       roomFormat = "%s lies back and rests.";
-    } else if (state == PlayState.SLEEPING) {
+    } else if (character.isSleeping()) {
       characterMessage = "You awake and begin resting.";
       roomFormat = "%s wakes and begins resting.";
-    } else if (state == PlayState.STANDING) {
+    } else if (character.isStanding()) {
       characterMessage = "You sit down, lie back, and begin resting.";
       roomFormat = "%s sits, lies back, and begins to rest.";
     }
@@ -49,7 +48,7 @@ public class Rest extends PlayCommand {
       character
     );
     character.sendln(characterMessage);
-    character.setPlayState(PlayState.RESTING);
+    character.setResting();
 
     return true;
   }

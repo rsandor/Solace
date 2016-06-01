@@ -16,10 +16,9 @@ public class Stand extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
-    PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
-    if (state == PlayState.STANDING || state == PlayState.FIGHTING) {
+    if (character.isStandingOrFighting()) {
       character.sendln("You are already standing.");
       return false;
     }
@@ -27,13 +26,13 @@ public class Stand extends PlayCommand {
     String characterMessage = "";
     String roomFormat = "";
 
-    if (state == PlayState.SITTING) {
+    if (character.isSitting()) {
       characterMessage = "You stand up.";
       roomFormat = "%s stands up.";
-    } else if (state == PlayState.SLEEPING) {
+    } else if (character.isSleeping()) {
       characterMessage = "You awake and stand up.";
       roomFormat = "%s wakes and stands up.";
-    } else if (state == PlayState.RESTING) {
+    } else if (character.isResting()) {
       characterMessage = "You stop resting and stand up.";
       roomFormat = "%s stops resting and stands up.";
     }
@@ -43,7 +42,7 @@ public class Stand extends PlayCommand {
       character
     );
     character.sendln(characterMessage);
-    character.setPlayState(PlayState.STANDING);
+    character.setStanding();
 
     return true;
   }

@@ -19,7 +19,7 @@ public class Remove extends PlayCommand {
       return false;
     }
 
-    if (character.getPlayState() == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You cannot remove equipment whilst alseep.");
       return false;
     }

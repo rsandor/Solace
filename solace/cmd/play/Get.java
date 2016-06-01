@@ -22,7 +22,7 @@ public class Get extends PlayCommand {
       return false;
     }
 
-    if (character.getPlayState() == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You cannot get anything while alseep.");
       return false;
     }

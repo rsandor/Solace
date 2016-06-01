@@ -63,7 +63,7 @@ public class Say extends PlayCommand {
     }
 
     // Oh-ho-ho, sleep talking...
-    if (character.getPlayState() == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       sleepTalk();
       return true;
     }

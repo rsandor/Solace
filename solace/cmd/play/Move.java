@@ -27,19 +27,17 @@ public class Move extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
-    PlayState state = character.getPlayState();
-
-    if (state == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You cannot leave while engaged in battle!");
       return false;
     }
 
-    if (state == PlayState.SITTING || state == PlayState.RESTING) {
+    if (character.isRestingOrSitting()) {
       character.sendln("You must stand up before you can leave.");
       return false;
     }
 
-    if (state == PlayState.SLEEPING) {
+    if (character.isSleeping()) {
       character.sendln("You cannot move while you are asleep.");
       return false;
     }
@@ -100,7 +98,6 @@ public class Move extends PlayCommand {
     // Determine the exit and enter messages
     String exitFormat = "%s leaves.";
     String enterFormat = "%s arrives.";
-
 
     if (new String("north").startsWith(direction)) {
       exitFormat = "%s leaves to the north.";

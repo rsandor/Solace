@@ -98,4 +98,64 @@ public interface Player {
    * Manages player death in the game world.
    */
   public void die();
+
+  /**
+   * @return `true` if the player is sleeping, `false` otherwise.
+   */
+  public boolean isSleeping();
+
+  /**
+   * Sets the character to be in the sleeping play state.
+   */
+  public void setSleeping();
+
+  /**
+   * @return `true` if the player is resting, `false` otherwise.
+   */
+  public boolean isResting();
+
+  /**
+   * Sets the character to be in the resting play state.
+   */
+  public void setResting();
+
+  /**
+   * @return `true` if the player is sitting, `false` otherwise.
+   */
+  public boolean isSitting();
+
+  /**
+   * Sets the character to be in the sitting play state.
+   */
+  public void setSitting();
+
+  /**
+   * @return `true` if the player is resting or sitting, `false` otherwise.
+   */
+  public boolean isRestingOrSitting();
+
+  /**
+   * @return `true` if the player is standing, `false` otherwise.
+   */
+  public boolean isStanding();
+
+  /**
+   * Sets the character to be in the standing play state.
+   */
+  public void setStanding();
+
+  /**
+   * @return `true` if the player is fighting, `false` otherwise.
+   */
+  public boolean isFighting();
+
+  /**
+   * Sets the character to be in the fighting play state.
+   */
+  public void setFighting();
+
+  /**
+   * @return `true` if the character is standing or fighting, `false` otherwise.
+   */
+  public boolean isStandingOrFighting();
 }
