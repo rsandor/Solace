@@ -95,6 +95,4 @@ public class BattleManager {
       battles.add(battle);
     }
   }
-
-
 }

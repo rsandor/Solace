@@ -382,6 +382,7 @@ public class Character implements Player
       hp = 1;
       mp = 1;
       sp = 1;
+      setPlayState(PlayState.STANDING);
       setRoom(World.getDefaultRoom());
     }
     catch (GameException ge) {
