@@ -209,6 +209,13 @@ public class AccountHandler extends Handler {
       character.setMinorStat(attrs.getValue("minor-stat"));
     }
 
+    character.setPlayState(PlayState.STANDING);
+    if (attrs.getValue("play-state") != null) {
+      character.setPlayState(
+        PlayState.fromString(attrs.getValue("play-state"))
+      );
+    }
+
     return State.CHARACTER;
   }
 

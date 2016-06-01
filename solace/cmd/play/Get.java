@@ -22,6 +22,11 @@ public class Get extends PlayCommand {
       return false;
     }
 
+    if (character.getPlayState() == PlayState.SLEEPING) {
+      character.sendln("You cannot get anything while alseep.");
+      return false;
+    }
+
     // TODO: Handle "get all" case
 
     // TODO: Should we handle multiple item pickups at once

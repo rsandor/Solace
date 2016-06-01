@@ -19,6 +19,11 @@ public class Remove extends PlayCommand {
       return false;
     }
 
+    if (character.getPlayState() == PlayState.SLEEPING) {
+      character.sendln("You cannot remove equipment whilst alseep.");
+      return false;
+    }
+
     String itemName = params[1];
     Item removeItem = null;
 

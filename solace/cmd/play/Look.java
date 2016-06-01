@@ -24,6 +24,11 @@ public class Look extends PlayCommand {
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
 
+    if (character.getPlayState() == PlayState.SLEEPING) {
+      character.sendln("You cannot see anything, for you are alseep.");
+      return false;
+    }
+
     if (params.length == 1) {
       c.sendln(room.describeTo(character));
       room.sendMessage(character.getName() + " looks around.", character);

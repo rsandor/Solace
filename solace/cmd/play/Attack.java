@@ -18,9 +18,20 @@ public class Attack extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
+    PlayState state = character.getPlayState();
 
-    if (character.getPlayState() == PlayState.FIGHTING) {
+    if (state == PlayState.FIGHTING) {
       character.sendln("You are already in battle!");
+      return false;
+    }
+
+    if (state == PlayState.SITTING || state == PlayState.RESTING) {
+      character.sendln("You cannot initiate battle unless standing and alert.");
+      return false;
+    }
+
+    if (state == PlayState.SLEEPING) {
+      character.sendln("You dream of attacking, as you are asleep.");
       return false;
     }
 
@@ -42,7 +53,7 @@ public class Attack extends PlayCommand {
       return false;
     }
 
-    // TODO: Unattackable states
+    // TODO: Unattackable mob states
     // If M is static / protected from battle:
     //   return "You cannot attack ${M.name}"
 

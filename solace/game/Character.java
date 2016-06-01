@@ -13,8 +13,7 @@ import solace.cmd.GameException;
  * Represents a player character in the game world.
  * @author Ryan Sandor Richards.
  */
-public class Character implements Player
-{
+public class Character implements Player {
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
    */
@@ -665,8 +664,8 @@ public class Character implements Player
 
     b.append(String.format(
       "<character name=\"%s\" level=\"%d\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
-      "major-stat=\"%s\" minor-stat=\"%s\">",
-      name, level, hp, mp, sp, gold, majorStat, minorStat
+      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\">",
+      name, level, hp, mp, sp, gold, majorStat, minorStat, state.toString()
     ));
 
     // Game location

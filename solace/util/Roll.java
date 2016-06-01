@@ -14,6 +14,15 @@ public class Roll {
   static final Random random = new Random();
 
   /**
+   * Determines a random index given an array length.
+   * @param  length Lenght of the array.
+   * @return A random integer index for that array.
+   */
+  public static int index(int length) {
+    return random.nextInt(length);
+  }
+
+  /**
    * @return A uniform random number.
    */
   public static double uniform() {
@@ -41,7 +50,7 @@ public class Roll {
    * uniforms and scaling them appropriately to fit the given mean.
    *
    * @param mean Mean value for the distribution.
-   * @return A psuedo-normal random number.
+   * @return A psuedo-normal psuedo-random number.
    */
   public static int normal(int mean) {
     double sum = 0.0;

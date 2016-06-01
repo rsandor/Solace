@@ -59,7 +59,11 @@ public class PlayController
     c.setPrompt("{c>{x ");
 
     // Describe the room to the player
-    c.sendln(ch.getRoom().describeTo(ch));
+    if (ch.getPlayState() == PlayState.SLEEPING) {
+      ch.sendln("You are fast asleep.");
+    } else {
+      c.sendln(ch.getRoom().describeTo(ch));
+    }
   }
 
   /**
@@ -91,6 +95,12 @@ public class PlayController
     addCommand(new ShopSell(character));
 
     addCommand(attackAliases, new Attack(character));
+
+    addCommand(new Sit(character));
+    addCommand(new Stand(character));
+    addCommand(new Rest(character));
+    addCommand(new Sleep(character));
+    addCommand(new Wake(character));
 
     Emote emote = new Emote(character);
     addCommand(emote);

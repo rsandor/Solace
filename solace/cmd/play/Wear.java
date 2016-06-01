@@ -14,6 +14,13 @@ public class Wear extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
+    PlayState state = character.getPlayState();
+    
+    if (state == PlayState.SLEEPING) {
+      character.sendln("You cannot wear anything while fast asleep.");
+      return false;
+    }
+
     if (params.length < 2) {
       character.sendln("What would you like to wear?");
       return false;

@@ -22,6 +22,11 @@ public class Drop extends PlayCommand {
       return false;
     }
 
+    if (character.getPlayState() == PlayState.SLEEPING) {
+      c.sendln("You cannot drop anything, for you are fast asleep.");
+      return false;
+    }
+
     String name = params[1];
     Item item = character.getItem(name);
 

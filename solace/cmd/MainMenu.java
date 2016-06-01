@@ -123,7 +123,6 @@ public class MainMenu
           room = World.getDefaultRoom();
           ch.setRoom(room);
         }
-        room.sendMessage(ch.getName() + " enters the realm.");
         room.getCharacters().add(ch);
 
         act.setActiveCharacter(ch);
