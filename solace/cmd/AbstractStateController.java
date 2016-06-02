@@ -6,10 +6,9 @@ import java.util.concurrent.*;
 import solace.util.Log;
 
 /**
- * Base class for all state controllers used in the Solace Engine.
- * Works as a nice implementation of StateController adding some
- * features that allow controllers to work more fluidly with the
- * <code>Command</code> class.
+ * Base class for all state controllers used in the Solace Engine. Works as a
+ * nice implementation of StateController adding some features that allow
+ * controllers to work more fluidly with the <code>Command</code> class.
  *
  * @author Ryan Sandor Richards
  */
@@ -63,6 +62,7 @@ public abstract class AbstractStateController
   // Instance Variables
   Connection connection;
   LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
+  boolean skipPrompt = false;
 
   // Event tables
   Hashtable<Command, List<Callable<Boolean>>> beforeCallbacks =
@@ -92,8 +92,7 @@ public abstract class AbstractStateController
    * Creates a new controller.
    * @param c Connection the controller is to work with.
    */
-  public AbstractStateController(Connection c)
-  {
+  public AbstractStateController(Connection c) {
     init(c);
     invalidCommandMessage = "Unknown command.";
   }
@@ -104,8 +103,7 @@ public abstract class AbstractStateController
    * @param c Connection for the controller.
    * @param icm Invalid command message for the controller.
    */
-  public AbstractStateController(Connection c, String icm)
-  {
+  public AbstractStateController(Connection c, String icm) {
     init(c);
     invalidCommandMessage = icm;
   }
@@ -113,8 +111,7 @@ public abstract class AbstractStateController
   /**
    * Initializes this controller to work with the given connection.
    */
-  public void init(Connection c)
-  {
+  public void init(Connection c) {
     connection = c;
   }
 
@@ -122,8 +119,7 @@ public abstract class AbstractStateController
    * Adds a command to this controller.
    * @param c Command to add.
    */
-  public void addCommand(Command c)
-  {
+  public void addCommand(Command c) {
     commands.add(new CommandTuple(c.getName(), c));
   }
 
@@ -166,8 +162,7 @@ public abstract class AbstractStateController
    * @param c Search criteria.
    * @return A command that matches, or null if no commands match the string.
    */
-  protected Command findCommand(String c)
-  {
+  protected Command findCommand(String c) {
     for (CommandTuple t : commands)
       if (t.matches(c))
         return t.getCommand();
@@ -195,14 +190,13 @@ public abstract class AbstractStateController
   }
 
   /**
-   * Registers a callabck event to execute immediately before
-   * a command is processed. Since the callback returns a boolean
-   * the command will fail to execute unless it returns true.
+   * Registers a callabck event to execute immediately before a command is
+   * processed. Since the callback returns a boolean the command will fail to
+   * execute unless it returns true.
    *
-   * This is useful for adding precondition logic to commands that
-   * may be outside the scope of the command itself (aka, requires
-   * knowledge about the game state the command may not have access
-   * to, etc.).
+   * This is useful for adding precondition logic to commands that may be
+   * outside the scope of the command itself (aka, requires knowledge about the
+   * game state the command may not have access to, etc.).
    *
    * @param c Command for which to add the callback.
    * @param fn Callback to execute.
@@ -212,8 +206,8 @@ public abstract class AbstractStateController
   }
 
   /**
-   * Registers a callback event to execute immediately after
-   * a command has been processed.
+   * Registers a callback event to execute immediately after a command has been
+   * processed.
    * @param c Command for which to add the callback.
    * @param fn Callback to execute.
    */
@@ -222,8 +216,8 @@ public abstract class AbstractStateController
   }
 
   /**
-   * Registers an after callback that only executes if the command
-   * was successful (aka it's run() method returns true).
+   * Registers an after callback that only executes if the command was
+   * successful (aka it's run() method returns true).
    * @param c Command for which to add the callback.
    * @param fn Callback to execute after the command is successful.
    */
@@ -245,8 +239,7 @@ public abstract class AbstractStateController
    * Parses commands using a "prefix" search routine.
    * @param input Input to parse.
    */
-  public void parse(String input)
-  {
+  public void parse(String input) {
     if (input == null || connection == null)
       return;
 

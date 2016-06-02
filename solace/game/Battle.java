@@ -192,4 +192,13 @@ public class Battle {
   public boolean isOver() {
     return size() < 2;
   }
+
+  /**
+   * Returns the target of the given player in the battle.
+   * @param  p Player for which to find the target.
+   * @return   The target of the player.
+   */
+  public Player getTargetFor(Player p) {
+    return targets.get(p);
+  }
 }

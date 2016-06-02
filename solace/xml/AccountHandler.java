@@ -216,6 +216,10 @@ public class AccountHandler extends Handler {
       );
     }
 
+    if (attrs.getValue("prompt") != null) {
+      character.setPrompt(attrs.getValue("prompt"));
+    }
+
     return State.CHARACTER;
   }
 

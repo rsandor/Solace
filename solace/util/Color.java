@@ -50,8 +50,7 @@ public class Color
    * @param s String to parse and format.
    * @return A new copy of the string with the given parse information.
    */
-  public static String format(String s)
-  {
+  public static String format(String s) {
     String out = new String(s);
     for (int i = 0; i < code.length; i++)
       out = out.replaceAll("\\{"+text[i], code[i]);
@@ -63,8 +62,7 @@ public class Color
    * @param s String to strip of color escapes.
    * @return A new string with color escapes stripped from it.
    */
-  public static String strip(String s)
-  {
+  public static String strip(String s) {
     String out = new String(s);
     for (int i = 0; i < code.length; i++)
       out = out.replaceAll("\\{"+text[i], "");

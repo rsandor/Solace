@@ -68,6 +68,7 @@ public class Attack extends PlayCommand {
 
     // Start the battle
     BattleManager.initiate(character, target);
+    c.skipNextPrompt();
     return true;
   }
 }

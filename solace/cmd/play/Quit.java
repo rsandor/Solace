@@ -32,6 +32,7 @@ public class Quit extends PlayCommand {
     World.getActiveCharacters().remove(character);
     Game.writer.save(character);
 
+    c.clearPromptGenerator();
     c.setStateController( new MainMenu(c) );
 
     return true;

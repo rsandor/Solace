@@ -41,8 +41,16 @@ commands/list.md: list
 commands/sell.md: sell
 commands/emote.md: emote joey scowl
 commands/skills.md: cmdskill
+commands/attack.md: attack fight kill
+commands/sleep.md: sleep
+commands/sit.md: sit
+commands/stand.md: stand
+commands/wake.md: wake
+commands/rest.md: rest
+commands/prompt.md: prompt
 misc/gold.md: gold currency
 misc/shops.md: shops
+misc/prompt-format.md: format
 skills/index.md: skills
 skills/one-handed.md: one-handed
 skills/block.md: block

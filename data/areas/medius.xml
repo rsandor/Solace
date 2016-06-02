@@ -139,7 +139,7 @@
 
 		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
 		<exit names="archway" to="contego testing grounds">
-			Archway to the contego protectives testing grounds.
+			Archway to the testing grounds
 		</exit>
 	</room>
 
@@ -170,7 +170,7 @@
 		<instance type="mobile" id="dummy-strong" />
 
 		<exit names="archway" to="contego protectives">
-			Archway to the contego protectives.
+			Archway to the contego protectives
 		</exit>
 	</room>
 

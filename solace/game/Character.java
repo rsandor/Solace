@@ -20,6 +20,8 @@ public class Character implements Player {
   public static final Collection<String> EQ_SLOTS =
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
+  public static final String DEFAULT_PROMPT = "[%h/%Hhp %m/%Mmp %s/%Ssp]: ";
+
   /**
    * Determines if the given slot name is a valid equipment slot.
    * @param name Name of the slot to check.
@@ -53,6 +55,7 @@ public class Character implements Player {
   Room room = null;
 
   Account account = null;
+  String prompt = Character.DEFAULT_PROMPT;
 
   /**
    * Creates a new character.
@@ -642,8 +645,8 @@ public class Character implements Player {
 
     b.append(String.format(
       "<character name=\"%s\" level=\"%d\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
-      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\">",
-      name, level, hp, mp, sp, gold, majorStat, minorStat, state.toString()
+      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\">",
+      name, level, hp, mp, sp, gold, majorStat, minorStat, state.toString(), prompt
     ));
 
     // Game location
@@ -782,5 +785,20 @@ public class Character implements Player {
       }
     }
     return false;
+  }
+
+  /**
+   * @return The character's prompt format.
+   */
+  public String getPrompt() {
+    return prompt;
+  }
+
+  /**
+   * Sets the character's prompt format.
+   * @param p The prompt format for the character.
+   */
+  public void setPrompt(String p) {
+    prompt = p;
   }
 }

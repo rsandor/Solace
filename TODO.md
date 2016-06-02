@@ -1,6 +1,7 @@
 # Master TODO
 
 Next Feature:
+- Prompts 2.0 (parametric user defined gameplay prompts)
 
 Features:
 - Loot System 1.0
@@ -34,7 +35,6 @@ Later:
 - Account System 2.0
   - Master account XML with characters in separate files
   - Login shouldn't load characters until after user authenticates with password
-- Prompts 2.0 (parametric user defined gameplay prompts)
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
 - Decorative banners for shops, inventory, character sheet, etc.

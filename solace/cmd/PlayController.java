@@ -13,6 +13,7 @@ import solace.cmd.play.*;
  */
 public class PlayController
   extends AbstractStateController
+  implements PromptGenerator
 {
   solace.game.Character character;
 
@@ -25,6 +26,69 @@ public class PlayController
   static final String[] attackAliases = {
     "attack", "kill", "fight"
   };
+
+  /**
+   * Generates the dynamic custom prompt for the player.
+   * NOTE This may not belong here, factor out?
+   * TODO %t    Target health percentage
+   * TODO %T    Target health percentage, with colors
+   * @return The generated prompt for the player.
+   */
+  public String generatePrompt() {
+    String out = new String(character.getPrompt());
+    out = out
+      .replace("%h", character.getHp() + "")
+      .replace("%H", character.getMaxHp() + "")
+      .replace("%m", character.getMp() + "")
+      .replace("%M", character.getMaxMp() + "")
+      .replace("%s", character.getSp() + "")
+      .replace("%S", character.getMaxSp() + "")
+      .replace("%g", character.getGold() + "")
+      .replace("%a", character.getRoom().getArea().getTitle());
+
+    // TODO Refactor the fuck out of me
+    int targetHealthRemaning = -1;
+    if (character.isFighting()) {
+      Battle battle = BattleManager.getBattleFor(character);
+      if (battle == null) {
+        Log.error(String.format(
+          "Player '%s' marked as fighting but not in battle.",
+          character.getName()
+        ));
+      } else {
+        Player target = battle.getTargetFor(character);
+        if (target != null) {
+          targetHealthRemaning = (int)(
+            100.0 * (double)target.getHp() / (double)target.getMaxHp()
+          );
+        }
+      }
+    }
+
+    if (targetHealthRemaning < 0) {
+      out = out.replace("%t", "").replace("%T", "");
+    } else {
+      String healthRemaining = targetHealthRemaning + "%%";
+      out = out.replace("%t", healthRemaining);
+
+      if (targetHealthRemaning > 85) {
+        out = out.replace("%T", "{G" + healthRemaining + "{x");
+      } else if (targetHealthRemaning > 70) {
+        out = out.replace("%T", "{g" + healthRemaining + "{x");
+      } else if (targetHealthRemaning > 55) {
+        out = out.replace("%T", "{y" + healthRemaining + "{x");
+      } else if (targetHealthRemaning > 40) {
+        out = out.replace("%T", "{Y" + healthRemaining + "{x");
+      } else if (targetHealthRemaning > 25) {
+        out = out.replace("%T", "{r" + healthRemaining + "{x");
+      } else {
+        out = out.replace("%T", "{R" + healthRemaining + "{x");
+      }
+    }
+    // TODO end "refactor the fuck out of me"
+
+    return out.replace("%%", "%");
+  }
 
   /**
    * Creates a new game play controller.
@@ -55,8 +119,8 @@ public class PlayController
 
     // Place the player in the world
     World.getActiveCharacters().add(ch);
+    c.setPromptGenerator(this);
     c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
-    c.setPrompt("{c>{x ");
 
     // Describe the room to the player
     if (ch.isSleeping()) {
