@@ -92,7 +92,9 @@
 			<look>display dummies</look> sit donning the finest bronze, iron, and
 			steel armors. The smell of protective oils and cold metal pervade every
 			nook and crany of the dimly torchlit space. Against the wall opposite the
-			<exit>door</exit> rests a large <look>wooden counter</look>.
+			<exit>door</exit> rests a large <look>wooden counter</look>. To the left
+			of the counter is an <exit>archway</exit> leading to the famed Contego
+			Testing Grounds.
 		</describe>
 
 		<describe names="pillars">
@@ -136,7 +138,42 @@
 		<instance type="mobile" id="duke" />
 
 		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
+		<exit names="archway" to="contego testing grounds">
+			Archway to the contego protectives testing grounds.
+		</exit>
 	</room>
+
+	<room id="contego testing grounds">
+		<title>Contego Protectives Testing Grounds</title>
+
+		<describe>
+			The testing grounds are a miniaturized version of the Great Colliseum
+			in Medius. The dirt floor appears to be stained with the
+			sweat and <look>blood</look> of countless battles. Crudely painted
+			<look>wooden spectators</look> are affixed to the walls. An
+			<exit>archway</exit> leads to the Contego Protectives store and showroom.
+		</describe>
+
+		<describe names="blood">
+			While at first glance the blood appears as real as would be seen in the
+			real colliseum a quick sniff reveals it to be nothing more than some
+			disgusting mixture of tomato paste and sugar.
+		</describe>
+
+		<describe names="wooden spectators">
+			The poorly painted wooden cutouts of spectators range widly in their
+			lifeless and uninspired expressions.
+		</describe>
+
+		<instance type="mobile" id="dummy-weak" />
+		<instance type="mobile" id="dummy" />
+		<instance type="mobile" id="dummy-strong" />
+
+		<exit names="archway" to="contego protectives">
+			Archway to the contego protectives.
+		</exit>
+	</room>
+
 
 	<room id="arma armarium">
 		<title>Arma Armarium</title>
@@ -293,18 +330,48 @@
 		<property key="power">10</property>
 	</mobile>
 
+	<mobile id="dummy-weak" names="weak dummy">
+		<property key="description">
+			A test dummy made of shoddy materials. It is formed much like a human and
+			wears a green jumpsuit. It doesn't look too menacing.
+		</property>
+		<property key="description.name">Weak Dummy</property>
+		<property key="description.spawn">
+			A weak dummy pops into existence.
+		</property>
+		<property key="level">2</property>
+		<property key="power">8</property>
+		<property key="stat.major">speed</property>
+		<property key="stat.minor">vitality</property>
+	</mobile>
+
 	<mobile id="dummy" names="test dummy" state="stationary">
 		<property key="description">
-			A test dummy made of durable materials. It is formed much like a human and
-			wears a gray jumpsuit.
+			A test dummy made of standard materials. It is formed much like a human
+			and wears a gray jumpsuit.
 		</property>
 		<property key="description.name">Test Dummy</property>
 		<property key="description.spawn">
 			A test dummy pops into existence.
 		</property>
 		<property key="level">5</property>
-		<property key="power">25</property>
-		<property key="stat.major">speed</property>
-		<property key="stat.minor">vitality</property>
+		<property key="power">10</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">magic</property>
+	</mobile>
+
+	<mobile id="dummy-strong" names="strong dummy" state="stationary">
+		<property key="description">
+			A test dummy made of very durable materials. It is formed much like a
+			human and wears a red jumpsuit.
+		</property>
+		<property key="description.name">Strong Dummy</property>
+		<property key="description.spawn">
+			A stong dummy pops into existence.
+		</property>
+		<property key="level">7</property>
+		<property key="power">15</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
 	</mobile>
 </area>
