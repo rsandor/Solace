@@ -59,7 +59,7 @@ public class Emote extends PlayCommand {
 
       String emote = params[0];
       String targetName = params[1];
-      Player target = room.findCharacter(targetName);
+      Player target = room.findPlayer(targetName);
 
       if (target == null) {
         character.wrapln("You do not see " + targetName + " here.");

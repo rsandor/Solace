@@ -18,7 +18,7 @@ public class Attack extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
-    
+
     if (character.isFighting()) {
       character.sendln("You are already in battle!");
       return false;
@@ -40,7 +40,7 @@ public class Attack extends PlayCommand {
     }
 
     String name = params[1];
-    Player target = room.findCharacter(name);
+    Player target = room.findPlayer(name);
 
     if (target == null) {
       character.sendln(String.format("You do not see %s here.", name));

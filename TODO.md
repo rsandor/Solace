@@ -3,17 +3,17 @@
 Next Feature:
 
 Features:
-- Scripting engine 1.0 (embedded Scala)
 - Protected mobiles (cannot be attacked)
 - Loot System 1.0
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Player Races 1.0
 - Character Creator 2.0
 - Battle System 2.0 (incorporate skills & balance)
+- Leveling System 1.0
+- Scripting engine 1.0 (embedded Scala?)
 - Mobiles 2.0
   - Spawn Points
   - Better Wandering
-- Leveling System 1.0
 - Dungeon Instances 1.0
 - Quest System 1.0
   - Mobile, item, & room scripting

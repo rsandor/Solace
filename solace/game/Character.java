@@ -767,4 +767,20 @@ public class Character implements Player {
   public boolean isStandingOrFighting() {
     return state == PlayState.FIGHTING || state == PlayState.STANDING;
   }
+
+  /**
+   * Determines whether or not this player has a name with the given prefix.
+   * @param  namePrefix Prefix by which to test.
+   * @return `true` if the player has a name with the given prefix.
+   *  `false` otherwise.
+   */
+  public boolean hasName(String namePrefix) {
+    String[] names = getName().split("\\s+");
+    for (String n : names) {
+      if (n.toLowerCase().startsWith(namePrefix.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

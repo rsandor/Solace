@@ -9,6 +9,9 @@ import solace.util.*;
 /**
  * The inspect command gives a plain and clear readout of underlying game data
  * to characters associated with admin accounts.
+ *
+ * TODO Add admin only help and an entry for this command.
+ *
  * @author Ryan Sandor Richards
  */
 public class Inspect extends PlayCommand {
@@ -117,10 +120,17 @@ public class Inspect extends PlayCommand {
    * @return        The inpsect description.
    */
   protected String inspectPlayer(Player player) {
+    Mobile mobile = player.isMobile() ? (Mobile)player : null;
     StringBuffer buffer = new StringBuffer();
     buffer.append(Strings.RULE);
 
     buffer.append(String.format("| {cName:{x   %-68s |\n\r", player.getName()));
+    buffer.append(String.format(
+      "| {cLevel:{x  %-68s |\n\r", player.getLevel()));
+    if (player.isMobile()) {
+      buffer.append(String.format(
+        "| {cPower:{x  %-68s |\n\r", mobile.getPower()));
+    }
     buffer.append(String.format(
       "| {cState:{x  %-68s |\n\r", player.getPlayState().toString()));
     buffer.append(String.format(
@@ -131,6 +141,11 @@ public class Inspect extends PlayCommand {
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
+      "| {cHit Points:{x  %-63s |\n\r",
+      (player.getHp() + " / " + player.getMaxHp())));
+    buffer.append(String.format(
+      "| {cArmor Class:{x %-63s |\n\r", player.getAC()));
+    buffer.append(String.format(
       "| {cAttack Roll:{x %-63s |\n\r", player.getAttackRoll()));
     buffer.append(String.format(
       "| {cHit Mod:{x     %-63s |\n\r", player.getHitMod()));
@@ -140,11 +155,8 @@ public class Inspect extends PlayCommand {
       "| {cAvg Damage:{x  %-63s |\n\r", player.getAverageDamage()));
     buffer.append(String.format(
       "| {cNum Attacks:{x %-63s |\n\r", player.getNumberOfAttacks()));
-    buffer.append(String.format(
-      "| {cArmor Class:{x %-63s |\n\r", player.getAC()));
 
     buffer.append(Strings.RULE);
-
     return buffer.toString();
   }
 }

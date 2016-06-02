@@ -110,11 +110,11 @@ public class Room {
    * @param namePrefix Name prefix for the character to find.
    * @return The character or null if none was found.
    */
-  public Player findCharacter(String namePrefix) {
+  public Player findPlayer(String namePrefix) {
     synchronized (characters) {
-      for (Player ch : characters) {
-        if (ch.getName().toLowerCase().startsWith(namePrefix)) {
-          return ch;
+      for (Player p : characters) {
+        if (p.hasName(namePrefix)) {
+          return p;
         }
       }
     }
@@ -274,26 +274,6 @@ public class Room {
       for (String n : names) {
         if (n.startsWith(name)) {
           return "\n\r" + Strings.toFixedWidth(features.get(key)) + "\n\r";
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Finds a player (character or mobile) with a name that begins with the given
-   * prefix.
-   * @param prefix Prefix with which to search.
-   * @return The player if found, null otherwise.
-   */
-  public Player findPlayer(String prefix) {
-    synchronized(characters) {
-      for (Player ch : characters) {
-        String[] names = ch.getName().split("\\s+");
-        for (String n : names) {
-          if (n.toLowerCase().startsWith(prefix.toLowerCase())) {
-            return ch;
-          }
         }
       }
     }

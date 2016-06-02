@@ -158,4 +158,27 @@ public interface Player {
    * @return `true` if the character is standing or fighting, `false` otherwise.
    */
   public boolean isStandingOrFighting();
+
+  /**
+   * @return The level of the player.
+   */
+  public int getLevel();
+
+  /**
+   * @return The current HP of the player.
+   */
+  public int getHp();
+
+  /**
+   * @return The maximum HP of the player.
+   */
+  public int getMaxHp();
+
+  /**
+   * Determines whether or not this player has a name with the given prefix.
+   * @param  namePrefix Prefix by which to test.
+   * @return `true` if the player has a name with the given prefix.
+   *  `false` otherwise.
+   */
+  public boolean hasName(String namePrefix);
 }

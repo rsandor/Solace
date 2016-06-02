@@ -206,11 +206,7 @@
 		<property key="skill">one-handed</property>
 		<property key="weight">2</property>
 		<property key="level">1</property>
-		<property key="roll">1d6</property>
-		<property key="damage">1</property>
-		<property key="hit">1</property>
 		<property key="value">5</property>
-
 		<property key="description">
 			A wooden practice sword made of sturdy oak. The blade has been carved
 			with intricate patterns and its hilt wrapped in soft supple leather.
@@ -225,12 +221,9 @@
 		<property key="type">equipment</property>
 		<property key="slot">head</property>
 		<property key="skill">light-armor</property>
-
 		<property key="weight">3</property>
 		<property key="level">1</property>
 		<property key="value">20</property>
-		<property key="ac">1</property>
-
 		<property key="description">
 			A simple leather helmet made from cow's hide. The helmet is sturdy but
 			flexible allowing it to fit a variety of head sizes.
@@ -248,8 +241,6 @@
 		<property key="weight">10</property>
 		<property key="level">1</property>
 		<property key="value">75</property>
-		<property key="ac">4</property>
-
 		<property key="description">
 			A leather jerkin for protecting the body. Made of cow's hide this jerkin
 			seems sturdy and sure to deflect a blow or two. Small rivets of metal
