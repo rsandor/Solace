@@ -52,14 +52,19 @@ public class BattleManager {
         Battle b = iterator.next();
         Log.trace("Battle round for battle: " + b);
 
+        // Check if the battle is over before we attempt another round
+        // This can happen with the flee command, admin intervention, etc.
         if (b.isOver()) {
           iterator.remove();
           cleanup(b);
           continue;
         }
 
+        // Perform a round of the battle
         b.round();
 
+        // Check to see if the battle is over after the last round.
+        // This happens when someone dies, etc.
         if (b.isOver()) {
           iterator.remove();
           cleanup(b);
