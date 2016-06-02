@@ -11,10 +11,7 @@ import solace.cmd.play.*;
  * Main game play controller (the actual game).
  * @author Ryan Sandor Richards
  */
-public class PlayController
-  extends AbstractStateController
-  implements PromptGenerator
-{
+public class PlayController extends AbstractStateController {
   solace.game.Character character;
 
   static final String[] moveAliases = {
@@ -34,7 +31,7 @@ public class PlayController
    * TODO %T    Target health percentage, with colors
    * @return The generated prompt for the player.
    */
-  public String generatePrompt() {
+  public String getPrompt() {
     String out = new String(character.getPrompt());
     out = out
       .replace("%h", character.getHp() + "")
@@ -119,7 +116,6 @@ public class PlayController
 
     // Place the player in the world
     World.getActiveCharacters().add(ch);
-    c.setPromptGenerator(this);
     c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
 
     // Describe the room to the player

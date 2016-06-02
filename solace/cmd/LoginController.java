@@ -25,7 +25,6 @@ public class LoginController
   String newUserName = "";
   String newUserPass = "";
 
-
   public LoginController(Connection c) {
     init(c);
   }
@@ -33,7 +32,18 @@ public class LoginController
   public void init(Connection c) {
     connection = c;
     connection.sendln( Message.get("Intro") );
-    connection.setPrompt("Account: ");
+  }
+
+  public String getPrompt() {
+    switch (state) {
+      case ACCOUNT_NAME: return "Account:  ";
+      case ACCOUNT_PASS: return "Password: ";
+      case NEW_ACCOUNT_NAME: return "Name for account: ";
+      case NEW_ACCOUNT_PASS: return "Password for account: ";
+      case NEW_ACCOUNT_CONFIRM: return "Confirm password: ";
+    }
+    Log.error("Login controller in unknown state: " + state);
+    return "Uknown state: ";
   }
 
   /**
@@ -47,7 +57,6 @@ public class LoginController
     // Check to see if they want to make a new account
     if (input.toLowerCase().equals("new")) {
       connection.sendln( Message.get("NewAccountRules") );
-      connection.setPrompt("Name for account: ");
       state = NEW_ACCOUNT_NAME;
       return;
     }
@@ -67,9 +76,6 @@ public class LoginController
     try {
       connection.setAccount( Account.load(aname) );
       state = ACCOUNT_PASS;
-      connection.setPrompt("Password: ");
-
-      // Send the don't echo command
       connection.echoOff();
     }
     catch (IOException ioe) {
@@ -91,7 +97,6 @@ public class LoginController
     // Ensure that an account has been loaded
     if (!connection.hasAccount()) {
       state = ACCOUNT_NAME;
-      connection.setPrompt("\r\nAccount: ");
       return;
     }
 
@@ -150,7 +155,6 @@ public class LoginController
 
     // If all is well move on to the next step
     newUserName = input.toLowerCase();
-    connection.setPrompt("\n\rPassword for Account: ");
     state = NEW_ACCOUNT_PASS;
     connection.echoOff();
   }
@@ -165,9 +169,7 @@ public class LoginController
       connection.sendln("\n\rPasswords must be at least 6 letters in length!");
       return;
     }
-
     newUserPass = input;
-    connection.setPrompt("\n\rConfirm Password: ");
     state = NEW_ACCOUNT_CONFIRM;
   }
 
@@ -180,7 +182,6 @@ public class LoginController
     if (!newUserPass.equals(input)) {
       connection.sendln("\n\rPassword and confirmation do not match!");
       connection.send("\r");
-      connection.setPrompt("Password for Account: ");
       connection.echoOff();
       state = NEW_ACCOUNT_PASS;
       return;
@@ -206,7 +207,6 @@ public class LoginController
     }
     finally {
       state = ACCOUNT_NAME;
-      connection.setPrompt("\n\rAccount: ");
     }
   }
 

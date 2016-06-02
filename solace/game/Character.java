@@ -610,7 +610,7 @@ public class Character implements Player {
   public void sendMessage(String msg) {
     Connection c = getConnection();
     c.sendln("\n" + msg);
-    c.send(c.getPrompt());
+    c.send(c.getStateController().getPrompt());
   }
 
   /**

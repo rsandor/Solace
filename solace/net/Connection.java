@@ -12,17 +12,13 @@ import solace.cmd.*;
  * menu.
  * @author Ryan Sandor Richards (Gaius)
  */
-public class Connection
-  implements Runnable
-{
+public class Connection implements Runnable {
   Socket socket;
   PrintWriter out;
   BufferedReader in;
-  String prompt = "";
   Account account;
   StateController controller;
   Date connectionTime;
-  PromptGenerator promptGenerator;
   boolean skipPrompt = false;
 
   // Useful for disabling characters while major game actions are taking place
@@ -41,7 +37,6 @@ public class Connection
     out = new PrintWriter(socket.getOutputStream());
     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     controller = new LoginController(this);
-    promptGenerator = null;
   }
 
   /**
@@ -65,9 +60,7 @@ public class Connection
   public void close() {
     try {
       socket.close();
-    }
-    catch (IOException ioe)
-    {
+    } catch (IOException ioe) {
       Log.error(ioe.getMessage());
     }
   }
@@ -137,7 +130,7 @@ public class Connection
         if (skipPrompt) {
           skipPrompt = false;
         } else {
-          send(getPrompt());
+          send(controller.getPrompt());
         }
 
         String input = in.readLine();
@@ -196,59 +189,10 @@ public class Connection
   }
 
   /**
-   * @return the prompt for the client.
-   */
-  public String getPrompt() {
-    if (hasPromptGenerator()) {
-      return promptGenerator.generatePrompt();
-    } else {
-      return prompt;
-    }
-  }
-
-  /**
-   * TODO Remove this in favor of getting the prompt from the controller.
-   * @param prompt the prompt to set
-   */
-  public void setPrompt(String prompt) {
-    this.prompt = prompt;
-  }
-
-  /**
    * Indicates that the connection's main run loop should not print a prompt
    * at the beginning of the next cycle.
    */
   public void skipNextPrompt() {
     skipPrompt = true;
-  }
-
-  /**
-   * Sets the prompt generator for the connection.
-   * @param gen The generator to set.
-   */
-  public void setPromptGenerator(PromptGenerator gen) {
-    promptGenerator = gen;
-  }
-
-  /**
-   * Determines if the connection has a prompt generator.
-   * @return `true` if the connection has a prompt generator, `false` otherwise.
-   */
-  public boolean hasPromptGenerator() {
-    return promptGenerator != null;
-  }
-
-  /**
-   * @return The prompt generator for the connection.
-   */
-  public PromptGenerator getPromptGenerator() {
-    return promptGenerator;
-  }
-
-  /**
-   * Clears the prompt generator for the connection.
-   */
-  public void clearPromptGenerator() {
-    promptGenerator = null;
   }
 }

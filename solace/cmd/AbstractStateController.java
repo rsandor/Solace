@@ -62,7 +62,6 @@ public abstract class AbstractStateController
   // Instance Variables
   Connection connection;
   LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
-  boolean skipPrompt = false;
 
   // Event tables
   Hashtable<Command, List<Callable<Boolean>>> beforeCallbacks =
@@ -286,5 +285,12 @@ public abstract class AbstractStateController
     else {
       connection.sendln(invalidCommandMessage);
     }
+  }
+
+  /**
+   * @return The prompt the connection should send to the client.
+   */
+  public String getPrompt() {
+    return "> ";
   }
 }
