@@ -79,6 +79,11 @@ public class AreaHandler extends Handler {
               state = "stationary";
             }
             template.set("state", state);
+            String protectedStatus = attrs.getValue("protected");
+            if (protectedStatus == null) {
+              protectedStatus = "false";
+            }
+            template.set("protected", protectedStatus.toLowerCase());
           }
 
           return TEMPLATE;

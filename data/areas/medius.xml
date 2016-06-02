@@ -291,9 +291,9 @@
 	</item>
 
 	<!-- Mobiles -->
-	<mobile id="duke" names="duke stabilis" state="stationary">
+	<mobile id="duke" names="duke stabilis" state="stationary" protected="true">
 		<property key="description">
-			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturty man.
+			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturdy man.
 			His short dusty gray hair connects to a trim but thick beard, which nearly
 			conceals a serious grimace. Gray blue eyes peer calmly about the
 			establishment from sunken pits on his hard and worn face.

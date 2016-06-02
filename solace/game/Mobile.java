@@ -11,7 +11,9 @@ import solace.util.EventListener;
  * Represents a mobile in the game world.
  * @author Ryan Sandor Richards
  */
-public class Mobile extends Template implements Player
+public class Mobile
+  extends Template
+  implements Player
 {
   enum State { STATIONARY, WANDERING }
 
@@ -420,5 +422,13 @@ public class Mobile extends Template implements Player
    */
   public boolean isStandingOrFighting() {
     return playState == PlayState.FIGHTING || playState == PlayState.STANDING;
+  }
+
+  /**
+   * Determines if a mobile is completely protected from combat.
+   * @return `true` if the mobile is protected, `false` otherwise.
+   */
+  public boolean isProtected() {
+    return get("protected").equals("true") || get("protected").equals("yes");
   }
 }

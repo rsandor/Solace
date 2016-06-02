@@ -52,9 +52,10 @@ public class Attack extends PlayCommand {
       return false;
     }
 
-    // TODO: Unattackable mob states
-    // If M is static / protected from battle:
-    //   return "You cannot attack ${M.name}"
+    if (((Mobile)target).isProtected()) {
+      character.sendln("You cannot attack " + target.getName() + ".");
+      return false;
+    }
 
     // TODO going to have to modify this when player groups come along
     if (target.isFighting()) {

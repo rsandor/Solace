@@ -3,7 +3,6 @@
 Next Feature:
 
 Features:
-- Protected mobiles (cannot be attacked)
 - Loot System 1.0
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Player Races 1.0
@@ -35,7 +34,7 @@ Later:
 - Account System 2.0
   - Master account XML with characters in separate files
   - Login shouldn't load characters until after user authenticates with password
-- Prompts 2.0 (parametric, user defined, gameplay prompts)
+- Prompts 2.0 (parametric user defined gameplay prompts)
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
 - Decorative banners for shops, inventory, character sheet, etc.
@@ -60,6 +59,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Protected mobiles (cannot be attacked)
 - Stats Unit Testing
 - Battle system 1.0
 - Certain commands (such as quit) should be disabled when in battle
