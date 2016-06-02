@@ -202,7 +202,7 @@
 	<item id="wooden-sword" names="wooden sword">
 		<property key="type">equipment</property>
 		<property key="slot">weapon</property>
-		<property key="proficiency">shortsword</property>
+		<property key="skill">one-handed</property>
 		<property key="weight">2</property>
 		<property key="level">1</property>
 		<property key="roll">1d6</property>
@@ -223,7 +223,7 @@
 	<item id="leather-helm" names="leather helm">
 		<property key="type">equipment</property>
 		<property key="slot">head</property>
-		<property key="proficiency">light-armor</property>
+		<property key="skill">light-armor</property>
 
 		<property key="weight">3</property>
 		<property key="level">1</property>
@@ -243,7 +243,7 @@
 	<item id="leather-jerkin" names="leather jerkin">
 		<property key="type">equipment</property>
 		<property key="slot">body</property>
-		<property key="proficiency">light-armor</property>
+		<property key="skill">light-armor</property>
 		<property key="weight">10</property>
 		<property key="level">1</property>
 		<property key="value">75</property>

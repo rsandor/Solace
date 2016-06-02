@@ -1,13 +1,14 @@
 # Master TODO
 
 Next Feature:
-- Scripting engine 1.0 (embedded Scala)
 
 Features:
+- Scripting engine 1.0 (embedded Scala)
 - Protected mobiles (cannot be attacked)
 - Loot System 1.0
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
-- Character Creator 2.0 (Races & Suggested Classes)
+- Player Races 1.0
+- Character Creator 2.0
 - Battle System 2.0 (incorporate skills & balance)
 - Mobiles 2.0
   - Spawn Points
@@ -19,7 +20,6 @@ Features:
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names
-- Dungeon Instances 1.0
 - Tactics System 1.0
 - Single Player Parties (For Dungeon Instances, requires Tactics)
 
@@ -54,7 +54,6 @@ Later:
 Help Files:
 - expand upon battle
 - expand upon skills
-- proficiencies (profs)
 - passive enhancements (passives)
 - cooldown actions (cooldowns)
 

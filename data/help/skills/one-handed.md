@@ -6,8 +6,8 @@ Passive enhancements:
 
 - [15]  Parry         - Evade attacks by parrying them in battle
 - [40]  Second Attack - Make two attacks per round in battle
-- [70]  Third Attack  - Make three attacks per round in battle
-- [100] Battle Trance - Each attack recieves a 10% bonus to hit and damage
+- [80]  Third Attack  - Make three attacks per round in battle
+- [100] Battle Trance - Each attack receives a 10% bonus to hit and damage
 
 Cooldown actions:
 

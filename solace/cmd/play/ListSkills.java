@@ -28,12 +28,6 @@ public class ListSkills extends PlayCommand {
       ));
 
       b.append(Strings.toFixedWidth(
-        "Proficiencies: " + Joiner.on(", ").join(s.getProficiencies())
-      ));
-      b.append("\n\r");
-      b.append("\n\r");
-
-      b.append(Strings.toFixedWidth(
         "Passive Enhancements: " + Joiner.on(", ").join(s.getPassives())
       ));
       b.append("\n\r");

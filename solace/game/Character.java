@@ -499,28 +499,6 @@ public class Character implements Player {
   }
 
   /**
-   * @return true if the player can equip the item, false otherwise.
-   */
-  public boolean canEquip(Item i) {
-    if (!i.isEquipment()) {
-      return false;
-    }
-
-    String proficiency = i.get("proficiency");
-    if (proficiency == null || proficiency.equals("")) {
-      return true;
-    }
-
-    for (Skill s : skills) {
-      if (s.grantsProficiency(proficiency)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
    * Equips a particular item onto the character. If a piece of equipment
    * already inhabits the particular slot it is removed and returned to the
    * character's inventory.
