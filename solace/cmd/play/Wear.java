@@ -25,7 +25,7 @@ public class Wear extends PlayCommand {
     }
 
     String itemName = params[1];
-    Item item = character.getItem(itemName);
+    Item item = character.findItem(itemName);
 
     // Do they have the item?
     if (item == null) {

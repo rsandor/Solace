@@ -54,11 +54,14 @@ public class Shop {
     }
 
     // 1. Find the owner mobile in the room
-    for (Mobile mob : room.getMobiles()) {
-      String shopOwner = mob.get("shop-owner");
-      if (shopOwner != null && shopOwner.equals(id)) {
-        owner = mob;
-        break;
+    List<Mobile> mobs = room.getMobiles();
+    synchronized(mobs) {
+      for (Mobile mob : room.getMobiles()) {
+        String shopOwner = mob.get("shop-owner");
+        if (shopOwner != null && shopOwner.equals(id)) {
+          owner = mob;
+          break;
+        }
       }
     }
 
@@ -264,5 +267,19 @@ public class Shop {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * @return The id for this shop.
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * @return The owner mobile for the shop.
+   */
+  public Mobile getOwner() {
+    return owner;
   }
 }

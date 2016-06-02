@@ -32,7 +32,7 @@ public class ShopSell extends ShopCommand {
     }
 
     String name = params[1];
-    Item item = character.getItem(name);
+    Item item = character.findItem(name);
 
     if (item == null) {
       character.wrapln(String.format(

@@ -70,6 +70,10 @@ public class PlayController
    * Adds basic gameplay commands to the controller.
    */
   protected void addCommands() {
+    if (character.getAccount().isAdmin()) {
+      addCommand(new Inspect(character));
+    }
+
     addCommand(new Quit(character));
     addCommand(new Help());
     addCommand(moveAliases, new Move(character));

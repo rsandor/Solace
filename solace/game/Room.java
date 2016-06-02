@@ -44,9 +44,6 @@ public class Room {
         Log.error("Room.instantiate ("+this.id+"): " + e.getMessage());
       }
     }
-    if (hasShop()) {
-      shop.initialize();
-    }
   }
 
   /**
@@ -258,6 +255,14 @@ public class Room {
   }
 
   /**
+   * Constructs inspect data for admins to see the details of a room.
+   * @return The message to send to the admin that describes the room's details.
+   */
+  public String inspect(solace.game.Character ch) {
+    return "TODO inspect";
+  }
+
+  /**
    * Finds the description for a feature with the given name.
    * @param name Name of the feature to find.
    * @return The description of the feature, or null if no such feature was
@@ -276,36 +281,18 @@ public class Room {
   }
 
   /**
-   * Finds the description of an item with the given name.
-   * @param name Name of the item to find.
-   * @return The description of the item, or null if no such item was found.
+   * Finds a player (character or mobile) with a name that begins with the given
+   * prefix.
+   * @param prefix Prefix with which to search.
+   * @return The player if found, null otherwise.
    */
-  public String describeItem(String name) {
-    for (Item item : items) {
-      for (String n : item.getNames())
-        if (n.startsWith(name)) {
-          return Strings.toFixedWidth(item.get("description"));
-        }
-    }
-    return null;
-  }
-
-  /**
-   * Finds the description for a character with the given name.
-   * @param name Name of the character to find.
-   * @return The description of the character, or null if none was found.
-   */
-  public String describeCharacter(String name) {
+  public Player findPlayer(String prefix) {
     synchronized(characters) {
       for (Player ch : characters) {
         String[] names = ch.getName().split("\\s+");
         for (String n : names) {
-          if (n.toLowerCase().startsWith(name.toLowerCase())) {
-            String desc = ch.getDescription();
-            if (desc == null) {
-              desc = "They are nondescript.";
-            }
-            return "\n\r" + Strings.toFixedWidth(desc) + "\n\r";
+          if (n.toLowerCase().startsWith(prefix.toLowerCase())) {
+            return ch;
           }
         }
       }
@@ -360,7 +347,7 @@ public class Room {
    * @return An item who's name has the given prefix, null if no
    *  such item was found.
    */
-  public Item getItem(String prefix) {
+  public Item findItem(String prefix) {
     synchronized(items) {
       for (Item item : items) {
         if (item.hasName(prefix))

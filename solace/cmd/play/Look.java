@@ -43,19 +43,23 @@ public class Look extends PlayCommand {
       return true;
     }
 
-    String itemDesc = room.describeItem(name);
-    if (itemDesc != null) {
-      c.sendln(itemDesc);
+    Item item = room.findItem(name);
+    if (item != null) {
+      c.sendln(Strings.toFixedWidth(item.get("description")));
       return true;
     }
 
-    String characterDesc = room.describeCharacter(name);
-    if (characterDesc != null) {
-      c.sendln(characterDesc);
+    Player player = room.findPlayer(name);
+    if (player != null) {
+      String desc = player.getDescription();
+      if (desc == null) {
+        desc = "They are nondescript.";
+      }
+      c.sendln("\n\r" + Strings.toFixedWidth(desc) + "\n\r");
       return true;
     }
 
-    Item inventoryItem = character.getItem(name);
+    Item inventoryItem = character.findItem(name);
     if (inventoryItem != null) {
       c.sendln(Strings.toFixedWidth(inventoryItem.get("description")));
       return true;

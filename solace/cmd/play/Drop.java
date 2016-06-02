@@ -28,7 +28,7 @@ public class Drop extends PlayCommand {
     }
 
     String name = params[1];
-    Item item = character.getItem(name);
+    Item item = character.findItem(name);
 
     if (item == null) {
       c.sendln("You do not currently possess '" + name + "'.");

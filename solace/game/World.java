@@ -105,6 +105,15 @@ public class World
 
     areas = newAreas;
     MobileManager.getInstance().instantiate();
+
+    for (String name : areas.keySet()) {
+      Area a = areas.get(name);
+      for (Room r : a.getRooms()) {
+        if (r.hasShop()) {
+          r.getShop().initialize();
+        }
+      }
+    }
   }
 
   /**

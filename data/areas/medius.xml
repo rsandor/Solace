@@ -160,6 +160,7 @@
 		<title>North of Prosperitas Square along Dito Lane</title>
 		<exit names="south" to="prosperitas">Prosperitas Square</exit>
 		<instance type="mobile" id="pauper" />
+		<instance type="mobile" id="dummy" />
 	</room>
 
 	<room id="prosperitas south">
@@ -301,5 +302,18 @@
 		<property key="power">10</property>
 	</mobile>
 
-
+	<mobile id="dummy" names="test dummy" state="stationary">
+		<property key="description">
+			A test dummy made of durable materials. It is formed much like a human and
+			wears a gray jumpsuit.
+		</property>
+		<property key="description.name">Test Dummy</property>
+		<property key="description.spawn">
+			A test dummy pops into existence.
+		</property>
+		<property key="level">5</property>
+		<property key="power">25</property>
+		<property key="stat.major">speed</property>
+		<property key="stat.minor">vitality</property>
+	</mobile>
 </area>

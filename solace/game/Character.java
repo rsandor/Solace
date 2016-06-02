@@ -462,7 +462,7 @@ public class Character implements Player {
    * @param name Name of the item to find.
    * @return The item in question, or null if no such item was found.
    */
-  public Item getItem(String name) {
+  public Item findItem(String name) {
     synchronized(inventory) {
       for (Item item : inventory) {
         if (item.hasName(name))

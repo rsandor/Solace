@@ -34,7 +34,7 @@ public class Get extends PlayCommand {
 
     String name = params[1];
     Room room = character.getRoom();
-    Item item = room.getItem(name);
+    Item item = room.findItem(name);
 
     // If there is no such item, then we're done, inform the player
     if (item == null) {
