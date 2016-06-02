@@ -48,6 +48,7 @@ public class World
     accountsToConnections = new Hashtable<Account, Connection>();
 
     BattleManager.start();
+    RecoveryManager.start();
 
     Log.info("Game world loaded");
 
