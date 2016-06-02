@@ -14,6 +14,23 @@ public class BattleManager {
   static Clock.Event roundEvent = null;
 
   /**
+   * Finds the battle in which the current player is engaged.
+   * @param  player Player for which to find the battle.
+   * @return        The battle if one was found, null otherwise.
+   */
+  public static Battle getBattleFor(Player player) {
+    // TODO This will be far too slow at scale, refactor later...
+    synchronized(battles) {
+      for (Battle b : battles) {
+        if (b.getParticipants().contains(player)) {
+          return b;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
    * Initializes and starts the battle manager.
    */
   public static void start() {
@@ -34,7 +51,15 @@ public class BattleManager {
       while (iterator.hasNext()) {
         Battle b = iterator.next();
         Log.trace("Battle round for battle: " + b);
+
+        if (b.isOver()) {
+          iterator.remove();
+          cleanup(b);
+          continue;
+        }
+
         b.round();
+
         if (b.isOver()) {
           iterator.remove();
           cleanup(b);

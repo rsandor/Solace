@@ -99,6 +99,7 @@ public class PlayController
     addCommand(new ShopSell(character));
 
     addCommand(attackAliases, new Attack(character));
+    addCommand(new Flee(character));
 
     addCommand(new Sit(character));
     addCommand(new Stand(character));

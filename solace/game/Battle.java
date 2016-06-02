@@ -151,7 +151,7 @@ public class Battle {
    * Removes a character or mobile from the battle.
    * @param m Character or mobile to remove.
    */
-  protected void remove(Player m) {
+  public synchronized void remove(Player m) {
     participants.remove(m);
     attackers.removeAll(m);
     targets.remove(m);
