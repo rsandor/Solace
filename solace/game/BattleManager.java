@@ -98,31 +98,30 @@ public class BattleManager {
    * @param target The target of the attack.
    */
   public static void initiate(Player attacker, Player target) {
-    Log.trace(String.format(
-      "Initiating battle between %s and %s.",
-      attacker.getName(),
-      target.getName()
-    ));
-
-    attacker.setFighting();
-    target.setFighting();
-
-    Battle battle = new Battle();
-    battle.add(attacker);
-    battle.add(target);
-    battle.setAttacking(attacker, target);
-
-    // Attacker always gets the first shots
-    battle.round();
-    if (battle.isOver()) {
-      cleanup(battle);
-      return;
-    }
-
-    battle.setAttacking(target, attacker);
-
     synchronized(battles) {
+      Log.trace(String.format(
+        "Initiating battle between %s and %s.",
+        attacker.getName(),
+        target.getName()
+      ));
+
+      attacker.setFighting();
+      target.setFighting();
+
+      Battle battle = new Battle();
+      battle.add(attacker);
+      battle.add(target);
+      battle.setAttacking(attacker, target);
       battles.add(battle);
+
+      // Attacker always gets the first shots
+      battle.round();
+      if (battle.isOver()) {
+        cleanup(battle);
+        return;
+      }
+
+      battle.setAttacking(target, attacker);
     }
   }
 }
