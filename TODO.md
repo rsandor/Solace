@@ -1,15 +1,16 @@
 # Master TODO
 
 Next Feature:
-- Prompts 2.0 (parametric user defined gameplay prompts)
+
 
 Features:
-- Loot System 1.0
-- Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Player Races 1.0
+- Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Character Creator 2.0
-- Battle System 2.0 (incorporate skills & balance)
 - Leveling System 1.0
+- Battle System 2.0 (incorporate skills & balance)
+- Loot System 1.0
+- Crafting System 1.0
 - Scripting engine 1.0 (embedded Scala?)
 - Mobiles 2.0
   - Spawn Points
@@ -59,6 +60,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Prompts 2.0 (parametric user defined gameplay prompts)
 - Protected mobiles (cannot be attacked)
 - Stats Unit Testing
 - Battle system 1.0
