@@ -377,18 +377,46 @@ public class Character implements Player {
   /**
    * @see solace.game.Player
    */
-  public void die() {
+  public void die(Player killer) {
     try {
-      // TODO Flesh this out in the future.
-      sendMessage("\n\rYou have {Rdied{x!\n\r");
+      setPlayState(PlayState.DEAD);
       hp = 1;
-      mp = 1;
-      sp = 1;
-      setPlayState(PlayState.STANDING);
-      setRoom(World.getDefaultRoom());
+      mp = 0;
+      sp = 0;
+
+      if (killer != null) {
+        sendMessage(String.format(
+          "You have been {Rkilled{x by %s!", killer.getName()));
+      } else {
+        sendMessage("\n\rYou have {Rdied{x!\n\r");
+      }
+
+      Room origin = getRoom();
+      Room destination = World.getDefaultRoom();
+
+      origin.getCharacters().remove(this);
+
+      if (killer != null) {
+        Player[] excludes = { this, killer };
+        origin.sendMessage(
+          String.format("%s has {Rkilled{x %s!", killer.getName(), getName()),
+          excludes);
+      } else {
+        origin.sendMessage(String.format("%s has died!", getName()));
+      }
+
+      destination.sendMessage(String.format(
+        "A bright light flashes and %s reconstitues here battered and bruised.",
+        getName()
+      ));
+      destination.getCharacters().add(this);
+
+      setPlayState(PlayState.RESTING);
+      setRoom(destination);
+      sendMessage(room.describeTo(this));
     }
     catch (GameException ge) {
-      Log.error("World does not define a default room.");
+      Log.error("World configuration does not define a default room!");
     }
   }
 

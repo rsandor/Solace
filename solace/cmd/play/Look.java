@@ -56,6 +56,12 @@ public class Look extends PlayCommand {
         desc = "They are nondescript.";
       }
       c.sendln("\n\r" + Strings.toFixedWidth(desc) + "\n\r");
+
+      if (!player.isMobile()) {
+        player.sendMessage(String.format(
+          "%s looks at you.", character.getName()));
+      }
+
       return true;
     }
 

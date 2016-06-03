@@ -86,7 +86,7 @@ public interface Player {
   /**
    * Manages player death in the game world.
    */
-  public void die();
+  public void die(Player killer);
 
   /**
    * @return The state of the player.

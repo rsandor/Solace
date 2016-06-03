@@ -114,6 +114,27 @@ public class BattleManager {
       battle.setAttacking(attacker, target);
       battles.add(battle);
 
+      // Send battle initiation messages
+      Player[] excludes = { attacker, target };
+      attacker.getRoom().sendMessage(
+        String.format(
+          "%s {Rattacks{x %s!",
+          attacker.getName(),
+          target.getName()),
+        excludes
+      );
+
+      String attackerMessage = String.format(
+        "You {Rattack{x %s!", target.getName());
+      if (!attacker.isMobile()) {
+        ((solace.game.Character)attacker).send(attackerMessage);
+      } else {
+        attacker.sendMessage(attackerMessage);
+      }
+
+      target.sendMessage(String.format(
+        "%s {Rattacks{x you!", attacker.getName()));
+
       // Attacker always gets the first shots
       battle.round();
       if (battle.isOver()) {

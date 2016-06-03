@@ -38,6 +38,8 @@ public class Battle {
 
       Set<Player> dead = new HashSet<Player>();
 
+      Hashtable<Player, Player> lastAttacker = new Hashtable<Player, Player>();
+
       for (Player p : participants) {
         messageBuffers.put(p, new StringBuffer());
       }
@@ -61,13 +63,11 @@ public class Battle {
         Log.trace(String.format(
           "Battle: %s attacks %s.",
           attacker.getName(),
-          target.getName()
-        ));
+          target.getName()));
 
         Log.trace(Color.format(String.format(
           "%s {rAttack Roll:{x %d vs. %d",
-          attacker.getName(), attackRoll, ac
-        )));
+          attacker.getName(), attackRoll, ac)));
 
         for (int i = 0; i < numberOfAttacks; i++) {
           try {
@@ -88,39 +88,36 @@ public class Battle {
         if (hits == 0) {
           messageBuffers.get(attacker).append(String.format(
             "Your attack missed %s.\n\r",
-            target.getName()
-          ));
+            target.getName()));
           messageBuffers.get(target).append(String.format(
             "%s {gmissed{x you completely!\n\r",
-            attacker.getName()
-          ));
+            attacker.getName()));
         }
         else if (hits == 1) {
           messageBuffers.get(attacker).append(String.format(
             "[{g%d{x] You hit %s!\n\r",
-            actualDamage, target.getName()
-          ));
+            actualDamage, target.getName()));
           messageBuffers.get(target).append(String.format(
             "<{r%d{x> %s hit you!\n\r",
-            actualDamage, attacker.getName()
-          ));
+            actualDamage, attacker.getName()));
         }
         else {
           messageBuffers.get(attacker).append(String.format(
             "[{g%d{x] You hit %s %d times!\n\r",
-            actualDamage, target.getName(), hits
-          ));
+            actualDamage, target.getName(), hits));
           messageBuffers.get(target).append(String.format(
             "<{r%d{x> %s hit you %d times!\n\r",
-            actualDamage, attacker.getName(), hits
-          ));
+            actualDamage, attacker.getName(), hits));
         }
+      }
 
-        if (target.isDead()) {
+      for (Player attacker : participants) {
+        Player target = targets.get(attacker);
+        if (target != null && target.isDead()) {
           dead.add(target);
+          lastAttacker.put(target, attacker);
           messageBuffers.get(attacker).append(String.format(
-            "You {Rkilled{x %s!", target.getName()
-          ));
+            "You {Rkilled{x %s!\n\r", target.getName()));
         }
       }
 
@@ -132,7 +129,7 @@ public class Battle {
 
       for (Player p : dead) {
         remove(p);
-        p.die();
+        p.die(lastAttacker.get(p));
       }
     }
   }

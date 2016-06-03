@@ -149,8 +149,16 @@ public class Mobile
   /**
    * @see solace.game.Player
    */
-  public void die() {
+  public void die(Player killer) {
     setPlayState(PlayState.DEAD);
+    if (killer != null) {
+      Player[] excludes = { this, killer };
+      getRoom().sendMessage(String.format(
+        "%s has been {Rkilled{x by %s!", getName(), killer.getName()),
+        excludes);
+    } else {
+      getRoom().sendMessage(String.format("%s has died.", getName()), this);
+    }
     MobileManager.getInstance().remove(this);
   }
 

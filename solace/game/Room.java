@@ -59,9 +59,9 @@ public class Room {
   }
 
   /**
-   * Sends a message to all of the characters in a room. Excluding
-   * the given player character (useful for messages sent as a result
-   * of a character's actions).
+   * Sends a message to all of the characters in a room. Excluding the given
+   * player character (useful for messages sent as a result of a character's
+   * actions).
    * @param message Message to send.
    * @param exclude Player to exclude when sending the message.
    */
@@ -70,6 +70,28 @@ public class Room {
       for (Player ch : characters) {
         if (ch == exclude)
           continue;
+        ch.sendMessage(message);
+      }
+    }
+  }
+
+  /**
+   * Sends a message to all of the characters in a room excepting those in the
+   * given array of players.
+   * @param message Message to send.
+   * @param excludes Players to exclude when sending the message.
+   */
+  public void sendMessage(String message, Player[] excludes) {
+    synchronized(characters) {
+      for (Player ch : characters) {
+        boolean exclude = false;
+        for (Player x : excludes) {
+          if (ch == x) {
+            exclude = true;
+            break;
+          }
+        }
+        if (exclude) continue;
         ch.sendMessage(message);
       }
     }

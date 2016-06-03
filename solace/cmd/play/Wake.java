@@ -19,8 +19,8 @@ public class Wake extends PlayCommand {
     PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
-    if (!character.isSleeping()) {
-      character.sendln("You are already awake.");
+    if (character.isStanding()) {
+      character.sendln("You are already awake and standing.");
       return false;
     }
 

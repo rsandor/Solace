@@ -52,6 +52,11 @@ public class Attack extends PlayCommand {
       return false;
     }
 
+    if (target.isDead()) {
+      character.sendln("You cannot attack a target that is already dead!");
+      return false;
+    }
+
     if (((Mobile)target).isProtected()) {
       character.sendln("You cannot attack " + target.getName() + ".");
       return false;

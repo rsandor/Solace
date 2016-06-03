@@ -10,7 +10,11 @@ Features:
 - Leveling System 1.0
 - Battle System 2.0 (incorporate skills & balance)
 - Loot System 1.0
+  - Grades of equipment (higher grade equals bigger bonuses)
 - Crafting System 1.0
+  - Crafting classes
+  - Crafting loot from mobs
+- Tactics System 1.0
 - Scripting engine 1.0 (embedded Scala?)
 - Mobiles 2.0
   - Spawn Points
@@ -21,7 +25,6 @@ Features:
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names
-- Tactics System 1.0
 - Single Player Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
