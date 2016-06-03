@@ -130,10 +130,6 @@ public class PlayController extends AbstractStateController {
    * Adds basic gameplay commands to the controller.
    */
   protected void addCommands() {
-    if (character.getAccount().isAdmin()) {
-      addCommand(new Inspect(character));
-    }
-
     addCommand(new Quit(character));
     addCommand(new Help());
     addCommand(moveAliases, new Move(character));
@@ -167,8 +163,14 @@ public class PlayController extends AbstractStateController {
     addCommand(new Sleep(character));
     addCommand(new Wake(character));
 
+    addCommand(new Prompt(character));
+
     Emote emote = new Emote(character);
     addCommand(emote);
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
+
+    if (character.getAccount().isAdmin()) {
+      addCommand(new Inspect(character));
+    }
   }
 }

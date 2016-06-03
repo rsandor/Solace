@@ -4,6 +4,7 @@ import solace.net.Connection;
 import java.util.*;
 import java.util.concurrent.*;
 import solace.util.Log;
+import solace.util.CommandParser;
 
 /**
  * Base class for all state controllers used in the Solace Engine. Works as a
@@ -246,13 +247,12 @@ public abstract class AbstractStateController
       return;
     }
 
-    String []params = input.split("\\s+");
-
-    if (params.length < 1)
+    String[] params = CommandParser.parse(input);
+    if (params.length < 1) {
       return;
+    }
 
     Command cmd = findCommand(params[0]);
-
     if (cmd != null && cmd.canExecute(connection)) {
       try {
         // Handle before listeners
@@ -261,7 +261,7 @@ public abstract class AbstractStateController
             return;
         }
 
-        // Execute the command (and possibly, success callbacks)
+        // Execute the command (and success callbacks if applicable)
         if (cmd.run(connection, params)) {
           for (Callable<Boolean> fn : getCallbacks(afterSuccessCallbacks, cmd))
           {

@@ -36,7 +36,7 @@ public class LoginController
 
   public String getPrompt() {
     switch (state) {
-      case ACCOUNT_NAME: return "Account:  ";
+      case ACCOUNT_NAME: return "Account: ";
       case ACCOUNT_PASS: return "Password: ";
       case NEW_ACCOUNT_NAME: return "Name for account: ";
       case NEW_ACCOUNT_PASS: return "Password for account: ";
