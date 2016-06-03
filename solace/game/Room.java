@@ -295,7 +295,7 @@ public class Room {
       String[] names = key.split("\\s+");
       for (String n : names) {
         if (n.startsWith(name)) {
-          return "\n\r" + Strings.toFixedWidth(features.get(key)) + "\n\r";
+          return Strings.toFixedWidth(features.get(key));
         }
       }
     }

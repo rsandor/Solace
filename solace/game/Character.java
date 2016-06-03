@@ -20,7 +20,8 @@ public class Character implements Player {
   public static final Collection<String> EQ_SLOTS =
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
-  public static final String DEFAULT_PROMPT = "[%h/%Hhp %m/%Mmp %s/%Ssp]: ";
+  public static final String DEFAULT_PROMPT =
+    "(( {G%h{x/{g%H{xhp {M%m{x/{m%M{xmp {Y%s{x/{y%S{xsp )) {Y%gg{x %T>";
 
   /**
    * Determines if the given slot name is a valid equipment slot.

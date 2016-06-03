@@ -39,13 +39,13 @@ public class Look extends PlayCommand {
 
     String featureDesc = room.describeFeature(name);
     if (featureDesc != null) {
-      c.sendln(featureDesc);
+      c.wrapln(featureDesc);
       return true;
     }
 
     Item item = room.findItem(name);
     if (item != null) {
-      c.sendln(Strings.toFixedWidth(item.get("description")));
+      c.wrapln(Strings.toFixedWidth(item.get("description")));
       return true;
     }
 
@@ -55,7 +55,7 @@ public class Look extends PlayCommand {
       if (desc == null) {
         desc = "They are nondescript.";
       }
-      c.sendln("\n\r" + Strings.toFixedWidth(desc) + "\n\r");
+      c.wrapln(Strings.toFixedWidth(desc));
 
       if (!player.isMobile()) {
         player.sendMessage(String.format(
@@ -67,7 +67,7 @@ public class Look extends PlayCommand {
 
     Item inventoryItem = character.findItem(name);
     if (inventoryItem != null) {
-      c.sendln(Strings.toFixedWidth(inventoryItem.get("description")));
+      c.wrapln(Strings.toFixedWidth(inventoryItem.get("description")));
       return true;
     }
 
