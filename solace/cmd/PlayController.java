@@ -66,7 +66,7 @@ public class PlayController extends AbstractStateController {
       out = out.replace("%t", "").replace("%T", "");
     } else {
       String healthRemaining = targetHealthRemaning + "%%";
-      out = out.replace("%t", healthRemaining);
+      out = out.replace("%t", " " + healthRemaining);
 
       if (targetHealthRemaning > 85) {
         out = out.replace("%T", "{G" + healthRemaining + "{x");
