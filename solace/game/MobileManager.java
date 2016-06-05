@@ -89,10 +89,10 @@ public class MobileManager {
     }
   }
 
+  /**
+   * Clears all mobiles from the manager.
+   */
   public void clear() {
-    for (Mobile mob : mobiles) {
-      mob.cancelWanderEvent();
-    }
     mobiles.clear();
   }
 

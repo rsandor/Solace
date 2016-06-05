@@ -149,7 +149,51 @@ public interface Player {
   public void setLevel(int level);
 
   /**
-   * @return The current HP of the player.
+   * Sets the major statistic for the character. Major statistics grow the
+   * the fastest of all stats as a character progresses in level.
+   * @param name Name of the major stat.
+   */
+  public void setMajorStat(String name);
+
+  /**
+   * Sets the minor stat for the character. Minor stats grow at a medium pace
+   * as a character levels.
+   * @param name [description]
+   */
+  public void setMinorStat(String name);
+
+  /**
+   * @return The name of the character's major stat.
+   */
+  public String getMajorStat();
+
+  /**
+   * @return The name of the character's minor stat.
+   */
+  public String getMinorStat();
+
+  /**
+   * @return The character's strength ability score.
+   */
+  public int getStrength();
+
+  /**
+   * @return The character's vitality ability score.
+   */
+  public int getVitality();
+
+  /**
+   * @return The character's magic ability score.
+   */
+  public int getMagic();
+
+  /**
+   * @return The character's speed ability score.
+   */
+  public int getSpeed();
+
+  /**
+   * @return The current hit points of the player.
    */
   public int getHp();
 
@@ -160,9 +204,71 @@ public interface Player {
   public void setHp(int hp);
 
   /**
-   * @return The maximum HP of the player.
+   * @return The maximum hit points of the player.
    */
   public int getMaxHp();
+
+  /**
+   * @return The current magic points of the player.
+   */
+  public int getMp();
+
+  /**
+   * Sets the magic points for the player.
+   * @param mp Magic points to set.
+   */
+  public void setMp(int mp);
+
+  /**
+   * @return The maximum magic points of the player.
+   */
+  public int getMaxMp();
+
+  /**
+   * @return The current stamina points of the player.
+   */
+  public int getSp();
+
+  /**
+   * Sets the stamina points for the player.
+   * @param sp Stamina points to set.
+   */
+  public void setSp(int sp);
+
+  /**
+   * @return The maximum stamina points of the player.
+   */
+  public int getMaxSp();
+
+  /**
+   * @return The character's will saving throw.
+   */
+  public int getWillSave();
+
+  /**
+   * @return The character's reflex saving throw.
+   */
+  public int getReflexSave();
+
+  /**
+   * @return The character's resolve saving throw.
+   */
+  public int getResolveSave();
+
+  /**
+   * @return The character's vigor saving throw.
+   */
+  public int getVigorSave();
+
+  /**
+   * @return The character's prudence saving throw.
+   */
+  public int getPrudenceSave();
+
+  /**
+   * @return The character's guile saving throw.
+   */
+  public int getGuileSave();
 
   /**
    * @return The player's attack roll.
@@ -214,16 +320,19 @@ public interface Player {
 
   /**
    * Determines if the player has a passive of the given name.
-   * @param  name Name of the passive.
-   * @return      True if they have the passive, false otherwise.
+   * @param name Name of the passive.
+   * @return True if they have the passive, false otherwise.
    */
   public boolean hasPassive(String name);
 
   /**
-   * Determines if the character parries an attack.
-   * @return True if the attack is parried, false otherwise.
+   * Gets the skill level of the skill with the maximum level that grants the
+   * given passive. This can occur if two skills both grant the same passive.
+   * @param name Name of the passive.
+   * @return The skill level of the skill that grants the passive or -1 if the
+   *   player does not possess a passive of the given name.
    */
-  public boolean parry();
+  public int getMaximumSkillLevelForPassive(String name);
 
   /**
    * Gets the level of the highest skill which grants the given cooldown.

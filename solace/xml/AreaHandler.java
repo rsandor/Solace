@@ -74,11 +74,6 @@ public class AreaHandler extends Handler {
           template = new Template(id, names, area);
 
           if (name.equals("mobile")) {
-            String state = attrs.getValue("state");
-            if (state == null) {
-              state = "stationary";
-            }
-            template.set("state", state);
             String protectedStatus = attrs.getValue("protected");
             if (protectedStatus == null) {
               protectedStatus = "false";

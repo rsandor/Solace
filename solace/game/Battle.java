@@ -32,6 +32,20 @@ public class Battle {
   }
 
   /**
+   * Determines if a defending player successfully parries an attack.
+   * @param defender The player defending an attack.
+   * @return True if the attack is parried, false otherwise.
+   */
+  public static boolean parry(Player defender) {
+    int skillLevel = defender.getMaximumSkillLevelForPassive("parry");
+    if (skillLevel < 1) {
+      return false;
+    }
+    double chance = 0.05 + 0.1 * ((double)skillLevel / 100.0);
+    return Roll.uniform() < chance;
+  }
+
+  /**
    * Roll to hit with normal scale potency.
    * @see Battle.rollToHit(Player, Player, int)
    */
@@ -73,7 +87,7 @@ public class Battle {
     roll *= (double)potency / 100.0;
 
     // Apply defender passives
-    boolean parried = defender.parry();
+    boolean parried = Battle.parry(defender);
 
     // Calculate the result
     if (!parried) {

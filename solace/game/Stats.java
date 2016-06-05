@@ -133,12 +133,12 @@ public class Stats {
    *    minorScale - How to scale the formula for minor abilities
    * tertiarySCale - How to scale the formulat for tertiary abilities
    *
-   * @param ch Character for which the ability will be determined.
+   * @param p Player for which the ability will be determined.
    * @param name Name of the ability.
    */
-  public static int getAbility(solace.game.Character ch, String name) {
-    String major = ch.getMajorStat();
-    String minor = ch.getMinorStat();
+  public static int getAbility(Player p, String name) {
+    String major = p.getMajorStat();
+    String minor = p.getMinorStat();
     AbilityType t = AbilityType.MAJOR;
     if (major.equals(name)) {
       t = AbilityType.MAJOR;
@@ -149,7 +149,7 @@ public class Stats {
     else {
       t = AbilityType.TERTIARY;
     }
-    return getAbility(ch.getLevel(), t);
+    return getAbility(p.getLevel(), t);
   }
 
   /**
@@ -209,12 +209,30 @@ public class Stats {
   }
 
   /**
-   * Determines the armor class bonus for a given character.
-   * @param ch Character for which to determine the armor class bonus.
-   * @return The armor class bonus for the character.
+   * Determines the AC for the given player.
+   * @param p Player for which to determine the armor class.
+   * @return The armor class.
    */
-  public static int getAC(solace.game.Character ch) {
-    return getAC(ch.getLevel(), ch.getSpeed());
+  public static int getAC(Player p) {
+    if (p.isMobile()) {
+      Mobile m = (Mobile)p;
+      return getMobileAC(m.getLevel(), m.getPower());
+    }
+    solace.game.Character c = (solace.game.Character)p;
+    return getAC(c.getLevel(), c.getSpeed());
+  }
+
+  /**
+   * Determines the AC for a mobile of the given level and power.
+   * @param   level Level of the mobile.
+   * @param   power Power of the mobile.
+   * @return  The AC for the mobile.
+   */
+  public static int getMobileAC(int level, int power) {
+    double ac = MOB_AC_BASE + MOB_AC_SCALAR * power *
+      Math.pow(MOB_AC_POWER_SCALE, 1 + (level / MOB_AC_POWER_DIVISOR)) +
+      MOB_AC_LEVEL_SCALE * Math.pow(level, 1 + (level / MOB_AC_LEVEL_DIVSOR));
+    return (int)ac;
   }
 
   /**
@@ -245,12 +263,38 @@ public class Stats {
   }
 
   /**
-   * Determines the maximum HP for a given character.
-   * @param ch Character for which to determine maximum HP.
-   * @return The maximum HP.
+   * Determines the maximum HP for a given player.
+   * @param p Player for which to determin the maximum HP.
+   * @return The maximum HP for the given player.
    */
-  public static int getMaxHp(solace.game.Character ch) {
-    return getMaxHp(ch.getVitality(), ch.getStrength());
+  public static int getMaxHp(Player p) {
+    if (p.isMobile()) {
+      Mobile m = (Mobile)p;
+      return getMobileMaxHP(m.getLevel(), m.getPower());
+    }
+    solace.game.Character c = (solace.game.Character)p;
+    return getMaxHp(c.getVitality(), c.getStrength());
+  }
+
+  /**
+   * Determines the maximum HP for a mobile of the given level and power.
+   *
+   * MobHP(L, P) = $scale ×
+   *   (1 + P^$powerExponent / $powerDivisor) ×
+   *   L × Log(L, $logBase) + $shift
+   *
+   * @param   level Level of the mobile.
+   * @param   power Power of the mobile.
+   * @return  The maximum HP for the mobile.
+   */
+  public static int getMobileMaxHP(int level, int power) {
+    double hp =
+      (1 + (Math.pow(power, MOB_HP_POWER_EXPONENT) / MOB_HP_POWER_DIVISOR)) *
+      MOB_HP_SCALE *
+      level *
+      (Math.log(level) / Math.log(MOB_HP_LOG_BASE)) +
+      MOB_HP_SHIFT;
+    return (int)hp;
   }
 
   /**
@@ -305,7 +349,7 @@ public class Stats {
   }
 
   /**
-   * Determines the maximum MP for a given character.
+   * Determines the maximum MP for a given player.
    *
    * MP = a × Mag × Log(Mag, m) + b × Vit × Log(Vit, v) + M
    *
@@ -315,11 +359,11 @@ public class Stats {
    *   v - Vitality log base
    *   M - MP shift
    *
-   * @param ch Character for which to determine maximum MP.
+   * @param p Player for which to determine maximum MP.
    * @return The maximum MP.
    */
-  public static int getMaxMp(solace.game.Character ch) {
-    return getMaxMp(ch.getMagic(), ch.getVitality());
+  public static int getMaxMp(Player p) {
+    return getMaxMp(p.getMagic(), p.getVitality());
   }
 
   /**
@@ -338,7 +382,7 @@ public class Stats {
   }
 
   /**
-   * Determines the maximum SP for a given character.
+   * Determines the maximum SP for a given player.
    *
    * SP = a × Spe × Log(Spe, e) + b × Str × Log(Str, s) + S
    *
@@ -348,11 +392,11 @@ public class Stats {
    *   s - Strength log base
    *   S - SP Shift
    *
-   * @param ch Character for which to determine maximum SP.
+   * @param p Player for which to determine maximum SP.
    * @return The maximum SP.
    */
-  public static int getMaxSp(solace.game.Character ch) {
-    return getMaxSp(ch.getSpeed(), ch.getStrength());
+  public static int getMaxSp(Player p) {
+    return getMaxSp(p.getSpeed(), p.getStrength());
   }
 
   /**
@@ -385,101 +429,49 @@ public class Stats {
    *
    *   throw = s x (stat[a] + stat[b]) x (level ^ p)
    *
-   * @param ch Character for which to determine the saving throw.
+   * @param p Player for which to determine the saving throw.
    * @param name Name of the saving throw.
    * @return The value of the saving throw.
    */
-  public static int getSavingThrow(solace.game.Character ch, String name)
+  public static int getSavingThrow(Player p, String name)
     throws InvalidSavingThrowException
   {
     if (!CH_SAVING_THROW_NAMES.contains(name)) {
       throw new InvalidSavingThrowException(name);
     }
 
-    double level = (double)ch.getLevel();
+    double level = (double)p.getLevel();
     double a = 1, b = 1;
 
     if (name.equals("will")) {
-      a = (double)ch.getStrength();
-      b = (double)ch.getVitality();
+      a = (double)p.getStrength();
+      b = (double)p.getVitality();
     }
     else if (name.equals("reflex")) {
-      a = (double)ch.getStrength();
-      b = (double)ch.getSpeed();
+      a = (double)p.getStrength();
+      b = (double)p.getSpeed();
     }
     else if (name.equals("resolve")) {
-      a = (double)ch.getStrength();
-      b = (double)ch.getMagic();
+      a = (double)p.getStrength();
+      b = (double)p.getMagic();
     }
     else if (name.equals("vigor")) {
-      a = (double)ch.getVitality();
-      b = (double)ch.getSpeed();
+      a = (double)p.getVitality();
+      b = (double)p.getSpeed();
     }
     else if (name.equals("prudence")) {
-      a = (double)ch.getVitality();
-      b = (double)ch.getMagic();
+      a = (double)p.getVitality();
+      b = (double)p.getMagic();
     }
     else if (name.equals("guile")) {
-      a = (double)ch.getSpeed();
-      b = (double)ch.getMagic();
+      a = (double)p.getSpeed();
+      b = (double)p.getMagic();
     }
 
     double savingThrow = CH_SAVING_THROW_SCALAR * (a + b) * (
       Math.pow(level, CH_SAVING_THROW_LEVEL_POWER)
     );
     return (int)savingThrow;
-  }
-
-  /**
-   * Determines the maximum HP for a given mobile.
-   *
-   * MobHP(L, P) = $scale ×
-   *   (1 + P^$powerExponent / $powerDivisor) ×
-   *   L × Log(L, $logBase) + $shift
-   *
-   * @param m Mobile for which to determin the maximum HP.
-   * @return The maximum HP for the given mobile.
-   */
-  public static int getMaxHp(Mobile m) {
-    return getMobileMaxHP(m.getLevel(), m.getPower());
-  }
-
-  /**
-   * Determines the maximum HP for a mobile of the given level and power.
-   * @param   level Level of the mobile.
-   * @param   power Power of the mobile.
-   * @return  The maximum HP for the mobile.
-   */
-  public static int getMobileMaxHP(int level, int power) {
-    double hp =
-      (1 + (Math.pow(power, MOB_HP_POWER_EXPONENT) / MOB_HP_POWER_DIVISOR)) *
-      MOB_HP_SCALE *
-      level *
-      (Math.log(level) / Math.log(MOB_HP_LOG_BASE)) +
-      MOB_HP_SHIFT;
-    return (int)hp;
-  }
-
-  /**
-   * Determines the AC for the given mobile.
-   * @param m Mobile for which to determine the armor class.
-   * @return The armor class of the mobile.
-   */
-  public static int getAC(Mobile m) {
-    return getMobileAC(m.getLevel(), m.getPower());
-  }
-
-  /**
-   * Determines the AC for a mobile of the given level and power.
-   * @param   level Level of the mobile.
-   * @param   power Power of the mobile.
-   * @return  The AC for the mobile.
-   */
-  public static int getMobileAC(int level, int power) {
-    double ac = MOB_AC_BASE + MOB_AC_SCALAR * power *
-      Math.pow(MOB_AC_POWER_SCALE, 1 + (level / MOB_AC_POWER_DIVISOR)) +
-      MOB_AC_LEVEL_SCALE * Math.pow(level, 1 + (level / MOB_AC_LEVEL_DIVSOR));
-    return (int)ac;
   }
 
   /**

@@ -11,7 +11,7 @@ import solace.cmd.GameException;
  * Represents a player character in the game world.
  * @author Ryan Sandor Richards.
  */
-public class Character implements Player {
+public class Character extends AbstractPlayer {
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
    */
@@ -34,31 +34,15 @@ public class Character implements Player {
   }
 
   String id = null;
-  PlayState state = PlayState.STANDING;
-
   String name;
   String description;
-
-  int level;
-  int hp;
-  int mp;
-  int sp;
-
-  String majorStat = "none";
-  String minorStat = "none";
-
   long gold;
   List<Item> inventory = null;
   Hashtable<String, Item> equipment = new Hashtable<String, Item>();
   HashSet<String> skillIds = new HashSet<String>();
   List<Skill> skills = new ArrayList<Skill>();
-
-  Room room = null;
-
   Account account = null;
   String prompt = Character.DEFAULT_PROMPT;
-
-  boolean onGCDCooldown = false;
 
   /**
    * Creates a new character.
@@ -98,46 +82,35 @@ public class Character implements Player {
   }
 
   /**
-   * Gets an ability stat for the character.
+   * Gets an ability stat for the character with equipment bonuses.
    * @param name Name of the stat being generated.
    * @return A level appropriate stat.
-   * @see solace.game.Stats
+   * @see solace.game.AbstractPlayer
    */
   protected int getAbility(String name) {
-    int ability = Stats.getAbility(this, name);
-    return ability + getModFromEquipment(name);
+    return super.getAbility(name) + getModFromEquipment(name);
   }
 
   /**
-   * Gets the saving throw with the given name.
+   * Gets the saving throw with the given name and adds any bonuses due to
+   * character equipment.
    * @param name Name of the saving throw.
    * @return The saving throw.
-   * @see solace.game.Stats
+   * @see solace.game.AbstractPlayer
    */
   protected int getSavingThrow(String name) {
-    try {
-      return Stats.getSavingThrow(this, name) + getModFromEquipment(name);
-    }
-    catch (InvalidSavingThrowException iste) {
-      Log.error(String.format(
-        "Invalid saving throw name encountered: %s", name
-      ));
-    }
-    return 0;
+    return super.getSavingThrow(name) + getModFromEquipment(name);
   }
 
   /**
-   * @see solace.game.Player
+   * Gets the maximum value for the given resource and adds any bonuses due to
+   * character equipment.
+   * @param name Name of the resource.
+   * @return The maximum value of the resource for this player, or -1 if the
+   *   provided resource name is invalid.
    */
-  public PlayState getPlayState() {
-    return state;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setPlayState(PlayState s) {
-    state = s;
+  protected int getMaxResource(String name) {
+    return super.getMaxResource(name) + getModFromEquipment(name);
   }
 
   /**
@@ -151,7 +124,7 @@ public class Character implements Player {
   public void setId(String i) { id = i; }
 
   /**
-   * @return The character's name.
+   * @see solace.game.Player
    */
   public String getName() { return name; }
 
@@ -161,7 +134,7 @@ public class Character implements Player {
   public void setName(String n) { name = n; }
 
   /**
-   * @return The character's description.
+   * @see solace.game.Player
    */
   public String getDescription() { return description; }
 
@@ -171,153 +144,11 @@ public class Character implements Player {
   public void setDescription(String n) { description = n; }
 
   /**
-   * @return The character's level.
-   */
-  public int getLevel() { return level; }
-
-  /**
-   * Set the character's level.
-   * @param l Level to set for the character.
-   */
-  public void setLevel(int l) { level = l; }
-
-  /**
-   * Sets the major statistic for the character. Major statistics grow the
-   * the fastest of all stats as a character progresses in level.
-   * @param name Name of the major stat.
-   */
-  public void setMajorStat(String name) { majorStat = name; }
-
-  /**
-   * Sets the minor stat for the character. Minor stats grow at a medium pace
-   * as a character levels.
-   * @param name [description]
-   */
-  public void setMinorStat(String name) { minorStat = name; }
-
-  /**
-   * @return The name of the character's major stat.
-   */
-  public String getMajorStat() { return majorStat; }
-
-  /**
-   * @return THe name of the character's minor stat.
-   */
-  public String getMinorStat() { return minorStat; }
-
-  /**
-   * @return The character's armor class.
+   * @see solace.game.Player
    */
   public int getAC() {
-    return Stats.getAC(this) + getModFromEquipment("ac");
+    return super.getAC() + getModFromEquipment("ac");
   }
-
-  /**
-   * @return The character's strength ability score.
-   */
-  public int getStrength() { return getAbility("strength"); }
-
-  /**
-   * @return The character's vitality ability score.
-   */
-  public int getVitality() { return getAbility("vitality"); }
-
-  /**
-   * @return The character's magic ability score.
-   */
-  public int getMagic() { return getAbility("magic"); }
-
-  /**
-   * @return The character's speed ability score.
-   */
-  public int getSpeed() { return getAbility("speed"); }
-
-  /**
-   * @return The player's current hit points.
-   */
-  public int getHp() { return hp; }
-
-  /**
-   * Sets the player's current hit points.
-   * @param v HP to set.
-   */
-  public void setHp(int v) { hp = v; }
-
-  /**
-   * @return The player's maximum hit points.
-   * @see solace.game.Stats
-   */
-  public int getMaxHp() {
-    return Stats.getMaxHp(this) + getModFromEquipment("hp");
-  }
-
-  /**
-   * @return The player's current mp.
-   */
-  public int getMp() { return mp; }
-
-  /**
-   * Sets the player's current mp.
-   * @param v MP to set.
-   */
-  public void setMp(int v) { mp = v; }
-
-  /**
-   * @return The player's maximum MP.
-   * @see solace.game.Stats
-   */
-  public int getMaxMp() {
-    return Stats.getMaxMp(this) + getModFromEquipment("mp");
-  }
-
-  /**
-   * @return The character's current sp.
-   */
-  public int getSp() { return sp; }
-
-  /**
-   * Sets the character's current sp.
-   * @param v SP to set.
-   */
-  public void setSp(int v) { sp = v; }
-
-  /**
-   * @return The character's maximum sp.
-   * @see soalce.game.Stats
-   */
-  public int getMaxSp() {
-    return Stats.getMaxSp(this) + getModFromEquipment("sp");
-  }
-
-  /**
-   * @return The character's will saving throw.
-   */
-  public int getWillSave() { return getSavingThrow("will"); }
-
-  /**
-   * @return The character's reflex saving throw.
-   */
-  public int getReflexSave() { return getSavingThrow("reflex"); }
-
-  /**
-   * @return The character's resolve saving throw.
-   */
-  public int getResolveSave() { return getSavingThrow("resolve"); }
-
-  /**
-   * @return The character's vigor saving throw.
-   */
-  public int getVigorSave() { return getSavingThrow("vigor"); }
-
-  /**
-   * @return The character's prudence saving throw.
-   */
-  public int getPrudenceSave() { return getSavingThrow("prudence"); }
-
-  /**
-   * @return The character's guile saving throw.
-   */
-  public int getGuileSave() { return getSavingThrow("guile"); }
 
   /**
    * @see solace.game.Player
@@ -332,8 +163,7 @@ public class Character implements Player {
   }
 
   /**
-   * @return the hit modifier for the character.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
   public int getHitMod() {
     return Stats.getHitMod(this) + getModFromEquipment("hit");
@@ -351,15 +181,13 @@ public class Character implements Player {
   }
 
   /**
-   * @return the damage modifier for the character.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
   public int getDamageMod() {
     return Stats.getDamageMod(this) + getModFromEquipment("damage");
   }
 
   /**
-   * @return The number of attacks for the character.
    * @see solace.game.Player
    */
   public int getNumberOfAttacks() {
@@ -368,19 +196,6 @@ public class Character implements Player {
     if (hasPassive("third attack")) attacks++;
     return attacks;
   }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int applyDamage(int damage) {
-    hp -= damage;
-    return damage;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isDead() { return getHp() <= 0; }
 
   /**
    * @see solace.game.Player
@@ -470,9 +285,7 @@ public class Character implements Player {
    * @param g Gold to remove from the character.
    * @throws CurrencyException If the player has less gold than what was given.
    */
-  public void removeGold(long g)
-    throws CurrencyException
-  {
+  public void removeGold(long g) throws CurrencyException {
     if (gold < g) {
       throw new CurrencyException(String.format(
         "Unable to remove %d gold from %s.", g, name
@@ -544,9 +357,7 @@ public class Character implements Player {
    * @param item Item to equip.
    * @return The item that was previously equipped.
    */
-  public Item equip(Item item)
-    throws NotEquipmentException
-  {
+  public Item equip(Item item) throws NotEquipmentException {
     String slot = item.get("slot");
     if (slot == null) {
       throw new NotEquipmentException("Unable to equip non-equipment item.");
@@ -615,20 +426,6 @@ public class Character implements Player {
    */
   public Account getAccount() {
     return account;
-  }
-
-  /**
-   * @param r The room to set.
-   */
-  public void setRoom(Room r) {
-    room = r;
-  }
-
-  /**
-   * @return the Character's current room.
-   */
-  public Room getRoom() {
-    return room;
   }
 
   /**
@@ -724,90 +521,6 @@ public class Character implements Player {
   }
 
   /**
-   * @return `true` if the player is sleeping, `false` otherwise.
-   */
-  public boolean isSleeping() {
-    return state == PlayState.SLEEPING;
-  }
-
-  /**
-   * Sets the character to be in the sleeping play state.
-   */
-  public void setSleeping() {
-    state = PlayState.SLEEPING;
-  }
-
-  /**
-   * @return `true` if the player is resting, `false` otherwise.
-   */
-  public boolean isResting() {
-    return state == PlayState.RESTING;
-  }
-
-  /**
-   * Sets the character to be in the resting play state.
-   */
-  public void setResting() {
-    state = PlayState.RESTING;
-  }
-
-  /**
-   * @return `true` if the player is sitting, `false` otherwise.
-   */
-  public boolean isSitting() {
-    return state == PlayState.SITTING;
-  }
-
-  /**
-   * Sets the character to be in the sitting play state.
-   */
-  public void setSitting() {
-    state = PlayState.SITTING;
-  }
-
-  /**
-   * @return `true` if the player is resting or sitting, `false` otherwise.
-   */
-  public boolean isRestingOrSitting() {
-    return state == PlayState.RESTING || state == PlayState.SITTING;
-  }
-
-  /**
-   * @return `true` if the player is standing, `false` otherwise.
-   */
-  public boolean isStanding() {
-    return state == PlayState.STANDING;
-  }
-
-  /**
-   * Sets the character to be in the standing play state.
-   */
-  public void setStanding() {
-    state = PlayState.STANDING;
-  }
-
-  /**
-   * @return `true` if the player is fighting, `false` otherwise.
-   */
-  public boolean isFighting() {
-    return state == PlayState.FIGHTING;
-  }
-
-  /**
-   * Sets the character to be in the fighting play state.
-   */
-  public void setFighting() {
-    state = PlayState.FIGHTING;
-  }
-
-  /**
-   * @return `true` if the character is standing or fighting, `false` otherwise.
-   */
-  public boolean isStandingOrFighting() {
-    return state == PlayState.FIGHTING || state == PlayState.STANDING;
-  }
-
-  /**
    * Determines whether or not this player has a name with the given prefix.
    * @param  namePrefix Prefix by which to test.
    * @return `true` if the player has a name with the given prefix.
@@ -882,19 +595,6 @@ public class Character implements Player {
   }
 
   /**
-   * Determines if the character successfully parries an attack.
-   * @return True if the attack is parried, false otherwise.
-   */
-  public boolean parry() {
-    int skillLevel = getMaximumSkillLevelForPassive("parry");
-    if (skillLevel < 1) {
-      return false;
-    }
-    double chance = 0.05 + 0.1 * ((double)skillLevel / 100.0);
-    return Roll.uniform() < chance;
-  }
-
-  /**
    * @see solace.game.Player
    */
   public int getCooldownSkillLevel(String name) {
@@ -908,24 +608,5 @@ public class Character implements Player {
       }
     }
     return maximum;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isOnGCD() {
-    return onGCDCooldown;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setOnGCD() {
-    onGCDCooldown = true;
-    // TODO GCD cooldowns should really be independent of the global clock...
-    Clock.getInstance().schedule(
-      String.format("GCD for %s", getName()),
-      2,
-      new Runnable() { public void run() { onGCDCooldown = false; } });
   }
 }

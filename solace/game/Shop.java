@@ -57,8 +57,7 @@ public class Shop {
     List<Mobile> mobs = room.getMobiles();
     synchronized(mobs) {
       for (Mobile mob : room.getMobiles()) {
-        String shopOwner = mob.get("shop-owner");
-        if (shopOwner != null && shopOwner.equals(id)) {
+        if (mob.ownsShop(id)) {
           owner = mob;
           break;
         }
