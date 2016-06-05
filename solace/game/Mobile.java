@@ -71,6 +71,21 @@ public class Mobile
   /**
    * @see solace.game.Player
    */
+  public void send(String msg) { sendMessage(msg); }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void sendln(String msg) { sendMessage(msg); }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void wrapln(String msg) { sendMessage(msg); }
+
+  /**
+   * @see solace.game.Player
+   */
   public Room getRoom() { return room; }
 
   /**
@@ -87,6 +102,11 @@ public class Mobile
    * @return The level of the mobile.
    */
   public int getLevel() { return level; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setLevel(int l) { level = l; }
 
   /**
    * @return The power level for the mobile. The power level is an additional
@@ -439,4 +459,28 @@ public class Mobile
   public boolean isProtected() {
     return get("protected").equals("true") || get("protected").equals("yes");
   }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasPassive(String name) {
+    return false;
+  }
+
+  public int getCooldownSkillLevel(String name) { return -1; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean parry() { return false; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isOnGCD() { return false; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setOnGCD() { return; }
 }

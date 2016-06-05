@@ -4,13 +4,13 @@
   "passives": [
     { "level": 15, "name": "parry" },
     { "level": 40, "name": "second attack" },
-    { "level": 70, "name": "third attack" },
+    { "level": 80, "name": "third attack" },
     { "level": 100, "name": "battle trance" },
   ],
   "cooldowns": [
-    { "level": 10, "name": "flurry" },
-    { "level": 30, "name": "feign" },
-    { "level": 60, "name": "riposte" },
-    { "level": 90, "name": "coup de grace" }
+    { "level": 5, "name": "flurry" },
+    { "level": 35, "name": "slash" },
+    { "level": 65, "name": "riposte" },
+    { "level": 95, "name": "coup de grace" }
   ]
 }

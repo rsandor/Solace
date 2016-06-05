@@ -6,6 +6,8 @@ import solace.net.*;
 import java.io.*;
 import solace.util.*;
 import solace.cmd.play.*;
+import solace.cmd.cooldown.*;
+import solace.cmd.admin.*;
 
 /**
  * Main game play controller (the actual game).
@@ -169,8 +171,11 @@ public class PlayController extends AbstractStateController {
     addCommand(emote);
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
 
+    addCommand(new Flurry(character));
+
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));
+      addCommand(new solace.cmd.admin.Set(character));
     }
   }
 }

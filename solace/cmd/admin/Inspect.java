@@ -1,5 +1,6 @@
-package solace.cmd.play;
+package solace.cmd.admin;
 
+import solace.cmd.play.PlayCommand;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;
@@ -20,6 +21,8 @@ public class Inspect extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
+    solace.game.Character character = getCharacter();
+    
     if (!character.getAccount().isAdmin()) {
       c.sendln("You are unable to perform this command.");
       Log.error("Admin level play command executed by a normal account.");

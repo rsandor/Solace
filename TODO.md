@@ -1,7 +1,8 @@
 # Master TODO
 
-Next Feature:
-
+Next Features:
+- Skill: one-handed
+- Take critical hits into account
 
 Features:
 - Player Races 1.0
@@ -28,6 +29,7 @@ Features:
 - Single Player Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
+- Multiperson battles
 - Shops commands should refer to the shop owner and be more flavorful
 - Move command will fail across areas (uses area.getRoom, need global lookup)
 

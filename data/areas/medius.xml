@@ -168,6 +168,9 @@
 		<instance type="mobile" id="dummy-weak" />
 		<instance type="mobile" id="dummy" />
 		<instance type="mobile" id="dummy-strong" />
+		<instance type="mobile" id="dummy-super" />
+		<instance type="mobile" id="dummy-super" />
+		<instance type="mobile" id="dummy-super" />
 
 		<exit names="archway" to="contego protectives">
 			Archway to the contego protectives
@@ -371,6 +374,21 @@
 		</property>
 		<property key="level">7</property>
 		<property key="power">15</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
+	</mobile>
+
+	<mobile id="dummy-super" names="super dummy" state="stationary">
+		<property key="description">
+			A test dummy made of diamond. It is formed much like a human and wears a
+			nothing but its diamond skin.
+		</property>
+		<property key="description.name">Super Dummy</property>
+		<property key="description.spawn">
+			A super dummy pops into existence.
+		</property>
+		<property key="level">20</property>
+		<property key="power">20</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
 	</mobile>

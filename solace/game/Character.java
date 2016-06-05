@@ -3,9 +3,7 @@ package solace.game;
 import java.util.*;
 
 import solace.net.Connection;
-import solace.util.Log;
-import solace.util.SkillNotFoundException;
-import solace.util.Skills;
+import solace.util.*;
 import solace.xml.GameParser;
 import solace.cmd.GameException;
 
@@ -20,6 +18,9 @@ public class Character implements Player {
   public static final Collection<String> EQ_SLOTS =
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
+  /**
+   * Default prompt given to new characters.
+   */
   public static final String DEFAULT_PROMPT =
     "(( {G%h{x/{g%H{xhp {M%m{x/{m%M{xmp {Y%s{x/{y%S{xsp )) {Y%gg{x %T>";
 
@@ -32,7 +33,6 @@ public class Character implements Player {
     return EQ_SLOTS.contains(name);
   }
 
-  // Instance Variables
   String id = null;
   PlayState state = PlayState.STANDING;
 
@@ -57,6 +57,8 @@ public class Character implements Player {
 
   Account account = null;
   String prompt = Character.DEFAULT_PROMPT;
+
+  boolean onGCDCooldown = false;
 
   /**
    * Creates a new character.
@@ -360,7 +362,12 @@ public class Character implements Player {
    * @return The number of attacks for the character.
    * @see solace.game.Player
    */
-  public int getNumberOfAttacks() { return 1; }
+  public int getNumberOfAttacks() {
+    int attacks = 1;
+    if (hasPassive("second attack")) attacks++;
+    if (hasPassive("third attack")) attacks++;
+    return attacks;
+  }
 
   /**
    * @see solace.game.Player
@@ -829,5 +836,96 @@ public class Character implements Player {
    */
   public void setPrompt(String p) {
     prompt = p;
+  }
+
+  /**
+   * Determines if a player has a skill with the given name.
+   * @param  name Name of the skill.
+   * @return      `true` if they have the skill, `false` otherwise.
+   */
+  public boolean hasSkill(String name) {
+    return skillIds.contains(name);
+  }
+
+  /**
+   * Determines if the player has a passive of the given name.
+   * @param  name Name of the passive.
+   * @return      True if they have the passive, false otherwise.
+   */
+  public boolean hasPassive(String name) {
+    for (Skill skill : skills) {
+      if (skill.grantsPassive(name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Gets the skill level of the skill with the maximum level that grants the
+   * given passive. This can occur if two skills both grant the same passive.
+   * @param  name Name of the passive.
+   * @return      The skill level of the skill that grants the passive or -1 if
+   *              no skill grants the passive.
+   */
+  public int getMaximumSkillLevelForPassive(String name) {
+    int maximum = -1;
+    for (Skill skill : skills) {
+      if (skill.grantsPassive(name)) {
+        int level = skill.getLevel();
+        if (level > maximum) {
+          maximum = level;
+        }
+      }
+    }
+    return maximum;
+  }
+
+  /**
+   * Determines if the character successfully parries an attack.
+   * @return True if the attack is parried, false otherwise.
+   */
+  public boolean parry() {
+    int skillLevel = getMaximumSkillLevelForPassive("parry");
+    if (skillLevel < 1) {
+      return false;
+    }
+    double chance = 0.05 + 0.1 * ((double)skillLevel / 100.0);
+    return Roll.uniform() < chance;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getCooldownSkillLevel(String name) {
+    int maximum = -1;
+    for (Skill skill : skills) {
+      if (skill.grantsCooldown(name)) {
+        int level = skill.getLevel();
+        if (level > maximum) {
+          maximum = level;
+        }
+      }
+    }
+    return maximum;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isOnGCD() {
+    return onGCDCooldown;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setOnGCD() {
+    onGCDCooldown = true;
+    // TODO GCD cooldowns should really be independent of the global clock...
+    Clock.getInstance().schedule(
+      String.format("GCD for %s", getName()),
+      2,
+      new Runnable() { public void run() { onGCDCooldown = false; } });
   }
 }

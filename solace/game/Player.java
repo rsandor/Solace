@@ -35,6 +35,24 @@ public interface Player {
   public void sendMessage(String s);
 
   /**
+   * Sends a message to the player.
+   * @param msg Message to send.
+   */
+  public void send(String msg);
+
+  /**
+   * Sends a message to a player with an appended new line.
+   * @param msg Message to send.
+   */
+  public void sendln(String msg);
+
+  /**
+   * Sends a message to a player, with a prepended and appended new line.
+   * @param msg Message to send.
+   */
+  public void wrapln(String msg);
+
+  /**
    * Determines if the Player is a mobile.
    * @return `true` if the Player is a mobile, `false` otherwise.
    */
@@ -181,4 +199,46 @@ public interface Player {
    *  `false` otherwise.
    */
   public boolean hasName(String namePrefix);
+
+  /**
+   * Determines if the player has a passive of the given name.
+   * @param  name Name of the passive.
+   * @return      True if they have the passive, false otherwise.
+   */
+  public boolean hasPassive(String name);
+
+  /**
+   * Determines if the character parries an attack.
+   * @return True if the attack is parried, false otherwise.
+   */
+  public boolean parry();
+
+  /**
+   * Gets the level of the highest skill which grants the given cooldown.
+   * @param  name Name of the cooldown.
+   * @return      The skill level, or -1 if the player does not have that skill.
+   */
+  public int getCooldownSkillLevel(String name);
+
+  /**
+   * @return True if the player is on the global cooldown, false otherwise.
+   */
+  public boolean isOnGCD();
+
+  /**
+   * Sets the player to be on the global cooldown.
+   */
+  public void setOnGCD();
+
+  /**
+   * Sets the level of the player.
+   * @param level Level to set.
+   */
+  public void setLevel(int level);
+
+  /**
+   * Sets the hit points for the player.
+   * @param hp Hit points to set.
+   */
+  public void setHp(int hp);
 }

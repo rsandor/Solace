@@ -9,6 +9,11 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Battle {
+  /**
+   * Chance that any given attack roll will be a critical hit.
+   */
+  public static final double CRITICAL_CHANCE = 0.05;
+
   Set<Player> participants;
   Hashtable<Player, Player> targets;
   Multimap<Player, Player> attackers;
@@ -24,6 +29,100 @@ public class Battle {
     attackers = Multimaps.synchronizedListMultimap(
       ArrayListMultimap.<Player, Player> create()
     );
+  }
+
+  /**
+   * Roll to hit with normal scale potency.
+   * @see Battle.rollToHit(Player, Player, int)
+   */
+  public static AttackResult rollToHit(Player attacker, Player defender) {
+    return rollToHit(attacker, defender, 100);
+  }
+
+  /**
+   * Performs a roll to see if an attacker hits a defender with a basic attack.
+   * @param attacker The attacking player.
+   * @param defender The defending player.
+   * @param potency Potency of the attack (scales the attacker roll).
+   * @return True if the attack succeeds, false otherwise.
+   */
+  public static AttackResult rollToHit(
+    Player attacker,
+    Player defender,
+    int potency
+  ) {
+    int ac = defender.getAC();
+    double attackRoll = (double)attacker.getAttackRoll();
+    int hitMod = attacker.getHitMod();
+
+    // Make the roll
+    double roll = attackRoll * Roll.uniform() + 1.0;
+
+    // Determine if the attack is critical
+    boolean critical = roll > attackRoll - (attackRoll * CRITICAL_CHANCE);
+
+    // Add attacker's hit modifier
+    roll += hitMod;
+
+    // Apply attacker passives
+    if (attacker.hasPassive("battle trance")) {
+      roll = (int)((double)roll * 1.1);
+    }
+
+    // Scale by the potency
+    roll *= (double)potency / 100.0;
+
+    // Apply defender passives
+    boolean parried = defender.parry();
+
+    // Calculate the result
+    if (!parried) {
+      if (critical) return AttackResult.CRITICAL;
+      if (roll > ac) return AttackResult.HIT;
+    }
+    return AttackResult.MISS;
+  }
+
+  /**
+   * Performs a damage roll with normal potency.
+   * @see Battle.rollDamage(Player, Player, boolean, int)
+   */
+  public static int rollDamage(Player attacker, Player defender, boolean crit) {
+    return Battle.rollDamage(attacker, defender, crit, 100);
+  }
+
+  /**
+   * Performs a roll to determine the amount of damage for a successful hit.
+   * @param attacker The attacking player.
+   * @param defender The defending player.
+   * @param crit Whether or not the attack is a critical hit.
+   * @return The amount of damage dealt.
+   */
+  public static int rollDamage(
+    Player attacker,
+    Player defender,
+    boolean crit,
+    int potency
+  ) {
+    int averageDamage = attacker.getAverageDamage();
+    int damageMod = attacker.getDamageMod();
+    double damage = (double)Roll.normal(averageDamage) + damageMod;
+
+    // Apply attacker passives
+    if (attacker.hasPassive("battle trance")) {
+      damage = damage * 1.1;
+    }
+
+    // Apply potency
+    damage *= (double)potency / 100.0;
+
+    // Apply critical hits
+    if (crit) {
+      damage *= 2.0;
+    }
+
+    // Result
+    return (int)damage;
   }
 
   /**
@@ -46,17 +145,9 @@ public class Battle {
 
       for (Player attacker : participants) {
         Player target = targets.get(attacker);
-        if (target == null) {
-          continue;
-        }
+        if (target == null) continue;
 
-        int attackRoll = attacker.getAttackRoll();
         int numberOfAttacks = attacker.getNumberOfAttacks();
-        int hitMod = attacker.getHitMod();
-        int averageDamage = attacker.getAverageDamage();
-        int damageMod = attacker.getDamageMod();
-        int ac = target.getAC();
-
         int damage = 0;
         int hits = 0;
 
@@ -65,16 +156,13 @@ public class Battle {
           attacker.getName(),
           target.getName()));
 
-        Log.trace(Color.format(String.format(
-          "%s {rAttack Roll:{x %d vs. %d",
-          attacker.getName(), attackRoll, ac)));
-
         for (int i = 0; i < numberOfAttacks; i++) {
           try {
-            int roll = Roll.uniform(attackRoll) + hitMod;
-            if (roll > ac) {
+            AttackResult result = Battle.rollToHit(attacker, target);
+            if (result != AttackResult.MISS) {
               hits++;
-              damage += Roll.normal(averageDamage) + damageMod;
+              damage += Battle.rollDamage(
+                attacker, target, result == AttackResult.CRITICAL);
             }
           }
           catch (Exception e) {
@@ -92,21 +180,19 @@ public class Battle {
           messageBuffers.get(target).append(String.format(
             "%s {gmissed{x you completely!\n\r",
             attacker.getName()));
-        }
-        else if (hits == 1) {
+        } else if (hits == 1) {
           messageBuffers.get(attacker).append(String.format(
             "[{g%d{x] You hit %s!\n\r",
             actualDamage, target.getName()));
           messageBuffers.get(target).append(String.format(
             "<{r%d{x> %s hit you!\n\r",
             actualDamage, attacker.getName()));
-        }
-        else {
+        } else {
           messageBuffers.get(attacker).append(String.format(
-            "[{g%d{x] You hit %s %d times!\n\r",
+            "[{g%d{x] You hit %s {y%d{x times!\n\r",
             actualDamage, target.getName(), hits));
           messageBuffers.get(target).append(String.format(
-            "<{r%d{x> %s hit you %d times!\n\r",
+            "<{r%d{x> %s hit you {y%d{x times!\n\r",
             actualDamage, attacker.getName(), hits));
         }
       }
@@ -171,6 +257,20 @@ public class Battle {
    */
   public Collection<Player> getParticipants() {
     return Collections.unmodifiableCollection(participants);
+  }
+
+  /**
+   * Determines if a player is engaged in this battle.
+   * @param p Player to find.
+   * @return True if they part of this battle, false otherwise.
+   */
+  public boolean hasParticipant(Player p) {
+    synchronized(participants) {
+      for (Player q : participants) {
+        if (q == p) return true;
+      }
+    }
+    return false;
   }
 
   /**
