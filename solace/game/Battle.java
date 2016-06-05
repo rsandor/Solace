@@ -197,14 +197,8 @@ public class Battle {
         }
       }
 
-      for (Player attacker : participants) {
-        Player target = targets.get(attacker);
-        if (target != null && target.isDead()) {
-          dead.add(target);
-          lastAttacker.put(target, attacker);
-          messageBuffers.get(attacker).append(String.format(
-            "You {Rkilled{x %s!\n\r", target.getName()));
-        }
+      for (Player p : participants) {
+        if (p.isDead()) dead.add(p);
       }
 
       Log.trace("Cleaning up and sending messages.");
@@ -215,7 +209,7 @@ public class Battle {
 
       for (Player p : dead) {
         remove(p);
-        p.die(lastAttacker.get(p));
+        p.die(null);
       }
     }
   }

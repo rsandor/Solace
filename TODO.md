@@ -1,10 +1,15 @@
 # Master TODO
 
 Next Features:
-- Skill: one-handed
-- Take critical hits into account
+- Refactor Mobile implementation, merge common functionality into AbstractPlayer
 
 Features:
+- one-handed cooldowns
+- Passives + Cooldowns Caching
+- Cooldowns 2.0
+  - `cooldown` command for listing cooldowns and time remaining
+  - Hot keys to assign cooldowns to numbers
+  - Colored cooldown hotkeys in prompts
 - Player Races 1.0
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Character Creator 2.0
@@ -65,6 +70,9 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Check all players in battle for death
+- Begin the admin `set` command
+- Take critical hits into account
 - Prompts 2.0 (parametric user defined gameplay prompts)
 - Protected mobiles (cannot be attacked)
 - Stats Unit Testing
