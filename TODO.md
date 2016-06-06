@@ -1,14 +1,13 @@
 # Master TODO
 
 Next Features:
-- one-handed cooldowns
-
-Features:
-- Passives + Cooldowns Caching
 - Cooldowns 2.0
   - `cooldown` command for listing cooldowns and time remaining
   - Hot keys to assign cooldowns to numbers
   - Colored cooldown hotkeys in prompts
+
+Features:
+- Passives + Cooldowns Caching
 - Player Races 1.0
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
 - Character Creator 2.0
@@ -69,6 +68,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- one-handed cooldowns
 - Refactor Mobile implementation, merge common functionality into AbstractPlayer
 - Check all players in battle for death
 - Begin the admin `set` command

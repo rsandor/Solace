@@ -56,7 +56,6 @@ public class Riposte extends CooldownCommand {
     target.sendln(String.format(
       "<{r%d{x> %s hits you with a {mriposte{x!", damage, player.getName()));
 
-    player.setComboAction("riposte");
     return true;
   }
 }

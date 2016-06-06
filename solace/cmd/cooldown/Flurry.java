@@ -47,7 +47,6 @@ public class Flurry extends CooldownCommand {
       "<{r%d{x> %s hits you with a {mflurry of blows{x!",
       damage, player.getName()));
 
-    player.setComboAction("flurry");
     return true;
   }
 }

@@ -141,6 +141,11 @@ public abstract class CooldownCommand extends AbstractCommand {
       );
     }
 
+    // Handle GCD combos
+    if (cooldownDuration == GLOBAL_COOLDOWN && result) {
+      player.setComboAction(getName());
+    }
+
     // Initiate combat if applicable
     if (!initiatesCombat || !result) {
       return result;

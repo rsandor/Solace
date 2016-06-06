@@ -53,7 +53,6 @@ public class CoupDeGrace extends CooldownCommand {
       "<{r%d{x> %s hits you with a {mcoup de grace{x!",
       damage, player.getName()));
 
-    player.setComboAction("flurry");
     return true;
   }
 }

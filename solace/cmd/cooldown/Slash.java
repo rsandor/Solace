@@ -56,7 +56,6 @@ public class Slash extends CooldownCommand {
     target.sendln(String.format(
       "<{r%d{x> %s hits you with a {mslash{x!", damage, player.getName()));
 
-    player.setComboAction("slash");
     return true;
   }
 }
