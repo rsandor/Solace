@@ -169,8 +169,9 @@
 		<instance type="mobile" id="dummy" />
 		<instance type="mobile" id="dummy-strong" />
 		<instance type="mobile" id="dummy-super" />
-		<instance type="mobile" id="dummy-super" />
-		<instance type="mobile" id="dummy-super" />
+		<instance type="mobile" id="dummy-greater" />
+
+		<instance type="item" id="master-sword" />
 
 		<exit names="archway" to="contego protectives">
 			Archway to the contego protectives
@@ -293,6 +294,22 @@
 		</property>
 	</item>
 
+	<item id="master-sword" names="master sword">
+		<property key="type">equipment</property>
+		<property key="slot">weapon</property>
+		<property key="skill">one-handed</property>
+		<property key="weight">10</property>
+		<property key="level">100</property>
+		<property key="value">50000</property>
+		<property key="description">
+			The master sword of Hyrulian legend.
+		</property>
+		<property key="description.inventory">master sword</property>
+		<property key="description.room">
+			The master sword lies here.
+		</property>
+	</item>
+
 	<!-- Mobiles -->
 	<mobile id="duke" names="duke stabilis" state="stationary" protected="true">
 		<property key="description">
@@ -389,6 +406,21 @@
 		</property>
 		<property key="level">20</property>
 		<property key="power">20</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
+	</mobile>
+
+	<mobile id="dummy-greater" names="greater dummy" state="stationary">
+		<property key="description">
+			A test dummy made of god flesh. It is the greater dummy, the dummy to end
+			all dummies.
+		</property>
+		<property key="description.name">Greater Dummy</property>
+		<property key="description.spawn">
+			A greater dummy pops into existence.
+		</property>
+		<property key="level">100</property>
+		<property key="power">100</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
 	</mobile>

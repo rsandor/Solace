@@ -350,4 +350,16 @@ public interface Player {
    * Sets the player to be on the global cooldown.
    */
   public void setOnGCD();
+
+  /**
+   * Sets the combo action for a player. This is used to determine if other
+   * skill actions should execute as a combos.
+   * @param action Name of the combo action to set.
+   */
+  public void setComboAction(String action);
+
+  /**
+   * @return The combo action (if any) for the player.
+   */
+  public String getComboAction();
 }

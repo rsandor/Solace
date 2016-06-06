@@ -11,6 +11,6 @@
     { "level": 5, "name": "flurry" },
     { "level": 35, "name": "slash" },
     { "level": 65, "name": "riposte" },
-    { "level": 95, "name": "coup de grace" }
+    { "level": 95, "name": "coup" }
   ]
 }

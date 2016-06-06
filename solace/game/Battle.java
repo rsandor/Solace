@@ -17,6 +17,7 @@ public class Battle {
   Set<Player> participants;
   Hashtable<Player, Player> targets;
   Multimap<Player, Player> attackers;
+  Hashtable<Player, StringBuffer> messageBuffers;
 
   /**
    * Creates a new, empty, battle.
@@ -29,6 +30,95 @@ public class Battle {
     attackers = Multimaps.synchronizedListMultimap(
       ArrayListMultimap.<Player, Player> create()
     );
+    messageBuffers = new Hashtable<Player, StringBuffer>();
+  }
+
+  /**
+   * Adds a player to the battle.
+   * @param p Player to add.
+   */
+  public synchronized void add(Player p) {
+    participants.add(p);
+    messageBuffers.put(p, new StringBuffer());
+  }
+
+  /**
+   * Removes a character or mobile from the battle.
+   * @param p Player to remove.
+   */
+  public synchronized void remove(Player p) {
+    messageBuffers.remove(p);
+    participants.remove(p);
+    attackers.removeAll(p);
+    targets.remove(p);
+  }
+
+  /**
+   * Sets who a given participant is attacking.
+   * @param a The attacker.
+   * @param b The defender.
+   */
+  public void setAttacking(Player a, Player b) {
+    synchronized(attackers) {
+      targets.put(a, b);
+      attackers.put(b, a);
+    }
+  }
+
+  /**
+   * @return A collection of participants in the battle.
+   */
+  public Collection<Player> getParticipants() {
+    return Collections.unmodifiableCollection(participants);
+  }
+
+  /**
+   * Determines if a player is engaged in this battle.
+   * @param p Player to find.
+   * @return True if they part of this battle, false otherwise.
+   */
+  public boolean hasParticipant(Player p) {
+    synchronized(participants) {
+      for (Player q : participants) {
+        if (q == p) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @return The number of participants in the battle.
+   */
+  public int size() {
+    synchronized (participants) {
+      return participants.size();
+    }
+  }
+
+  /**
+   * Determines if a battle has completed.
+   * @return `true` if the battle is over, false otherwise.
+   */
+  public boolean isOver() {
+    return size() < 2;
+  }
+
+  /**
+   * Returns the target of the given player in the battle.
+   * @param  p Player for which to find the target.
+   * @return   The target of the player.
+   */
+  public Player getTargetFor(Player p) {
+    return targets.get(p);
+  }
+
+  /**
+   * Adds a battle message for the specified player.
+   * @param p Player to recieve message.
+   * @param msg Message to send.
+   */
+  public synchronized void message(Player p, String msg) {
+    messageBuffers.get(p).append(msg);
   }
 
   /**
@@ -142,168 +232,78 @@ public class Battle {
   /**
    * Executes a round of the battle.
    */
-  public void round() {
+  public synchronized void round() {
     Log.trace("Battle: Synchronizing participants.");
+    for (Player attacker : participants) {
+      Player target = targets.get(attacker);
+      if (target == null) continue;
 
-    synchronized (participants) {
-      Hashtable<Player, StringBuffer> messageBuffers =
-        new Hashtable<Player, StringBuffer>();
+      int numberOfAttacks = attacker.getNumberOfAttacks();
+      int damage = 0;
+      int hits = 0;
 
-      Set<Player> dead = new HashSet<Player>();
+      Log.trace(String.format(
+        "Battle: %s attacks %s.",
+        attacker.getName(),
+        target.getName()));
 
-      Hashtable<Player, Player> lastAttacker = new Hashtable<Player, Player>();
-
-      for (Player p : participants) {
-        messageBuffers.put(p, new StringBuffer());
+      for (int i = 0; i < numberOfAttacks; i++) {
+        try {
+          AttackResult result = Battle.rollToHit(attacker, target);
+          if (result != AttackResult.MISS) {
+            hits++;
+            damage += Battle.rollDamage(
+              attacker, target, result == AttackResult.CRITICAL);
+          }
+        }
+        catch (Exception e) {
+          Log.error("Error calculating attack roll and damage.");
+          e.printStackTrace();
+        }
       }
 
-      for (Player attacker : participants) {
-        Player target = targets.get(attacker);
-        if (target == null) continue;
+      int actualDamage = target.applyDamage(damage);
 
-        int numberOfAttacks = attacker.getNumberOfAttacks();
-        int damage = 0;
-        int hits = 0;
-
-        Log.trace(String.format(
-          "Battle: %s attacks %s.",
-          attacker.getName(),
+      if (hits == 0) {
+        messageBuffers.get(attacker).append(String.format(
+          "Your attack missed %s.\n\r",
           target.getName()));
-
-        for (int i = 0; i < numberOfAttacks; i++) {
-          try {
-            AttackResult result = Battle.rollToHit(attacker, target);
-            if (result != AttackResult.MISS) {
-              hits++;
-              damage += Battle.rollDamage(
-                attacker, target, result == AttackResult.CRITICAL);
-            }
-          }
-          catch (Exception e) {
-            Log.error("Error calculating attack roll and damage.");
-            e.printStackTrace();
-          }
-        }
-
-        int actualDamage = target.applyDamage(damage);
-
-        if (hits == 0) {
-          messageBuffers.get(attacker).append(String.format(
-            "Your attack missed %s.\n\r",
-            target.getName()));
-          messageBuffers.get(target).append(String.format(
-            "%s {gmissed{x you completely!\n\r",
-            attacker.getName()));
-        } else if (hits == 1) {
-          messageBuffers.get(attacker).append(String.format(
-            "[{g%d{x] You hit %s!\n\r",
-            actualDamage, target.getName()));
-          messageBuffers.get(target).append(String.format(
-            "<{r%d{x> %s hit you!\n\r",
-            actualDamage, attacker.getName()));
-        } else {
-          messageBuffers.get(attacker).append(String.format(
-            "[{g%d{x] You hit %s {y%d{x times!\n\r",
-            actualDamage, target.getName(), hits));
-          messageBuffers.get(target).append(String.format(
-            "<{r%d{x> %s hit you {y%d{x times!\n\r",
-            actualDamage, attacker.getName(), hits));
-        }
-      }
-
-      for (Player p : participants) {
-        if (p.isDead()) dead.add(p);
-      }
-
-      Log.trace("Cleaning up and sending messages.");
-
-      for (Player p : messageBuffers.keySet()) {
-        p.sendMessage(messageBuffers.get(p).toString().trim());
-      }
-
-      for (Player p : dead) {
-        remove(p);
-        p.die(null);
+        messageBuffers.get(target).append(String.format(
+          "%s {gmissed{x you completely!\n\r",
+          attacker.getName()));
+      } else if (hits == 1) {
+        messageBuffers.get(attacker).append(String.format(
+          "[{g%d{x] You hit %s!\n\r",
+          actualDamage, target.getName()));
+        messageBuffers.get(target).append(String.format(
+          "<{r%d{x> %s hit you!\n\r",
+          actualDamage, attacker.getName()));
+      } else {
+        messageBuffers.get(attacker).append(String.format(
+          "[{g%d{x] You hit %s {y%d{x times!\n\r",
+          actualDamage, target.getName(), hits));
+        messageBuffers.get(target).append(String.format(
+          "<{r%d{x> %s hit you {y%d{x times!\n\r",
+          actualDamage, attacker.getName(), hits));
       }
     }
-  }
 
-  /**
-   * Adds a character or mobile to the battle.
-   * @param m Character or mobile to add.
-   */
-  public void add(Player m) {
-    synchronized(participants) {
-      participants.add(m);
+    Set<Player> dead = new HashSet<Player>();
+    for (Player p : participants) {
+      if (p.isDead()) dead.add(p);
     }
-  }
 
-  /**
-   * Removes a character or mobile from the battle.
-   * @param m Character or mobile to remove.
-   */
-  public synchronized void remove(Player m) {
-    participants.remove(m);
-    attackers.removeAll(m);
-    targets.remove(m);
-  }
+    Log.trace("Cleaning up and sending messages.");
 
-  /**
-   * Sets who a given participant is attacking.
-   * @param a The attacker.
-   * @param b The defender.
-   */
-  public void setAttacking(Player a, Player b) {
-    synchronized(attackers) {
-      targets.put(a, b);
-      attackers.put(b, a);
+    for (Player p : messageBuffers.keySet()) {
+      StringBuffer messageBuffer = messageBuffers.get(p);
+      p.sendMessage(messageBuffers.get(p).toString().trim());
+      messageBuffer.setLength(0);
     }
-  }
 
-  /**
-   * @return A collection of participants in the battle.
-   */
-  public Collection<Player> getParticipants() {
-    return Collections.unmodifiableCollection(participants);
-  }
-
-  /**
-   * Determines if a player is engaged in this battle.
-   * @param p Player to find.
-   * @return True if they part of this battle, false otherwise.
-   */
-  public boolean hasParticipant(Player p) {
-    synchronized(participants) {
-      for (Player q : participants) {
-        if (q == p) return true;
-      }
+    for (Player p : dead) {
+      remove(p);
+      p.die(null);
     }
-    return false;
-  }
-
-  /**
-   * @return The number of participants in the battle.
-   */
-  public int size() {
-    synchronized (participants) {
-      return participants.size();
-    }
-  }
-
-  /**
-   * Determines if a battle has completed.
-   * @return `true` if the battle is over, false otherwise.
-   */
-  public boolean isOver() {
-    return size() < 2;
-  }
-
-  /**
-   * Returns the target of the given player in the battle.
-   * @param  p Player for which to find the target.
-   * @return   The target of the player.
-   */
-  public Player getTargetFor(Player p) {
-    return targets.get(p);
   }
 }

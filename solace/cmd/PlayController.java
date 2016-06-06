@@ -172,6 +172,9 @@ public class PlayController extends AbstractStateController {
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
 
     addCommand(new Flurry(character));
+    addCommand(new Slash(character));
+    addCommand(new Riposte(character));
+    addCommand(new CoupDeGrace(character));
 
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));

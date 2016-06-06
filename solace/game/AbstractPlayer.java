@@ -19,6 +19,7 @@ public abstract class AbstractPlayer implements Player {
   String majorStat = "none";
   String minorStat = "none";
   boolean onGCDCooldown = false;
+  String comboAction = null;
 
   // Abstract Player Methods
   public abstract boolean hasPassive(String name);
@@ -359,5 +360,19 @@ public abstract class AbstractPlayer implements Player {
       String.format("GCD for %s", getName()),
       2,
       new Runnable() { public void run() { onGCDCooldown = false; } });
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setComboAction(String action) {
+    comboAction = action;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public String getComboAction() {
+    return comboAction == null ? "" : comboAction;
   }
 }

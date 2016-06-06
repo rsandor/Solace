@@ -25,16 +25,48 @@ public abstract class CooldownCommand extends AbstractCommand {
    * specified player.
    * @param name Name of the command.
    * @param p Player for the command.
-   * @param duration Duration of the command.
-   * @param combat Whether or not this command will initate combat when executed
-   *   on a target.
    */
-  public CooldownCommand(String name, Player p, int duration, boolean combat) {
+  public CooldownCommand(String name, Player p) {
     super(name);
     player = p;
-    cooldownDuration = duration;
-    initiatesCombat = combat;
     onCooldown = false;
+  }
+
+  /**
+   * @return The player associated with the command.
+   */
+  public Player getPlayer() {
+    return player;
+  }
+
+  /**
+   * @return Amount of time for the cooldown.
+   */
+  public int getCooldownDuration() {
+    return cooldownDuration;
+  }
+
+  /**
+   * Sets the coodown duration for the command.
+   * @param d The duration to set.
+   */
+  public void setCooldownDuration(int d) {
+    cooldownDuration = d;
+  }
+
+  /**
+   * @return True if the command initiates combat, false otherwise.
+   */
+  public boolean getInitiatesCombat() {
+    return initiatesCombat;
+  }
+
+  /**
+   * Sets whether or not the cooldown initiates combat.
+   * @param combat [description]
+   */
+  public void setInitiatesCombat(boolean combat) {
+    initiatesCombat = combat;
   }
 
   /**
@@ -87,10 +119,16 @@ public abstract class CooldownCommand extends AbstractCommand {
       return false;
     }
 
-    // Schedule the cooldown
+    // Schedule global cooldowns
     if (cooldownDuration == GLOBAL_COOLDOWN) {
       player.setOnGCD();
-    } else {
+    }
+
+    // Execute the action and get the results
+    boolean result = execute(skillLevel, target);
+
+    // Schedule off global cooldowns
+    if (cooldownDuration != GLOBAL_COOLDOWN && result) {
       onCooldown = true;
       Clock.getInstance().schedule(
         String.format("%s cooldown for %s", getName(), player.getName()),
@@ -102,9 +140,6 @@ public abstract class CooldownCommand extends AbstractCommand {
         }
       );
     }
-
-    // Execute the action and get the results
-    boolean result = execute(skillLevel, target);
 
     // Initiate combat if applicable
     if (!initiatesCombat || !result) {

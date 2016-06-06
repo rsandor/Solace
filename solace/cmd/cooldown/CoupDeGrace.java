@@ -11,18 +11,18 @@ import solace.util.*;
  * attacker's target.
  * @author Ryan Sandor Richards
  */
-public class Flurry extends CooldownCommand {
-  static final int POTENCY = 150;
+public class CoupDeGrace extends CooldownCommand {
+  static final int POTENCY = 1000;
 
-  public Flurry(Player p) {
-    super("flurry", p);
-    setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
+  public CoupDeGrace(Player p) {
+    super("coup", p);
+    setCooldownDuration(120);
     setInitiatesCombat(true);
   }
 
   public boolean execute(int level, Player target) {
     if (!player.isFighting() && target == null) {
-      player.sendln("Who would you like to attack with a flurry of blows?");
+      player.sendln("Who would you like to coup de grace?");
       return false;
     }
 
@@ -30,9 +30,15 @@ public class Flurry extends CooldownCommand {
       target = BattleManager.getBattleFor(player).getTargetFor(player);
     }
 
+    if ((double)target.getHp() / (double)target.getMaxHp() >= 0.3) {
+      player.sendln(
+        "Coup de grace can only be used on targets with less than 30% health.");
+      return false;
+    }
+
     AttackResult result = Battle.rollToHit(player, target, POTENCY);
     if (result == AttackResult.MISS) {
-      player.sendMessage("Your {mflurry of blows{x misses!");
+      player.sendMessage("Your {mriposte{x misses!");
       return false;
     }
 
@@ -41,10 +47,10 @@ public class Flurry extends CooldownCommand {
     target.applyDamage(damage);
 
     player.sendln(String.format(
-      "[{g%d{x] Your {mflurry of blows{x hits %s!",
+      "[{g%d{x] Your {mcoup de grace{x hits %s!",
       damage, target.getName()));
     target.sendln(String.format(
-      "<{r%d{x> %s hits you with a {mflurry of blows{x!",
+      "<{r%d{x> %s hits you with a {mcoup de grace{x!",
       damage, player.getName()));
 
     player.setComboAction("flurry");

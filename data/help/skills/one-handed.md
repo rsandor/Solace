@@ -20,10 +20,10 @@ that require a single hand to wield.
   A savage flurry of blows dealing damage with potency 150.
 - [35] Slash (GCD)
   Attacks the target with savage slash with potency 150. Combo: Flurry, increase
-  potency to 200.
+  potency to 250.
 - [65] Riposte (GCD)     
   Make a quick sudden attack dealing with potency 150. Combo: Slash, increases
-  potency to 300.
-- [95] Coup de grace (180s)
-  A devastating attack with potency 500 when an opponent has less than 30%
+  potency to 350.
+- [95] Coup de grace (120s)
+  A devastating attack with potency 1000 when an opponent has less than 30%
   health. Cannot be used if the target has more than 30% health.

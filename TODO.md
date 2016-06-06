@@ -1,10 +1,9 @@
 # Master TODO
 
 Next Features:
-- Refactor Mobile implementation, merge common functionality into AbstractPlayer
+- one-handed cooldowns
 
 Features:
-- one-handed cooldowns
 - Passives + Cooldowns Caching
 - Cooldowns 2.0
   - `cooldown` command for listing cooldowns and time remaining
@@ -70,6 +69,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Refactor Mobile implementation, merge common functionality into AbstractPlayer
 - Check all players in battle for death
 - Begin the admin `set` command
 - Take critical hits into account
