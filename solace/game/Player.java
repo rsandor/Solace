@@ -352,6 +352,21 @@ public interface Player {
   public void setOnGCD();
 
   /**
+   * Indicates to the player a non-gcd cooldown action has been executed and
+   * will cool down after the given number of seconds.
+   * @param name Name of the cooldown.
+   * @param duration Duration in seconds to cool down.
+   */
+  public void cooldownAt(String name, int duration);
+
+  /**
+   * Determines the amount of time remaining for a cooldown of the given name.
+   * @param name Name of the cooldown.
+   * @return The number of seconds remaining on the cool down.
+   */
+  public int getCooldownDuration(String name);
+
+  /**
    * Sets the combo action for a player. This is used to determine if other
    * skill actions should execute as a combos.
    * @param action Name of the combo action to set.

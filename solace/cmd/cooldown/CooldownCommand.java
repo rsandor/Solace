@@ -137,8 +137,8 @@ public abstract class CooldownCommand extends AbstractCommand {
           public void run() {
             onCooldown = false;
           }
-        }
-      );
+        });
+      player.cooldownAt(getName(), cooldownDuration);
     }
 
     // Handle GCD combos

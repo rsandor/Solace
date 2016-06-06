@@ -2,6 +2,8 @@ package solace.game;
 
 import solace.util.Clock;
 import solace.util.Log;
+import java.util.Date;
+import java.util.Hashtable;
 
 /**
  * Implements common functionality of the player interface shared by both
@@ -9,6 +11,32 @@ import solace.util.Log;
  * @author Ryan Sandor Richards
  */
 public abstract class AbstractPlayer implements Player {
+  /**
+   * Timer for tracking cooldown durations.
+   */
+  protected class CooldownTimer {
+    Date usedAt;
+    long duration;
+
+    /**
+     * Creates a new cooldown timer for the given duration.
+     * @param d Duration in seconds when the skill will be available.
+     */
+    public CooldownTimer(int d) {
+      usedAt = new Date();
+      duration = (long)d;
+    }
+
+    /**
+     * @return The time remaining, in seconds, until the cool down is complete.
+     */
+    public int getTimeRemaining() {
+      long elapsed = new Date().getTime() - usedAt.getTime();
+      elapsed /= 1000;
+      return (int)Math.max(0, duration - elapsed);
+    }
+  }
+
   // Instance variables
   PlayState state = PlayState.STANDING;
   Room room = null;
@@ -20,6 +48,8 @@ public abstract class AbstractPlayer implements Player {
   String minorStat = "none";
   boolean onGCDCooldown = false;
   String comboAction = null;
+  Hashtable<String, CooldownTimer> cooldownTimers =
+    new Hashtable<String, CooldownTimer>();
 
   // Abstract Player Methods
   public abstract boolean hasPassive(String name);
@@ -360,6 +390,23 @@ public abstract class AbstractPlayer implements Player {
       String.format("GCD for %s", getName()),
       2,
       new Runnable() { public void run() { onGCDCooldown = false; } });
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void cooldownAt(String name, int duration) {
+    cooldownTimers.put(name, new CooldownTimer(duration));
+  }
+
+  /**
+  * @see solace.game.Player
+  */
+  public int getCooldownDuration(String name) {
+    if (cooldownTimers.containsKey(name)) {
+      return cooldownTimers.get(name).getTimeRemaining();
+    }
+    return -1;
   }
 
   /**

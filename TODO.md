@@ -2,9 +2,8 @@
 
 Next Features:
 - Cooldowns 2.0
-  - `cooldown` command for listing cooldowns and time remaining
-  - Hot keys to assign cooldowns to numbers
-  - Colored cooldown hotkeys in prompts
+  - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
+  - Colored cooldown hotbar in prompts, e.g. [1234567890-=] 
 
 Features:
 - Passives + Cooldowns Caching
@@ -68,6 +67,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- `cooldown` command for listing cooldown time remaining
 - one-handed cooldowns
 - Refactor Mobile implementation, merge common functionality into AbstractPlayer
 - Check all players in battle for death

@@ -166,6 +166,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Wake(character));
 
     addCommand(new Prompt(character));
+    addCommand(new Cooldown(character));
 
     Emote emote = new Emote(character);
     addCommand(emote);
