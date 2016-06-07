@@ -18,7 +18,7 @@ public class AccountHandler extends Handler {
    */
   private enum State {
     INIT, USER, CHARACTERS, CHARACTER, INVENTORY,
-    EQUIPMENT, ITEM, PROPERTY, SKILLS
+    EQUIPMENT, ITEM, PROPERTY, SKILLS, HOTBAR
   };
 
   // Instance variables
@@ -57,6 +57,7 @@ public class AccountHandler extends Handler {
       case EQUIPMENT: state = startEquipment(name, attrs); break;
       case ITEM: state = startItem(name, attrs); break;
       case SKILLS: state = startSkills(name, attrs); break;
+      case HOTBAR: state = startHotbar(name, attrs); break;
     }
   }
 
@@ -92,7 +93,8 @@ public class AccountHandler extends Handler {
     if (
       name.equals("inventory") ||
       name.equals("equipment") ||
-      name.equals("skills")
+      name.equals("skills") ||
+      name.equals("hotbar")
     ) {
       state = State.CHARACTER;
       return;
@@ -232,15 +234,14 @@ public class AccountHandler extends Handler {
     if (name.equals("location")) {
       area = World.getArea(attrs.getValue("area"));
       character.setRoom(area.getRoom(attrs.getValue("room")));
-    }
-    else if (name.equals("inventory")) {
+    } else if (name.equals("inventory")) {
       return State.INVENTORY;
-    }
-    else if (name.equals("equipment")) {
+    } else if (name.equals("equipment")) {
       return State.EQUIPMENT;
-    }
-    else if (name.equals("skills")) {
+    } else if (name.equals("skills")) {
       return State.SKILLS;
+    } else if (name.equals("hotbar")) {
+      return State.HOTBAR;
     }
     return State.CHARACTER;
   }
@@ -323,6 +324,20 @@ public class AccountHandler extends Handler {
       }
     }
     return State.SKILLS;
+  }
+
+  /**
+   * Handles start elements for the hotbar state.
+   * @param name Name of the element.
+   * @param attrs Attributes for the element.
+   */
+  protected State startHotbar(String name, Attributes attrs) {
+    if (name.equals("entry")) {
+      String key = attrs.getValue("key");
+      String command = attrs.getValue("command");
+      character.setHotbarCommand(key, command);
+    }
+    return State.HOTBAR;
   }
 
   /**

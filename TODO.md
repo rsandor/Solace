@@ -1,9 +1,8 @@
 # Master TODO
 
 Next Features:
-- Cooldowns 2.0
-  - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
-  - Colored cooldown hotbar in prompts, e.g. [1234567890-=] 
+
+
 
 Features:
 - Passives + Cooldowns Caching
@@ -38,7 +37,9 @@ Bugs:
 --------------------------------------------------------------------------------
 
 Later:
-- Saving Throws unit testing (not really needed until we have magic)
+- Cooldowns 2.0
+  - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
+  - Saving Throws unit testing (not really needed until we have magic)
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - Account System 2.0
   - Master account XML with characters in separate files
@@ -67,6 +68,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
 - `cooldown` command for listing cooldown time remaining
 - one-handed cooldowns
 - Refactor Mobile implementation, merge common functionality into AbstractPlayer

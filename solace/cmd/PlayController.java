@@ -8,6 +8,7 @@ import solace.util.*;
 import solace.cmd.play.*;
 import solace.cmd.cooldown.*;
 import solace.cmd.admin.*;
+import com.google.common.base.Joiner;
 
 /**
  * Main game play controller (the actual game).
@@ -129,6 +130,40 @@ public class PlayController extends AbstractStateController {
   }
 
   /**
+   * Determines if a input command from a user represents a hotbar command.
+   * @param  input [description]
+   * @return       [description]
+   */
+  public boolean isHotbarCommand(String input) {
+    return input.length() == 1 && (
+      (input.charAt(0) >= '0' && input.charAt(0) <= '9') ||
+      input.charAt(0) == '-' ||
+      input.charAt(0) == '='
+    );
+  }
+
+  /**
+   * Parses input commands while accounting for hotbar commands and macros.
+   * @param input Input to parse.
+   */
+  public void parse(String input) {
+    if (input == null || connection == null || input.length() < 1) return;
+    String[] params = input.split("\\s");
+    if (params.length < 1) return;
+
+    if (isHotbarCommand(params[0])) {
+      String command = character.getHotbarCommand(params[0]);
+      if (command != null && command.length() > 0) {
+        params[0] = command;
+      }
+      super.parse(Joiner.on(" ").join(params));
+      return;
+    }
+
+    super.parse(input);
+  }
+
+  /**
    * Adds basic gameplay commands to the controller.
    */
   protected void addCommands() {
@@ -167,6 +202,7 @@ public class PlayController extends AbstractStateController {
 
     addCommand(new Prompt(character));
     addCommand(new Cooldown(character));
+    addCommand(new Hotbar(character));
 
     Emote emote = new Emote(character);
     addCommand(emote);

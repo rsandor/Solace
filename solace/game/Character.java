@@ -43,6 +43,7 @@ public class Character extends AbstractPlayer {
   List<Skill> skills = new ArrayList<Skill>();
   Account account = null;
   String prompt = Character.DEFAULT_PROMPT;
+  Hashtable<String, String> hotbar = new Hashtable<String, String>();
 
   /**
    * Creates a new character.
@@ -516,6 +517,14 @@ public class Character extends AbstractPlayer {
     }
     b.append("</equipment>");
 
+    // Hotbar
+    b.append("<hotbar>");
+    for (String key : hotbar.keySet()) {
+      b.append(String.format(
+        "<entry key=\"%s\" command=\"%s\" />", key, hotbar.get(key)));
+    }
+    b.append("</hotbar>");
+
     b.append("</character>");
     return b.toString();
   }
@@ -608,5 +617,23 @@ public class Character extends AbstractPlayer {
       }
     }
     return maximum;
+  }
+
+  /**
+   * Retrieves a hotbar command for the given key.
+   * @param key Key for the command to get.
+   * @return The hotbar command.
+   */
+  public String getHotbarCommand(String key) {
+    return hotbar.get(key);
+  }
+
+  /**
+   * Sets a hotbar command for the given key.
+   * @param key Key for the hotbar command.
+   * @param command The command to set.
+   */
+  public void setHotbarCommand(String key, String command) {
+    hotbar.put(key, command);
   }
 }
