@@ -27,28 +27,6 @@ public class Mobile extends AbstractPlayer {
   }
 
   /**
-   * TODO Implement mobile passives.
-   * @see solace.game.Player
-   */
-  public boolean hasPassive(String name) {
-    return false;
-  }
-
-  /**
-   * TODO Implement mobile passives.
-   * @see solace.game.Player
-   */
-  public int getMaximumSkillLevelForPassive(String name) {
-    return -1;
-  }
-
-  /**
-   * TODO Implement mobile cooldowns.
-   * @see solace.game.Player
-   */
-  public int getCooldownSkillLevel(String name) { return -1; }
-
-  /**
    * @see solace.game.Player
    */
   public String getName() { return template.get("description.name"); }

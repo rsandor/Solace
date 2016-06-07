@@ -56,6 +56,29 @@ public class Character extends AbstractPlayer {
   }
 
   /**
+   * Sets the passives and cooldowns this character has based on the character's
+   * core skills, role skills, and race.
+   *
+   * - TODO Add races
+   */
+  public void setPassivesAndCooldowns() {
+    super.setPassivesAndCooldowns();
+    for (Skill skill : skills) {
+      int level = skill.getLevel();
+      for (String passive : skill.getPassives()) {
+        if (level > getPassiveLevel(passive)) {
+          setPassive(passive, level);
+        }
+      }
+      for (String cooldown : skill.getCooldowns()) {
+        if (level > getCooldownLevel(cooldown)) {
+          setCooldown(cooldown, level);
+        }
+      }
+    }
+  }
+
+  /**
    * Tallies the total modifier of the given name for the character granted by
    * their current equipment.
    * @param name Name of the modifier to tally.
@@ -567,56 +590,6 @@ public class Character extends AbstractPlayer {
    */
   public boolean hasSkill(String name) {
     return skillIds.contains(name);
-  }
-
-  /**
-   * Determines if the player has a passive of the given name.
-   * @param  name Name of the passive.
-   * @return      True if they have the passive, false otherwise.
-   */
-  public boolean hasPassive(String name) {
-    for (Skill skill : skills) {
-      if (skill.grantsPassive(name)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Gets the skill level of the skill with the maximum level that grants the
-   * given passive. This can occur if two skills both grant the same passive.
-   * @param  name Name of the passive.
-   * @return      The skill level of the skill that grants the passive or -1 if
-   *              no skill grants the passive.
-   */
-  public int getMaximumSkillLevelForPassive(String name) {
-    int maximum = -1;
-    for (Skill skill : skills) {
-      if (skill.grantsPassive(name)) {
-        int level = skill.getLevel();
-        if (level > maximum) {
-          maximum = level;
-        }
-      }
-    }
-    return maximum;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getCooldownSkillLevel(String name) {
-    int maximum = -1;
-    for (Skill skill : skills) {
-      if (skill.grantsCooldown(name)) {
-        int level = skill.getLevel();
-        if (level > maximum) {
-          maximum = level;
-        }
-      }
-    }
-    return maximum;
   }
 
   /**

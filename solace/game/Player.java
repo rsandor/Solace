@@ -319,29 +319,6 @@ public interface Player {
   public void die(Player killer);
 
   /**
-   * Determines if the player has a passive of the given name.
-   * @param name Name of the passive.
-   * @return True if they have the passive, false otherwise.
-   */
-  public boolean hasPassive(String name);
-
-  /**
-   * Gets the skill level of the skill with the maximum level that grants the
-   * given passive. This can occur if two skills both grant the same passive.
-   * @param name Name of the passive.
-   * @return The skill level of the skill that grants the passive or -1 if the
-   *   player does not possess a passive of the given name.
-   */
-  public int getMaximumSkillLevelForPassive(String name);
-
-  /**
-   * Gets the level of the highest skill which grants the given cooldown.
-   * @param  name Name of the cooldown.
-   * @return      The skill level, or -1 if the player does not have that skill.
-   */
-  public int getCooldownSkillLevel(String name);
-
-  /**
    * @return True if the player is on the global cooldown, false otherwise.
    */
   public boolean isOnGCD();
@@ -377,4 +354,36 @@ public interface Player {
    * @return The combo action (if any) for the player.
    */
   public String getComboAction();
+
+  // New Style
+
+  /**
+   * Determines if the player has a passive of the given name.
+   * @param name Name of the passive.
+   * @return True if they have the passive, false otherwise.
+   */
+  public boolean hasPassive(String name);
+
+  /**
+   * Gets the level for the named passive.
+   * @param name Name of the passive ability.
+   * @return The level of the passive ability, or -1 if the character does not
+   *   possess the given passive.
+   */
+  public int getPassiveLevel(String name);
+
+  /**
+   * Determines if a player has a given cooldown action.
+   * @param name Name of the cooldown action.
+   * @return True if the player possesses the given cooldown, false otherwise.
+   */
+  public boolean hasCooldown(String name);
+
+  /**
+   * Gets the level for a cooldown action of the given name.
+   * @param name Name of the cooldown action.
+   * @return The level of the cooldown, or -1 if the player does not possess
+   *   the named cooldown action.
+   */
+  public int getCooldownLevel(String name);
 }

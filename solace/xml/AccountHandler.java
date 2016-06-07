@@ -85,6 +85,7 @@ public class AccountHandler extends Handler {
     }
 
     if (name.equals("character")) {
+      character.setPassivesAndCooldowns();
       account.addCharacter(character);
       state = State.CHARACTERS;
       return;

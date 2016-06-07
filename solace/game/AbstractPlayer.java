@@ -50,11 +50,10 @@ public abstract class AbstractPlayer implements Player {
   String comboAction = null;
   Hashtable<String, CooldownTimer> cooldownTimers =
     new Hashtable<String, CooldownTimer>();
+  Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
+  Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
 
   // Abstract Player Methods
-  public abstract boolean hasPassive(String name);
-  public abstract int getMaximumSkillLevelForPassive(String name);
-  public abstract int getCooldownSkillLevel(String name);
   public abstract void die(Player killer);
   public abstract boolean isMobile();
   public abstract void sendMessage(String s);
@@ -69,6 +68,16 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getDamageMod();
   public abstract int getAverageDamage();
   public abstract int getNumberOfAttacks();
+
+  /**
+   * Sets the passives and cooldowns for this character. This method should be
+   * called after loading a character, on level, skill level, or when acquiring
+   * a new skill.
+   */
+  public void setPassivesAndCooldowns() {
+    passives.clear();
+    cooldowns.clear();
+  }
 
   /**
    * Gets the saving throw with the given name.
@@ -421,5 +430,53 @@ public abstract class AbstractPlayer implements Player {
    */
   public String getComboAction() {
     return comboAction == null ? "" : comboAction;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasPassive(String name) {
+    return passives.containsKey(name);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getPassiveLevel(String name) {
+    if (!hasPassive(name)) return -1;
+    return passives.get(name);
+  }
+
+  /**
+   * Sets a passive on the player for the given name at the given level.
+   * @param name Name of the passive.
+   * @param level Level of the passive.
+   */
+  protected void setPassive(String name, int level) {
+    passives.put(name, level);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasCooldown(String name) {
+    return cooldowns.containsKey(name);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getCooldownLevel(String name) {
+    if (!hasPassive(name)) return -1;
+    return passives.get(name);
+  }
+
+  /**
+   * Sets a cooldown on the player for the given name at the given level.
+   * @param name Name of the cooldown.
+   * @param level Level of the cooldown.
+   */
+  protected void setCooldown(String name, int level) {
+    cooldowns.put(name, level);
   }
 }

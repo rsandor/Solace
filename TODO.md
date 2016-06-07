@@ -1,38 +1,46 @@
 # Master TODO
 
-Next Features:
-
-
-
-Features:
-- Passives + Cooldowns Caching
+On Deck:
 - Player Races 1.0
+
+Feature: Character Creation
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
+  - Incorporate ability scores into game math for skills
 - Character Creator 2.0
-- Leveling System 1.0
-- Battle System 2.0 (incorporate skills & balance)
+
+Feature: Loot System
+- Level and power ranges for mobiles
 - Loot System 1.0
   - Grades of equipment (higher grade equals bigger bonuses)
 - Crafting System 1.0
   - Crafting classes
   - Crafting loot from mobs
+
+Feature: Leveling System
+- Leveling Design
+  - Mob kills? Power level adjustable?
+  - Quests?
+  - Skill leveling?
+
+Features:
 - Tactics System 1.0
 - Scripting engine 1.0 (embedded Scala?)
+- Battle System 2.0 (mostly skill balancing at various levels)
 - Mobiles 2.0
   - Spawn Points
   - Better Wandering
+  - Aggro mobs
 - Dungeon Instances 1.0
 - Quest System 1.0
   - Mobile, item, & room scripting
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names
-- Single Player Parties (For Dungeon Instances, requires Tactics)
+- Single Player Instance Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
-- Multiperson battles
 - Shops commands should refer to the shop owner and be more flavorful
-- Move command will fail across areas (uses area.getRoom, need global lookup)
+- Move command will fail across areas (uses `Area.getRoom`, needs global lookup)
 
 --------------------------------------------------------------------------------
 
@@ -48,6 +56,7 @@ Later:
 - Stats 2.1 (caching)
 - Decorative banners for shops, inventory, character sheet, etc.
 - Spells, Scrolls, and Spell Casting
+  - Do we even really want this given the cooldown system?
 - Game world calendar + Weather
 - Room lighting, equipable light sources, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
@@ -60,6 +69,7 @@ Later:
 --------------------------------------------------------------------------------
 
 Help Files:
+- `cooldown` and `hotbar` commands
 - expand upon battle
 - expand upon skills
 - passive enhancements (passives)
@@ -68,6 +78,7 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- Better Passives/Cooldowns Calculation & Caching
 - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
 - `cooldown` command for listing cooldown time remaining
 - one-handed cooldowns

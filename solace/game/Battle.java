@@ -127,7 +127,7 @@ public class Battle {
    * @return True if the attack is parried, false otherwise.
    */
   public static boolean parry(Player defender) {
-    int skillLevel = defender.getMaximumSkillLevelForPassive("parry");
+    int skillLevel = defender.getPassiveLevel("parry");
     if (skillLevel < 1) {
       return false;
     }

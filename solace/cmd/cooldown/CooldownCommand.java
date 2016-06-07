@@ -74,12 +74,13 @@ public abstract class CooldownCommand extends AbstractCommand {
    */
   public boolean run(Connection c, String[] params) {
     // Determine if the player even has the skill
-    int skillLevel = player.getCooldownSkillLevel(getName());
-    if (skillLevel < 1) {
+    if (!player.hasCooldown(getName())) {
       player.sendln(String.format(
         "You do not possess the %s action.", getName()));
       return false;
     }
+    
+    int skillLevel = player.getCooldownLevel(getName());
 
     // Players must always be at a ready state to use cooldowns
     if (!player.isStanding() && !player.isFighting()) {
