@@ -7,8 +7,8 @@ import java.io.*;
 import solace.util.*;
 
 /**
- * "Flurry of blows" is a cooldown action that does 150 potency damage to the
- * attacker's target.
+ * "Coup de Grace" is a cooldown action that does 1000 potency damage to a
+ * target whos health is at 30% or less.
  * @author Ryan Sandor Richards
  */
 public class CoupDeGrace extends CooldownCommand {

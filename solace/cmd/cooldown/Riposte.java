@@ -7,8 +7,9 @@ import java.io.*;
 import solace.util.*;
 
 /**
- * "Flurry of blows" is a cooldown action that does 150 potency damage to the
- * attacker's target.
+ * "Riposte" is a cooldown action that does 150 potency damage to the attacker's
+ * target. If executed immediately after a "slash" cooldown then this has a
+ * combo potency of 350.
  * @author Ryan Sandor Richards
  */
 public class Riposte extends CooldownCommand {

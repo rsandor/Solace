@@ -7,8 +7,9 @@ import java.io.*;
 import solace.util.*;
 
 /**
- * "Flurry of blows" is a cooldown action that does 150 potency damage to the
- * attacker's target.
+ * "Slash" is a cooldown action that does 150 potency damage to the attacker's
+ * target. If executed after the "flurry of blows" attack it has a combo potency
+ * of 250.
  * @author Ryan Sandor Richards
  */
 public class Slash extends CooldownCommand {
