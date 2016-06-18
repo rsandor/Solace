@@ -1,0 +1,5 @@
+{
+  "name": "dwarf",
+  "passives": ["stout-hearted"],
+  "cooldowns": ["skullknock"]
+}

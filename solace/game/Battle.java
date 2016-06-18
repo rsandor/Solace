@@ -165,13 +165,16 @@ public class Battle {
     // Determine if the attack is critical
     boolean critical = roll > attackRoll - (attackRoll * CRITICAL_CHANCE);
 
-    // Add attacker's hit modifier
-    roll += hitMod;
-
     // Apply attacker passives
     if (attacker.hasPassive("battle trance")) {
       roll = (int)((double)roll * 1.1);
     }
+    if (attacker.hasPassive("generalist")) {
+      roll = (int)((double)roll * 1.05);
+    }
+
+    // Add attacker's hit modifier
+    roll += hitMod;
 
     // Scale by the potency
     roll *= (double)potency / 100.0;

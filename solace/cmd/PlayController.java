@@ -212,6 +212,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Slash(character));
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
+    addCommand(new Survivor(character));
 
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));

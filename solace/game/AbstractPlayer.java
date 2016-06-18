@@ -2,8 +2,7 @@ package solace.game;
 
 import solace.util.Clock;
 import solace.util.Log;
-import java.util.Date;
-import java.util.Hashtable;
+import java.util.*;
 
 /**
  * Implements common functionality of the player interface shared by both
@@ -478,5 +477,12 @@ public abstract class AbstractPlayer implements Player {
    */
   protected void setCooldown(String name, int level) {
     cooldowns.put(name, level);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Collection<String> getCooldowns() {
+    return Collections.unmodifiableCollection(cooldowns.keySet());
   }
 }

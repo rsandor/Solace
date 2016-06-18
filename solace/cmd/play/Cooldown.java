@@ -17,15 +17,12 @@ public class Cooldown extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     StringBuilder buffer = new StringBuilder();
-    for (Skill skill : character.getSkills()) {
-      for (String cooldown : skill.getCooldowns()) {
-        int time = character.getCooldownDuration(cooldown);
-        if (time < 1) continue;
-        buffer.append(String.format(
-          "  [{C%3ds{x] {m%s{x\n\r", time, cooldown));
-      }
+    for (String cooldown : character.getCooldowns()) {
+      int time = character.getCooldownDuration(cooldown);
+      if (time < 1) continue;
+      buffer.append(String.format("  [{C%3ds{x] {m%s{x\n\r", time, cooldown));
     }
-
+    
     if (buffer.length() > 0) {
       character.sendln("Actions on cooldown:\n\r");
       character.sendln(buffer.toString());

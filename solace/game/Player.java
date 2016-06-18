@@ -1,5 +1,7 @@
 package solace.game;
 
+import java.util.Collection;
+
 /**
  * Behavior set for objects representing people or monsters that can inhabit
  * the game world.
@@ -355,8 +357,6 @@ public interface Player {
    */
   public String getComboAction();
 
-  // New Style
-
   /**
    * Determines if the player has a passive of the given name.
    * @param name Name of the passive.
@@ -386,4 +386,9 @@ public interface Player {
    *   the named cooldown action.
    */
   public int getCooldownLevel(String name);
+
+  /**
+   * @return A list of cooldowns for the player.
+   */
+  public Collection<String> getCooldowns();
 }

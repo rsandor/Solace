@@ -13,9 +13,11 @@ import solace.cmd.GameException;
  * Holds the state of the entire game world.
  * @author Ryan Sandor Richards (Gaius)
  */
-public class World
-{
-  static final String areaDir = "data/areas/";
+public class World {
+  /**
+   * Path to the area data directory.
+   */
+  static final String AREA_PATH = "data/areas/";
 
   static List<Connection> connections;
   static List<Connection> oogChat;
@@ -37,6 +39,7 @@ public class World
       return;
 
     Skills.initialize();
+    Races.initialize();
     loadAreas();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());
@@ -62,7 +65,7 @@ public class World
   public static synchronized void loadAreas() throws GameException {
     Hashtable<String, Area> newAreas = new Hashtable<String, Area>();
 
-    File dir = new File(areaDir);
+    File dir = new File(AREA_PATH);
     String[] names = dir.list();
 
     MobileManager.getInstance().clear();
@@ -79,7 +82,7 @@ public class World
       // Try to load all the areas...
       for (int i = 0; i < names.length; i++) {
         try {
-          String fileName = areaDir + names[i];
+          String fileName = AREA_PATH + names[i];
           Area a = GameParser.parseArea(fileName);
           newAreas.put(a.getId(), a);
 
