@@ -458,6 +458,13 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
+  public Collection<String> getPassives() {
+    return Collections.unmodifiableCollection(passives.keySet());
+  }
+
+  /**
+   * @see solace.game.Player
+   */
   public boolean hasCooldown(String name) {
     return cooldowns.containsKey(name);
   }

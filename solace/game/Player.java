@@ -373,6 +373,11 @@ public interface Player {
   public int getPassiveLevel(String name);
 
   /**
+   * @return A list of passive abilities for the player.
+   */
+  public Collection<String> getPassives();
+
+  /**
    * Determines if a player has a given cooldown action.
    * @param name Name of the cooldown action.
    * @return True if the player possesses the given cooldown, false otherwise.
