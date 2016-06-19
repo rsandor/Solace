@@ -147,10 +147,15 @@ public class PlayController extends AbstractStateController {
   }
 
   /**
-   * Parses input commands while accounting for hotbar commands and macros.
+   * Parses input commands while accounting for hotbar commands, macros, etc.
    * @param input Input to parse.
    */
   public void parse(String input) {
+    if (character.hasBuff("stun")) {
+      character.sendln("You are stunned and cannot act!");
+      return;
+    }
+
     if (input == null || connection == null || input.length() < 1) return;
     String[] params = input.split("\\s");
     if (params.length < 1) return;
@@ -218,8 +223,10 @@ public class PlayController extends AbstractStateController {
     addCommand(new Slash(character));
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
+
     addCommand(new Survivor(character));
     addCommand(new Concentrate(character));
+    addCommand(new Skullknock(character));
 
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));

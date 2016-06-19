@@ -321,7 +321,10 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
-  public int getVitality() { return getAbility("vitality"); }
+  public int getVitality() {
+    int vit = getAbility("vitality");
+    return hasPassive("stout-hearted") ? (int)(1.1 * vit) : vit;
+  }
 
   /**
    * @see solace.game.Player

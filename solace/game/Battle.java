@@ -245,7 +245,8 @@ public class Battle {
       Player target = targets.get(attacker);
       if (target == null) continue;
 
-      int numberOfAttacks = attacker.getNumberOfAttacks();
+      int numberOfAttacks = attacker.hasBuff("stun") ?
+        0 : attacker.getNumberOfAttacks();
       int damage = 0;
       int hits = 0;
 
