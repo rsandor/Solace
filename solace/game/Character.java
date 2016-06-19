@@ -644,5 +644,8 @@ public class Character extends AbstractPlayer {
    * Sets the race for the character.
    * @param r Race to set.
    */
-  public void setRace(Race r) { race = r; }
+  public void setRace(Race r) {
+    race = r;
+    setPassivesAndCooldowns();
+  }
 }

@@ -48,6 +48,14 @@ public class Set extends PlayCommand {
       } else if (param.equals("hp")) {
         int hp = Integer.parseInt(value);
         p.setHp(hp);
+      } else if (param.equals("race")) {
+        if (!Races.has(value)) {
+          throw new Exception("Invalid player race: " + value);
+        }
+        if (p.isMobile()) {
+          throw new Exception("Mobiles cannot have races.");
+        }
+        ((solace.game.Character)p).setRace(Races.get(value));
       } else {
         throw new Exception("Invalid parameter: " + param);
       }
