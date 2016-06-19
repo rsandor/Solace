@@ -73,12 +73,16 @@ public class RecoveryManager {
 
         int maxMp = p.getMaxMp();
         int mp = p.getMp();
-        int recoveredMp = Math.max(1, (int)(maxMp * recoveryMod));
+        int recoveredMp = (p.hasPassive("meditation")) ?
+          Math.max(1, (int)(maxMp * recoveryMod * 1.25)) :
+          Math.max(1, (int)(maxMp * recoveryMod));
         p.setMp(Math.min(maxMp, mp + recoveredMp));
 
         int maxSp = p.getMaxSp();
         int sp = p.getSp();
-        int recoveredSp = Math.max(1, (int)(maxSp * recoveryMod));
+        int recoveredSp = (p.hasPassive("meditation")) ?
+          Math.max(1, (int)(maxSp * recoveryMod * 1.25)) :
+          Math.max(1, (int)(maxSp * recoveryMod));
         p.setSp(Math.min(maxSp, sp + recoveredSp));
       }
     }

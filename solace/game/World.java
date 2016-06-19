@@ -40,6 +40,8 @@ public class World {
 
     Skills.initialize();
     Races.initialize();
+    Buffs.initialize();
+    
     loadAreas();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());

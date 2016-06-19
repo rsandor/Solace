@@ -396,4 +396,46 @@ public interface Player {
    * @return A list of cooldowns for the player.
    */
   public Collection<String> getCooldowns();
+
+  // ---
+
+  /**
+   * Determines if the player is currently affected by a buff of the given name.
+   * @param name Name of the buff.
+   * @return True if the player is affected, false otherwise.
+   */
+  public boolean hasBuff(String name);
+
+  /**
+   * Gets the buff for the player of the given name.
+   * @param name Name of the buff to get.
+   * @return The buff of the given name, or null if no such buff is affecting
+   *   the player.
+   */
+  public Buff getBuff(String name);
+
+  /**
+   * Applies the given buff to the player. This will reapply the buff if it is
+   * already present.
+   * @param b The buff to apply.
+   */
+  public void applyBuff(Buff b);
+
+  /**
+   * Applies a new buff of the given name to the player.
+   * @param name Name of the buff to apply.
+   */
+  public void applyBuff(String name);
+
+  /**
+   * Remove a buff of the given name from the player. Has no effect if the
+   * player is not affected by a buff of the given name.
+   * @param name Name of the buff to remove.
+   */
+  public void removeBuff(String name);
+
+  /**
+   * @return A collection of all buffs currently affecting the player.
+   */
+  public Collection<Buff> getBuffs();
 }

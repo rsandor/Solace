@@ -51,6 +51,7 @@ public class Character extends AbstractPlayer {
    * @param n Name for the character;
    */
   public Character(String n) {
+    super();
     name = n;
     level = 1;
     inventory = Collections.synchronizedList(new ArrayList<Item>());

@@ -1,0 +1,6 @@
+{
+  "name": "concentrate",
+  "description": "Doubles potency for all attacks and actions.",
+  "debuff": false,
+  "duration": 10
+}

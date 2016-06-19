@@ -220,6 +220,10 @@ public class Battle {
       damage = damage * 1.1;
     }
 
+    if (attacker.hasBuff("concentrate")) {
+      potency *= 2.0;
+    }
+
     // Apply potency
     damage *= (double)potency / 100.0;
 

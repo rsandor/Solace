@@ -3,6 +3,11 @@ package solace.game;
 import org.json.*;
 import java.util.*;
 
+/**
+ * Represents an in-game race. Races define a way beyond that of skills to
+ * assign passive abilities and cooldown actions to players. They also provide
+ * RP value by helping the player to imagine what they may look or act like.
+ */
 public class Race {
   String name;
   Collection<String> passives;

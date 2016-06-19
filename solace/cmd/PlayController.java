@@ -27,6 +27,10 @@ public class PlayController extends AbstractStateController {
     "attack", "kill", "fight"
   };
 
+  static final String[] buffsAliases = {
+    "buffs", "affects"
+  };
+
   /**
    * Generates the dynamic custom prompt for the player.
    * NOTE This may not belong here, factor out?
@@ -181,6 +185,9 @@ public class PlayController extends AbstractStateController {
     addCommand(new Worth(character));
     addCommand(new Inventory(character));
     addCommand(new ListSkills(character));
+    addCommand(buffsAliases, new solace.cmd.play.Buffs(character));
+    addCommand(new Cooldown(character));
+    addCommand(new Passive(character));
 
     addCommand(new Wear(character));
     addCommand(new Equipment(character));
@@ -201,9 +208,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Wake(character));
 
     addCommand(new Prompt(character));
-    addCommand(new Cooldown(character));
     addCommand(new Hotbar(character));
-    addCommand(new Passive(character));
 
     Emote emote = new Emote(character);
     addCommand(emote);
@@ -214,6 +219,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
     addCommand(new Survivor(character));
+    addCommand(new Concentrate(character));
 
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));

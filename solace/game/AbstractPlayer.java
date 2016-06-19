@@ -2,6 +2,7 @@ package solace.game;
 
 import solace.util.Clock;
 import solace.util.Log;
+import solace.util.Buffs;
 import java.util.*;
 
 /**
@@ -51,6 +52,7 @@ public abstract class AbstractPlayer implements Player {
     new Hashtable<String, CooldownTimer>();
   Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
   Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
+  Hashtable<String, Buff> buffs = new Hashtable<String, Buff>();
 
   // Abstract Player Methods
   public abstract void die(Player killer);
@@ -491,5 +493,79 @@ public abstract class AbstractPlayer implements Player {
    */
   public Collection<String> getCooldowns() {
     return Collections.unmodifiableCollection(cooldowns.keySet());
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasBuff(String name) {
+    if (!buffs.containsKey(name)) {
+      return false;
+    }
+    Buff b = buffs.get(name);
+    if (b.hasExpired()) {
+      removeBuff(b.getName());
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Buff getBuff(String name) {
+    if (!hasBuff(name)) {
+      return null;
+    }
+    Buff b = getBuff(name);
+    if (b.hasExpired()) {
+      removeBuff(b.getName());
+      return null;
+    }
+    return b;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void applyBuff(Buff b) {
+    if (hasBuff(b.getName())) {
+      removeBuff(b.getName());
+    }
+    buffs.put(b.getName(), b);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void applyBuff(String name) {
+    if (hasBuff(name)) {
+      removeBuff(name);
+    }
+    buffs.put(name, Buffs.create(name));
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void removeBuff(String name) {
+    buffs.remove(name);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Collection<Buff> getBuffs() {
+    synchronized (buffs) {
+      List<Buff> remove = new LinkedList<Buff>();
+      for (Buff b : buffs.values()) {
+        if (!b.hasExpired()) continue;
+        remove.add(b);
+      }
+      for (Buff b : remove) {
+        removeBuff(b.getName());
+      }
+      return buffs.values();
+    }
   }
 }
