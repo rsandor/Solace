@@ -1,7 +1,19 @@
 # Master TODO
 
 On Deck:
+- Spells and casting
+- Skill: evocation
+
+On Hold:
 - Player Races 1.0
+  - [x] Human
+  - [x] Elf
+  - [x] Dwarf
+  - [ ] Gnome
+  - [ ] Halfling
+
+Fixes:
+- Floating point everything (ints ain't cutting it for % based costs)
 
 Feature: Character Creation
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
@@ -55,8 +67,6 @@ Later:
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
 - Decorative banners for shops, inventory, character sheet, etc.
-- Spells, Scrolls, and Spell Casting
-  - Do we even really want this given the cooldown system?
 - Game world calendar + Weather
 - Room lighting, equipable light sources, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
@@ -74,10 +84,12 @@ Help Files:
 - expand upon skills
 - passive enhancements (passives)
 - cooldown actions (cooldowns)
+- `spells`
 
 --------------------------------------------------------------------------------
 
 Done:
+- Resource costs for cooldown actions
 - Better Passives/Cooldowns Calculation & Caching
 - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
 - `cooldown` command for listing cooldown time remaining

@@ -20,6 +20,7 @@ public class Riposte extends CooldownCommand {
     super("riposte", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    addResourceCost(new SpCost(6));
   }
 
   public boolean execute(int level, Player target) {

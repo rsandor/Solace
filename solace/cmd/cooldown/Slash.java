@@ -20,6 +20,7 @@ public class Slash extends CooldownCommand {
     super("slash", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    addResourceCost(new SpCost(4));
   }
 
   public boolean execute(int level, Player target) {

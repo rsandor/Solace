@@ -9,16 +9,21 @@ import solace.cmd.AbstractCommand;
 
 /**
  * Base class for all cool down commands. Cool down commands are ones which
- * become available for a certain duration after their use.
+ * become unavailable for a certain duration after their use.
  * @author Ryan Sandor Richards
  */
 public abstract class CooldownCommand extends AbstractCommand {
+  /**
+   * Indicates that the command uses the global cool down.
+   */
   public static final int GLOBAL_COOLDOWN = -1;
 
   Player player;
   int cooldownDuration;
   boolean initiatesCombat;
   boolean onCooldown;
+  int castTime;
+  List<ResourceCost> resourceCosts = new LinkedList<ResourceCost>();
 
   /**
    * Creates a new cool down command with the given name and duration for the
@@ -30,6 +35,7 @@ public abstract class CooldownCommand extends AbstractCommand {
     super(name);
     player = p;
     onCooldown = false;
+    castTime = 0;
   }
 
   /**
@@ -70,6 +76,25 @@ public abstract class CooldownCommand extends AbstractCommand {
   }
 
   /**
+   * @return The cast time for the cooldown.
+   */
+  public int getCastTime() { return castTime; }
+
+  /**
+   * Sets the cast time for the cooldown.
+   * @param ct Casting time in seconds.
+   */
+  public void setCastTime(int ct) { castTime = ct; }
+
+  /**
+   * Adds a resource cost to this cooldown action.
+   * @param c The cost to add.
+   */
+  public void addResourceCost(ResourceCost c) {
+    resourceCosts.add(c);
+  }
+
+  /**
    * @see solace.cmd.AbstractCommand
    */
   public boolean run(Connection c, String[] params) {
@@ -79,7 +104,7 @@ public abstract class CooldownCommand extends AbstractCommand {
         "You do not possess the %s action.", getName()));
       return false;
     }
-    
+
     int skillLevel = player.getCooldownLevel(getName());
 
     // Players must always be at a ready state to use cooldowns
@@ -123,6 +148,19 @@ public abstract class CooldownCommand extends AbstractCommand {
     // Schedule global cooldowns
     if (cooldownDuration == GLOBAL_COOLDOWN) {
       player.setOnGCD();
+    }
+
+    // Check to ensure all the resource costs can be met
+    for (ResourceCost cost : resourceCosts) {
+      if (!cost.canWithdraw(player)) {
+        player.sendln(cost.getInsufficentResourceMessage());
+        return false;
+      }
+    }
+
+    // Pay resource costs
+    for (ResourceCost cost : resourceCosts) {
+      cost.withdraw(player);
     }
 
     // Execute the action and get the results

@@ -18,6 +18,7 @@ public class CoupDeGrace extends CooldownCommand {
     super("coup", p);
     setCooldownDuration(120);
     setInitiatesCombat(true);
+    addResourceCost(new SpCost(10));
   }
 
   public boolean execute(int level, Player target) {

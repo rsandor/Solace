@@ -18,6 +18,7 @@ public class Flurry extends CooldownCommand {
     super("flurry", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    addResourceCost(new SpCost(2));
   }
 
   public boolean execute(int level, Player target) {
