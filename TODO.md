@@ -14,7 +14,8 @@ Current Feature: Player Character Races
 - Race Help Files
 
 Feature: Character Creation
-- Stats 3.0 (Floating point based)
+- Stats 3.0
+  - Floating point based
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
   - Incorporate ability scores into game math for skills
 - Character Creator 2.0
@@ -41,6 +42,8 @@ Features:
 - Scripting engine 1.0 (embedded Scala?)
 - Battle System 2.0 (mostly skill balancing and redistribution)
   - better attack roll potency scaling (currently too powerful)
+  - magic attacks currently based on weapon, should be different
+  - better use of skill level to help "to hit" and "damage" rolls
 - Shops commands should refer to the shop owner and be more flavorful
 - Mobiles 2.0
   - Spawn Points

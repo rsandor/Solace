@@ -239,6 +239,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Survivor(character));
     addCommand(new Concentrate(character));
     addCommand(new Skullknock(character));
+    addCommand(new Aetherflow(character));
 
     // Admin Commands
     if (character.getAccount().isAdmin()) {

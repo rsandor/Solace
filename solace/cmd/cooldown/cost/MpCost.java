@@ -36,7 +36,11 @@ public class MpCost extends AbstractResourceCost {
    */
   public void withdraw(Player p) {
     if (!canWithdraw(p)) return;
-    p.setMp(getPlayerResource(p) - getCost(p));
+    int cost = getCost(p);
+    if (p.hasPassive("metamagical")) {
+      cost = (int)(0.9 * cost);
+    }
+    p.setMp(getPlayerResource(p) - cost);
   }
 
   /**
