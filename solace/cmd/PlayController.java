@@ -220,21 +220,27 @@ public class PlayController extends AbstractStateController {
     addCommand(new Prompt(character));
     addCommand(new Hotbar(character));
 
+    // Emotes
     Emote emote = new Emote(character);
     addCommand(emote);
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
 
+    // Skill: One-handed
     addCommand(new Flurry(character));
     addCommand(new Slash(character));
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
 
+    // Skill: Evocation
     addCommand(new Icespike(character));
+    addCommand(new Flamestrike(character));
 
+    // Racial Skills
     addCommand(new Survivor(character));
     addCommand(new Concentrate(character));
     addCommand(new Skullknock(character));
 
+    // Admin Commands
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));
       addCommand(new solace.cmd.admin.Set(character));
