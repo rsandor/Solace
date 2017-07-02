@@ -134,7 +134,7 @@ public class Character extends AbstractPlayer {
    * @return The saving throw.
    * @see solace.game.AbstractPlayer
    */
-  protected int getSavingThrow(String name) {
+  public int getSavingThrow(String name) {
     return super.getSavingThrow(name) + getModFromEquipment(name);
   }
 
@@ -525,8 +525,13 @@ public class Character extends AbstractPlayer {
     ));
 
     b.append(String.format(
-      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\"",
+      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\" ",
       majorStat, minorStat, state.toString(), prompt
+    ));
+
+    b.append(String.format(
+      "immortal=\"%s\"",
+      isImmortal() ? "true" : "false"
     ));
 
     b.append(">");

@@ -1,21 +1,20 @@
 # Master TODO
 
-On Deck:
-- Spells and casting
+Current Feature: Player Character Races
 - Skill: evocation
-
-On Hold:
+  - [x] Basic Spellcasting attacks (icespike)
+  - [ ] Spellcasting with cast times
+  - [ ] Saving Throws unit testing
 - Player Races 1.0
   - [x] Human
   - [x] Elf
   - [x] Dwarf
   - [ ] Gnome
   - [ ] Halfling
-
-Fixes:
-- Floating point everything (ints ain't cutting it for % based costs)
+- Race Help Files
 
 Feature: Character Creation
+- Stats 3.0 (Floating point based)
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
   - Incorporate ability scores into game math for skills
 - Character Creator 2.0
@@ -35,9 +34,14 @@ Feature: Leveling System
   - Skill leveling?
 
 Features:
+- Random dreams while sleeping (fun and refreshes prompt)
+- Better `skill` command formatting (currently very hard to read)
+- Interrupt casting (performing certain actions interrupts the spell, etc.)
 - Tactics System 1.0
 - Scripting engine 1.0 (embedded Scala?)
-- Battle System 2.0 (mostly skill balancing at various levels)
+- Battle System 2.0 (mostly skill balancing and redistribution)
+  - better attack roll potency scaling (currently too powerful)
+- Shops commands should refer to the shop owner and be more flavorful
 - Mobiles 2.0
   - Spawn Points
   - Better Wandering
@@ -51,7 +55,7 @@ Features:
 - Single Player Instance Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
-- Shops commands should refer to the shop owner and be more flavorful
+- Shutdown command sometimes hangs when shutting down subsystems, investigate
 - Move command will fail across areas (uses `Area.getRoom`, needs global lookup)
 
 --------------------------------------------------------------------------------
@@ -59,7 +63,6 @@ Bugs:
 Later:
 - Cooldowns 2.0
   - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-  - Saving Throws unit testing (not really needed until we have magic)
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - Account System 2.0
   - Master account XML with characters in separate files
@@ -74,7 +77,7 @@ Later:
 - Item weight & Carrying Capacity
 - Global communication channels
 - Player-to-player auction house
-- Use a connection proxy so the game can be fully recompiled and reloaded
+- Connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------
 

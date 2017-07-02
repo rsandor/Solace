@@ -53,6 +53,8 @@ public abstract class AbstractPlayer implements Player {
   Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
   Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
   Hashtable<String, Buff> buffs = new Hashtable<String, Buff>();
+  boolean casting = false;
+  boolean immortal = false;
 
   // Abstract Player Methods
   public abstract void die(Player killer);
@@ -81,12 +83,9 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * Gets the saving throw with the given name.
-   * @param name Name of the saving throw.
-   * @return The saving throw.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
-  protected int getSavingThrow(String name) {
+  public int getSavingThrow(String name) {
     try {
       return Stats.getSavingThrow(this, name);
     } catch (InvalidSavingThrowException e) {
@@ -94,6 +93,20 @@ public abstract class AbstractPlayer implements Player {
         "Invalid saving throw name encountered: %s", name));
     }
     return 0;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getMagicRoll(String saveName) {
+    try {
+      return Stats.getMagicRoll(this, saveName);
+    } catch (InvalidSavingThrowException e) {
+      Log.error(String.format(
+        "Magic roll attempted with invalid saving throw: %s",
+        saveName));
+      return 0;
+    }
   }
 
   /**
@@ -478,8 +491,8 @@ public abstract class AbstractPlayer implements Player {
    * @see solace.game.Player
    */
   public int getCooldownLevel(String name) {
-    if (!hasPassive(name)) return -1;
-    return passives.get(name);
+    if (!hasCooldown(name)) return -1;
+    return cooldowns.get(name);
   }
 
   /**
@@ -570,5 +583,65 @@ public abstract class AbstractPlayer implements Player {
       }
       return buffs.values();
     }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isImmortal() {
+    return immortal;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void toggleImmortal(Player setter) {
+    setImmortal(!immortal, setter);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setImmortal(boolean i) {
+    immortal = i;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setImmortal(boolean i, Player setter) {
+    immortal = i;
+    if (immortal) {
+      Log.warn(String.format(
+        "Player '%s' has been set as immortal by player '%s'",
+        getName(), setter.getName()));
+      sendMessage(String.format(
+        "You have been granted immortality! You are now impervious to damage!"
+        ));
+      setter.sendMessage(String.format("%s is now immortal.", getName()));
+    } else {
+      Log.warn(String.format(
+        "Player '%s' has been has been set as NOT immortal by player '%s'",
+        getName(), setter.getName()));
+      sendMessage(String.format(
+        "You are no longer immortal! Damage now applies as normal"
+        ));
+      setter.sendMessage(String.format("%s is no longer immortal.", getName()));
+    }
+  }
+
+  /**
+   * @return True if the player is currently casting a spell, false otherwise.
+   */
+  public boolean isCasting() {
+    return casting;
+  }
+
+  /**
+   * Sets whether or not the player is casting a spell.
+   * @param c True to set the player as casting, false to set as not casting.
+   */
+  public void setCasting(boolean c) {
+    casting = c;
   }
 }

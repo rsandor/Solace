@@ -21,33 +21,10 @@ public class Skullknock extends CooldownCommand {
   }
 
   public boolean execute(int level, Player target) {
-    if (!player.isFighting() && target == null) {
-      player.sendln("Who's skull would you like to knock?");
-      return false;
+    boolean isHit = executePhysicalAttack(target, POTENCY);
+    if (isHit) {
+      target.applyBuff(Buffs.create("stun", 4));
     }
-
-    if (player.isFighting() && target == null) {
-      target = BattleManager.getBattleFor(player).getTargetFor(player);
-    }
-
-    AttackResult result = Battle.rollToHit(player, target, POTENCY);
-    if (result == AttackResult.MISS) {
-      player.sendMessage("Your {mskullknock{x misses!");
-      return false;
-    }
-
-    boolean critical = (result == AttackResult.CRITICAL);
-    int damage = Battle.rollDamage(player, target, critical, POTENCY);
-    target.applyDamage(damage);
-    target.applyBuff(Buffs.create("stun", 4));
-
-    player.sendln(String.format(
-      "[{g%d{x] Your {mskullknock{x hits %s!",
-      damage, target.getName()));
-    target.sendln(String.format(
-      "<{r%d{x> %s hits you with a {mskullknock{x!",
-      damage, player.getName()));
-
-    return true;
+    return isHit;
   }
 }

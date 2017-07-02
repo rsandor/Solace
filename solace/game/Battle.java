@@ -144,6 +144,32 @@ public class Battle {
   }
 
   /**
+   * Applies global passive modifiers to an attack roll.
+   * @param roll The attack roll to scale.
+   * @return The resulting roll after passive have been applied.
+   */
+  private static double applyAttackerPassivesToRoll(Player attacker, double roll) {
+    if (attacker.hasPassive("battle trance")) {
+      roll = roll * 1.1;
+    }
+    if (attacker.hasPassive("generalist")) {
+      roll = roll * 1.05;
+    }
+    return roll;
+  }
+
+  /**
+   * Scales the attack roll by the given potency.
+   * @param roll The attack roll to scale.
+   * @param potency Potency by which to scale the roll.
+   * @return The scaled attack roll.
+   */
+  private static double scaleAttackRollByPotency(int potency, double roll) {
+    // TODO This is too poweful in some cases (coup de grace give 10x)
+    return roll * (double)potency / 100.0;
+  }
+
+  /**
    * Performs a roll to see if an attacker hits a defender with a basic attack.
    * @param attacker The attacking player.
    * @param defender The defending player.
@@ -166,18 +192,13 @@ public class Battle {
     boolean critical = roll > attackRoll - (attackRoll * CRITICAL_CHANCE);
 
     // Apply attacker passives
-    if (attacker.hasPassive("battle trance")) {
-      roll = (int)((double)roll * 1.1);
-    }
-    if (attacker.hasPassive("generalist")) {
-      roll = (int)((double)roll * 1.05);
-    }
+    roll = applyAttackerPassivesToRoll(attacker, roll);
 
     // Add attacker's hit modifier
     roll += hitMod;
 
     // Scale by the potency
-    roll *= (double)potency / 100.0;
+    roll = scaleAttackRollByPotency(potency, roll);
 
     // Apply defender passives
     boolean parried = Battle.parry(defender);
@@ -187,6 +208,41 @@ public class Battle {
       if (critical) return AttackResult.CRITICAL;
       if (roll > ac) return AttackResult.HIT;
     }
+    return AttackResult.MISS;
+  }
+
+  /**
+   * Performs a roll to see if an attacker successfully casts a spell against
+   * a defender.
+   * @param attacker The attacking player.
+   * @param defender The defending player.
+   * @param potency Potency of the attack (scales the attacker roll).
+   * @param savingThrow Name of the saving throw to use for the defender.
+   */
+  public static AttackResult rollToCast(
+    Player attacker,
+    Player defender,
+    int potency,
+    String savingThrow
+  ) {
+    int save = defender.getSavingThrow(savingThrow);
+    int magicRoll = attacker.getMagicRoll(savingThrow);
+
+    // Make the roll
+    double roll = magicRoll * Roll.uniform() + 1.0;
+
+    // Determine if the attack is critical
+    boolean critical = roll > magicRoll - (magicRoll * CRITICAL_CHANCE);
+
+    // Apply attacker passives
+    roll = applyAttackerPassivesToRoll(attacker, roll);
+
+    // Apply defender passives
+    // TODO Currently none, but counter magic would be cool as hell
+
+    // Calculate the result
+    if (critical) return AttackResult.CRITICAL;
+    if (roll > save) return AttackResult.HIT;
     return AttackResult.MISS;
   }
 
@@ -211,6 +267,10 @@ public class Battle {
     boolean crit,
     int potency
   ) {
+    if (defender.isImmortal()) {
+      return 0;
+    }
+
     int averageDamage = attacker.getAverageDamage();
     int damageMod = attacker.getDamageMod();
     double damage = (double)Roll.normal(averageDamage) + damageMod;

@@ -1,0 +1,15 @@
+{
+  "id": "evocation",
+  "name": "Evocation",
+  "passives": [],
+  "cooldowns": [
+    { "level": 5, "name": "icespike"},
+    { "level": 15, "name": "flamestrike"},
+    { "level": 25, "name": "shock"},
+    { "level": 35, "name": "splash"},
+    { "level": 55, "name": "avalanche"},
+    { "level": 65, "name": "fireball"},
+    { "level": 75, "name": "lightning"},
+    { "level": 85, "name": "tsunami"}
+  ]
+}

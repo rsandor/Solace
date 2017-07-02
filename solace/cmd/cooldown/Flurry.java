@@ -16,38 +16,13 @@ public class Flurry extends CooldownCommand {
 
   public Flurry(Player p) {
     super("flurry", p);
+    setDisplayName("flurry of blows");
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
     addResourceCost(new SpCost(2));
   }
 
   public boolean execute(int level, Player target) {
-    if (!player.isFighting() && target == null) {
-      player.sendln("Who would you like to attack with a flurry of blows?");
-      return false;
-    }
-
-    if (player.isFighting() && target == null) {
-      target = BattleManager.getBattleFor(player).getTargetFor(player);
-    }
-
-    AttackResult result = Battle.rollToHit(player, target, POTENCY);
-    if (result == AttackResult.MISS) {
-      player.sendMessage("Your {mflurry of blows{x misses!");
-      return false;
-    }
-
-    boolean critical = result == AttackResult.CRITICAL;
-    int damage = Battle.rollDamage(player, target, critical, POTENCY);
-    target.applyDamage(damage);
-
-    player.sendln(String.format(
-      "[{g%d{x] Your {mflurry of blows{x hits %s!",
-      damage, target.getName()));
-    target.sendln(String.format(
-      "<{r%d{x> %s hits you with a {mflurry of blows{x!",
-      damage, player.getName()));
-
-    return true;
+    return executePhysicalAttack(target, POTENCY);
   }
 }

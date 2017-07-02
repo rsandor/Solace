@@ -70,10 +70,10 @@ public abstract class AbstractResourceCost implements ResourceCost {
   /**
    * @see solace.cmd.cooldown.ResourceCost
    */
-  // public abstract void withdraw(Player p);
+  public abstract void withdraw(Player p);
 
   /**
    * @see solace.cmd.cooldown.ResourceCost
    */
-  // public abstract String getInsufficentResourceMessage();
+  public abstract String getInsufficentResourceMessage();
 }

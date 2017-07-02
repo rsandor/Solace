@@ -156,6 +156,11 @@ public class PlayController extends AbstractStateController {
       return;
     }
 
+    if (character.isCasting()) {
+      character.sendln("You are focusing on casting and cannot act further!");
+      return;
+    }
+
     if (input == null || connection == null || input.length() < 1) return;
     String[] params = input.split("\\s");
     if (params.length < 1) return;
@@ -223,6 +228,8 @@ public class PlayController extends AbstractStateController {
     addCommand(new Slash(character));
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
+
+    addCommand(new Icespike(character));
 
     addCommand(new Survivor(character));
     addCommand(new Concentrate(character));

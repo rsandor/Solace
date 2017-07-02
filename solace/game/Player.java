@@ -243,6 +243,21 @@ public interface Player {
   public int getMaxSp();
 
   /**
+   * Gets the saving throw with the given name.
+   * @param name Name of the saving throw.
+   * @return The saving throw.
+   * @see solace.game.Stats
+   */
+  public int getSavingThrow(String name);
+
+  /**
+   * Gets the magic roll for the playe for the given save.
+   * @param name Name of the saving throw for which to make the roll.
+   * @return The magic roll.
+   */
+  public int getMagicRoll(String name);
+
+  /**
    * @return The character's will saving throw.
    */
   public int getWillSave();
@@ -438,4 +453,39 @@ public interface Player {
    * @return A collection of all buffs currently affecting the player.
    */
   public Collection<Buff> getBuffs();
+
+  /**
+   * @return True if the player is currently casting a spell, false otherwise.
+   */
+  public boolean isCasting();
+
+  /**
+   * Sets whether or not the player is casting a spell.
+   * @param c True to set the player as casting, false to set as not casting.
+   */
+  public void setCasting(boolean c);
+
+  /**
+   * @return `true` if the player is flagged as immortal, `false` otherwise.
+   */
+  public boolean isImmortal();
+
+  /**
+   * Toggles the player between being flagged as immortal and not.
+   * @param setter Player who is initiated the change of immortal status.
+   */
+  public void toggleImmortal(Player setter);
+
+  /**
+   * Sets whether or not the player is flagged as immortal.
+   * @param i `true` to flag as immortal, `false` otherwise.
+   */
+  public void setImmortal(boolean i);
+
+  /**
+   * Sets whether or not the player is flagged as immortal.
+   * @param i `true` to flag as immortal, `false` otherwise.
+   * @param setter Player who is initiated the change of immortal status.
+   */
+  public void setImmortal(boolean i, Player setter);
 }

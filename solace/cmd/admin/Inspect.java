@@ -22,7 +22,7 @@ public class Inspect extends PlayCommand {
 
   public boolean run(Connection c, String []params) {
     solace.game.Character character = getCharacter();
-    
+
     if (!character.getAccount().isAdmin()) {
       c.sendln("You are unable to perform this command.");
       Log.error("Admin level play command executed by a normal account.");
@@ -127,19 +127,37 @@ public class Inspect extends PlayCommand {
     StringBuffer buffer = new StringBuffer();
     buffer.append(Strings.RULE);
 
-    buffer.append(String.format("| {cName:{x   %-68s |\n\r", player.getName()));
-    buffer.append(String.format(
-      "| {cLevel:{x  %-68s |\n\r", player.getLevel()));
     if (player.isMobile()) {
-      buffer.append(String.format(
-        "| {cPower:{x  %-68s |\n\r", mobile.getPower()));
+      buffer.append(String.format("| {cName:{x   %-72s |\n\r",
+        player.getName() + " {y(mobile){x"));
+    } else {
+      buffer.append(String.format("| {cName:{x   %-68s |\n\r",
+        player.getName()));
     }
     buffer.append(String.format(
       "| {cState:{x  %-68s |\n\r", player.getPlayState().toString()));
     buffer.append(String.format(
       "| {cRoom:{x   %-68s |\n\r", player.getRoom().getTitle()));
+
+    buffer.append(Strings.RULE);
+
+    if (player.isMobile()) {
+      buffer.append(String.format(
+        "| {cLevel:{x %-29d | {cPower:{x %-30d |\n\r",
+        player.getLevel(), mobile.getPower()));
+    } else {
+      buffer.append(String.format(
+        "| {cLevel:{x  %-68s |\n\r", player.getLevel()));
+    }
+
+    buffer.append(Strings.RULE);
+
     buffer.append(String.format(
-      "| {cMobile:{x %-68s |\n\r", player.isMobile() ? "yes" : "no"));
+      "| {cStrength:{x %-26s | {cVitality:{x %-27s |\n\r",
+      player.getStrength(), player.getVitality()));
+    buffer.append(String.format(
+      "| {cMagic:{x    %-26s | {cSpeed:{x    %-27s |\n\r",
+      player.getMagic(), player.getSpeed()));
 
     buffer.append(Strings.RULE);
 
@@ -160,6 +178,19 @@ public class Inspect extends PlayCommand {
       "| {cNum Attacks:{x %-63s |\n\r", player.getNumberOfAttacks()));
 
     buffer.append(Strings.RULE);
+
+    buffer.append(String.format(
+      "| {cWill Save:{x     %-22s | {cReflex Save:{x %-23s |\n\r",
+      player.getWillSave(), player.getReflexSave()));
+    buffer.append(String.format(
+      "| {cResolve Save:{x  %-22s | {cVigor Save:{x  %-23s |\n\r",
+      player.getResolveSave(), player.getVigorSave()));
+    buffer.append(String.format(
+      "| {cPrudence Save:{x %-22s | {cGuile Save:{x  %-23s |\n\r",
+      player.getPrudenceSave(), player.getGuileSave()));
+
+    buffer.append(Strings.RULE);
+
     return buffer.toString();
   }
 }

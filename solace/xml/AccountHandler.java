@@ -229,6 +229,10 @@ public class AccountHandler extends Handler {
     }
     character.setRace(Races.get(raceName));
 
+    String immortal = attrs.getValue("immortal");
+    if (immortal != null && immortal.equals("true")) {
+      character.setImmortal(true);
+    }
     return State.CHARACTER;
   }
 
