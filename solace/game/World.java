@@ -48,6 +48,7 @@ public class World
     accountsToConnections = new Hashtable<Account, Connection>();
 
     BattleManager.start();
+    RecoveryManager.start();
 
     Log.info("Game world loaded");
 
@@ -105,6 +106,15 @@ public class World
 
     areas = newAreas;
     MobileManager.getInstance().instantiate();
+
+    for (String name : areas.keySet()) {
+      Area a = areas.get(name);
+      for (Room r : a.getRooms()) {
+        if (r.hasShop()) {
+          r.getShop().initialize();
+        }
+      }
+    }
   }
 
   /**

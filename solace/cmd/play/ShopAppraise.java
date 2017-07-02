@@ -22,7 +22,7 @@ public class ShopAppraise extends ShopCommand {
     Shop shop,
     Room room
   ) {
-    if (character.getPlayState() == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You cannot have items appraised while fighting!");
       return false;
     }
@@ -33,7 +33,7 @@ public class ShopAppraise extends ShopCommand {
     }
 
     String name = params[1];
-    Item item = character.getItem(name);
+    Item item = character.findItem(name);
 
     if (item == null) {
       character.wrapln(String.format(

@@ -19,8 +19,18 @@ public class Attack extends PlayCommand {
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
 
-    if (character.getPlayState() == PlayState.FIGHTING) {
+    if (character.isFighting()) {
       character.sendln("You are already in battle!");
+      return false;
+    }
+
+    if (character.isRestingOrSitting()) {
+      character.sendln("You cannot initiate battle unless standing and alert.");
+      return false;
+    }
+
+    if (character.isSleeping()) {
+      character.sendln("You dream of attacking, as you are asleep.");
       return false;
     }
 
@@ -30,7 +40,7 @@ public class Attack extends PlayCommand {
     }
 
     String name = params[1];
-    Player target = room.findCharacter(name);
+    Player target = room.findPlayer(name);
 
     if (target == null) {
       character.sendln(String.format("You do not see %s here.", name));
@@ -42,12 +52,18 @@ public class Attack extends PlayCommand {
       return false;
     }
 
-    // TODO: Unattackable states
-    // If M is static / protected from battle:
-    //   return "You cannot attack ${M.name}"
+    if (target.isDead()) {
+      character.sendln("You cannot attack a target that is already dead!");
+      return false;
+    }
+
+    if (((Mobile)target).isProtected()) {
+      character.sendln("You cannot attack " + target.getName() + ".");
+      return false;
+    }
 
     // TODO going to have to modify this when player groups come along
-    if (target.getPlayState() == PlayState.FIGHTING) {
+    if (target.isFighting()) {
       character.sendln(
         String.format("%s is already engaged in battle.",
         target.getName()
@@ -57,6 +73,7 @@ public class Attack extends PlayCommand {
 
     // Start the battle
     BattleManager.initiate(character, target);
+    c.skipNextPrompt();
     return true;
   }
 }

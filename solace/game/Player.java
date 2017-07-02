@@ -7,6 +7,12 @@ package solace.game;
  */
 public interface Player {
   /**
+   * Determines if the Player is a mobile.
+   * @return `true` if the Player is a mobile, `false` otherwise.
+   */
+  public boolean isMobile();
+
+  /**
    * @return The state of the player.
    */
   public PlayState getPlayState();
@@ -18,14 +24,64 @@ public interface Player {
   public void setPlayState(PlayState s);
 
   /**
-   * @return A name by which the object is referenced.
+   * @return `true` if the player is sleeping, `false` otherwise.
    */
-  public String getName();
+  public boolean isSleeping();
 
   /**
-   * @return A string describing the object.
+   * Sets the character to be in the sleeping play state.
    */
-  public String getDescription();
+  public void setSleeping();
+
+  /**
+   * @return `true` if the player is resting, `false` otherwise.
+   */
+  public boolean isResting();
+
+  /**
+   * Sets the character to be in the resting play state.
+   */
+  public void setResting();
+
+  /**
+   * @return `true` if the player is sitting, `false` otherwise.
+   */
+  public boolean isSitting();
+
+  /**
+   * Sets the character to be in the sitting play state.
+   */
+  public void setSitting();
+
+  /**
+   * @return `true` if the player is resting or sitting, `false` otherwise.
+   */
+  public boolean isRestingOrSitting();
+
+  /**
+   * @return `true` if the player is standing, `false` otherwise.
+   */
+  public boolean isStanding();
+
+  /**
+   * Sets the character to be in the standing play state.
+   */
+  public void setStanding();
+
+  /**
+   * @return `true` if the player is fighting, `false` otherwise.
+   */
+  public boolean isFighting();
+
+  /**
+   * Sets the character to be in the fighting play state.
+   */
+  public void setFighting();
+
+  /**
+   * @return `true` if the character is standing or fighting, `false` otherwise.
+   */
+  public boolean isStandingOrFighting();
 
   /**
    * Sends the Player a message coming from the room they inhabit. Examples
@@ -33,6 +89,42 @@ public interface Player {
    * @param s Message to sent the Player.
    */
   public void sendMessage(String s);
+
+  /**
+   * Sends a message to the player.
+   * @param msg Message to send.
+   */
+  public void send(String msg);
+
+  /**
+   * Sends a message to a player with an appended new line.
+   * @param msg Message to send.
+   */
+  public void sendln(String msg);
+
+  /**
+   * Sends a message to a player, with a prepended and appended new line.
+   * @param msg Message to send.
+   */
+  public void wrapln(String msg);
+
+  /**
+   * @return A name by which the object is referenced.
+   */
+  public String getName();
+
+  /**
+   * Determines whether or not this player has a name with the given prefix.
+   * @param  namePrefix Prefix by which to test.
+   * @return `true` if the player has a name with the given prefix, `false`
+   *   otherwise.
+   */
+  public boolean hasName(String namePrefix);
+
+  /**
+   * @return A string describing the object.
+   */
+  public String getDescription();
 
   /**
    * @return The room the Player currently occupies.
@@ -46,10 +138,137 @@ public interface Player {
   public void setRoom(Room r);
 
   /**
-   * Determines if the Player is a mobile.
-   * @return `true` if the Player is a mobile, `false` otherwise.
+   * @return The level of the player.
    */
-  public boolean isMobile();
+  public int getLevel();
+
+  /**
+   * Sets the level of the player.
+   * @param level Level to set.
+   */
+  public void setLevel(int level);
+
+  /**
+   * Sets the major statistic for the character. Major statistics grow the
+   * the fastest of all stats as a character progresses in level.
+   * @param name Name of the major stat.
+   */
+  public void setMajorStat(String name);
+
+  /**
+   * Sets the minor stat for the character. Minor stats grow at a medium pace
+   * as a character levels.
+   * @param name [description]
+   */
+  public void setMinorStat(String name);
+
+  /**
+   * @return The name of the character's major stat.
+   */
+  public String getMajorStat();
+
+  /**
+   * @return The name of the character's minor stat.
+   */
+  public String getMinorStat();
+
+  /**
+   * @return The character's strength ability score.
+   */
+  public int getStrength();
+
+  /**
+   * @return The character's vitality ability score.
+   */
+  public int getVitality();
+
+  /**
+   * @return The character's magic ability score.
+   */
+  public int getMagic();
+
+  /**
+   * @return The character's speed ability score.
+   */
+  public int getSpeed();
+
+  /**
+   * @return The current hit points of the player.
+   */
+  public int getHp();
+
+  /**
+   * Sets the hit points for the player.
+   * @param hp Hit points to set.
+   */
+  public void setHp(int hp);
+
+  /**
+   * @return The maximum hit points of the player.
+   */
+  public int getMaxHp();
+
+  /**
+   * @return The current magic points of the player.
+   */
+  public int getMp();
+
+  /**
+   * Sets the magic points for the player.
+   * @param mp Magic points to set.
+   */
+  public void setMp(int mp);
+
+  /**
+   * @return The maximum magic points of the player.
+   */
+  public int getMaxMp();
+
+  /**
+   * @return The current stamina points of the player.
+   */
+  public int getSp();
+
+  /**
+   * Sets the stamina points for the player.
+   * @param sp Stamina points to set.
+   */
+  public void setSp(int sp);
+
+  /**
+   * @return The maximum stamina points of the player.
+   */
+  public int getMaxSp();
+
+  /**
+   * @return The character's will saving throw.
+   */
+  public int getWillSave();
+
+  /**
+   * @return The character's reflex saving throw.
+   */
+  public int getReflexSave();
+
+  /**
+   * @return The character's resolve saving throw.
+   */
+  public int getResolveSave();
+
+  /**
+   * @return The character's vigor saving throw.
+   */
+  public int getVigorSave();
+
+  /**
+   * @return The character's prudence saving throw.
+   */
+  public int getPrudenceSave();
+
+  /**
+   * @return The character's guile saving throw.
+   */
+  public int getGuileSave();
 
   /**
    * @return The player's attack roll.
@@ -97,5 +316,74 @@ public interface Player {
   /**
    * Manages player death in the game world.
    */
-  public void die();
+  public void die(Player killer);
+
+  /**
+   * @return True if the player is on the global cooldown, false otherwise.
+   */
+  public boolean isOnGCD();
+
+  /**
+   * Sets the player to be on the global cooldown.
+   */
+  public void setOnGCD();
+
+  /**
+   * Indicates to the player a non-gcd cooldown action has been executed and
+   * will cool down after the given number of seconds.
+   * @param name Name of the cooldown.
+   * @param duration Duration in seconds to cool down.
+   */
+  public void cooldownAt(String name, int duration);
+
+  /**
+   * Determines the amount of time remaining for a cooldown of the given name.
+   * @param name Name of the cooldown.
+   * @return The number of seconds remaining on the cool down.
+   */
+  public int getCooldownDuration(String name);
+
+  /**
+   * Sets the combo action for a player. This is used to determine if other
+   * skill actions should execute as a combos.
+   * @param action Name of the combo action to set.
+   */
+  public void setComboAction(String action);
+
+  /**
+   * @return The combo action (if any) for the player.
+   */
+  public String getComboAction();
+
+  // New Style
+
+  /**
+   * Determines if the player has a passive of the given name.
+   * @param name Name of the passive.
+   * @return True if they have the passive, false otherwise.
+   */
+  public boolean hasPassive(String name);
+
+  /**
+   * Gets the level for the named passive.
+   * @param name Name of the passive ability.
+   * @return The level of the passive ability, or -1 if the character does not
+   *   possess the given passive.
+   */
+  public int getPassiveLevel(String name);
+
+  /**
+   * Determines if a player has a given cooldown action.
+   * @param name Name of the cooldown action.
+   * @return True if the player possesses the given cooldown, false otherwise.
+   */
+  public boolean hasCooldown(String name);
+
+  /**
+   * Gets the level for a cooldown action of the given name.
+   * @param name Name of the cooldown action.
+   * @return The level of the cooldown, or -1 if the player does not possess
+   *   the named cooldown action.
+   */
+  public int getCooldownLevel(String name);
 }

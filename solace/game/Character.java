@@ -3,9 +3,7 @@ package solace.game;
 import java.util.*;
 
 import solace.net.Connection;
-import solace.util.Log;
-import solace.util.SkillNotFoundException;
-import solace.util.Skills;
+import solace.util.*;
 import solace.xml.GameParser;
 import solace.cmd.GameException;
 
@@ -13,13 +11,18 @@ import solace.cmd.GameException;
  * Represents a player character in the game world.
  * @author Ryan Sandor Richards.
  */
-public class Character implements Player
-{
+public class Character extends AbstractPlayer {
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
    */
   public static final Collection<String> EQ_SLOTS =
     Collections.unmodifiableCollection(GameParser.parseEquipment());
+
+  /**
+   * Default prompt given to new characters.
+   */
+  public static final String DEFAULT_PROMPT =
+    "(( {G%h{x/{g%H{xhp {M%m{x/{m%M{xmp {Y%s{x/{y%S{xsp )) {Y%gg{x %T>";
 
   /**
    * Determines if the given slot name is a valid equipment slot.
@@ -30,30 +33,17 @@ public class Character implements Player
     return EQ_SLOTS.contains(name);
   }
 
-  // Instance Variables
   String id = null;
-  PlayState state = PlayState.STANDING;
-
   String name;
   String description;
-
-  int level;
-  int hp;
-  int mp;
-  int sp;
-
-  String majorStat = "none";
-  String minorStat = "none";
-
   long gold;
   List<Item> inventory = null;
   Hashtable<String, Item> equipment = new Hashtable<String, Item>();
   HashSet<String> skillIds = new HashSet<String>();
   List<Skill> skills = new ArrayList<Skill>();
-
-  Room room = null;
-
   Account account = null;
+  String prompt = Character.DEFAULT_PROMPT;
+  Hashtable<String, String> hotbar = new Hashtable<String, String>();
 
   /**
    * Creates a new character.
@@ -63,6 +53,29 @@ public class Character implements Player
     name = n;
     level = 1;
     inventory = Collections.synchronizedList(new ArrayList<Item>());
+  }
+
+  /**
+   * Sets the passives and cooldowns this character has based on the character's
+   * core skills, role skills, and race.
+   *
+   * - TODO Add races
+   */
+  public void setPassivesAndCooldowns() {
+    super.setPassivesAndCooldowns();
+    for (Skill skill : skills) {
+      int level = skill.getLevel();
+      for (String passive : skill.getPassives()) {
+        if (level > getPassiveLevel(passive)) {
+          setPassive(passive, level);
+        }
+      }
+      for (String cooldown : skill.getCooldowns()) {
+        if (level > getCooldownLevel(cooldown)) {
+          setCooldown(cooldown, level);
+        }
+      }
+    }
   }
 
   /**
@@ -93,46 +106,35 @@ public class Character implements Player
   }
 
   /**
-   * Gets an ability stat for the character.
+   * Gets an ability stat for the character with equipment bonuses.
    * @param name Name of the stat being generated.
    * @return A level appropriate stat.
-   * @see solace.game.Stats
+   * @see solace.game.AbstractPlayer
    */
   protected int getAbility(String name) {
-    int ability = Stats.getAbility(this, name);
-    return ability + getModFromEquipment(name);
+    return super.getAbility(name) + getModFromEquipment(name);
   }
 
   /**
-   * Gets the saving throw with the given name.
+   * Gets the saving throw with the given name and adds any bonuses due to
+   * character equipment.
    * @param name Name of the saving throw.
    * @return The saving throw.
-   * @see solace.game.Stats
+   * @see solace.game.AbstractPlayer
    */
   protected int getSavingThrow(String name) {
-    try {
-      return Stats.getSavingThrow(this, name) + getModFromEquipment(name);
-    }
-    catch (InvalidSavingThrowException iste) {
-      Log.error(String.format(
-        "Invalid saving throw name encountered: %s", name
-      ));
-    }
-    return 0;
+    return super.getSavingThrow(name) + getModFromEquipment(name);
   }
 
   /**
-   * @see solace.game.Player
+   * Gets the maximum value for the given resource and adds any bonuses due to
+   * character equipment.
+   * @param name Name of the resource.
+   * @return The maximum value of the resource for this player, or -1 if the
+   *   provided resource name is invalid.
    */
-  public PlayState getPlayState() {
-    return state;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setPlayState(PlayState s) {
-    state = s;
+  protected int getMaxResource(String name) {
+    return super.getMaxResource(name) + getModFromEquipment(name);
   }
 
   /**
@@ -146,7 +148,7 @@ public class Character implements Player
   public void setId(String i) { id = i; }
 
   /**
-   * @return The character's name.
+   * @see solace.game.Player
    */
   public String getName() { return name; }
 
@@ -156,7 +158,7 @@ public class Character implements Player
   public void setName(String n) { name = n; }
 
   /**
-   * @return The character's description.
+   * @see solace.game.Player
    */
   public String getDescription() { return description; }
 
@@ -166,153 +168,11 @@ public class Character implements Player
   public void setDescription(String n) { description = n; }
 
   /**
-   * @return The character's level.
-   */
-  public int getLevel() { return level; }
-
-  /**
-   * Set the character's level.
-   * @param l Level to set for the character.
-   */
-  public void setLevel(int l) { level = l; }
-
-  /**
-   * Sets the major statistic for the character. Major statistics grow the
-   * the fastest of all stats as a character progresses in level.
-   * @param name Name of the major stat.
-   */
-  public void setMajorStat(String name) { majorStat = name; }
-
-  /**
-   * Sets the minor stat for the character. Minor stats grow at a medium pace
-   * as a character levels.
-   * @param name [description]
-   */
-  public void setMinorStat(String name) { minorStat = name; }
-
-  /**
-   * @return The name of the character's major stat.
-   */
-  public String getMajorStat() { return majorStat; }
-
-  /**
-   * @return THe name of the character's minor stat.
-   */
-  public String getMinorStat() { return minorStat; }
-
-  /**
-   * @return The character's armor class.
+   * @see solace.game.Player
    */
   public int getAC() {
-    return Stats.getAC(this) + getModFromEquipment("ac");
+    return super.getAC() + getModFromEquipment("ac");
   }
-
-  /**
-   * @return The character's strength ability score.
-   */
-  public int getStrength() { return getAbility("strength"); }
-
-  /**
-   * @return The character's vitality ability score.
-   */
-  public int getVitality() { return getAbility("vitality"); }
-
-  /**
-   * @return The character's magic ability score.
-   */
-  public int getMagic() { return getAbility("magic"); }
-
-  /**
-   * @return The character's speed ability score.
-   */
-  public int getSpeed() { return getAbility("speed"); }
-
-  /**
-   * @return The player's current hit points.
-   */
-  public int getHp() { return hp; }
-
-  /**
-   * Sets the player's current hit points.
-   * @param v HP to set.
-   */
-  public void setHp(int v) { hp = v; }
-
-  /**
-   * @return The player's maximum hit points.
-   * @see solace.game.Stats
-   */
-  public int getMaxHp() {
-    return Stats.getMaxHp(this) + getModFromEquipment("hp");
-  }
-
-  /**
-   * @return The player's current mp.
-   */
-  public int getMp() { return mp; }
-
-  /**
-   * Sets the player's current mp.
-   * @param v MP to set.
-   */
-  public void setMp(int v) { mp = v; }
-
-  /**
-   * @return The player's maximum MP.
-   * @see solace.game.Stats
-   */
-  public int getMaxMp() {
-    return Stats.getMaxMp(this) + getModFromEquipment("mp");
-  }
-
-  /**
-   * @return The character's current sp.
-   */
-  public int getSp() { return sp; }
-
-  /**
-   * Sets the character's current sp.
-   * @param v SP to set.
-   */
-  public void setSp(int v) { sp = v; }
-
-  /**
-   * @return The character's maximum sp.
-   * @see soalce.game.Stats
-   */
-  public int getMaxSp() {
-    return Stats.getMaxSp(this) + getModFromEquipment("sp");
-  }
-
-  /**
-   * @return The character's will saving throw.
-   */
-  public int getWillSave() { return getSavingThrow("will"); }
-
-  /**
-   * @return The character's reflex saving throw.
-   */
-  public int getReflexSave() { return getSavingThrow("reflex"); }
-
-  /**
-   * @return The character's resolve saving throw.
-   */
-  public int getResolveSave() { return getSavingThrow("resolve"); }
-
-  /**
-   * @return The character's vigor saving throw.
-   */
-  public int getVigorSave() { return getSavingThrow("vigor"); }
-
-  /**
-   * @return The character's prudence saving throw.
-   */
-  public int getPrudenceSave() { return getSavingThrow("prudence"); }
-
-  /**
-   * @return The character's guile saving throw.
-   */
-  public int getGuileSave() { return getSavingThrow("guile"); }
 
   /**
    * @see solace.game.Player
@@ -327,8 +187,7 @@ public class Character implements Player
   }
 
   /**
-   * @return the hit modifier for the character.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
   public int getHitMod() {
     return Stats.getHitMod(this) + getModFromEquipment("hit");
@@ -346,46 +205,65 @@ public class Character implements Player
   }
 
   /**
-   * @return the damage modifier for the character.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
   public int getDamageMod() {
     return Stats.getDamageMod(this) + getModFromEquipment("damage");
   }
 
   /**
-   * @return The number of attacks for the character.
    * @see solace.game.Player
    */
-  public int getNumberOfAttacks() { return 1; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int applyDamage(int damage) {
-    hp -= damage;
-    return damage;
+  public int getNumberOfAttacks() {
+    int attacks = 1;
+    if (hasPassive("second attack")) attacks++;
+    if (hasPassive("third attack")) attacks++;
+    return attacks;
   }
 
   /**
    * @see solace.game.Player
    */
-  public boolean isDead() { return getHp() <= 0; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void die() {
+  public void die(Player killer) {
     try {
-      // TODO Flesh this out in the future.
-      sendMessage("\n\rYou have {Rdied{x!\n\r");
+      setPlayState(PlayState.DEAD);
       hp = 1;
-      mp = 1;
-      sp = 1;
-      setRoom(World.getDefaultRoom());
+      mp = 0;
+      sp = 0;
+
+      if (killer != null) {
+        sendMessage(String.format(
+          "You have been {Rkilled{x by %s!", killer.getName()));
+      } else {
+        sendMessage("\n\rYou have {Rdied{x!\n\r");
+      }
+
+      Room origin = getRoom();
+      Room destination = World.getDefaultRoom();
+
+      origin.getCharacters().remove(this);
+
+      if (killer != null) {
+        Player[] excludes = { this, killer };
+        origin.sendMessage(
+          String.format("%s has {Rkilled{x %s!", killer.getName(), getName()),
+          excludes);
+      } else {
+        origin.sendMessage(String.format("%s has died!", getName()));
+      }
+
+      destination.sendMessage(String.format(
+        "A bright light flashes and %s reconstitues here battered and bruised.",
+        getName()
+      ));
+      destination.getCharacters().add(this);
+
+      setPlayState(PlayState.RESTING);
+      setRoom(destination);
+      sendMessage(room.describeTo(this));
     }
     catch (GameException ge) {
-      Log.error("World does not define a default room.");
+      Log.error("World configuration does not define a default room!");
     }
   }
 
@@ -431,9 +309,7 @@ public class Character implements Player
    * @param g Gold to remove from the character.
    * @throws CurrencyException If the player has less gold than what was given.
    */
-  public void removeGold(long g)
-    throws CurrencyException
-  {
+  public void removeGold(long g) throws CurrencyException {
     if (gold < g) {
       throw new CurrencyException(String.format(
         "Unable to remove %d gold from %s.", g, name
@@ -462,7 +338,7 @@ public class Character implements Player
    * @param name Name of the item to find.
    * @return The item in question, or null if no such item was found.
    */
-  public Item getItem(String name) {
+  public Item findItem(String name) {
     synchronized(inventory) {
       for (Item item : inventory) {
         if (item.hasName(name))
@@ -499,37 +375,13 @@ public class Character implements Player
   }
 
   /**
-   * @return true if the player can equip the item, false otherwise.
-   */
-  public boolean canEquip(Item i) {
-    if (!i.isEquipment()) {
-      return false;
-    }
-
-    String proficiency = i.get("proficiency");
-    if (proficiency == null || proficiency.equals("")) {
-      return true;
-    }
-
-    for (Skill s : skills) {
-      if (s.grantsProficiency(proficiency)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
    * Equips a particular item onto the character. If a piece of equipment
    * already inhabits the particular slot it is removed and returned to the
    * character's inventory.
    * @param item Item to equip.
    * @return The item that was previously equipped.
    */
-  public Item equip(Item item)
-    throws NotEquipmentException
-  {
+  public Item equip(Item item) throws NotEquipmentException {
     String slot = item.get("slot");
     if (slot == null) {
       throw new NotEquipmentException("Unable to equip non-equipment item.");
@@ -601,20 +453,6 @@ public class Character implements Player
   }
 
   /**
-   * @param r The room to set.
-   */
-  public void setRoom(Room r) {
-    room = r;
-  }
-
-  /**
-   * @return the Character's current room.
-   */
-  public Room getRoom() {
-    return room;
-  }
-
-  /**
    * @see solace.game.Player
    */
   public boolean isMobile() {
@@ -629,7 +467,7 @@ public class Character implements Player
   public void sendMessage(String msg) {
     Connection c = getConnection();
     c.sendln("\n" + msg);
-    c.send(c.getPrompt());
+    c.send(c.getStateController().getPrompt());
   }
 
   /**
@@ -664,8 +502,8 @@ public class Character implements Player
 
     b.append(String.format(
       "<character name=\"%s\" level=\"%d\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
-      "major-stat=\"%s\" minor-stat=\"%s\">",
-      name, level, hp, mp, sp, gold, majorStat, minorStat
+      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\">",
+      name, level, hp, mp, sp, gold, majorStat, minorStat, state.toString(), prompt
     ));
 
     // Game location
@@ -702,7 +540,73 @@ public class Character implements Player
     }
     b.append("</equipment>");
 
+    // Hotbar
+    b.append("<hotbar>");
+    for (String key : hotbar.keySet()) {
+      b.append(String.format(
+        "<entry key=\"%s\" command=\"%s\" />", key, hotbar.get(key)));
+    }
+    b.append("</hotbar>");
+
     b.append("</character>");
     return b.toString();
+  }
+
+  /**
+   * Determines whether or not this player has a name with the given prefix.
+   * @param  namePrefix Prefix by which to test.
+   * @return `true` if the player has a name with the given prefix.
+   *  `false` otherwise.
+   */
+  public boolean hasName(String namePrefix) {
+    String[] names = getName().split("\\s+");
+    for (String n : names) {
+      if (n.toLowerCase().startsWith(namePrefix.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @return The character's prompt format.
+   */
+  public String getPrompt() {
+    return prompt;
+  }
+
+  /**
+   * Sets the character's prompt format.
+   * @param p The prompt format for the character.
+   */
+  public void setPrompt(String p) {
+    prompt = p;
+  }
+
+  /**
+   * Determines if a player has a skill with the given name.
+   * @param  name Name of the skill.
+   * @return      `true` if they have the skill, `false` otherwise.
+   */
+  public boolean hasSkill(String name) {
+    return skillIds.contains(name);
+  }
+
+  /**
+   * Retrieves a hotbar command for the given key.
+   * @param key Key for the command to get.
+   * @return The hotbar command.
+   */
+  public String getHotbarCommand(String key) {
+    return hotbar.get(key);
+  }
+
+  /**
+   * Sets a hotbar command for the given key.
+   * @param key Key for the hotbar command.
+   * @param command The command to set.
+   */
+  public void setHotbarCommand(String key, String command) {
+    hotbar.put(key, command);
   }
 }

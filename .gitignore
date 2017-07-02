@@ -4,3 +4,4 @@ notes/
 .DS_Store
 battle.md
 report/
+data/accounts/*.xml

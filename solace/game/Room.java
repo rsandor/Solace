@@ -44,9 +44,6 @@ public class Room {
         Log.error("Room.instantiate ("+this.id+"): " + e.getMessage());
       }
     }
-    if (hasShop()) {
-      shop.initialize();
-    }
   }
 
   /**
@@ -62,9 +59,9 @@ public class Room {
   }
 
   /**
-   * Sends a message to all of the characters in a room. Excluding
-   * the given player character (useful for messages sent as a result
-   * of a character's actions).
+   * Sends a message to all of the characters in a room. Excluding the given
+   * player character (useful for messages sent as a result of a character's
+   * actions).
    * @param message Message to send.
    * @param exclude Player to exclude when sending the message.
    */
@@ -73,6 +70,28 @@ public class Room {
       for (Player ch : characters) {
         if (ch == exclude)
           continue;
+        ch.sendMessage(message);
+      }
+    }
+  }
+
+  /**
+   * Sends a message to all of the characters in a room excepting those in the
+   * given array of players.
+   * @param message Message to send.
+   * @param excludes Players to exclude when sending the message.
+   */
+  public void sendMessage(String message, Player[] excludes) {
+    synchronized(characters) {
+      for (Player ch : characters) {
+        boolean exclude = false;
+        for (Player x : excludes) {
+          if (ch == x) {
+            exclude = true;
+            break;
+          }
+        }
+        if (exclude) continue;
         ch.sendMessage(message);
       }
     }
@@ -113,11 +132,11 @@ public class Room {
    * @param namePrefix Name prefix for the character to find.
    * @return The character or null if none was found.
    */
-  public Player findCharacter(String namePrefix) {
+  public Player findPlayer(String namePrefix) {
     synchronized (characters) {
-      for (Player ch : characters) {
-        if (ch.getName().toLowerCase().startsWith(namePrefix)) {
-          return ch;
+      for (Player p : characters) {
+        if (p.hasName(namePrefix)) {
+          return p;
         }
       }
     }
@@ -258,6 +277,14 @@ public class Room {
   }
 
   /**
+   * Constructs inspect data for admins to see the details of a room.
+   * @return The message to send to the admin that describes the room's details.
+   */
+  public String inspect(solace.game.Character ch) {
+    return "TODO inspect";
+  }
+
+  /**
    * Finds the description for a feature with the given name.
    * @param name Name of the feature to find.
    * @return The description of the feature, or null if no such feature was
@@ -268,45 +295,7 @@ public class Room {
       String[] names = key.split("\\s+");
       for (String n : names) {
         if (n.startsWith(name)) {
-          return "\n\r" + Strings.toFixedWidth(features.get(key)) + "\n\r";
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Finds the description of an item with the given name.
-   * @param name Name of the item to find.
-   * @return The description of the item, or null if no such item was found.
-   */
-  public String describeItem(String name) {
-    for (Item item : items) {
-      for (String n : item.getNames())
-        if (n.startsWith(name)) {
-          return Strings.toFixedWidth(item.get("description"));
-        }
-    }
-    return null;
-  }
-
-  /**
-   * Finds the description for a character with the given name.
-   * @param name Name of the character to find.
-   * @return The description of the character, or null if none was found.
-   */
-  public String describeCharacter(String name) {
-    synchronized(characters) {
-      for (Player ch : characters) {
-        String[] names = ch.getName().split("\\s+");
-        for (String n : names) {
-          if (n.toLowerCase().startsWith(name.toLowerCase())) {
-            String desc = ch.getDescription();
-            if (desc == null) {
-              desc = "They are nondescript.";
-            }
-            return "\n\r" + Strings.toFixedWidth(desc) + "\n\r";
-          }
+          return Strings.toFixedWidth(features.get(key));
         }
       }
     }
@@ -360,7 +349,7 @@ public class Room {
    * @return An item who's name has the given prefix, null if no
    *  such item was found.
    */
-  public Item getItem(String prefix) {
+  public Item findItem(String prefix) {
     synchronized(items) {
       for (Item item : items) {
         if (item.hasName(prefix))

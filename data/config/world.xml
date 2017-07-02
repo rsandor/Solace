@@ -40,4 +40,10 @@
 		<!-- How many levels below an ithem's level you can be to wear it -->
 		<option name="level-offset" value="10"/>
 	</item>
+
+	<!-- Recovery options -->
+	<recovery>
+		<!-- How many ticks between each recovery cycle -->
+		<option name="ticks" value="6" />
+	</recovery>
 </config>

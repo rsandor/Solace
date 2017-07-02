@@ -98,7 +98,10 @@ class CreateCharacter implements StateController {
     init(c);
     state = state.CHOOSE_NAME;
     c.sendln(Message.get("NewCharacter"));
-    c.setPrompt(state.getPrompt());
+  }
+
+  public String getPrompt() {
+    return state.getPrompt();
   }
 
   public void init(Connection c) {
@@ -117,9 +120,8 @@ class CreateCharacter implements StateController {
    */
   public void parse(String input) {
     state = state.parse(connection, input);
-    if (state == State.EXIT)
+    if (state == State.EXIT) {
       connection.setStateController( new MainMenu(connection) );
-    else
-      connection.setPrompt(state.getPrompt());
+    }
   }
 }

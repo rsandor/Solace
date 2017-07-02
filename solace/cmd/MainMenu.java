@@ -23,9 +23,6 @@ public class MainMenu
     // Initialize the menu
     super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
 
-    // Set the user's prompt and welcome them
-    c.setPrompt("{cChoose an option:{x ");
-
     // Neato trick, actually use the help command to show the menu on login:
     Command help = new Help();
     help.run(c, new String("help").split(" "));
@@ -42,7 +39,10 @@ public class MainMenu
     addCommand(new Shutdown());
     addCommand(new Reload());
     addCommand(new Peek());
+  }
 
+  public String getPrompt() {
+    return "{cChoose an option:{x ";
   }
 
   /**
@@ -123,7 +123,6 @@ public class MainMenu
           room = World.getDefaultRoom();
           ch.setRoom(room);
         }
-        room.sendMessage(ch.getName() + " enters the realm.");
         room.getCharacters().add(ch);
 
         act.setActiveCharacter(ch);
@@ -359,7 +358,7 @@ public class MainMenu
             con.sendln("{yAreas reloaded, thanks for your patience!{x\n");
             con.getStateController().force("look");
             con.setIgnoreInput(false);
-            con.send(con.getPrompt());
+            con.send(con.getStateController().getPrompt());
           }
         }
       }

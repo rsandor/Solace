@@ -14,4 +14,11 @@ public abstract class PlayCommand extends AbstractCommand {
     super(name);
     character = ch;
   }
+
+  /**
+   * @return The character associated with the command.
+   */
+  public solace.game.Character getCharacter() {
+    return character;
+  }
 }

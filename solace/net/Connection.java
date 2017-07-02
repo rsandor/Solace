@@ -12,16 +12,14 @@ import solace.cmd.*;
  * menu.
  * @author Ryan Sandor Richards (Gaius)
  */
-public class Connection
-  implements Runnable
-{
+public class Connection implements Runnable {
   Socket socket;
   PrintWriter out;
   BufferedReader in;
-  String prompt = "";
   Account account;
   StateController controller;
   Date connectionTime;
+  boolean skipPrompt = false;
 
   // Useful for disabling characters while major game actions are taking place
   // such as area reloading or reboots. See the setIgnoreInput() method.
@@ -33,9 +31,7 @@ public class Connection
    * @throws IOException If the input and output streams could not be used for
    *   the socket.
    */
-  public Connection(Socket s)
-    throws IOException
-  {
+  public Connection(Socket s) throws IOException {
     socket = s;
     connectionTime = new Date();
     out = new PrintWriter(socket.getOutputStream());
@@ -47,8 +43,7 @@ public class Connection
    * Sets the state controller for the connection.
    * @param c State controller.
    */
-  public void setStateController(StateController c)
-  {
+  public void setStateController(StateController c) {
     controller = c;
   }
 
@@ -62,13 +57,10 @@ public class Connection
   /**
    * Closes this connection.
    */
-  public void close()
-  {
+  public void close() {
     try {
       socket.close();
-    }
-    catch (IOException ioe)
-    {
+    } catch (IOException ioe) {
       Log.error(ioe.getMessage());
     }
   }
@@ -83,8 +75,7 @@ public class Connection
         socket.getOutputStream().write(i);
       byte[] bytes = {0, 0, 0};
       socket.getInputStream().read(bytes);
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       ioe.printStackTrace();
     }
   }
@@ -99,8 +90,7 @@ public class Connection
         socket.getOutputStream().write(i);
       byte[] bytes = {0, 0, 0};
       socket.getInputStream().read(bytes);
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       ioe.printStackTrace();
     }
   }
@@ -134,45 +124,31 @@ public class Connection
   /**
    * Continuously collects commands from the user and handles them.
    */
-  public void run()
-  {
-    try
-    {
-      while (socket.isConnected())
-      {
-        send(prompt);
+  public void run() {
+    try {
+      while (socket.isConnected()) {
+        if (skipPrompt) {
+          skipPrompt = false;
+        } else {
+          send(controller.getPrompt());
+        }
+
         String input = in.readLine();
-        if (input != null && !ignoreInput)
+        if (input != null && !ignoreInput) {
           controller.parse(input);
+        }
       }
-    }
-    catch (IOException ioe)
-    {
+    } catch (IOException ioe) {
       close();
     }
-  }
-
-  /**
-   * @return the prompt
-   */
-  public String getPrompt() {
-    return prompt;
-  }
-
-  /**
-   * @param prompt the prompt to set
-   */
-  public void setPrompt(String prompt) {
-    this.prompt = prompt;
   }
 
   /**
    * Determines if the connection has a logged in account.
    * @return True if the connection has an account, false otherwise.
    */
-  public boolean hasAccount()
-  {
-    return (account != null);
+  public boolean hasAccount() {
+    return account != null;
   }
 
   /**
@@ -193,8 +169,7 @@ public class Connection
    * Returns the internet address from which this connection is connected.
    * @return The internet address of the connection.
    */
-  public InetAddress getInetAddress()
-  {
+  public InetAddress getInetAddress() {
     return socket.getInetAddress();
   }
 
@@ -211,5 +186,13 @@ public class Connection
    */
   public void setIgnoreInput(boolean b) {
     ignoreInput = b;
+  }
+
+  /**
+   * Indicates that the connection's main run loop should not print a prompt
+   * at the beginning of the next cycle.
+   */
+  public void skipNextPrompt() {
+    skipPrompt = true;
   }
 }

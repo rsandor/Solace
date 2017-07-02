@@ -1,24 +1,29 @@
 # Skill: One-handed (str/spe)
 The one-handed skill allows the character to effectively battle using weapons
-that require a single hand to weild. The following weapon proficiencies are
-unlocked at the given skill levels:
+that require a single hand to wield.
 
-- Skill Level 1:  dagger, short-sword, club
-- Skill Level 25: longsword, axe, mace, hammer
-- Skill Level 50: nunchaku, kukuri, flail
+## Passive Enhancements:
 
-The following passive enhancements are unlocked at the indicated level:
+- [15] Parry
+  Chance of parrying and evading an attack entirely. The chance increases with
+  skill level.
+- [40] Second Attack
+  You make two attacks per round in battle.
+- [80] Third Attack
+  Make three attacks per round in battle.
+- [100] Battle Trance
+  Each attack receives a 10% bonus to hit and damage
 
-- [15]  Parry         - Evade attacks by parrying them in battle
-- [40]  Second Attack - Make two attacks per round in battle
-- [70]  Third Attack  - Make three attacks per round in battle
-- [100] Battle Trance - Each attack recieves a 10% bonus to hit and damage
+## Cool Down Actions:
 
-Finally, the following cooldown actions are added at the given level:
-
-- [10] Flurry        - attack the opponent with a flurry of blows (3 attacks).
-- [30] Feign         - Feign an attack putting he opponent off balance, the next
-                       regular attack will be a critical hit.
-- [60] Riposte       - Make a quick sudden attack dealing 2x damage.
-- [90] Coup de grace - An attack that deals massive damage (5x) to an opponent
-                       with less that 30% health, deals 1.5x damage otherwise.
+- [5] Flurry (GCD)
+  A savage flurry of blows dealing damage with potency 150.
+- [35] Slash (GCD)
+  Attacks the target with savage slash with potency 150. Combo: Flurry, increase
+  potency to 250.
+- [65] Riposte (GCD)     
+  Make a quick sudden attack dealing with potency 150. Combo: Slash, increases
+  potency to 350.
+- [95] Coup de grace (120s)
+  A devastating attack with potency 1000 when an opponent has less than 30%
+  health. Cannot be used if the target has more than 30% health.

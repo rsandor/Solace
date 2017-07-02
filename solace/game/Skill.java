@@ -9,8 +9,8 @@ import java.util.*;
  */
 public class Skill {
   /**
-   * Tuple containing the name of a proficiency, passive, or cooldown and the
-   * skill level at which it is acquired.
+   * Tuple containing the name of a passive or a cooldown and the skill level at
+   * which it is acquired.
    * @author Ryan Sandor Richards
    */
   private static class LevelPair {
@@ -41,7 +41,6 @@ public class Skill {
   String id;
   String name;
   int level;
-  Collection<LevelPair> proficiencies;
   Collection<LevelPair> passives;
   Collection<LevelPair> cooldowns;
 
@@ -54,7 +53,6 @@ public class Skill {
     id = i;
     name = n;
     level = 1;
-    proficiencies = new ArrayList<LevelPair>();
     passives = new ArrayList<LevelPair>();
     cooldowns = new ArrayList<LevelPair>();
   }
@@ -64,18 +62,9 @@ public class Skill {
    */
   public Skill clone() {
     Skill s = new Skill(id, name);
-    s.proficiencies = proficiencies;
     s.passives = passives;
     s.cooldowns = cooldowns;
     return s;
-  }
-
-  /**
-   * Adds a weapon proficiency to the skill.
-   * @param prof proficiency to add.
-   */
-  protected void addProficiency(LevelPair prof) {
-    proficiencies.add(prof);
   }
 
   /**
@@ -164,23 +153,6 @@ public class Skill {
   }
 
   /**
-   * @return List of the proficiencies granted by the skill at its current level.
-   */
-  public Collection<String> getProficiencies() {
-    return getNamesForLevel(proficiencies);
-  }
-
-  /**
-   * Determine whether the skill grants the given proficiency at its current
-   * level.
-   * @param name Name of the proficiency.
-   * @return True if it grants the proficiency, false otherwise.
-   */
-  public boolean grantsProficiency(String name) {
-    return getProficiencies().contains(name);
-  }
-
-  /**
    * Parses skill JSON to create a new Skill instance.
    * @param json JSON to parse.
    * @return The parsed skill.
@@ -193,19 +165,6 @@ public class Skill {
     String name = object.getString("name");
     Skill skill = new Skill(id, name);
     int i, j;
-
-    JSONArray profs = object.getJSONArray("proficiencies");
-    for (i = 0; i < profs.length(); i++) {
-      JSONObject profObj = profs.getJSONObject(i);
-      int profLevel = profObj.getInt("level");
-      JSONArray profTypes = profObj.getJSONArray("types");
-      for (j = 0; j < profTypes.length(); j++) {
-        String profType = profTypes.getString(j);
-        skill.addProficiency(new LevelPair(
-          profLevel, profType
-        ));
-      }
-    }
 
     JSONArray pass = object.getJSONArray("passives");
     for (i = 0; i < pass.length(); i++) {

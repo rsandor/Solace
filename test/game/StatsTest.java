@@ -25,6 +25,7 @@ public class StatsTest {
   @Before
   public void createMobileMock() {
     mob = mock(Mobile.class);
+    when(mob.isMobile()).thenReturn(true);
     when(mob.getLevel()).thenReturn(50);
     when(mob.getPower()).thenReturn(50);
   }

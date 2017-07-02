@@ -92,7 +92,9 @@
 			<look>display dummies</look> sit donning the finest bronze, iron, and
 			steel armors. The smell of protective oils and cold metal pervade every
 			nook and crany of the dimly torchlit space. Against the wall opposite the
-			<exit>door</exit> rests a large <look>wooden counter</look>.
+			<exit>door</exit> rests a large <look>wooden counter</look>. To the left
+			of the counter is an <exit>archway</exit> leading to the famed Contego
+			Testing Grounds.
 		</describe>
 
 		<describe names="pillars">
@@ -136,7 +138,46 @@
 		<instance type="mobile" id="duke" />
 
 		<exit names="door" to="prosperitas">Door to Prosperitas Square</exit>
+		<exit names="archway" to="contego testing grounds">
+			Archway to the testing grounds
+		</exit>
 	</room>
+
+	<room id="contego testing grounds">
+		<title>Contego Protectives Testing Grounds</title>
+
+		<describe>
+			The testing grounds are a miniaturized version of the Great Colliseum
+			in Medius. The dirt floor appears to be stained with the
+			sweat and <look>blood</look> of countless battles. Crudely painted
+			<look>wooden spectators</look> are affixed to the walls. An
+			<exit>archway</exit> leads to the Contego Protectives store and showroom.
+		</describe>
+
+		<describe names="blood">
+			While at first glance the blood appears as real as would be seen in the
+			real colliseum a quick sniff reveals it to be nothing more than some
+			disgusting mixture of tomato paste and sugar.
+		</describe>
+
+		<describe names="wooden spectators">
+			The poorly painted wooden cutouts of spectators range widly in their
+			lifeless and uninspired expressions.
+		</describe>
+
+		<instance type="mobile" id="dummy-weak" />
+		<instance type="mobile" id="dummy" />
+		<instance type="mobile" id="dummy-strong" />
+		<instance type="mobile" id="dummy-super" />
+		<instance type="mobile" id="dummy-greater" />
+
+		<instance type="item" id="master-sword" />
+
+		<exit names="archway" to="contego protectives">
+			Archway to the contego protectives
+		</exit>
+	</room>
+
 
 	<room id="arma armarium">
 		<title>Arma Armarium</title>
@@ -160,6 +201,7 @@
 		<title>North of Prosperitas Square along Dito Lane</title>
 		<exit names="south" to="prosperitas">Prosperitas Square</exit>
 		<instance type="mobile" id="pauper" />
+		<instance type="mobile" id="dummy" />
 	</room>
 
 	<room id="prosperitas south">
@@ -202,14 +244,10 @@
 	<item id="wooden-sword" names="wooden sword">
 		<property key="type">equipment</property>
 		<property key="slot">weapon</property>
-		<property key="proficiency">shortsword</property>
+		<property key="skill">one-handed</property>
 		<property key="weight">2</property>
 		<property key="level">1</property>
-		<property key="roll">1d6</property>
-		<property key="damage">1</property>
-		<property key="hit">1</property>
 		<property key="value">5</property>
-
 		<property key="description">
 			A wooden practice sword made of sturdy oak. The blade has been carved
 			with intricate patterns and its hilt wrapped in soft supple leather.
@@ -223,13 +261,10 @@
 	<item id="leather-helm" names="leather helm">
 		<property key="type">equipment</property>
 		<property key="slot">head</property>
-		<property key="proficiency">light-armor</property>
-
+		<property key="skill">light-armor</property>
 		<property key="weight">3</property>
 		<property key="level">1</property>
 		<property key="value">20</property>
-		<property key="ac">1</property>
-
 		<property key="description">
 			A simple leather helmet made from cow's hide. The helmet is sturdy but
 			flexible allowing it to fit a variety of head sizes.
@@ -243,12 +278,10 @@
 	<item id="leather-jerkin" names="leather jerkin">
 		<property key="type">equipment</property>
 		<property key="slot">body</property>
-		<property key="proficiency">light-armor</property>
+		<property key="skill">light-armor</property>
 		<property key="weight">10</property>
 		<property key="level">1</property>
 		<property key="value">75</property>
-		<property key="ac">4</property>
-
 		<property key="description">
 			A leather jerkin for protecting the body. Made of cow's hide this jerkin
 			seems sturdy and sure to deflect a blow or two. Small rivets of metal
@@ -261,10 +294,26 @@
 		</property>
 	</item>
 
-	<!-- Mobiles -->
-	<mobile id="duke" names="duke stabilis" state="stationary">
+	<item id="master-sword" names="master sword">
+		<property key="type">equipment</property>
+		<property key="slot">weapon</property>
+		<property key="skill">one-handed</property>
+		<property key="weight">10</property>
+		<property key="level">100</property>
+		<property key="value">50000</property>
 		<property key="description">
-			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturty man.
+			The master sword of Hyrulian legend.
+		</property>
+		<property key="description.inventory">master sword</property>
+		<property key="description.room">
+			The master sword lies here.
+		</property>
+	</item>
+
+	<!-- Mobiles -->
+	<mobile id="duke" names="duke stabilis" state="stationary" protected="true">
+		<property key="description">
+			Dressed in a dark heavy shirt and trousers, Duke is a tall and sturdy man.
 			His short dusty gray hair connects to a trim but thick beard, which nearly
 			conceals a serious grimace. Gray blue eyes peer calmly about the
 			establishment from sunken pits on his hard and worn face.
@@ -301,5 +350,78 @@
 		<property key="power">10</property>
 	</mobile>
 
+	<mobile id="dummy-weak" names="weak dummy">
+		<property key="description">
+			A test dummy made of shoddy materials. It is formed much like a human and
+			wears a green jumpsuit. It doesn't look too menacing.
+		</property>
+		<property key="description.name">Weak Dummy</property>
+		<property key="description.spawn">
+			A weak dummy pops into existence.
+		</property>
+		<property key="level">2</property>
+		<property key="power">8</property>
+		<property key="stat.major">speed</property>
+		<property key="stat.minor">vitality</property>
+	</mobile>
 
+	<mobile id="dummy" names="test dummy" state="stationary">
+		<property key="description">
+			A test dummy made of standard materials. It is formed much like a human
+			and wears a gray jumpsuit.
+		</property>
+		<property key="description.name">Test Dummy</property>
+		<property key="description.spawn">
+			A test dummy pops into existence.
+		</property>
+		<property key="level">5</property>
+		<property key="power">10</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">magic</property>
+	</mobile>
+
+	<mobile id="dummy-strong" names="strong dummy" state="stationary">
+		<property key="description">
+			A test dummy made of very durable materials. It is formed much like a
+			human and wears a red jumpsuit.
+		</property>
+		<property key="description.name">Strong Dummy</property>
+		<property key="description.spawn">
+			A stong dummy pops into existence.
+		</property>
+		<property key="level">7</property>
+		<property key="power">15</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
+	</mobile>
+
+	<mobile id="dummy-super" names="super dummy" state="stationary">
+		<property key="description">
+			A test dummy made of diamond. It is formed much like a human and wears a
+			nothing but its diamond skin.
+		</property>
+		<property key="description.name">Super Dummy</property>
+		<property key="description.spawn">
+			A super dummy pops into existence.
+		</property>
+		<property key="level">20</property>
+		<property key="power">20</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
+	</mobile>
+
+	<mobile id="dummy-greater" names="greater dummy" state="stationary">
+		<property key="description">
+			A test dummy made of god flesh. It is the greater dummy, the dummy to end
+			all dummies.
+		</property>
+		<property key="description.name">Greater Dummy</property>
+		<property key="description.spawn">
+			A greater dummy pops into existence.
+		</property>
+		<property key="level">100</property>
+		<property key="power">100</property>
+		<property key="stat.major">strength</property>
+		<property key="stat.minor">speed</property>
+	</mobile>
 </area>

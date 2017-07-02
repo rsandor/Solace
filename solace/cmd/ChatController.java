@@ -13,31 +13,23 @@ import solace.util.*;
  * general banter when not actually playing).
  * @author Ryan Sandor Richards (Gaius)
  */
-public class ChatController
-  extends AbstractStateController
-{
-  public ChatController(Connection c)
-  {
+public class ChatController extends AbstractStateController {
+  public ChatController(Connection c) {
     super(c);
-    String intro = Message.get("ChatIntro");
-
-    // Add the commands
     addCommand(new Quit());
     addCommand(new Help());
-
-    // Add the user to the chat list
     World.getChatConnections().add(c);
+    connection.sendln(Message.get("ChatIntro"));
+  }
 
-    // Set the prompt and send the intro
-    c.setPrompt("{cchat>{x ");
-    connection.sendln(intro);
+  public String getPrompt() {
+    return "{cchat>{x ";
   }
 
   /**
    * Specialized parser for handling basic chatting.
    */
-  public void parse(String s)
-  {
+  public void parse(String s) {
     if (s == null || s.length() == 0)
       return;
 
@@ -51,15 +43,14 @@ public class ChatController
    * Sends a message from the connected user to all the people in the oog chat.
    * @param msg Message to send.
    */
-  void broadcast(String msg)
-  {
+  protected void broadcast(String msg) {
     String name = connection.getAccount().getName().toLowerCase();
     String format = "{y" + name + ": {x" + msg;
 
     Collection chatters = Collections.synchronizedCollection(
       World.getChatConnections()
     );
-    
+
     synchronized (chatters)
     {
       Iterator i = chatters.iterator();
@@ -75,8 +66,7 @@ public class ChatController
    * OOG Chat help command.
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Help extends AbstractCommand
-  {
+  class Help extends AbstractCommand {
     public Help() { super("/help"); }
     public boolean run(Connection c, String []args)
     {
@@ -90,19 +80,12 @@ public class ChatController
    * Exits the out of game chat.
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Quit extends AbstractCommand
-  {
+  class Quit extends AbstractCommand {
     public Quit() { super("/quit"); }
-    public boolean run(Connection c, String []args)
-    {
+    public boolean run(Connection c, String []args) {
       c.sendln("Later!");
-
-      // Remove the user from chat
       World.getChatConnections().remove(c);
-
-      // Send them back to the main menu
-      connection.setStateController( new MainMenu(connection) );
-
+      connection.setStateController(new MainMenu(connection));
       return true;
     }
   }

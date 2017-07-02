@@ -14,13 +14,18 @@ public class Wear extends PlayCommand {
   }
 
   public boolean run(Connection c, String []params) {
+    if (character.isSleeping()) {
+      character.sendln("You cannot wear anything while fast asleep.");
+      return false;
+    }
+
     if (params.length < 2) {
       character.sendln("What would you like to wear?");
       return false;
     }
 
     String itemName = params[1];
-    Item item = character.getItem(itemName);
+    Item item = character.findItem(itemName);
 
     // Do they have the item?
     if (item == null) {
@@ -55,12 +60,6 @@ public class Wear extends PlayCommand {
     }
     catch (NumberFormatException nfe) {
       Log.warn("Config: world.item.level-offset is not an integer");
-    }
-
-    // Do they have the proficiency to equip the item?
-    if (!character.canEquip(item)) {
-      character.sendln("You are not proficient in using " + itemDesc);
-      return false;
     }
 
     // Attempt to equip the item

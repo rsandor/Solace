@@ -78,8 +78,7 @@ public class TemplateFactory {
     if (template == null) {
       throw new TemplateNotFoundException(id);
     }
-    Mobile mob = new Mobile();
-    template.copyProperties(mob);
+    Mobile mob = new Mobile(template);
     return mob;
   }
 }

@@ -24,6 +24,11 @@ public class Look extends PlayCommand {
   public boolean run(Connection c, String []params) {
     Room room = character.getRoom();
 
+    if (character.isSleeping()) {
+      character.sendln("You cannot see anything, for you are alseep.");
+      return false;
+    }
+
     if (params.length == 1) {
       c.sendln(room.describeTo(character));
       room.sendMessage(character.getName() + " looks around.", character);
@@ -34,25 +39,35 @@ public class Look extends PlayCommand {
 
     String featureDesc = room.describeFeature(name);
     if (featureDesc != null) {
-      c.sendln(featureDesc);
+      c.wrapln(featureDesc);
       return true;
     }
 
-    String itemDesc = room.describeItem(name);
-    if (itemDesc != null) {
-      c.sendln(itemDesc);
+    Item item = room.findItem(name);
+    if (item != null) {
+      c.wrapln(Strings.toFixedWidth(item.get("description")));
       return true;
     }
 
-    String characterDesc = room.describeCharacter(name);
-    if (characterDesc != null) {
-      c.sendln(characterDesc);
+    Player player = room.findPlayer(name);
+    if (player != null) {
+      String desc = player.getDescription();
+      if (desc == null) {
+        desc = "They are nondescript.";
+      }
+      c.wrapln(Strings.toFixedWidth(desc));
+
+      if (!player.isMobile()) {
+        player.sendMessage(String.format(
+          "%s looks at you.", character.getName()));
+      }
+
       return true;
     }
 
-    Item inventoryItem = character.getItem(name);
+    Item inventoryItem = character.findItem(name);
     if (inventoryItem != null) {
-      c.sendln(Strings.toFixedWidth(inventoryItem.get("description")));
+      c.wrapln(Strings.toFixedWidth(inventoryItem.get("description")));
       return true;
     }
 

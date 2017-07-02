@@ -14,6 +14,23 @@ public class BattleManager {
   static Clock.Event roundEvent = null;
 
   /**
+   * Finds the battle in which the current player is engaged.
+   * @param  player Player for which to find the battle.
+   * @return        The battle if one was found, null otherwise.
+   */
+  public static Battle getBattleFor(Player player) {
+    // TODO This will be far too slow at scale, refactor later...
+    synchronized(battles) {
+      for (Battle b : battles) {
+        if (b.getParticipants().contains(player)) {
+          return b;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
    * Initializes and starts the battle manager.
    */
   public static void start() {
@@ -34,7 +51,20 @@ public class BattleManager {
       while (iterator.hasNext()) {
         Battle b = iterator.next();
         Log.trace("Battle round for battle: " + b);
+
+        // Check if the battle is over before we attempt another round
+        // This can happen with the flee command, admin intervention, etc.
+        if (b.isOver()) {
+          iterator.remove();
+          cleanup(b);
+          continue;
+        }
+
+        // Perform a round of the battle
         b.round();
+
+        // Check to see if the battle is over after the last round.
+        // This happens when someone dies, etc.
         if (b.isOver()) {
           iterator.remove();
           cleanup(b);
@@ -48,7 +78,7 @@ public class BattleManager {
    */
   protected static void cleanup(Battle b) {
     for (Player p : b.getParticipants()) {
-      p.setPlayState(PlayState.STANDING);
+      p.setStanding();
     }
   }
 
@@ -68,33 +98,51 @@ public class BattleManager {
    * @param target The target of the attack.
    */
   public static void initiate(Player attacker, Player target) {
-    Log.trace(String.format(
-      "Initiating battle between %s and %s.",
-      attacker.getName(),
-      target.getName()
-    ));
-
-    attacker.setPlayState(PlayState.FIGHTING);
-    target.setPlayState(PlayState.FIGHTING);
-
-    Battle battle = new Battle();
-    battle.add(attacker);
-    battle.add(target);
-    battle.setAttacking(attacker, target);
-
-    // Attacker always gets the first shots
-    battle.round();
-    if (battle.isOver()) {
-      cleanup(battle);
-      return;
-    }
-
-    battle.setAttacking(target, attacker);
-
     synchronized(battles) {
+      Log.trace(String.format(
+        "Initiating battle between %s and %s.",
+        attacker.getName(),
+        target.getName()
+      ));
+
+      attacker.setFighting();
+      target.setFighting();
+
+      Battle battle = new Battle();
+      battle.add(attacker);
+      battle.add(target);
+      battle.setAttacking(attacker, target);
       battles.add(battle);
+
+      // Send battle initiation messages
+      Player[] excludes = { attacker, target };
+      attacker.getRoom().sendMessage(
+        String.format(
+          "%s {Rattacks{x %s!",
+          attacker.getName(),
+          target.getName()),
+        excludes
+      );
+
+      String attackerMessage = String.format(
+        "You {Rattack{x %s!", target.getName());
+      if (!attacker.isMobile()) {
+        ((solace.game.Character)attacker).send(attackerMessage);
+      } else {
+        attacker.sendMessage(attackerMessage);
+      }
+
+      target.sendMessage(String.format(
+        "%s {Rattacks{x you!", attacker.getName()));
+
+      // Attacker always gets the first shots
+      battle.round();
+      if (battle.isOver()) {
+        cleanup(battle);
+        return;
+      }
+
+      battle.setAttacking(target, attacker);
     }
   }
-
-
 }

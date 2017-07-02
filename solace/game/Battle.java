@@ -9,9 +9,15 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Battle {
+  /**
+   * Chance that any given attack roll will be a critical hit.
+   */
+  public static final double CRITICAL_CHANCE = 0.05;
+
   Set<Player> participants;
   Hashtable<Player, Player> targets;
   Multimap<Player, Player> attackers;
+  Hashtable<Player, StringBuffer> messageBuffers;
 
   /**
    * Creates a new, empty, battle.
@@ -24,137 +30,27 @@ public class Battle {
     attackers = Multimaps.synchronizedListMultimap(
       ArrayListMultimap.<Player, Player> create()
     );
+    messageBuffers = new Hashtable<Player, StringBuffer>();
   }
 
   /**
-   * Executes a round of the battle.
+   * Adds a player to the battle.
+   * @param p Player to add.
    */
-  public void round() {
-    Log.trace("Battle: Synchronizing participants.");
-
-    synchronized (participants) {
-      Hashtable<Player, StringBuffer> messageBuffers =
-        new Hashtable<Player, StringBuffer>();
-
-      Set<Player> dead = new HashSet<Player>();
-
-      for (Player p : participants) {
-        messageBuffers.put(p, new StringBuffer());
-      }
-
-      for (Player attacker : participants) {
-        Player target = targets.get(attacker);
-        if (target == null) {
-          continue;
-        }
-
-        int attackRoll = attacker.getAttackRoll();
-        int numberOfAttacks = attacker.getNumberOfAttacks();
-        int hitMod = attacker.getHitMod();
-        int averageDamage = attacker.getAverageDamage();
-        int damageMod = attacker.getDamageMod();
-        int ac = target.getAC();
-
-        int damage = 0;
-        int hits = 0;
-
-        Log.trace(String.format(
-          "Battle: %s attacks %s.",
-          attacker.getName(),
-          target.getName()
-        ));
-
-        Log.trace(Color.format(String.format(
-          "%s {rAttack Roll:{x %d vs. %d",
-          attacker.getName(), attackRoll, ac
-        )));
-
-        for (int i = 0; i < numberOfAttacks; i++) {
-          try {
-            int roll = Roll.uniform(attackRoll) + hitMod;
-            if (roll > ac) {
-              hits++;
-              damage += Roll.normal(averageDamage) + damageMod;
-            }
-          }
-          catch (Exception e) {
-            Log.error("Error calculating attack roll and damage.");
-            e.printStackTrace();
-          }
-        }
-
-        int actualDamage = target.applyDamage(damage);
-
-        if (hits == 0) {
-          messageBuffers.get(attacker).append(String.format(
-            "Your attack missed %s.\n\r",
-            target.getName()
-          ));
-          messageBuffers.get(target).append(String.format(
-            "%s {gmissed{x you completely!\n\r",
-            attacker.getName()
-          ));
-        }
-        else if (hits == 1) {
-          messageBuffers.get(attacker).append(String.format(
-            "[{g%d{x] You hit %s!\n\r",
-            actualDamage, target.getName()
-          ));
-          messageBuffers.get(target).append(String.format(
-            "<{r%d{x> %s hit you!\n\r",
-            actualDamage, attacker.getName()
-          ));
-        }
-        else {
-          messageBuffers.get(attacker).append(String.format(
-            "[{g%d{x] You hit %s %d times!\n\r",
-            actualDamage, target.getName(), hits
-          ));
-          messageBuffers.get(target).append(String.format(
-            "<{r%d{x> %s hit you %d times!\n\r",
-            actualDamage, attacker.getName(), hits
-          ));
-        }
-
-        if (target.isDead()) {
-          dead.add(target);
-          messageBuffers.get(attacker).append(String.format(
-            "You {Rkilled{x %s!", target.getName()
-          ));
-        }
-      }
-
-      Log.trace("Cleaning up and sending messages.");
-
-      for (Player p : messageBuffers.keySet()) {
-        p.sendMessage(messageBuffers.get(p).toString().trim());
-      }
-
-      for (Player p : dead) {
-        remove(p);
-        p.die();
-      }
-    }
-  }
-
-  /**
-   * Adds a character or mobile to the battle.
-   * @param m Character or mobile to add.
-   */
-  public void add(Player m) {
-    synchronized(participants) {
-      participants.add(m);
-    }
+  public synchronized void add(Player p) {
+    participants.add(p);
+    messageBuffers.put(p, new StringBuffer());
   }
 
   /**
    * Removes a character or mobile from the battle.
-   * @param m Character or mobile to remove.
+   * @param p Player to remove.
    */
-  protected void remove(Player m) {
-    participants.remove(m);
-    attackers.removeAll(m);
-    targets.remove(m);
+  public synchronized void remove(Player p) {
+    messageBuffers.remove(p);
+    participants.remove(p);
+    attackers.removeAll(p);
+    targets.remove(p);
   }
 
   /**
@@ -177,6 +73,20 @@ public class Battle {
   }
 
   /**
+   * Determines if a player is engaged in this battle.
+   * @param p Player to find.
+   * @return True if they part of this battle, false otherwise.
+   */
+  public boolean hasParticipant(Player p) {
+    synchronized(participants) {
+      for (Player q : participants) {
+        if (q == p) return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * @return The number of participants in the battle.
    */
   public int size() {
@@ -191,5 +101,209 @@ public class Battle {
    */
   public boolean isOver() {
     return size() < 2;
+  }
+
+  /**
+   * Returns the target of the given player in the battle.
+   * @param  p Player for which to find the target.
+   * @return   The target of the player.
+   */
+  public Player getTargetFor(Player p) {
+    return targets.get(p);
+  }
+
+  /**
+   * Adds a battle message for the specified player.
+   * @param p Player to recieve message.
+   * @param msg Message to send.
+   */
+  public synchronized void message(Player p, String msg) {
+    messageBuffers.get(p).append(msg);
+  }
+
+  /**
+   * Determines if a defending player successfully parries an attack.
+   * @param defender The player defending an attack.
+   * @return True if the attack is parried, false otherwise.
+   */
+  public static boolean parry(Player defender) {
+    int skillLevel = defender.getPassiveLevel("parry");
+    if (skillLevel < 1) {
+      return false;
+    }
+    double chance = 0.05 + 0.1 * ((double)skillLevel / 100.0);
+    return Roll.uniform() < chance;
+  }
+
+  /**
+   * Roll to hit with normal scale potency.
+   * @see Battle.rollToHit(Player, Player, int)
+   */
+  public static AttackResult rollToHit(Player attacker, Player defender) {
+    return rollToHit(attacker, defender, 100);
+  }
+
+  /**
+   * Performs a roll to see if an attacker hits a defender with a basic attack.
+   * @param attacker The attacking player.
+   * @param defender The defending player.
+   * @param potency Potency of the attack (scales the attacker roll).
+   * @return True if the attack succeeds, false otherwise.
+   */
+  public static AttackResult rollToHit(
+    Player attacker,
+    Player defender,
+    int potency
+  ) {
+    int ac = defender.getAC();
+    double attackRoll = (double)attacker.getAttackRoll();
+    int hitMod = attacker.getHitMod();
+
+    // Make the roll
+    double roll = attackRoll * Roll.uniform() + 1.0;
+
+    // Determine if the attack is critical
+    boolean critical = roll > attackRoll - (attackRoll * CRITICAL_CHANCE);
+
+    // Add attacker's hit modifier
+    roll += hitMod;
+
+    // Apply attacker passives
+    if (attacker.hasPassive("battle trance")) {
+      roll = (int)((double)roll * 1.1);
+    }
+
+    // Scale by the potency
+    roll *= (double)potency / 100.0;
+
+    // Apply defender passives
+    boolean parried = Battle.parry(defender);
+
+    // Calculate the result
+    if (!parried) {
+      if (critical) return AttackResult.CRITICAL;
+      if (roll > ac) return AttackResult.HIT;
+    }
+    return AttackResult.MISS;
+  }
+
+  /**
+   * Performs a damage roll with normal potency.
+   * @see Battle.rollDamage(Player, Player, boolean, int)
+   */
+  public static int rollDamage(Player attacker, Player defender, boolean crit) {
+    return Battle.rollDamage(attacker, defender, crit, 100);
+  }
+
+  /**
+   * Performs a roll to determine the amount of damage for a successful hit.
+   * @param attacker The attacking player.
+   * @param defender The defending player.
+   * @param crit Whether or not the attack is a critical hit.
+   * @return The amount of damage dealt.
+   */
+  public static int rollDamage(
+    Player attacker,
+    Player defender,
+    boolean crit,
+    int potency
+  ) {
+    int averageDamage = attacker.getAverageDamage();
+    int damageMod = attacker.getDamageMod();
+    double damage = (double)Roll.normal(averageDamage) + damageMod;
+
+    // Apply attacker passives
+    if (attacker.hasPassive("battle trance")) {
+      damage = damage * 1.1;
+    }
+
+    // Apply potency
+    damage *= (double)potency / 100.0;
+
+    // Apply critical hits
+    if (crit) {
+      damage *= 2.0;
+    }
+
+    // Result
+    return (int)damage;
+  }
+
+  /**
+   * Executes a round of the battle.
+   */
+  public synchronized void round() {
+    Log.trace("Battle: Synchronizing participants.");
+    for (Player attacker : participants) {
+      Player target = targets.get(attacker);
+      if (target == null) continue;
+
+      int numberOfAttacks = attacker.getNumberOfAttacks();
+      int damage = 0;
+      int hits = 0;
+
+      Log.trace(String.format(
+        "Battle: %s attacks %s.",
+        attacker.getName(),
+        target.getName()));
+
+      for (int i = 0; i < numberOfAttacks; i++) {
+        try {
+          AttackResult result = Battle.rollToHit(attacker, target);
+          if (result != AttackResult.MISS) {
+            hits++;
+            damage += Battle.rollDamage(
+              attacker, target, result == AttackResult.CRITICAL);
+          }
+        }
+        catch (Exception e) {
+          Log.error("Error calculating attack roll and damage.");
+          e.printStackTrace();
+        }
+      }
+
+      int actualDamage = target.applyDamage(damage);
+
+      if (hits == 0) {
+        messageBuffers.get(attacker).append(String.format(
+          "Your attack missed %s.\n\r",
+          target.getName()));
+        messageBuffers.get(target).append(String.format(
+          "%s {gmissed{x you completely!\n\r",
+          attacker.getName()));
+      } else if (hits == 1) {
+        messageBuffers.get(attacker).append(String.format(
+          "[{g%d{x] You hit %s!\n\r",
+          actualDamage, target.getName()));
+        messageBuffers.get(target).append(String.format(
+          "<{r%d{x> %s hit you!\n\r",
+          actualDamage, attacker.getName()));
+      } else {
+        messageBuffers.get(attacker).append(String.format(
+          "[{g%d{x] You hit %s {y%d{x times!\n\r",
+          actualDamage, target.getName(), hits));
+        messageBuffers.get(target).append(String.format(
+          "<{r%d{x> %s hit you {y%d{x times!\n\r",
+          actualDamage, attacker.getName(), hits));
+      }
+    }
+
+    Set<Player> dead = new HashSet<Player>();
+    for (Player p : participants) {
+      if (p.isDead()) dead.add(p);
+    }
+
+    Log.trace("Cleaning up and sending messages.");
+
+    for (Player p : messageBuffers.keySet()) {
+      StringBuffer messageBuffer = messageBuffers.get(p);
+      p.sendMessage(messageBuffers.get(p).toString().trim());
+      messageBuffer.setLength(0);
+    }
+
+    for (Player p : dead) {
+      remove(p);
+      p.die(null);
+    }
   }
 }

@@ -24,8 +24,8 @@ public class Template implements Comparable<Template> {
 
   /**
    * Compares two templates by their uuid.
-   * @param  t Template to compare.
-   * @return   0 if the mobiles are the same, -1 or 1 otherwise.
+   * @param t Template to compare.
+   * @return 0 if the templates are the same, -1 or 1 otherwise.
    */
   public int compareTo(Template t) {
     return uuid.compareTo(t.getUUID());

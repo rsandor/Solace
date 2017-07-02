@@ -105,7 +105,7 @@ public class Strings {
     b.append(right);
     b.append(post);
     b.append("\n\r");
-    
+
     return b.toString();
   }
 

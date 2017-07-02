@@ -25,4 +25,9 @@ public interface StateController
    * @param input Input to parse.
    */
   public void parse(String input);
+
+  /**
+   * @return The prompt the connection should send to the client.
+   */
+  public String getPrompt();
 }

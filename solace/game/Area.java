@@ -4,10 +4,9 @@ import java.util.*;
 
 /**
  * Holds information pretaining to an area.
- * @author Ryan Sandor Richards (Gaius)
+ * @author Ryan Sandor Richards
  */
-public class Area
-{
+public class Area {
   String id = "";
   String title = "";
   String author = "";

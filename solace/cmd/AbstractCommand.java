@@ -13,13 +13,13 @@ public abstract class AbstractCommand
   implements Command
 {
   String name;
+  boolean skipPrompt = false;
 
   /**
    * Creates a new <code>AbstractCommand</code> with the given name.
    * @param n Name for the command.
    */
-  public AbstractCommand(String n)
-  {
+  public AbstractCommand(String n) {
     name = n.toLowerCase();
   }
 
@@ -45,8 +45,7 @@ public abstract class AbstractCommand
   /**
    * @see solace.cmd.Command.getName()
    */
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 

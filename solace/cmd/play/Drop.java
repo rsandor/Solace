@@ -8,7 +8,7 @@ import solace.util.*;
 
 /**
  * The drop command is used to remove items from a character's inventory
- * and place them into the character's current room.
+ * and place them into the current room.
  * @author Ryan Sandor Richards
  */
 public class Drop extends PlayCommand {
@@ -22,8 +22,13 @@ public class Drop extends PlayCommand {
       return false;
     }
 
+    if (character.isSleeping()) {
+      c.sendln("You cannot drop anything, for you are fast asleep.");
+      return false;
+    }
+
     String name = params[1];
-    Item item = character.getItem(name);
+    Item item = character.findItem(name);
 
     if (item == null) {
       c.sendln("You do not currently possess '" + name + "'.");
