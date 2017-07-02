@@ -58,7 +58,7 @@ public class Hotbar extends PlayCommand {
       character.setHotbarCommand(key, command);
       return true;
     }
-    character.sendln("Usage: hotbar <key> <command>");
+    character.sendln("Usage: hotbar [<key> <command>]");
     return false;
   }
 }

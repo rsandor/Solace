@@ -38,7 +38,7 @@ public class CoupDeGrace extends CooldownCommand {
 
     AttackResult result = Battle.rollToHit(player, target, POTENCY);
     if (result == AttackResult.MISS) {
-      player.sendMessage("Your {mriposte{x misses!");
+      player.sendMessage("Your {mcoup de grace{x misses!");
       return false;
     }
 
