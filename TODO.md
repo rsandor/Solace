@@ -2,20 +2,10 @@
 
 ### In Progress
 
-**Feature: Help Cleanup**
-- [x] Cleanup skills and add major/minor associated abilities
-- [x] Help articles for `cooldown` and `hotbar` commands
-- [x] Buff & debuff help articles
-  - [x] Better buff/debuff names
-  - [x] Allow messages for application and removal to be defined in JSON
-  - [x] Help pages for each buff and debuff
-  - [x] Fix bugs in buff implementation
-  - [x] Global timer buff manager for expiring buffs automatically
-- [x] Better text for indefinite buffs
-- [x] Cooldown Actions overview article (cooldowns)
-  - [x] Help pages for each current cooldown
-- [x] Passive enhancements overview article
-  - [x] Help pages for each passive enhancement
+**Feature: Advanced Spellcasting**
+- [ ] Spellcasting with cast times
+- [ ] Saving Throws unit testing
+- [ ] Spells and Spellcasting help articles
 
 --------------------------------------------------------------------------------
 
@@ -26,11 +16,6 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
-
-**Feature: Advanced Spellcasting**
-- [ ] Spellcasting with cast times
-- [ ] Saving Throws unit testing
-- [ ] Spells and Spellcasting help articles
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
@@ -133,6 +118,21 @@ Unorganized:
 --------------------------------------------------------------------------------
 
 Done:
+**Feature: Help Cleanup**
+- [x] Cleanup skills and add major/minor associated abilities
+- [x] Help articles for `cooldown` and `hotbar` commands
+- [x] Buff & debuff help articles
+  - [x] Better buff/debuff names
+  - [x] Allow messages for application and removal to be defined in JSON
+  - [x] Help pages for each buff and debuff
+  - [x] Fix bugs in buff implementation
+  - [x] Global timer buff manager for expiring buffs automatically
+- [x] Better text for indefinite buffs
+- [x] Cooldown Actions overview article (cooldowns)
+  - [x] Help pages for each current cooldown
+- [x] Passive enhancements overview article
+  - [x] Help pages for each passive enhancement
+**Uncategorized Prior Work**
 - [x] Skill: evocation lite
   - [x] Basic GCD Spellcasting attacks (icespike)
   - [x] Basic GCD Spellcasting for mana cost (flamestrike)
