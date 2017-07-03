@@ -23,7 +23,7 @@ public class Skullknock extends CooldownCommand {
   public boolean execute(int level, Player target) {
     boolean isHit = executePhysicalAttack(target, POTENCY);
     if (isHit) {
-      target.applyBuff(Buffs.create("stun", 4));
+      target.applyBuff(Buffs.create("stunned", 4));
     }
     return isHit;
   }

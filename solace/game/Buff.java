@@ -73,6 +73,34 @@ public class Buff {
   public boolean isDebuff() { return Buffs.isDebuff(name); }
 
   /**
+   * @return The begin message for targets of the buff.
+   */
+  public String getTargetBeginMessage() {
+    return Buffs.getTargetBeginMessage(name);
+  }
+
+  /**
+   * @return The end message for targets of the buff.
+   */
+  public String getTargetEndMessage() {
+    return Buffs.getTargetEndMessage(name);
+  }
+
+  /**
+   * @return The begin message for observers of the buff.
+   */
+  public String getObserverBeginMessage() {
+    return Buffs.getObserverBeginMessage(name);
+  }
+
+  /**
+   * @return The end message for observers of the buff.
+   */
+  public String getObserverEndMessage() {
+    return Buffs.getObserverEndMessage(name);
+  }
+
+  /**
    * Determines if the buff has expired.
    * @return True if the buff has expired, false otherwise.
    */

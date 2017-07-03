@@ -63,6 +63,9 @@ public class Game
    * stopping all network communication to clients.
    */
   public static void shutdown() {
+    BattleManager.stop();
+    BuffsManager.stop();
+
     Log.info("Stopping account writer.");
     writer.stop();
 

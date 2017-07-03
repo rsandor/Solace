@@ -504,4 +504,9 @@ public interface Player {
    * @param event Name of the action that has occured involving the player.
    */
   public void resetVisibilityOnAction(String event);
+
+  /**
+   * Refreshes buffs for the player and removes those that have expired.
+   */
+  public void removeExpiredBuffs();
 }

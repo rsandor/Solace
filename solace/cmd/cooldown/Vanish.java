@@ -22,10 +22,6 @@ public class Vanish extends CooldownCommand {
 
   public boolean execute(int level, Player target) {
     // Apply the "vanished buff"
-    player.sendMessage("You vanish into thin air!");
-    player.getRoom().sendMessage(String.format(
-      "%s vanishes into thin air!",
-      player.getName()), player);
     player.applyBuff("vanished");
 
     // Stop battle (if applicable)

@@ -107,4 +107,15 @@ public class MobileManager {
   public static MobileManager getInstance() {
     return instance;
   }
+
+  /**
+   * Removes all expired buffs from all mobiles in the game.
+   */
+  public static void removeExpiredBuffs() {
+    synchronized (instance.mobiles) {
+      for (Mobile m : instance.mobiles) {
+        m.removeExpiredBuffs();
+      }
+    }
+  }
 }

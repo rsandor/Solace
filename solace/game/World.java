@@ -41,7 +41,7 @@ public class World {
     Skills.initialize();
     Races.initialize();
     Buffs.initialize();
-    
+
     loadAreas();
 
     connections = Collections.synchronizedList(new LinkedList<Connection>());
@@ -54,6 +54,7 @@ public class World {
 
     BattleManager.start();
     RecoveryManager.start();
+    BuffsManager.start();
 
     Log.info("Game world loaded");
 
@@ -218,6 +219,17 @@ public class World {
    */
   public static Collection<solace.game.Character> getActiveCharacters() {
     return playing;
+  }
+
+  /**
+   * Removes all expired buffs from players in the game world.
+   */
+  public static void removeExpiredPlayerBuffs() {
+    synchronized (playing) {
+      for (solace.game.Character ch : playing) {
+        ch.removeExpiredBuffs();
+      }
+    }
   }
 
   /**
