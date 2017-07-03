@@ -51,6 +51,7 @@ public class Battle {
     participants.remove(p);
     attackers.removeAll(p);
     targets.remove(p);
+    p.setStanding(); // Removes the "fighting" state from the player
   }
 
   /**

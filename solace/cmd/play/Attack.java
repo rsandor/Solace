@@ -40,7 +40,7 @@ public class Attack extends PlayCommand {
     }
 
     String name = params[1];
-    Player target = room.findPlayer(name);
+    Player target = room.findPlayerIfVisible(name, character);
 
     if (target == null) {
       character.sendln(String.format("You do not see %s here.", name));

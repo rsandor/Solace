@@ -154,7 +154,7 @@ public abstract class CooldownCommand extends AbstractCommand {
     // If applicable, find and assign a target.
     Player target = null;
     if (params.length > 1) {
-      target = player.getRoom().findPlayer(params[1]);
+      target = player.getRoom().findPlayerIfVisible(params[1], player);
     }
 
     // Determine if the target is fighting in another battle

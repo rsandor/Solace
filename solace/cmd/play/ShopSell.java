@@ -41,6 +41,8 @@ public class ShopSell extends ShopCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("sell");
+
     long price = shop.buyPrice(item);
     if (price < 1) {
       character.wrapln(String.format(

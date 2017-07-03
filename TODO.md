@@ -2,22 +2,26 @@
 
 Current Feature: Player Character Races
 - Skill: evocation
-  - [x] Basic Spellcasting attacks (icespike)
-  - [ ] Spellcasting with cast times
-  - [ ] Saving Throws unit testing
-- Player Races 1.0
+  - [x] Basic GCD Spellcasting attacks (icespike)
+  - [ ] Basic GCD Spellcasting for mana cost (flamestrike)
+- [x] Player Races 1.0
   - [x] Human
   - [x] Elf
   - [x] Dwarf
-  - [ ] Gnome
-  - [ ] Halfling
+  - [x] Gnome
+  - [x] Halfling
 - Race Help Files
+
+Feature: Advanced Spellcasting
+- [ ] Spellcasting with cast times
+- [ ] Saving Throws unit testing
 
 Feature: Character Creation
 - Stats 3.0
   - Floating point based
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
   - Incorporate ability scores into game math for skills
+  - Incorporate skill level into game math for skill cooldowns
 - Character Creator 2.0
 
 Feature: Loot System
@@ -35,6 +39,7 @@ Feature: Leveling System
   - Skill leveling?
 
 Features:
+- Auto fix "fighting" state on reload if not fighting (server crash, etc.)
 - Random dreams while sleeping (fun and refreshes prompt)
 - Better `skill` command formatting (currently very hard to read)
 - Interrupt casting (performing certain actions interrupts the spell, etc.)

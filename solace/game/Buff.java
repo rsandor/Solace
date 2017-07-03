@@ -11,6 +11,7 @@ import java.util.Date;
  * - Double potency of cooldowns for 10 seconds
  * - Reduce AC by 10% for 15 seconds
  * - Increase bartering effectiveness for 2 minutes
+ * - Vanish from sight indefinitely until moving or attacking
  *
  * As is noted above a buff may affect a player in a positive or negative way.
  * When a buff affects a player in a negative way it is called a "debuff".
@@ -18,9 +19,13 @@ import java.util.Date;
  * @author Ryan Sandor Richards
  */
 public class Buff {
+  public static int TIME_REMAINING_EXPIRED = 0;
+  public static int TIME_REMAINING_INDEFINATE = -1;
+
   String name;
   int level;
   Date expiry;
+  boolean indefinite = false;
 
   /**
    * Creates a new buff with the given name and duration.
@@ -29,6 +34,9 @@ public class Buff {
    */
   public Buff(String n, int s) {
     name = n;
+    if (s < 0) {
+      indefinite = true;
+    }
     expiry = new Date(new Date().getTime() + 1000 * s);
   }
 
@@ -69,7 +77,20 @@ public class Buff {
    * @return True if the buff has expired, false otherwise.
    */
   public boolean hasExpired() {
+    if (indefinite) {
+      return false;
+    }
     return new Date().after(expiry);
+  }
+
+  /**
+   * Sets the buff as immediately expired. Useful for spells that strip buffs
+   * and handling the expiry of indefinite length buffs (e.g. vanish, hide,
+   * etc.).
+   */
+  public void setExpired() {
+    indefinite = false;
+    expiry = new Date(new Date().getTime() - 1000 * 86400);
   }
 
   /**
@@ -77,7 +98,9 @@ public class Buff {
    *   buff has already expired.
    */
   public int getTimeRemaining() {
-    if (hasExpired()) return -1;
-    return (int)((expiry.getTime() - new Date().getTime()) / 1000);
+    if (indefinite) return TIME_REMAINING_INDEFINATE;
+    if (hasExpired()) return TIME_REMAINING_EXPIRED;
+    return Math.max(
+      0, (int)((expiry.getTime() - new Date().getTime()) / 1000));
   }
 }

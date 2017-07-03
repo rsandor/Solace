@@ -35,6 +35,8 @@ public class Drop extends PlayCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("drop");
+
     String description = item.get("description.inventory");
     Room room = character.getRoom();
     character.removeItem(item);

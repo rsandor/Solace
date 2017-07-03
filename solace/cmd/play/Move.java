@@ -133,6 +133,8 @@ public class Move extends PlayCommand {
 
     String charName = character.getName();
 
+    character.resetVisibilityOnAction("move");
+
     // Remove the character from its current room
     origin.getCharacters().remove(character);
     origin.sendMessage(String.format(exitFormat, charName));

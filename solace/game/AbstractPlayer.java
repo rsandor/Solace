@@ -347,7 +347,10 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
-  public int getSpeed() { return getAbility("speed"); }
+  public int getSpeed() {
+    int spe = getAbility("speed");
+    return hasPassive("light-footed") ? (int)(1.1 * spe) : spe;
+  }
 
   /**
    * @see solace.game.Player
@@ -533,7 +536,7 @@ public abstract class AbstractPlayer implements Player {
     if (!hasBuff(name)) {
       return null;
     }
-    Buff b = getBuff(name);
+    Buff b = buffs.get(name);
     if (b.hasExpired()) {
       removeBuff(b.getName());
       return null;
@@ -643,5 +646,36 @@ public abstract class AbstractPlayer implements Player {
    */
   public void setCasting(boolean c) {
     casting = c;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isVisibleTo(Player viewer) {
+    // TODO Add a special buff that allows players to see "vanished" players
+    //      this should not be easy to attain for player characters, but some
+    //      "god" level mobs should always have the buff.
+    if (hasBuff("vanished")) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void resetVisibilityOnAction(String event) {
+    // TODO Various buffs need to be added to make this implementation more
+    //      interesting and vairable depending on the situation. For the time
+    //      being basically everything that can drop the "vanished" buff will
+    //      do so (helps us avoid having to fix all messaging around movement
+    //      dropping items, etc., for instance: "Someone moves west..." or
+    //      simply omitting the message at all, etc.).
+    if (hasBuff("vanished")) {
+      removeBuff("vanished");
+      sendMessage("You reappear from your vanished state.");
+      getRoom().sendMessage(String.format(
+        "%s appears out of thin air!", getName()), this);
+    }
   }
 }

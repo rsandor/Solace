@@ -61,14 +61,15 @@ public class Room {
   /**
    * Sends a message to all of the characters in a room. Excluding the given
    * player character (useful for messages sent as a result of a character's
-   * actions).
+   * actions). Players who cannot see the excluded player will not recieve the
+   * message.
    * @param message Message to send.
    * @param exclude Player to exclude when sending the message.
    */
   public void sendMessage(String message, Player exclude) {
     synchronized(characters) {
       for (Player ch : characters) {
-        if (ch == exclude)
+        if (ch == exclude || !exclude.isVisibleTo(ch))
           continue;
         ch.sendMessage(message);
       }
@@ -115,7 +116,7 @@ public class Room {
    * @param exclude Character or mobile to exclude.
    * @return A list of characters or mobiles excluding the one given.
    */
-  public List<Player> getOtherCharacters(Player exclude) {
+  public List<Player> getOtherPlayers(Player exclude) {
     List<Player> others = new LinkedList<Player>();
     synchronized (characters) {
       for (Player ch : characters) {
@@ -128,6 +129,22 @@ public class Room {
   }
 
   /**
+   * @param viewer Character or mobile to exclude.
+   * @return A list of visible characters or mobiles excluding and from the
+   *   perspective of the given one.
+   */
+  public List<Player> getOtherVisiblePlayers(Player viewer) {
+    List<Player> others = getOtherPlayers(viewer);
+    List<Player> visible = new LinkedList<Player>();
+    for (Player p : others) {
+      if (p.isVisibleTo(viewer)) {
+        visible.add(p);
+      }
+    }
+    return visible;
+  }
+
+  /**
    * Finds a character or mobile in the room with the given name prefix.
    * @param namePrefix Name prefix for the character to find.
    * @return The character or null if none was found.
@@ -136,6 +153,24 @@ public class Room {
     synchronized (characters) {
       for (Player p : characters) {
         if (p.hasName(namePrefix)) {
+          return p;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Finds a player in the room with the given name prefix if they are visible
+   * to the given viewer.
+   * @param namePrefix Name prefix for the character to find.
+   * @param viewer Player who is looking for the player.
+   * @return The character or null if none was found.
+   */
+  public Player findPlayerIfVisible(String namePrefix, Player viewer) {
+    synchronized (characters) {
+      for (Player p : characters) {
+        if (p.hasName(namePrefix) && p.isVisibleTo(viewer)) {
           return p;
         }
       }
@@ -240,7 +275,7 @@ public class Room {
    * @return A string describing the room.
    */
   public String describeTo(solace.game.Character ch) {
-    List<Player> others = getOtherCharacters(ch);
+    List<Player> others = getOtherVisiblePlayers(ch);
 
     // Title and description of the room
     StringBuffer buffer = new StringBuffer();

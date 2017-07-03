@@ -31,8 +31,10 @@ public class Buffs extends PlayCommand {
           "%dh%dm", time / 3600, (time % 3600) / 60));
       } else if (time > 60) {
         timeRemaining.append(String.format("%dm%ds", time / 60, time % 60));
-      } else {
+      } else if (time >= 0) {
         timeRemaining.append(String.format("%ds", time));
+      } else if (time <= Buff.TIME_REMAINING_INDEFINATE) {
+        timeRemaining.append("indefinite (special)");
       }
       timeRemaining.append("{b){x");
 

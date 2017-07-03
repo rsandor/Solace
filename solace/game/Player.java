@@ -488,4 +488,20 @@ public interface Player {
    * @param setter Player who is initiated the change of immortal status.
    */
   public void setImmortal(boolean i, Player setter);
+
+  /**
+   * Determines whether or not this player is visible to given viewer.
+   * @param viewer Viewer of this player.
+   * @return `true` if the player is visible, `false` otherwise.
+   */
+  public boolean isVisibleTo(Player viewer);
+
+  /**
+   * Resets the visibility state of the player by removing appropriate buffs
+   * given the name of an event that has occurred involving the player. Whether
+   * or not visibility altering buffs are removed depends on the narture of the
+   * buff and what action has been taken.
+   * @param event Name of the action that has occured involving the player.
+   */
+  public void resetVisibilityOnAction(String event);
 }

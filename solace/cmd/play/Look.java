@@ -49,7 +49,7 @@ public class Look extends PlayCommand {
       return true;
     }
 
-    Player player = room.findPlayer(name);
+    Player player = room.findPlayerIfVisible(name, character);
     if (player != null) {
       String desc = player.getDescription();
       if (desc == null) {
@@ -58,8 +58,15 @@ public class Look extends PlayCommand {
       c.wrapln(Strings.toFixedWidth(desc));
 
       if (!player.isMobile()) {
-        player.sendMessage(String.format(
-          "%s looks at you.", character.getName()));
+        if (character.isVisibleTo(player)) {
+          player.sendMessage(String.format(
+            "%s looks at you.", character.getName()));
+        } else {
+          // TODO I feel like there should be some sort of check here that
+          //      determines wherther or not you even see this message. Some
+          //      sort of inate perception check?
+          player.sendMessage("You feel as if you are being watched.");
+        }
       }
 
       return true;
