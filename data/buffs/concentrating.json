@@ -1,0 +1,10 @@
+{
+  "name": "concentrating",
+  "description": "Doubles potency for all attacks and actions.",
+  "debuff": false,
+  "duration": 10,
+  "targetBeginMessage": "You enter into a state of total concentration!",
+  "targetEndMessage": "Your focus falters as you lose concentration.",
+  "observerBeginMessage": "",
+  "observerEndMessage": ""
+}
