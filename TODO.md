@@ -2,7 +2,7 @@
 
 Current Feature: Help Cleanup
 - [x] Cleanup skills and add major/minor associated abilities
-- [ ] Help articles for `cooldown` and `hotbar` commands
+- [x] Help articles for `cooldown` and `hotbar` commands
 - [ ] Full help article describing battle
 - [ ] Buff & debuff help articles
   - [ ] Help pages for each buff and debuff
