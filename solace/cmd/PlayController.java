@@ -27,6 +27,10 @@ public class PlayController extends AbstractStateController {
     "attack", "kill", "fight"
   };
 
+  static final String[] buffsAliases = {
+    "buffs", "affects"
+  };
+
   /**
    * Generates the dynamic custom prompt for the player.
    * NOTE This may not belong here, factor out?
@@ -143,10 +147,20 @@ public class PlayController extends AbstractStateController {
   }
 
   /**
-   * Parses input commands while accounting for hotbar commands and macros.
+   * Parses input commands while accounting for hotbar commands, macros, etc.
    * @param input Input to parse.
    */
   public void parse(String input) {
+    if (character.hasBuff("stun")) {
+      character.sendln("You are stunned and cannot act!");
+      return;
+    }
+
+    if (character.isCasting()) {
+      character.sendln("You are focusing on casting and cannot act further!");
+      return;
+    }
+
     if (input == null || connection == null || input.length() < 1) return;
     String[] params = input.split("\\s");
     if (params.length < 1) return;
@@ -181,6 +195,9 @@ public class PlayController extends AbstractStateController {
     addCommand(new Worth(character));
     addCommand(new Inventory(character));
     addCommand(new ListSkills(character));
+    addCommand(buffsAliases, new solace.cmd.play.Buffs(character));
+    addCommand(new Cooldown(character));
+    addCommand(new Passive(character));
 
     addCommand(new Wear(character));
     addCommand(new Equipment(character));
@@ -201,18 +218,31 @@ public class PlayController extends AbstractStateController {
     addCommand(new Wake(character));
 
     addCommand(new Prompt(character));
-    addCommand(new Cooldown(character));
     addCommand(new Hotbar(character));
 
+    // Emotes
     Emote emote = new Emote(character);
     addCommand(emote);
     addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
 
+    // Skill: One-handed
     addCommand(new Flurry(character));
     addCommand(new Slash(character));
     addCommand(new Riposte(character));
     addCommand(new CoupDeGrace(character));
 
+    // Skill: Evocation
+    addCommand(new Icespike(character));
+    addCommand(new Flamestrike(character));
+
+    // Racial Skills
+    addCommand(new Survivor(character));
+    addCommand(new Concentrate(character));
+    addCommand(new Skullknock(character));
+    addCommand(new Aetherflow(character));
+    addCommand(new Vanish(character));
+
+    // Admin Commands
     if (character.getAccount().isAdmin()) {
       addCommand(new Inspect(character));
       addCommand(new solace.cmd.admin.Set(character));

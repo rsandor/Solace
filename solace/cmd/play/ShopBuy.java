@@ -48,6 +48,8 @@ public class ShopBuy extends ShopCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("buy");
+
     Item sample = item.getSampleItem();
     if (sample == null) {
       // This is a weird scenario but possible at the time being since we don't

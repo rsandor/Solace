@@ -105,9 +105,14 @@ public class BattleManager {
         target.getName()
       ));
 
+      attacker.resetVisibilityOnAction("attack");
+      target.resetVisibilityOnAction("defend");
+
+      // Set the attacker and target as both fighting
       attacker.setFighting();
       target.setFighting();
 
+      // Create the new battle
       Battle battle = new Battle();
       battle.add(attacker);
       battle.add(target);

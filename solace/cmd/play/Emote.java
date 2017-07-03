@@ -41,6 +41,7 @@ public class Emote extends PlayCommand {
 
       String msg = buffer.toString().trim();
 
+      character.resetVisibilityOnAction("emote");
       room.sendMessage(
         character.getName() + " " + msg,
         character
@@ -59,13 +60,16 @@ public class Emote extends PlayCommand {
 
       String emote = params[0];
       String targetName = params[1];
-      Player target = room.findPlayer(targetName);
+      Player target = room.findPlayerIfVisible(targetName, character);
 
       if (target == null) {
         character.wrapln("You do not see " + targetName + " here.");
         return false;
       }
 
+      character.resetVisibilityOnAction("emote");
+
+      // TODO This might need to use `room.sendMessage` instead...
       Collection<Player> roomChars = room.getCharacters();
       synchronized(roomChars) {
         for (Player ch : roomChars) {

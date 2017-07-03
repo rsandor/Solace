@@ -13,6 +13,7 @@ public abstract class AbstractCommand
   implements Command
 {
   String name;
+  String displayName;
   boolean skipPrompt = false;
 
   /**
@@ -21,6 +22,7 @@ public abstract class AbstractCommand
    */
   public AbstractCommand(String n) {
     name = n.toLowerCase();
+    setDisplayName(n);
   }
 
   /**
@@ -47,6 +49,22 @@ public abstract class AbstractCommand
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * @see solace.cmd.Command.getName()
+   */
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  /**
+   * Method for use by subclasses for setting the display name if it differs
+   * from the command name.
+   * @param d Desired display name for the command.
+   */
+  protected void setDisplayName(String d) {
+    displayName = d;
   }
 
   /**

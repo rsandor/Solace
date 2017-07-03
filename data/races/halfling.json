@@ -1,0 +1,5 @@
+{
+  "name": "halfling",
+  "passives": ["light-footed"],
+  "cooldowns": ["vanish"]
+}

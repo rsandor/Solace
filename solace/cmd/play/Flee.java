@@ -46,9 +46,8 @@ public class Flee extends PlayCommand {
     Exit exit = exits.get(Roll.index(exits.size()));
     Room destination = area.getRoom(exit.getToId());
 
-    // Remove from battle and set to the "standing" state
+    // Remove from battle
     battle.remove(character);
-    character.setStanding();
     character.sendln("You flee from battle!");
 
     // Construct the format messages to broadcast to the rooms

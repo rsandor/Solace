@@ -21,9 +21,11 @@ public class Score extends PlayCommand {
     buf.append(Strings.RULE);
 
     String title = String.format(
-      "| {cName:{x %s | {cLevel:{x %d",
+      "| {cName:{x %s | {cLevel:{x %d | {cRace:{x %s%s",
       character.getName(),
-      character.getLevel()
+      character.getLevel(),
+      character.getRace().getName(),
+      character.isImmortal() ? " | {Y[IMMORTAL]{x" : ""
     );
     buf.append(
       title + Strings.spaces(80 - 1 - Color.strip(title).length()) + "|\n\r"

@@ -1,0 +1,5 @@
+{
+  "name": "elf",
+  "passives": ["meditation"],
+  "cooldowns": ["concentrate"]
+}

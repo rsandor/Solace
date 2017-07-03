@@ -1,0 +1,6 @@
+{
+  "name": "vanished",
+  "description": "You are nearly completely undetectable and cannot be engaged in battle.",
+  "debuff": false,
+  "duration": -1
+}

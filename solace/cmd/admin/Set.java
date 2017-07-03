@@ -48,6 +48,23 @@ public class Set extends PlayCommand {
       } else if (param.equals("hp")) {
         int hp = Integer.parseInt(value);
         p.setHp(hp);
+      } else if (param.equals("mp")) {
+        int mp = Integer.parseInt(value);
+        p.setMp(mp);
+      } else if (param.equals("race")) {
+        if (!Races.has(value)) {
+          throw new Exception("Invalid player race: " + value);
+        }
+        if (p.isMobile()) {
+          throw new Exception("Mobiles cannot have races.");
+        }
+        ((solace.game.Character)p).setRace(Races.get(value));
+      } else if (param.equals("immortal")) {
+        // Player immortality can only be set by immortals, it prevents all
+        // damage to the player who is currently flagged as such. This shouldn't
+        // be used outside of testing.
+        // TODO Support `true` and `false` value commands.
+        p.toggleImmortal(character);
       } else {
         throw new Exception("Invalid parameter: " + param);
       }

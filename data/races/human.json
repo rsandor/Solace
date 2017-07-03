@@ -1,0 +1,5 @@
+{
+  "name": "human",
+  "passives": ["generalist"],
+  "cooldowns": ["survivor"]
+}

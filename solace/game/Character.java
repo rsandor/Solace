@@ -44,12 +44,14 @@ public class Character extends AbstractPlayer {
   Account account = null;
   String prompt = Character.DEFAULT_PROMPT;
   Hashtable<String, String> hotbar = new Hashtable<String, String>();
+  Race race;
 
   /**
    * Creates a new character.
    * @param n Name for the character;
    */
   public Character(String n) {
+    super();
     name = n;
     level = 1;
     inventory = Collections.synchronizedList(new ArrayList<Item>());
@@ -58,23 +60,33 @@ public class Character extends AbstractPlayer {
   /**
    * Sets the passives and cooldowns this character has based on the character's
    * core skills, role skills, and race.
-   *
-   * - TODO Add races
    */
   public void setPassivesAndCooldowns() {
     super.setPassivesAndCooldowns();
+
+    // Skill based passives and cooldowns
     for (Skill skill : skills) {
-      int level = skill.getLevel();
+      int skillLevel = skill.getLevel();
       for (String passive : skill.getPassives()) {
-        if (level > getPassiveLevel(passive)) {
-          setPassive(passive, level);
+        if (skillLevel > getPassiveLevel(passive)) {
+          setPassive(passive, skillLevel);
         }
       }
       for (String cooldown : skill.getCooldowns()) {
-        if (level > getCooldownLevel(cooldown)) {
-          setCooldown(cooldown, level);
+        if (skillLevel > getCooldownLevel(cooldown)) {
+          setCooldown(cooldown, skillLevel);
         }
       }
+    }
+
+    // Racial passives and cooldowns
+    // NOTE Racial passives and cooldowns always have a skill level of 100.
+    for (String passive : race.getPassives()) {
+      setPassive(passive, 100);
+    }
+
+    for (String cooldown : race.getCooldowns()) {
+      setCooldown(cooldown, 100);
     }
   }
 
@@ -122,7 +134,7 @@ public class Character extends AbstractPlayer {
    * @return The saving throw.
    * @see solace.game.AbstractPlayer
    */
-  protected int getSavingThrow(String name) {
+  public int getSavingThrow(String name) {
     return super.getSavingThrow(name) + getModFromEquipment(name);
   }
 
@@ -500,11 +512,29 @@ public class Character extends AbstractPlayer {
   public String getXML() {
     StringBuffer b = new StringBuffer();
 
+    b.append("<character ");
+
     b.append(String.format(
-      "<character name=\"%s\" level=\"%d\" hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" " +
-      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\">",
-      name, level, hp, mp, sp, gold, majorStat, minorStat, state.toString(), prompt
+      "name=\"%s\" level=\"%d\" race=\"%s\" ",
+      name, level, race.getName()
     ));
+
+    b.append(String.format(
+      "hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" ",
+      hp, mp, sp, gold
+    ));
+
+    b.append(String.format(
+      "major-stat=\"%s\" minor-stat=\"%s\" play-state=\"%s\" prompt=\"%s\" ",
+      majorStat, minorStat, state.toString(), prompt
+    ));
+
+    b.append(String.format(
+      "immortal=\"%s\"",
+      isImmortal() ? "true" : "false"
+    ));
+
+    b.append(">");
 
     // Game location
     if (room != null) {
@@ -608,5 +638,19 @@ public class Character extends AbstractPlayer {
    */
   public void setHotbarCommand(String key, String command) {
     hotbar.put(key, command);
+  }
+
+  /**
+   * @return The race for the character.
+   */
+  public Race getRace() { return race; }
+
+  /**
+   * Sets the race for the character.
+   * @param r Race to set.
+   */
+  public void setRace(Race r) {
+    race = r;
+    setPassivesAndCooldowns();
   }
 }

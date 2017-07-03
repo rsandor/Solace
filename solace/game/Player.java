@@ -1,5 +1,7 @@
 package solace.game;
 
+import java.util.Collection;
+
 /**
  * Behavior set for objects representing people or monsters that can inhabit
  * the game world.
@@ -241,6 +243,21 @@ public interface Player {
   public int getMaxSp();
 
   /**
+   * Gets the saving throw with the given name.
+   * @param name Name of the saving throw.
+   * @return The saving throw.
+   * @see solace.game.Stats
+   */
+  public int getSavingThrow(String name);
+
+  /**
+   * Gets the magic roll for the playe for the given save.
+   * @param name Name of the saving throw for which to make the roll.
+   * @return The magic roll.
+   */
+  public int getMagicRoll(String name);
+
+  /**
    * @return The character's will saving throw.
    */
   public int getWillSave();
@@ -355,8 +372,6 @@ public interface Player {
    */
   public String getComboAction();
 
-  // New Style
-
   /**
    * Determines if the player has a passive of the given name.
    * @param name Name of the passive.
@@ -373,6 +388,11 @@ public interface Player {
   public int getPassiveLevel(String name);
 
   /**
+   * @return A list of passive abilities for the player.
+   */
+  public Collection<String> getPassives();
+
+  /**
    * Determines if a player has a given cooldown action.
    * @param name Name of the cooldown action.
    * @return True if the player possesses the given cooldown, false otherwise.
@@ -386,4 +406,102 @@ public interface Player {
    *   the named cooldown action.
    */
   public int getCooldownLevel(String name);
+
+  /**
+   * @return A list of cooldowns for the player.
+   */
+  public Collection<String> getCooldowns();
+
+  // ---
+
+  /**
+   * Determines if the player is currently affected by a buff of the given name.
+   * @param name Name of the buff.
+   * @return True if the player is affected, false otherwise.
+   */
+  public boolean hasBuff(String name);
+
+  /**
+   * Gets the buff for the player of the given name.
+   * @param name Name of the buff to get.
+   * @return The buff of the given name, or null if no such buff is affecting
+   *   the player.
+   */
+  public Buff getBuff(String name);
+
+  /**
+   * Applies the given buff to the player. This will reapply the buff if it is
+   * already present.
+   * @param b The buff to apply.
+   */
+  public void applyBuff(Buff b);
+
+  /**
+   * Applies a new buff of the given name to the player.
+   * @param name Name of the buff to apply.
+   */
+  public void applyBuff(String name);
+
+  /**
+   * Remove a buff of the given name from the player. Has no effect if the
+   * player is not affected by a buff of the given name.
+   * @param name Name of the buff to remove.
+   */
+  public void removeBuff(String name);
+
+  /**
+   * @return A collection of all buffs currently affecting the player.
+   */
+  public Collection<Buff> getBuffs();
+
+  /**
+   * @return True if the player is currently casting a spell, false otherwise.
+   */
+  public boolean isCasting();
+
+  /**
+   * Sets whether or not the player is casting a spell.
+   * @param c True to set the player as casting, false to set as not casting.
+   */
+  public void setCasting(boolean c);
+
+  /**
+   * @return `true` if the player is flagged as immortal, `false` otherwise.
+   */
+  public boolean isImmortal();
+
+  /**
+   * Toggles the player between being flagged as immortal and not.
+   * @param setter Player who is initiated the change of immortal status.
+   */
+  public void toggleImmortal(Player setter);
+
+  /**
+   * Sets whether or not the player is flagged as immortal.
+   * @param i `true` to flag as immortal, `false` otherwise.
+   */
+  public void setImmortal(boolean i);
+
+  /**
+   * Sets whether or not the player is flagged as immortal.
+   * @param i `true` to flag as immortal, `false` otherwise.
+   * @param setter Player who is initiated the change of immortal status.
+   */
+  public void setImmortal(boolean i, Player setter);
+
+  /**
+   * Determines whether or not this player is visible to given viewer.
+   * @param viewer Viewer of this player.
+   * @return `true` if the player is visible, `false` otherwise.
+   */
+  public boolean isVisibleTo(Player viewer);
+
+  /**
+   * Resets the visibility state of the player by removing appropriate buffs
+   * given the name of an event that has occurred involving the player. Whether
+   * or not visibility altering buffs are removed depends on the narture of the
+   * buff and what action has been taken.
+   * @param event Name of the action that has occured involving the player.
+   */
+  public void resetVisibilityOnAction(String event);
 }

@@ -42,6 +42,8 @@ public class Get extends PlayCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("emote");
+
     // Remove the item from the room and add it to the character's inventory
     room.removeItem(item);
     character.addItem(item);

@@ -2,8 +2,8 @@ package solace.game;
 
 import solace.util.Clock;
 import solace.util.Log;
-import java.util.Date;
-import java.util.Hashtable;
+import solace.util.Buffs;
+import java.util.*;
 
 /**
  * Implements common functionality of the player interface shared by both
@@ -52,6 +52,9 @@ public abstract class AbstractPlayer implements Player {
     new Hashtable<String, CooldownTimer>();
   Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
   Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
+  Hashtable<String, Buff> buffs = new Hashtable<String, Buff>();
+  boolean casting = false;
+  boolean immortal = false;
 
   // Abstract Player Methods
   public abstract void die(Player killer);
@@ -80,12 +83,9 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * Gets the saving throw with the given name.
-   * @param name Name of the saving throw.
-   * @return The saving throw.
-   * @see solace.game.Stats
+   * @see solace.game.Player
    */
-  protected int getSavingThrow(String name) {
+  public int getSavingThrow(String name) {
     try {
       return Stats.getSavingThrow(this, name);
     } catch (InvalidSavingThrowException e) {
@@ -93,6 +93,20 @@ public abstract class AbstractPlayer implements Player {
         "Invalid saving throw name encountered: %s", name));
     }
     return 0;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public int getMagicRoll(String saveName) {
+    try {
+      return Stats.getMagicRoll(this, saveName);
+    } catch (InvalidSavingThrowException e) {
+      Log.error(String.format(
+        "Magic roll attempted with invalid saving throw: %s",
+        saveName));
+      return 0;
+    }
   }
 
   /**
@@ -320,7 +334,10 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
-  public int getVitality() { return getAbility("vitality"); }
+  public int getVitality() {
+    int vit = getAbility("vitality");
+    return hasPassive("stout-hearted") ? (int)(1.1 * vit) : vit;
+  }
 
   /**
    * @see solace.game.Player
@@ -330,7 +347,10 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
-  public int getSpeed() { return getAbility("speed"); }
+  public int getSpeed() {
+    int spe = getAbility("speed");
+    return hasPassive("light-footed") ? (int)(1.1 * spe) : spe;
+  }
 
   /**
    * @see solace.game.Player
@@ -459,6 +479,13 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
+  public Collection<String> getPassives() {
+    return Collections.unmodifiableCollection(passives.keySet());
+  }
+
+  /**
+   * @see solace.game.Player
+   */
   public boolean hasCooldown(String name) {
     return cooldowns.containsKey(name);
   }
@@ -467,8 +494,8 @@ public abstract class AbstractPlayer implements Player {
    * @see solace.game.Player
    */
   public int getCooldownLevel(String name) {
-    if (!hasPassive(name)) return -1;
-    return passives.get(name);
+    if (!hasCooldown(name)) return -1;
+    return cooldowns.get(name);
   }
 
   /**
@@ -478,5 +505,177 @@ public abstract class AbstractPlayer implements Player {
    */
   protected void setCooldown(String name, int level) {
     cooldowns.put(name, level);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Collection<String> getCooldowns() {
+    return Collections.unmodifiableCollection(cooldowns.keySet());
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasBuff(String name) {
+    if (!buffs.containsKey(name)) {
+      return false;
+    }
+    Buff b = buffs.get(name);
+    if (b.hasExpired()) {
+      removeBuff(b.getName());
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Buff getBuff(String name) {
+    if (!hasBuff(name)) {
+      return null;
+    }
+    Buff b = buffs.get(name);
+    if (b.hasExpired()) {
+      removeBuff(b.getName());
+      return null;
+    }
+    return b;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void applyBuff(Buff b) {
+    if (hasBuff(b.getName())) {
+      removeBuff(b.getName());
+    }
+    buffs.put(b.getName(), b);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void applyBuff(String name) {
+    if (hasBuff(name)) {
+      removeBuff(name);
+    }
+    buffs.put(name, Buffs.create(name));
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void removeBuff(String name) {
+    buffs.remove(name);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Collection<Buff> getBuffs() {
+    synchronized (buffs) {
+      List<Buff> remove = new LinkedList<Buff>();
+      for (Buff b : buffs.values()) {
+        if (!b.hasExpired()) continue;
+        remove.add(b);
+      }
+      for (Buff b : remove) {
+        removeBuff(b.getName());
+      }
+      return buffs.values();
+    }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isImmortal() {
+    return immortal;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void toggleImmortal(Player setter) {
+    setImmortal(!immortal, setter);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setImmortal(boolean i) {
+    immortal = i;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void setImmortal(boolean i, Player setter) {
+    immortal = i;
+    if (immortal) {
+      Log.warn(String.format(
+        "Player '%s' has been set as immortal by player '%s'",
+        getName(), setter.getName()));
+      sendMessage(String.format(
+        "You have been granted immortality! You are now impervious to damage!"
+        ));
+      setter.sendMessage(String.format("%s is now immortal.", getName()));
+    } else {
+      Log.warn(String.format(
+        "Player '%s' has been has been set as NOT immortal by player '%s'",
+        getName(), setter.getName()));
+      sendMessage(String.format(
+        "You are no longer immortal! Damage now applies as normal"
+        ));
+      setter.sendMessage(String.format("%s is no longer immortal.", getName()));
+    }
+  }
+
+  /**
+   * @return True if the player is currently casting a spell, false otherwise.
+   */
+  public boolean isCasting() {
+    return casting;
+  }
+
+  /**
+   * Sets whether or not the player is casting a spell.
+   * @param c True to set the player as casting, false to set as not casting.
+   */
+  public void setCasting(boolean c) {
+    casting = c;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isVisibleTo(Player viewer) {
+    // TODO Add a special buff that allows players to see "vanished" players
+    //      this should not be easy to attain for player characters, but some
+    //      "god" level mobs should always have the buff.
+    if (hasBuff("vanished")) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void resetVisibilityOnAction(String event) {
+    // TODO Various buffs need to be added to make this implementation more
+    //      interesting and vairable depending on the situation. For the time
+    //      being basically everything that can drop the "vanished" buff will
+    //      do so (helps us avoid having to fix all messaging around movement
+    //      dropping items, etc., for instance: "Someone moves west..." or
+    //      simply omitting the message at all, etc.).
+    if (hasBuff("vanished")) {
+      removeBuff("vanished");
+      sendMessage("You reappear from your vanished state.");
+      getRoom().sendMessage(String.format(
+        "%s appears out of thin air!", getName()), this);
+    }
   }
 }

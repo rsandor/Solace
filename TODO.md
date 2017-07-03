@@ -1,11 +1,17 @@
 # Master TODO
 
-On Deck:
-- Player Races 1.0
+Current Feature: Advanced Spellcasting + Help Cleanup
+- [ ] Document passives in help files
+- [ ] Document buffs and debuffs in help files
+- [ ] Spellcasting with cast times
+- [ ] Saving Throws unit testing
 
 Feature: Character Creation
+- Stats 3.0
+  - Floating point based
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
   - Incorporate ability scores into game math for skills
+  - Incorporate skill level into game math for skill cooldowns
 - Character Creator 2.0
 
 Feature: Loot System
@@ -23,9 +29,17 @@ Feature: Leveling System
   - Skill leveling?
 
 Features:
+- Auto fix "fighting" state on reload if not fighting (server crash, etc.)
+- Random dreams while sleeping (fun and refreshes prompt)
+- Better `skill` command formatting (currently very hard to read)
+- Interrupt casting (performing certain actions interrupts the spell, etc.)
 - Tactics System 1.0
 - Scripting engine 1.0 (embedded Scala?)
-- Battle System 2.0 (mostly skill balancing at various levels)
+- Battle System 2.0 (mostly skill balancing and redistribution)
+  - better attack roll potency scaling (currently too powerful)
+  - magic attacks currently based on weapon, should be different
+  - better use of skill level to help "to hit" and "damage" rolls
+- Shops commands should refer to the shop owner and be more flavorful
 - Mobiles 2.0
   - Spawn Points
   - Better Wandering
@@ -39,7 +53,7 @@ Features:
 - Single Player Instance Parties (For Dungeon Instances, requires Tactics)
 
 Bugs:
-- Shops commands should refer to the shop owner and be more flavorful
+- Shutdown command sometimes hangs when shutting down subsystems, investigate
 - Move command will fail across areas (uses `Area.getRoom`, needs global lookup)
 
 --------------------------------------------------------------------------------
@@ -47,7 +61,6 @@ Bugs:
 Later:
 - Cooldowns 2.0
   - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-  - Saving Throws unit testing (not really needed until we have magic)
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - Account System 2.0
   - Master account XML with characters in separate files
@@ -55,8 +68,6 @@ Later:
 - Emotes 2.0 (better parameters, add tons of emotes)
 - Stats 2.1 (caching)
 - Decorative banners for shops, inventory, character sheet, etc.
-- Spells, Scrolls, and Spell Casting
-  - Do we even really want this given the cooldown system?
 - Game world calendar + Weather
 - Room lighting, equipable light sources, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
@@ -64,7 +75,7 @@ Later:
 - Item weight & Carrying Capacity
 - Global communication channels
 - Player-to-player auction house
-- Use a connection proxy so the game can be fully recompiled and reloaded
+- Connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------
 
@@ -74,10 +85,22 @@ Help Files:
 - expand upon skills
 - passive enhancements (passives)
 - cooldown actions (cooldowns)
+- `spells`
 
 --------------------------------------------------------------------------------
 
 Done:
+- [x] Skill: evocation lite
+  - [x] Basic GCD Spellcasting attacks (icespike)
+  - [x] Basic GCD Spellcasting for mana cost (flamestrike)
+- [x] Player Races 1.0
+  - [x] Human
+  - [x] Elf
+  - [x] Dwarf
+  - [x] Gnome
+  - [x] Halfling
+- [x] Race Help Files
+- Resource costs for cooldown actions
 - Better Passives/Cooldowns Calculation & Caching
 - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
 - `cooldown` command for listing cooldown time remaining

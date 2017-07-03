@@ -62,6 +62,8 @@ public class Say extends PlayCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("say");
+
     // Oh-ho-ho, sleep talking...
     if (character.isSleeping()) {
       sleepTalk();

@@ -24,6 +24,11 @@ public interface Command
   public String getName();
 
   /**
+   * @return The display name of the command used for messages.
+   */
+  public String getDisplayName();
+
+  /**
    * Determines if the given string matches the command's name (this can
    * somtimes be different than the two strings being lexically identical,
    * consider prefix matches which many MUDs use).

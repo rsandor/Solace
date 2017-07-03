@@ -62,9 +62,7 @@ public class Skills {
    * @return The skill with the given id.
    * @throws SkillNotFoundException If there is no skill with the given id.
    */
-  public static Skill getSkill(String id)
-    throws SkillNotFoundException
-  {
+  public static Skill getSkill(String id) throws SkillNotFoundException {
     if (!skills.containsKey(id)) {
       throw new SkillNotFoundException(id);
     }
@@ -76,9 +74,7 @@ public class Skills {
    * @return A clone of the skill with the given id.
    * @throws SkillNotFoundException If there is no skill with the given id.
    */
-  public static Skill cloneSkill(String id)
-    throws SkillNotFoundException
-  {
+  public static Skill cloneSkill(String id) throws SkillNotFoundException {
     return getSkill(id).clone();
   }
 }

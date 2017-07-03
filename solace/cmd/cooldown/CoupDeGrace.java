@@ -5,6 +5,7 @@ import solace.game.*;
 import solace.net.*;
 import java.io.*;
 import solace.util.*;
+import solace.cmd.InvalidTargetException;
 
 /**
  * "Coup de Grace" is a cooldown action that does 1000 potency damage to a
@@ -16,43 +17,23 @@ public class CoupDeGrace extends CooldownCommand {
 
   public CoupDeGrace(Player p) {
     super("coup", p);
+    setDisplayName("coup de grace");
     setCooldownDuration(120);
     setInitiatesCombat(true);
+    addResourceCost(new SpCost(10));
+  }
+
+  protected void checkValidTarget(Player target) throws InvalidTargetException {
+    super.checkValidTarget(target);
+    boolean isValid = (double)target.getHp() / (double)target.getMaxHp() < 0.3;
+    if (!isValid) {
+      throw new InvalidTargetException(String.format(
+        "%s can only be used on targets with less than 30% health.",
+        getDisplayName()));
+    }
   }
 
   public boolean execute(int level, Player target) {
-    if (!player.isFighting() && target == null) {
-      player.sendln("Who would you like to coup de grace?");
-      return false;
-    }
-
-    if (player.isFighting() && target == null) {
-      target = BattleManager.getBattleFor(player).getTargetFor(player);
-    }
-
-    if ((double)target.getHp() / (double)target.getMaxHp() >= 0.3) {
-      player.sendln(
-        "Coup de grace can only be used on targets with less than 30% health.");
-      return false;
-    }
-
-    AttackResult result = Battle.rollToHit(player, target, POTENCY);
-    if (result == AttackResult.MISS) {
-      player.sendMessage("Your {mcoup de grace{x misses!");
-      return false;
-    }
-
-    boolean critical = result == AttackResult.CRITICAL;
-    int damage = Battle.rollDamage(player, target, critical, POTENCY);
-    target.applyDamage(damage);
-
-    player.sendln(String.format(
-      "[{g%d{x] Your {mcoup de grace{x hits %s!",
-      damage, target.getName()));
-    target.sendln(String.format(
-      "<{r%d{x> %s hits you with a {mcoup de grace{x!",
-      damage, player.getName()));
-
-    return true;
+    return executePhysicalAttack(target, POTENCY);
   }
 }

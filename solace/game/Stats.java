@@ -432,6 +432,7 @@ public class Stats {
    * @param p Player for which to determine the saving throw.
    * @param name Name of the saving throw.
    * @return The value of the saving throw.
+   * @throws InvalidSavingThrowException When given an invalid saving throw.
    */
   public static int getSavingThrow(Player p, String name)
     throws InvalidSavingThrowException
@@ -472,6 +473,45 @@ public class Stats {
       Math.pow(level, CH_SAVING_THROW_LEVEL_POWER)
     );
     return (int)savingThrow;
+  }
+
+  /**
+   * Determines the roll against saving throw of the given name for the given
+   * player.
+   *
+   * The roll against a saving throw for a player is determined by their own
+   * value for that save. A higher will yield better results when rolling.
+   *
+   *   roll = save / 0.25
+   *
+   * @param p Player for which to determine the magic roll.
+   * @param name Name of the saving throw.
+   * @return The value of the saving throw.
+   * @throws InvalidSavingThrowException When given an invalid saving throw.
+   */
+  public static int getMagicRoll(Player p, String name)
+    throws InvalidSavingThrowException
+  {
+    if (!CH_SAVING_THROW_NAMES.contains(name)) {
+      throw new InvalidSavingThrowException(name);
+    }
+
+    int save = 0;
+    if (name.equals("will")) {
+      save = p.getWillSave();
+    } else if (name.equals("reflex")) {
+      save = p.getReflexSave();
+    } else if (name.equals("resolve")) {
+      save = p.getResolveSave();
+    } else if (name.equals("vigor")) {
+      save = p.getVigorSave();
+    } else if (name.equals("prudence")) {
+      save = p.getPrudenceSave();
+    } else if (name.equals("guile")) {
+      save = p.getGuileSave();
+    }
+
+    return 4 * save;
   }
 
   /**

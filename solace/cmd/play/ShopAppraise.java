@@ -42,6 +42,8 @@ public class ShopAppraise extends ShopCommand {
       return false;
     }
 
+    character.resetVisibilityOnAction("appraise");
+
     long price = shop.buyPrice(item);
     if (price < 1) {
       character.wrapln(String.format(

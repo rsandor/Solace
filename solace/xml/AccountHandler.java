@@ -223,6 +223,16 @@ public class AccountHandler extends Handler {
       character.setPrompt(attrs.getValue("prompt"));
     }
 
+    String raceName = attrs.getValue("race");
+    if (raceName == null || !Races.has(raceName)) {
+      raceName = "human";
+    }
+    character.setRace(Races.get(raceName));
+
+    String immortal = attrs.getValue("immortal");
+    if (immortal != null && immortal.equals("true")) {
+      character.setImmortal(true);
+    }
     return State.CHARACTER;
   }
 
