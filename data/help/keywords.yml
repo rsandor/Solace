@@ -48,9 +48,20 @@ commands/stand.md: stand
 commands/wake.md: wake
 commands/rest.md: rest
 commands/prompt.md: prompt
+commands/survivor.md: survivor
+commands/concentrate.md: concentrate
+commands/skullknock.md: skullknock
+commands/aetherflow.md: aetherflow
+commands/vanish.md: vanish
 misc/gold.md: gold currency
 misc/shops.md: shops
 misc/prompt-format.md: format
 skills/index.md: skills
 skills/one-handed.md: one-handed
 skills/block.md: block
+races/index.md: races
+races/human.md: humans
+races/elf.md: elf elves elven elvish
+races/dwarf.md: dwarf dwarves dwarven
+races/gnome.md: gnomes gnomish
+races/halfling.md: halfling

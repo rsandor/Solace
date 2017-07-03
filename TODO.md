@@ -1,18 +1,8 @@
 # Master TODO
 
-Current Feature: Player Character Races
-- Skill: evocation
-  - [x] Basic GCD Spellcasting attacks (icespike)
-  - [ ] Basic GCD Spellcasting for mana cost (flamestrike)
-- [x] Player Races 1.0
-  - [x] Human
-  - [x] Elf
-  - [x] Dwarf
-  - [x] Gnome
-  - [x] Halfling
-- Race Help Files
-
-Feature: Advanced Spellcasting
+Current Feature: Advanced Spellcasting + Help Cleanup
+- [ ] Document passives in help files
+- [ ] Document buffs and debuffs in help files
 - [ ] Spellcasting with cast times
 - [ ] Saving Throws unit testing
 
@@ -100,6 +90,16 @@ Help Files:
 --------------------------------------------------------------------------------
 
 Done:
+- [x] Skill: evocation lite
+  - [x] Basic GCD Spellcasting attacks (icespike)
+  - [x] Basic GCD Spellcasting for mana cost (flamestrike)
+- [x] Player Races 1.0
+  - [x] Human
+  - [x] Elf
+  - [x] Dwarf
+  - [x] Gnome
+  - [x] Halfling
+- [x] Race Help Files
 - Resource costs for cooldown actions
 - Better Passives/Cooldowns Calculation & Caching
 - `hotbar` command to assign actions to numbers 1, 2, ..., 0, -, =
