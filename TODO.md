@@ -1,8 +1,15 @@
 # Master TODO
 
-Current Feature: Advanced Spellcasting + Help Cleanup
-- [ ] Document passives in help files
-- [ ] Document buffs and debuffs in help files
+Current Feature: Help Cleanup
+- `cooldown` and `hotbar` commands
+- expand upon battle
+- expand upon skills
+- Document buffs and debuffs in help files
+- passive enhancements (passives)
+- cooldown actions (cooldowns)
+- `spells`
+
+Feature: Advanced Spellcasting
 - [ ] Spellcasting with cast times
 - [ ] Saving Throws unit testing
 
@@ -29,28 +36,41 @@ Feature: Leveling System
   - Skill leveling?
 
 Features:
-- Auto fix "fighting" state on reload if not fighting (server crash, etc.)
-- Random dreams while sleeping (fun and refreshes prompt)
-- Better `skill` command formatting (currently very hard to read)
-- Interrupt casting (performing certain actions interrupts the spell, etc.)
+- Miscellaneous
+  - Better text for indefinite buffs
+  - Auto fix "fighting" state on reload if not fighting (server crash, etc.)
+  - Random dreams while sleeping (fun and refreshes prompt)
+  - Better `skill` command formatting (currently very hard to read)
+  - Interrupt casting (performing certain actions interrupts the spell, etc.)
+  - Shop commands should refer to the shop owner and be more flavorful
+
 - Tactics System 1.0
-- Scripting engine 1.0 (embedded Scala?)
+  - Design Forthcoming
+
 - Battle System 2.0 (mostly skill balancing and redistribution)
   - better attack roll potency scaling (currently too powerful)
   - magic attacks currently based on weapon, should be different
   - better use of skill level to help "to hit" and "damage" rolls
-- Shops commands should refer to the shop owner and be more flavorful
+
+- Scripting engine 1.0 (embedded Scala?)
+  - Design Forthcoming
+
 - Mobiles 2.0
   - Spawn Points
   - Better Wandering
   - Aggro mobs
-- Dungeon Instances 1.0
+  - Mobile Scripting
+
 - Quest System 1.0
+  - Dungeon Instances 1.0
   - Mobile, item, & room scripting
+
 - Help system 2.0
   - use an actual text search algorithm instead of a keywords file
   - articles should have unique names
-- Single Player Instance Parties (For Dungeon Instances, requires Tactics)
+
+- Single Player Instance Parties
+  - Requires: dungeon instances and tactics
 
 Bugs:
 - Shutdown command sometimes hangs when shutting down subsystems, investigate
@@ -76,16 +96,6 @@ Later:
 - Global communication channels
 - Player-to-player auction house
 - Connection proxy so the game can be fully recompiled and reloaded
-
---------------------------------------------------------------------------------
-
-Help Files:
-- `cooldown` and `hotbar` commands
-- expand upon battle
-- expand upon skills
-- passive enhancements (passives)
-- cooldown actions (cooldowns)
-- `spells`
 
 --------------------------------------------------------------------------------
 
