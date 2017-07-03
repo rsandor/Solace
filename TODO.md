@@ -1,13 +1,19 @@
 # Master TODO
 
 Current Feature: Help Cleanup
-- `cooldown` and `hotbar` commands
-- expand upon battle
-- expand upon skills
-- Document buffs and debuffs in help files
-- passive enhancements (passives)
-- cooldown actions (cooldowns)
-- `spells`
+- [x] Cleanup skills and add major/minor associated abilities
+- [ ] Help articles for `cooldown` and `hotbar` commands
+- [ ] Full help article describing battle
+- [ ] Buff & debuff help articles
+  - [ ] Help pages for each buff and debuff
+- [ ] Passive enhancements overview article
+  - [ ] Help pages for each passive enhancement
+- [ ] Cooldown Actions (cooldowns)
+- [ ] Spells and Spellcasting help articles
+
+Feature: Books
+- [ ] Create book type items that can be read
+- [ ] Book: Liber Particularum Magicae (book of elemental magic)
 
 Feature: Advanced Spellcasting
 - [ ] Spellcasting with cast times
