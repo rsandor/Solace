@@ -12,13 +12,15 @@
   - [x] Fix bugs in buff implementation
   - [x] Global timer buff manager for expiring buffs automatically
 - [x] Better text for indefinite buffs
-- [ ] Cooldown Actions overview article (cooldowns)
-  - [ ] Icespike
-  - [ ] Flamestrike
-  - [ ] CoupeDeGrace
-  - [ ] Flurry
-  - [ ] Riposte
-  - [ ] Slash
+- [x] Cooldown Actions overview article (cooldowns)
+  - [x] Icespike
+  - [x] Flamestrike
+  - [x] CoupeDeGrace
+  - [x] Flurry
+  - [x] Riposte
+  - [x] Slash
+  - [x] Global Cooldowns
+  - [x] Potency
 - [ ] Passive enhancements overview article
   - [ ] Help pages for each passive enhancement
 

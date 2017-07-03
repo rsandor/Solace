@@ -12,10 +12,10 @@ a complete copy of the tome, however, may prove no small feat.
 
 ## Spells:
 
-- [5] Icespike (GCD, instant, free, save: prudence)
+- [5] `icespike` (GCD, instant, free, save: prudence)
   An icicle is formed near the casters hand and thrown directly at the target
   dealing potency 200. Heals 5-10% of the caster's MP.
-- [15] Flamestrike (GCD, instant, 20% MP, save: reflex)
+- [15] `flamestrike` (GCD, instant, 20% MP, save: reflex)
   Flames erupt from the caster's hands and envelop the target dealing damage
   with potency 800.
 - [25] Shock (3s cooldown, 4s cast, 5% MP, save: will)

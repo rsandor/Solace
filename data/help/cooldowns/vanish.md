@@ -12,3 +12,5 @@ a similar fashion to that of the `flee` command, with the exception that there
 is no chance of failure and no movement occurs. The `vanished` buff will be
 removed if the player takes any action that reveals its location (e.g. moving,
 attacking, speaking, etc.).
+
+See also: `halfling` (race)
