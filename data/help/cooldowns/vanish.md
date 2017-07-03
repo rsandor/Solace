@@ -1,4 +1,4 @@
-# Command: vanish
+# Cooldown: vanish
 Usage: `vanish`
 Cooldown: 180s
 Special: Halfling race only

@@ -3,7 +3,7 @@
 Current Feature: Help Cleanup
 - [x] Cleanup skills and add major/minor associated abilities
 - [x] Help articles for `cooldown` and `hotbar` commands
-- [ ] Buff & debuff help articles
+- [x] Buff & debuff help articles
   - [x] Better buff/debuff names
   - [x] Allow messages for application and removal to be defined in JSON
   - [x] Help pages for each buff and debuff
@@ -12,15 +12,11 @@ Current Feature: Help Cleanup
 - [ ] Passive enhancements overview article
   - [ ] Help pages for each passive enhancement
 - [ ] Cooldown Actions (cooldowns)
-- [ ] Spells and Spellcasting help articles
-
-Feature: Books
-- [ ] Create book type items that can be read
-- [ ] Book: Liber Particularum Magicae (book of elemental magic)
 
 Feature: Advanced Spellcasting
 - [ ] Spellcasting with cast times
 - [ ] Saving Throws unit testing
+- [ ] Spells and Spellcasting help articles
 
 Feature: Character Creation
 - Stats 3.0
@@ -29,6 +25,11 @@ Feature: Character Creation
   - Incorporate ability scores into game math for skills
   - Incorporate skill level into game math for skill cooldowns
 - Character Creator 2.0
+
+Feature: Books
+- [ ] Create book type items that can be read
+- [ ] Book: Liber Particularum Magicae (book of elemental magic)
+      (reading this unlocks ultimate level 100 evocation skill!)
 
 Feature: Loot System
 - Level and power ranges for mobiles

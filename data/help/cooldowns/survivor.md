@@ -1,4 +1,4 @@
-# Command: survivor
+# Cooldown: survivor
 Usage: `survivor`
 Cooldown: 300s
 Special: Human race only

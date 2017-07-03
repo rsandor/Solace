@@ -48,11 +48,13 @@ commands/stand.md: stand
 commands/wake.md: wake
 commands/rest.md: rest
 commands/prompt.md: prompt
-commands/survivor.md: survivor
-commands/concentrate.md: concentrate
-commands/skullknock.md: skullknock
-commands/aetherflow.md: aetherflow
-commands/vanish.md: vanish
+commands/cooldown.md: cmd-cooldown
+commands/hotbar.md: hotbar
+cooldowns/survivor.md: survivor
+cooldowns/concentrate.md: concentrate
+cooldowns/skullknock.md: skullknock
+cooldowns/aetherflow.md: aetherflow
+cooldowns/vanish.md: vanish
 misc/gold.md: gold currency
 misc/shops.md: shops
 misc/prompt-format.md: format
@@ -64,10 +66,10 @@ races/human.md: humans
 races/elf.md: elf elves elven elvish
 races/dwarf.md: dwarf dwarves dwarven
 races/gnome.md: gnomes gnomish
-races/halfling.md: halfling
+races/halfling.md: halflings
 buffs/index.md: buffs debuffs
 buffs/buff-list.md: buff-list
 buffs/debuff-list.md: debuff-list
 buffs/concentrating.md: concentrating
-buffs/vanished.md: vanished
+buffs/vanished.md: buff-vanished
 buffs/stunned.md: stunned

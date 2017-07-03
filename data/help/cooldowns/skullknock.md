@@ -1,7 +1,7 @@
-# Command: skullknock
+# Cooldown: skullknock
 Usage: `skullknock [target]`
 Cooldown: 180s
-Special: Human race only
+Special: Dwarven race only
 
 The skullknock command is a special racial cooldown available only to dwarves.
 When executed an attack of potency 150 will be performed against the target and

@@ -1,4 +1,4 @@
-# Command: aetherflow
+# Cooldown: aetherflow
 Usage: `aetherflow`
 Cooldown: 300s
 Special: Gnomish race only
