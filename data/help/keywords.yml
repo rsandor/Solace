@@ -65,3 +65,9 @@ races/elf.md: elf elves elven elvish
 races/dwarf.md: dwarf dwarves dwarven
 races/gnome.md: gnomes gnomish
 races/halfling.md: halfling
+buffs/index.md: buffs debuffs
+buffs/buff-list.md: buff-list
+buffs/debuff-list.md: debuff-list
+buffs/concentrating.md: concentrating
+buffs/vanished.md: vanished
+buffs/stunned.md: stunned

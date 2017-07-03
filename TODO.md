@@ -3,9 +3,12 @@
 Current Feature: Help Cleanup
 - [x] Cleanup skills and add major/minor associated abilities
 - [x] Help articles for `cooldown` and `hotbar` commands
-- [ ] Full help article describing battle
 - [ ] Buff & debuff help articles
-  - [ ] Help pages for each buff and debuff
+  - [x] Better buff/debuff names
+  - [x] Allow messages for application and removal to be defined in JSON
+  - [x] Help pages for each buff and debuff
+  - [x] Fix bugs in buff implementation
+  - [x] Global timer buff manager for expiring buffs automatically
 - [ ] Passive enhancements overview article
   - [ ] Help pages for each passive enhancement
 - [ ] Cooldown Actions (cooldowns)
@@ -57,6 +60,7 @@ Features:
   - better attack roll potency scaling (currently too powerful)
   - magic attacks currently based on weapon, should be different
   - better use of skill level to help "to hit" and "damage" rolls
+  - [ ] Full help article describing battle
 
 - Scripting engine 1.0 (embedded Scala?)
   - Design Forthcoming
