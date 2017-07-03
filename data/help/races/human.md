@@ -6,7 +6,7 @@ have a knack for surviving situations that boggle the mind.
 
 Starting at level 1, humans characters come with the following racial bonuses:
 
-- Racial Passive: Generalist
+- Racial Passive: `Generalist`
   Humans get a 5% bonus to all checks.
-- Racial Cooldown: Survivor (300s)
+- Racial Cooldown: `Survivor` (300s)
   Immediately heal 50% HP and SP.

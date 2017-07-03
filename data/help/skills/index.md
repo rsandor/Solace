@@ -4,31 +4,35 @@ warfare, crafting, or manipulation in the game world. Every skill has a level
 from 1 to 100 which indicates a character's proficiency.
 
 Skills provide characters with access to weapon and armor proficiencies, provide
-passive enhancements, unlock cooldown actions, and provide additional commands
-that can be used to manipulate the game world.
+`passive enhancements`, unlock `cooldown` actions, and provide additional
+commands that can be used to manipulate the game world.
 
-Finally, each skill is associated with two ability scores that have an
+Finally, each skill is associated with two `ability scores` that have an
 additional effect on how well the character performs skill actions, and how
 effective passive enhancements are.
 
-* `unarmed` - unarmed combat and martial arts fighting
-* `one-handed` - one-handed weapon fighting (daggers, longswords, etc.)
-* `two-handed` - large two-handed weapons fighting (great swords, hammers, etc.)
-* `ranged` - ranged weapon fighting (e.g. bows, guns, etc.)
+## Weapons
+* `unarmed`     (spe/vit) - unarmed combat and martial arts fighting
+* `one-handed`  (str/spe) - enables the use of daggers, longswords, etc.
+* `two-handed`  (str/vit) - grants the use of great swords, hammers, etc.
+* `ranged`      (spe/str) - enables the use of bows, guns, etc.
 
-* `unarmored` - proficiency in wearing little or no armor (e.g. robes, etc.)
-* `light-armor` - light armor proficiency (e.g. leathers, hides, etc.)
-* `heavy-armor` - heavy armor proficiency (e.g. plate, scale, etc.)
-* `block` - actions and passives that increase shield skill and utility
+## Armor
+* `unarmored`   (spe/str) - proficiency in wearing little or no armor
+* `light-armor` (spe/vit) - light armor (leather, hide, etc.)
+* `heavy-armor` (vit/str) - heavy armor (plate, scale, etc.)
+* `block`       (str/vit) - increased utility with shields
 
-* `stealth` - sneaking, hiding, and general rogue-like actions
-* `persuasion` - fast talking, better bartering, and tricking enemies
-* `ranging` - tracking, wilderness survival, and leveraging nature
+## Magic
+* `evocation`   (mag/spe) - controls the elements
+* `restoration` (vit/mag) - mends wounds, cures poisons, and protects
+* `alteration`  (mag/str) - changes the state of physical reality
+* `necromancy`  (mag/vit) - manipulates both life and death
+* `conjuration` (str/mag) - summons items and beings
 
-* `evocation` - magics related to the control and manipulation of the elements
-* `restoration` - magics to restore, heal, cure, and protect
-* `alteration` - magics designed to change the state of all physical reality
-* `necromancy` - magics to control and manipulate both life and death
-* `conjuration` - magics to create and summon items and beings
+## Utility
+* `stealth`     (spe/str) - sneaking, hiding, and other rogue-like actions
+* `persuasion`  (spe/vit) - fast talking, bartering, and subterfuge
+* `ranging`     (vit/mag) - tracking, survival, and nature abilities
 
 See Also: `help cmdskills`

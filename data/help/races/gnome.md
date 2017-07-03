@@ -8,7 +8,7 @@ magical.
 
 Starting at level 1, gnomish characters come with the following racial bonuses:
 
-- Racial Passive: Metamagical
+- Racial Passive: `Metamagical`
   Gnomes cast all spells at a 10% discount in MP.
-- Racial Cooldown: Aetherflow (300s)
+- Racial Cooldown: `Aetherflow` (300s)
   Immediately heal 50% of MP.

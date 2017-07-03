@@ -1,6 +1,10 @@
 {
   "name": "vanished",
-  "description": "You are nearly completely undetectable and cannot be engaged in battle.",
+  "description": "You are almost completely undetectable.",
   "debuff": false,
-  "duration": -1
+  "duration": -1,
+  "targetBeginMessage": "You vanish into thin air!",
+  "targetEndMessage": "You reappear as if out of nowhere.",
+  "observerBeginMessage": "%s vanishes into thin air!",
+  "observerEndMessage": "%s appears out of nowhere."
 }

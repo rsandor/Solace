@@ -1,0 +1,10 @@
+{
+  "name": "stunned",
+  "description": "You cannot perform actions or make attacks.",
+  "debuff": true,
+  "duration": 4,
+  "targetBeginMessage": "Stars explode before your eyes as you are stunned!",
+  "targetEndMessage": "You refocus and are no longer stunned.",
+  "observerBeginMessage": "%s eye's glaze over as they are stunned!",
+  "observerEndMessage": "%s seems to refocus and is no longer stunned."
+}

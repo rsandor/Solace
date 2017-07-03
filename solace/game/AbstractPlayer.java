@@ -515,33 +515,35 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * @see solace.game.Player
+   * Sends messages to player when a buff is applied.
+   * @param b Buff begin applied.
    */
-  public boolean hasBuff(String name) {
-    if (!buffs.containsKey(name)) {
-      return false;
+  protected void sendBuffBeginMessages(Buff b) {
+    String targetBeginMessage = b.getTargetBeginMessage();
+    if (targetBeginMessage != null && !targetBeginMessage.equals("")) {
+      sendln(targetBeginMessage);
     }
-    Buff b = buffs.get(name);
-    if (b.hasExpired()) {
-      removeBuff(b.getName());
-      return false;
+    String observerBeginMessage = b.getObserverBeginMessage();
+    if (observerBeginMessage != null && !observerBeginMessage.equals("")) {
+      getRoom().sendMessage(String.format(
+        observerBeginMessage, getName()), this);
     }
-    return true;
   }
 
   /**
-   * @see solace.game.Player
+   * Sends messages to player when a buff is removed.
+   * @param b Buff begin removed.
    */
-  public Buff getBuff(String name) {
-    if (!hasBuff(name)) {
-      return null;
+  protected void sendBuffEndMessages(Buff b) {
+    String targetEndMessage = b.getTargetEndMessage();
+    if (targetEndMessage != null && !targetEndMessage.equals("")) {
+      sendln(targetEndMessage);
     }
-    Buff b = buffs.get(name);
-    if (b.hasExpired()) {
-      removeBuff(b.getName());
-      return null;
+    String observerEndMessage = b.getObserverEndMessage();
+    if (observerEndMessage != null && !observerEndMessage.equals("")) {
+      getRoom().sendMessage(String.format(
+        observerEndMessage, getName()), this);
     }
-    return b;
   }
 
   /**
@@ -549,8 +551,10 @@ public abstract class AbstractPlayer implements Player {
    */
   public void applyBuff(Buff b) {
     if (hasBuff(b.getName())) {
-      removeBuff(b.getName());
+      // Directly remove the buffs from the table to not trigger messages
+      buffs.remove(b.getName());
     }
+    sendBuffBeginMessages(b);
     buffs.put(b.getName(), b);
   }
 
@@ -559,16 +563,38 @@ public abstract class AbstractPlayer implements Player {
    */
   public void applyBuff(String name) {
     if (hasBuff(name)) {
-      removeBuff(name);
+      // Directly remove the buffs from the table to not trigger messages
+      buffs.remove(name);
     }
-    buffs.put(name, Buffs.create(name));
+    Buff b = Buffs.create(name);
+    sendBuffBeginMessages(b);
+    buffs.put(name, b);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean hasBuff(String name) {
+    return buffs.containsKey(name);
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Buff getBuff(String name) {
+    return buffs.get(name);
   }
 
   /**
    * @see solace.game.Player
    */
   public void removeBuff(String name) {
+    if (!hasBuff(name)) {
+      return;
+    }
+    Buff b = getBuff(name);
     buffs.remove(name);
+    sendBuffEndMessages(b);
   }
 
   /**
@@ -585,6 +611,20 @@ public abstract class AbstractPlayer implements Player {
         removeBuff(b.getName());
       }
       return buffs.values();
+    }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void removeExpiredBuffs() {
+    synchronized (buffs) {
+      List<Buff> remove = new LinkedList<Buff>();
+      for (Buff b : buffs.values()) {
+        if (b.hasExpired()) {
+          removeBuff(b.getName());
+        }
+      }
     }
   }
 
@@ -673,9 +713,6 @@ public abstract class AbstractPlayer implements Player {
     //      simply omitting the message at all, etc.).
     if (hasBuff("vanished")) {
       removeBuff("vanished");
-      sendMessage("You reappear from your vanished state.");
-      getRoom().sendMessage(String.format(
-        "%s appears out of thin air!", getName()), this);
     }
   }
 }

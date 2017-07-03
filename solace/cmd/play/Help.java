@@ -26,7 +26,7 @@ public class Help extends AbstractCommand {
 
     List<String> keywords = new LinkedList<String>();
     for (int i = 1; i < params.length; i++) {
-      keywords.add(params[i]);
+      keywords.add(params[i].toLowerCase());
     }
     c.send("\n\r" + help.query(keywords) + "\n\r");
 

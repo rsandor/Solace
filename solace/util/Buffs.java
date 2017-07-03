@@ -20,6 +20,10 @@ public class Buffs {
     String description;
     boolean debuff;
     int defaultDuration;
+    String targetBeginMessage;
+    String targetEndMessage;
+    String observerBeginMessage;
+    String observerEndMessage;
 
     /**
      * Creates a new buff template with the given parameters.
@@ -27,12 +31,29 @@ public class Buffs {
      * @param d Description of the buff.
      * @param db Whether or not it is a debuff.
      * @param du The default duration for the buff.
+     * @param tbm The target "begin buff" message.
+     * @param tem The target "end buff" message.
+     * @param obm The observer "begin buff" message.
+     * @param oem The observer "end buff" message.
      */
-    public BuffTemplate(String n, String d, boolean db, int du) {
+    public BuffTemplate(
+      String n,
+      String d,
+      boolean db,
+      int du,
+      String tbm,
+      String tem,
+      String obm,
+      String oem
+    ) {
       name = n;
       description = d;
       debuff = db;
       defaultDuration = du;
+      targetBeginMessage = tbm;
+      targetEndMessage = tem;
+      observerBeginMessage = obm;
+      observerEndMessage = oem;
     }
 
     /**
@@ -54,6 +75,27 @@ public class Buffs {
      * @return The defaultDuration for the buff.
      */
     public int getDefaultDuration() { return defaultDuration; }
+
+    /**
+     * @return The message to send the target of the buff when it is applied.
+     */
+    public String getTargetBeginMessage() { return targetBeginMessage; }
+
+    /**
+     * @return The message to send the target of the buff when it drops.
+     */
+    public String getTargetEndMessage() { return targetEndMessage; }
+
+    /**
+     * @return The message to send observers of the target when the buff is
+     *   applied.
+     */
+    public String getObserverBeginMessage() { return observerBeginMessage; }
+
+    /**
+     * @return The message to send observers of the targer when the buff drops.
+     */
+    public String getObserverEndMessage() { return observerEndMessage; }
   }
 
   /**
@@ -95,7 +137,11 @@ public class Buffs {
           object.getString("name"),
           object.getString("description"),
           object.getBoolean("debuff"),
-          object.getInt("duration")
+          object.getInt("duration"),
+          object.getString("targetBeginMessage"),
+          object.getString("targetEndMessage"),
+          object.getString("observerBeginMessage"),
+          object.getString("observerEndMessage")
         );
         templates.put(tpl.getName(), tpl);
       } catch (JSONException je) {
@@ -156,5 +202,37 @@ public class Buffs {
    */
   public static boolean isDebuff(String name) {
     return has(name) ? templates.get(name).isDebuff() : false;
+  }
+
+  /**
+   * @param name The name of the buff for which to find the data.
+   * @return The begin message for targets of the buff with the given name.
+   */
+  public static String getTargetBeginMessage(String name) {
+    return has(name) ? templates.get(name).getTargetBeginMessage() : "";
+  }
+
+  /**
+   * @param name The name of the buff for which to find the data.
+   * @return The end message for targets of the buff with the given name.
+   */
+  public static String getTargetEndMessage(String name) {
+    return has(name) ? templates.get(name).getTargetEndMessage() : "";
+  }
+
+  /**
+   * @param name The name of the buff for which to find the data.
+   * @return The begin message for observers of the buff with the given name.
+   */
+  public static String getObserverBeginMessage(String name) {
+    return has(name) ? templates.get(name).getObserverBeginMessage() : "";
+  }
+
+  /**
+   * @param name The name of the buff for which to find the data.
+   * @return The end message for observers of the buff with the given name.
+   */
+  public static String getObserverEndMessage(String name) {
+    return has(name) ? templates.get(name).getObserverEndMessage() : "";
   }
 }

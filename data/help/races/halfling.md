@@ -9,10 +9,10 @@ the traditional halfling tales call the "cunning menace".
 
 Starting at level 1, halfling characters come with the following racial bonuses:
 
-- Racial Passive: Light Footed
+- Racial Passive: Light Footed (`light-footed`)
   Halflings receive a 10% bonus to the Speed ability. This bonus applies after
   all other additive bonuses (e.g. equipment, buffs) have been applied.
-- Racial Cooldown: Vanish (180s)
+- Racial Cooldown: `Vanish` (180s)
   Immediately vanish from sight and become hidden until attacking, moving, or
   interacting in any way that would cause you to be detected. When used while
   fighting the battle will immediately stop because the target loses sight of

@@ -48,20 +48,49 @@ commands/stand.md: stand
 commands/wake.md: wake
 commands/rest.md: rest
 commands/prompt.md: prompt
-commands/survivor.md: survivor
-commands/concentrate.md: concentrate
-commands/skullknock.md: skullknock
-commands/aetherflow.md: aetherflow
-commands/vanish.md: vanish
+commands/cooldown.md: cmd-cooldown
+commands/hotbar.md: hotbar
+commands/passive.md: cmd-passive
+cooldowns/index.md: cooldowns
+cooldowns/gcd.md: gcd
+cooldowns/survivor.md: survivor
+cooldowns/concentrate.md: concentrate
+cooldowns/skullknock.md: skullknock
+cooldowns/aetherflow.md: aetherflow
+cooldowns/vanish.md: vanish
+cooldowns/coup-de-grace.md: coup-de-grace
+cooldowns/flamestrike.md: flamestrike
+cooldowns/flurry.md: flurry
+cooldowns/icespike.md: icespike
+cooldowns/riposte.md: riposte
+cooldowns/slash.md: slash
 misc/gold.md: gold currency
 misc/shops.md: shops
 misc/prompt-format.md: format
 skills/index.md: skills
 skills/one-handed.md: one-handed
 skills/block.md: block
+skills/evocation.md: evocation
 races/index.md: races
 races/human.md: humans
 races/elf.md: elf elves elven elvish
 races/dwarf.md: dwarf dwarves dwarven
 races/gnome.md: gnomes gnomish
-races/halfling.md: halfling
+races/halfling.md: halflings
+buffs/index.md: buffs debuffs
+buffs/buff-list.md: buff-list
+buffs/debuff-list.md: debuff-list
+buffs/concentrating.md: concentrating
+buffs/vanished.md: buff-vanished
+buffs/stunned.md: stunned
+battle/potency.md: potency
+passives/index.md: passives
+passives/battle-trance.md: battle-trance
+passives/parry.md: parry
+passives/second-attack.md: second-attack
+passives/third-attack.md: third-attack
+passives/stout-hearted.md: stout-hearted
+passives/meditation.md: meditation
+passives/metamagical.md: metamagical
+passives/light-footed.md: light-footed
+passives/generalist.md: generalist

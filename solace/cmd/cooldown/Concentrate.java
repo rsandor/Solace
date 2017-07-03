@@ -17,8 +17,7 @@ public class Concentrate extends CooldownCommand {
   }
 
   public boolean execute(int level, Player target) {
-    player.sendln("You enter into a state of total concentration.");
-    player.applyBuff("concentrate");
+    player.applyBuff("concentrating");
     return true;
   }
 }

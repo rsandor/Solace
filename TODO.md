@@ -1,19 +1,33 @@
 # Master TODO
 
-Current Feature: Help Cleanup
-- `cooldown` and `hotbar` commands
-- expand upon battle
-- expand upon skills
-- Document buffs and debuffs in help files
-- passive enhancements (passives)
-- cooldown actions (cooldowns)
-- `spells`
+### In Progress
 
-Feature: Advanced Spellcasting
+**Feature: Advanced Spellcasting**
 - [ ] Spellcasting with cast times
 - [ ] Saving Throws unit testing
+- [ ] Spells and Spellcasting help articles
 
-Feature: Character Creation
+--------------------------------------------------------------------------------
+
+### Bugs
+
+- Shutdown command sometimes hangs when shutting down subsystems, investigate
+
+--------------------------------------------------------------------------------
+
+### Backlog
+
+**Feature: Emotes 2.0**
+- [ ] Overhaul Emote System
+  - [ ] Emote JSON format
+  - [ ] Better parameter handling
+- [ ] Add many common emotes (use ROM2.4 for reference)
+
+**Feature: Account System 2.0**
+- [ ] Account files should be saved to JSON
+- Auto fix "fighting" state on reload if not fighting (server crash, etc.)
+
+**Feature: Character Creation**
 - Stats 3.0
   - Floating point based
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
@@ -21,7 +35,22 @@ Feature: Character Creation
   - Incorporate skill level into game math for skill cooldowns
 - Character Creator 2.0
 
-Feature: Loot System
+**Feature: Presentation & Communication**
+- Colored cooldown hotbar in prompts, e.g. [1234567890-=]
+- Shop commands should refer to the shop owner and be more flavorful
+- Better `skill` command formatting (currently very hard to read)
+- [ ] Random dreams while sleeping (fun and refreshes prompt)
+- Decorative banners for shops, inventory, character sheet, etc.
+- Make screen width adjustable on connection (currently fixed to 80)
+- Global communication channels
+- Player-to-player auction house
+
+**Feature: Books**
+- [ ] Create book type items that can be read
+- [ ] Book: Liber Particularum Magicae (book of elemental magic)
+      (reading this unlocks ultimate level 100 evocation skill!)
+
+**Feature: Loot System**
 - Level and power ranges for mobiles
 - Loot System 1.0
   - Grades of equipment (higher grade equals bigger bonuses)
@@ -29,77 +58,81 @@ Feature: Loot System
   - Crafting classes
   - Crafting loot from mobs
 
-Feature: Leveling System
+**Feature: Areas 2.0**
+- Area links: allow move command to work across areas
+- Room lighting, light source equipment, etc.
+- Banks (items and gold)
+- Game world calendar + Weather
+- Item weight & Carrying Capacity
+
+**Feature: Leveling System**
 - Leveling Design
   - Mob kills? Power level adjustable?
   - Quests?
   - Skill leveling?
 
-Features:
-- Miscellaneous
-  - Better text for indefinite buffs
-  - Auto fix "fighting" state on reload if not fighting (server crash, etc.)
-  - Random dreams while sleeping (fun and refreshes prompt)
-  - Better `skill` command formatting (currently very hard to read)
-  - Interrupt casting (performing certain actions interrupts the spell, etc.)
-  - Shop commands should refer to the shop owner and be more flavorful
-
-- Tactics System 1.0
+**Feature: Tactics System 1.0**
   - Design Forthcoming
 
-- Battle System 2.0 (mostly skill balancing and redistribution)
-  - better attack roll potency scaling (currently too powerful)
-  - magic attacks currently based on weapon, should be different
-  - better use of skill level to help "to hit" and "damage" rolls
+**Feature: Battle System 2.0**
+- Skill balancing and playtesting
+- Interrupt casting (performing certain actions interrupts the spell, etc.)
+- better attack roll potency scaling (currently too powerful)
+- magic attacks currently based on weapon, should be different
+- better use of skill level to help "to hit" and "damage" rolls
+- Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
+- [ ] Full help article describing battle
 
-- Scripting engine 1.0 (embedded Scala?)
-  - Design Forthcoming
+**Feature: Scripting engine 1.0**
+- Design Forthcoming (embedded Scala?)
 
-- Mobiles 2.0
-  - Spawn Points
-  - Better Wandering
-  - Aggro mobs
-  - Mobile Scripting
+**Feature: Server 2.0**
+- SSL Termination for secure client connection
+- Connection proxy so the game can be fully recompiled and reloaded
+- Data layer for storing game state (mongo?)
 
-- Quest System 1.0
-  - Dungeon Instances 1.0
-  - Mobile, item, & room scripting
+**Feature: Mobiles 2.0**
+- Spawn Points
+- Better Wandering
+- Aggro mobs
+- Mobile Scripting
 
-- Help system 2.0
-  - use an actual text search algorithm instead of a keywords file
-  - articles should have unique names
+**Feature: Quest System 1.0**
+- Dungeon Instances 1.0
+- Mobile, item, & room scripting
 
-- Single Player Instance Parties
-  - Requires: dungeon instances and tactics
+**Feature: Help system 2.0**
+- Create a better direct indexing system for help pages
+- Use Apache Lucene for full help text search
 
-Bugs:
-- Shutdown command sometimes hangs when shutting down subsystems, investigate
-- Move command will fail across areas (uses `Area.getRoom`, needs global lookup)
+**Feature: Single Player Instance Parties**
+- Requires: dungeon instances and tactics
 
 --------------------------------------------------------------------------------
 
-Later:
-- Cooldowns 2.0
-  - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-- Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
-- Account System 2.0
-  - Master account XML with characters in separate files
-  - Login shouldn't load characters until after user authenticates with password
-- Emotes 2.0 (better parameters, add tons of emotes)
+Unorganized:
+
+
 - Stats 2.1 (caching)
-- Decorative banners for shops, inventory, character sheet, etc.
-- Game world calendar + Weather
-- Room lighting, equipable light sources, etc.
-- Make screen width adjustable on connection (currently fixed to 80)
-- Banks (items and gold)
-- Item weight & Carrying Capacity
-- Global communication channels
-- Player-to-player auction house
-- Connection proxy so the game can be fully recompiled and reloaded
 
 --------------------------------------------------------------------------------
 
 Done:
+**Feature: Help Cleanup**
+- [x] Cleanup skills and add major/minor associated abilities
+- [x] Help articles for `cooldown` and `hotbar` commands
+- [x] Buff & debuff help articles
+  - [x] Better buff/debuff names
+  - [x] Allow messages for application and removal to be defined in JSON
+  - [x] Help pages for each buff and debuff
+  - [x] Fix bugs in buff implementation
+  - [x] Global timer buff manager for expiring buffs automatically
+- [x] Better text for indefinite buffs
+- [x] Cooldown Actions overview article (cooldowns)
+  - [x] Help pages for each current cooldown
+- [x] Passive enhancements overview article
+  - [x] Help pages for each passive enhancement
+**Uncategorized Prior Work**
 - [x] Skill: evocation lite
   - [x] Basic GCD Spellcasting attacks (icespike)
   - [x] Basic GCD Spellcasting for mana cost (flamestrike)

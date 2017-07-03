@@ -1,6 +1,0 @@
-{
-  "name": "stun",
-  "description": "You cannot perform actions or make attacks.",
-  "debuff": true,
-  "duration": 4
-}
