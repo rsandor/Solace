@@ -8,8 +8,8 @@ make for formidable foes and steadfast allies.
 
 Starting at level 1, elven characters come with the following racial bonuses:
 
-- Racial Passive: Meditation
+- Racial Passive: `Meditation`
   Elves heal SP and MP 25% faster than all other races.
-- Racial Cooldown: Concentrate (120s)
+- Racial Cooldown: `Concentrate` (120s)
   Applies the "concentration" buff for 10s. While under the effects of the buff
   any cooldown used or spell cast will land with double potency.

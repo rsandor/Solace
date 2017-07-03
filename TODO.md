@@ -13,16 +13,9 @@
   - [x] Global timer buff manager for expiring buffs automatically
 - [x] Better text for indefinite buffs
 - [x] Cooldown Actions overview article (cooldowns)
-  - [x] Icespike
-  - [x] Flamestrike
-  - [x] CoupeDeGrace
-  - [x] Flurry
-  - [x] Riposte
-  - [x] Slash
-  - [x] Global Cooldowns
-  - [x] Potency
-- [ ] Passive enhancements overview article
-  - [ ] Help pages for each passive enhancement
+  - [x] Help pages for each current cooldown
+- [x] Passive enhancements overview article
+  - [x] Help pages for each passive enhancement
 
 --------------------------------------------------------------------------------
 
