@@ -1,0 +1,10 @@
+{
+  "name": "shocked",
+  "description": "Electricity damage / round (2 ticks)",
+  "debuff": true,
+  "duration": 30,
+  "targetBeginMessage": "You are enveloped by arcing electricity!",
+  "targetEndMessage": "The electricity surrounding you fades away.",
+  "observerBeginMessage": "%s is enveloped by arcing electricity!",
+  "observerEndMessage": "The electricity surrounding %s fades away."
+}

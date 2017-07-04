@@ -4,13 +4,16 @@
 
 **Feature: Advanced Spellcasting**
 - [x] Prevent cooldowns from initiating combat when using on self
-- [x] Spellcasting with cast times
+- [x] Spell casting with cast times
 - [x] Fix game clock deadlock issue
 - [x] Add debug to Log service, fixed width labeling as well
 - [x] Added player state cleanup manager
   - [x] Fix death checking to take negative health into account
   - [x] fix "fighting" state if not fighting (server crash, etc.)
-- [ ] Add "shock" DoT spell for Evocation (for testing spell timing)
+- [x] Buffs should fall off upon death
+- [x] Refactor buffs manager into player manager
+- [x] Move manager startup to main game class from world class
+- [x] Add "shock" DoT spell for Evocation (for testing spell timing)
 
 --------------------------------------------------------------------------------
 

@@ -64,6 +64,7 @@ cooldowns/flurry.md: flurry
 cooldowns/icespike.md: icespike
 cooldowns/riposte.md: riposte
 cooldowns/slash.md: slash
+cooldowns/shock.md: shock
 misc/gold.md: gold currency
 misc/shops.md: shops
 misc/prompt-format.md: format
@@ -83,6 +84,7 @@ buffs/debuff-list.md: debuff-list
 buffs/concentrating.md: concentrating
 buffs/vanished.md: buff-vanished
 buffs/stunned.md: stunned
+buffs/shocked.md: debuff-shocked
 battle/potency.md: potency
 passives/index.md: passives
 passives/battle-trance.md: battle-trance
