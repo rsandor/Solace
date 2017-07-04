@@ -21,9 +21,9 @@ public class Engine {
   private ScriptEngine engine;
 
   /**
-   * Path to the engine globals initialization script.
+   * Path to the engine initialization scripts.
    */
-  protected static final String GLOBALS_JS = "script/engine/globals.js";
+  protected static final String ENGINE_JS = "script/engine/";
 
   /**
    * Path to the scripts directory in the repository.
@@ -55,24 +55,53 @@ public class Engine {
    * @throws IOException If a required startup script fails to load.
    * @throws ScriptException If a requires startup script fails to evaluate.
    */
-  public static void start() throws IOException, ScriptException {
+  public static void start() {
     Log.info("Starting scripting engine...");
+    reload();
+  }
 
-    // Initialize the global engine scope
-    instance.runGlobal(GLOBALS_JS);
+  /**
+   * Reloads all game scripts.
+   */
+  public static void reload() {
+    Log.info("Reloading game scripts...");
+    try {
+      instance.runAll(Paths.get(ENGINE_JS), null, true);
+      instance.runAll(Paths.get(SCRIPTS_DIR), ENGINE_JS ,false);
+    } catch (Throwable e) {
+      Log.error("An error ocurred when reloading game scripts.");
+      e.printStackTrace();
+    }
+  }
 
-    // Load all scripts defined in the scripts directory
+  /**
+   * Runs all scripts under the given path excluding those that start with the
+   * given prefix.
+   * @param dir Directory path of the scripts to run.
+   * @param exclude Optional prefix to use when excluding files.
+   * @param allowGlobals Whether or not to allow scripts to modify the global
+   *   scope.
+   * @throws IOException If an io error occurs when reading scripts.
+   * @throws ScriptException If an error occurrs when evaluating scripts.
+   */
+  protected void runAll(Path dir, String exclude, boolean allowGlobals)
+    throws IOException
+  {
     Files.find(
-      Paths.get(SCRIPTS_DIR),
+      dir,
       Integer.MAX_VALUE,
       (path, attr) -> attr.isRegularFile()
     ).forEach((path) -> {
       try {
-        if (path.toString().startsWith("script/engine")) {
+        if (exclude != null && path.toString().startsWith(exclude)) {
           return;
         }
         Log.debug("Running " + path.toString());
-        instance.run(path);
+        if (allowGlobals) {
+          instance.runGlobal(path);
+        } else {
+          instance.run(path);
+        }
       } catch (Throwable e) {
         Log.debug("Failed to load script");
         e.printStackTrace();
@@ -100,33 +129,10 @@ public class Engine {
    * @throws IOException If an io error occurs when reading the file.
    * @throws ScriptException If an error occurs executing the script.
    */
-  private String loadScript(String path)
-    throws IOException, ScriptException
-  {
-    return loadScript(Paths.get(path));
-  }
-
-  /**
-   * Loads the string contents for the script with the given path.
-   * @param path Path of the script to load.
-   * @return The string contents of the script.
-   * @throws IOException If an io error occurs when reading the file.
-   * @throws ScriptException If an error occurs executing the script.
-   */
   private String loadScript(Path path)
     throws IOException, ScriptException
   {
     return new String(Files.readAllBytes(path));
-  }
-
-  /**
-   * Runs the javascript file with the given path on the scripting engine.
-   * @param path Path of the javascript file to run.
-   * @throws IOException If an io error occurs when reading the file.
-   * @throws ScriptException If an error occurs executing the script.
-   */
-  public void run(String path) throws IOException, ScriptException {
-    eval(loadScript(path));
   }
 
   /**
@@ -146,7 +152,7 @@ public class Engine {
    * @throws IOException If an io error occurs when reading the file.
    * @throws ScriptException If an error occurs executing the script.
    */
-  protected void runGlobal(String path) throws IOException, ScriptException {
+  protected void runGlobal(Path path) throws IOException, ScriptException {
     engine.eval(loadScript(path));
   }
 }
