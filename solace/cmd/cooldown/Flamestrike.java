@@ -11,17 +11,16 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Flamestrike extends CooldownCommand {
-  static final int POTENCY = 800;
-  static final String SAVE = "reflex";
-
   public Flamestrike(Player p) {
     super("flamestrike", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
-    addResourceCost(new MpCost(AbstractResourceCost.CostType.PERCENTAGE, 20));
+    setBasePotency(800);
+    setSavingThrow("reflex");
+    addResourceCost(new MpCost(20));
   }
 
   public boolean execute(int level, Player target) {
-    return executeMagicAttack(target, POTENCY, SAVE);
+    return executeAttack(target);
   }
 }

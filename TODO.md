@@ -17,11 +17,11 @@
 
 ### Backlog
 
-**Feature: Emotes 2.0**
-- [ ] Overhaul Emote System
-  - [ ] Emote JSON format
-  - [ ] Better parameter handling
-- [ ] Add many common emotes (use ROM2.4 for reference)
+**Feature: Scripting engine 1.0**
+- Embedded Interpreted JS using Rhino:
+  https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino
+- Cooldown Scripting
+- Buff/Debuff Scripting
 
 **Feature: Account System 2.0**
 - [ ] Account files should be saved to JSON
@@ -44,6 +44,12 @@
 - Make screen width adjustable on connection (currently fixed to 80)
 - Global communication channels
 - Player-to-player auction house
+
+**Feature: Emotes 2.0**
+- [ ] Overhaul Emote System
+  - [ ] Emote JSON format
+  - [ ] Better parameter handling
+- [ ] Add many common emotes (use ROM2.4 for reference)
 
 **Feature: Books**
 - [ ] Create book type items that can be read
@@ -82,9 +88,6 @@
 - better use of skill level to help "to hit" and "damage" rolls
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - [ ] Full help article describing battle
-
-**Feature: Scripting engine 1.0**
-- Design Forthcoming (embedded Scala?)
 
 **Feature: Server 2.0**
 - SSL Termination for secure client connection

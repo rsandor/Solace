@@ -13,13 +13,12 @@ import solace.cmd.InvalidTargetException;
  * @author Ryan Sandor Richards
  */
 public class CoupDeGrace extends CooldownCommand {
-  static final int POTENCY = 1000;
-
   public CoupDeGrace(Player p) {
     super("coup", p);
     setDisplayName("coup de grace");
     setCooldownDuration(120);
     setInitiatesCombat(true);
+    setBasePotency(1000);
     addResourceCost(new SpCost(10));
   }
 
@@ -34,6 +33,6 @@ public class CoupDeGrace extends CooldownCommand {
   }
 
   public boolean execute(int level, Player target) {
-    return executePhysicalAttack(target, POTENCY);
+    return executeAttack(target);
   }
 }

@@ -11,13 +11,12 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Icespike extends CooldownCommand {
-  static final int POTENCY = 200;
-  static final String SAVE = "prudence";
-
   public Icespike(Player p) {
     super("icespike", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    setBasePotency(200);
+    setSavingThrow("prudence");
   }
 
   private void healMp (int level) {
@@ -29,10 +28,10 @@ public class Icespike extends CooldownCommand {
   }
 
   public boolean execute(int level, Player target) {
-    boolean result = executeMagicAttack(target, POTENCY, SAVE);
-    if (result) {
+    boolean isHit = executeAttack(target);
+    if (isHit) {
       healMp(level);
     }
-    return result;
+    return isHit;
   }
 }

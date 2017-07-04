@@ -8,12 +8,9 @@ import solace.game.*;
  * @author Ryan Sandor Richards
  */
 public class Survivor extends CooldownCommand {
-  protected static final int COOLDOWN_DURATION = 300;
-
   public Survivor(Player p) {
     super("survivor", p);
-    setCooldownDuration(COOLDOWN_DURATION);
-    setInitiatesCombat(false);
+    setCooldownDuration(300);
   }
 
   public boolean execute(int level, Player target) {

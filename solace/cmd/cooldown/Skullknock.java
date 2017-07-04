@@ -11,17 +11,15 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Skullknock extends CooldownCommand {
-  static final int POTENCY = 150;
-  static final int COOLDOWN_DURATION = 180;
-
   public Skullknock(Player p) {
     super("skullknock", p);
-    setCooldownDuration(COOLDOWN_DURATION);
+    setCooldownDuration(180);
+    setBasePotency(150);
     setInitiatesCombat(true);
   }
 
   public boolean execute(int level, Player target) {
-    boolean isHit = executePhysicalAttack(target, POTENCY);
+    boolean isHit = executeAttack(target);
     if (isHit) {
       target.applyBuff(Buffs.create("stunned", 4));
     }
