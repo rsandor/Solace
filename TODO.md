@@ -11,8 +11,6 @@
   - [x] Fix death checking to take negative health into account
   - [x] fix "fighting" state if not fighting (server crash, etc.)
 - [ ] Add "shock" DoT spell for Evocation (for testing spell timing)
-- [ ] Saving Throws unit testing
-- [ ] Spells and Spellcasting help articles
 
 --------------------------------------------------------------------------------
 
@@ -91,9 +89,12 @@
 - Interrupt casting (performing certain actions interrupts the spell, etc.)
 - better attack roll potency scaling (currently too powerful)
 - magic attacks currently based on weapon, should be different
+  - [ ] Saving Throws unit testing
+  - [ ] Spells and Spellcasting help articles
 - better use of skill level to help "to hit" and "damage" rolls
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - [ ] Full help article describing battle
+
 
 **Feature: Server 2.0**
 - SSL Termination for secure client connection
