@@ -2,18 +2,11 @@
 
 ### In Progress
 
-**Feature: Advanced Spellcasting**
-- [x] Prevent cooldowns from initiating combat when using on self
-- [x] Spell casting with cast times
-- [x] Fix game clock deadlock issue
-- [x] Add debug to Log service, fixed width labeling as well
-- [x] Added player state cleanup manager
-  - [x] Fix death checking to take negative health into account
-  - [x] fix "fighting" state if not fighting (server crash, etc.)
-- [x] Buffs should fall off upon death
-- [x] Refactor buffs manager into player manager
-- [x] Move manager startup to main game class from world class
-- [x] Add "shock" DoT spell for Evocation (for testing spell timing)
+**Feature: Scripting engine 1.0**
+- Embedded Interpreted JS using Rhino:
+  https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino
+- Cooldown Scripting
+- Buff/Debuff Scripting
 
 --------------------------------------------------------------------------------
 
@@ -24,12 +17,6 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
-
-**Feature: Scripting engine 1.0**
-- Embedded Interpreted JS using Rhino:
-  https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino
-- Cooldown Scripting
-- Buff/Debuff Scripting
 
 **Feature: Account System 2.0**
 - [ ] Account files should be saved to JSON
@@ -51,17 +38,15 @@
 - Make screen width adjustable on connection (currently fixed to 80)
 - Global communication channels
 - Player-to-player auction house
+- [ ] Create book type items that can be read
+- [ ] Book: Liber Particularum Magicae (book of elemental magic)
+      (reading this unlocks ultimate level 100 evocation skill!)
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
   - [ ] Emote JSON format
   - [ ] Better parameter handling
 - [ ] Add many common emotes (use ROM2.4 for reference)
-
-**Feature: Books**
-- [ ] Create book type items that can be read
-- [ ] Book: Liber Particularum Magicae (book of elemental magic)
-      (reading this unlocks ultimate level 100 evocation skill!)
 
 **Feature: Loot System**
 - Level and power ranges for mobiles
@@ -130,7 +115,21 @@ Unorganized:
 
 --------------------------------------------------------------------------------
 
-Done:
+### Done
+
+**Feature: Advanced Spell Casting**
+- [x] Prevent cooldowns from initiating combat when using on self
+- [x] Spell casting with cast times
+- [x] Fix game clock deadlock issue
+- [x] Add debug to Log service, fixed width labeling as well
+- [x] Added player state cleanup manager
+  - [x] Fix death checking to take negative health into account
+  - [x] fix "fighting" state if not fighting (server crash, etc.)
+- [x] Buffs should fall off upon death
+- [x] Refactor buffs manager into player manager
+- [x] Move manager startup to main game class from world class
+- [x] Add "shock" DoT spell for Evocation (for testing spell timing)
+
 **Feature: Help Cleanup**
 - [x] Cleanup skills and add major/minor associated abilities
 - [x] Help articles for `cooldown` and `hotbar` commands
