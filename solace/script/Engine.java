@@ -51,7 +51,33 @@ public class Engine {
    */
   public static void start() throws IOException, ScriptException {
     Log.info("Starting scripting engine...");
-    instance.run(GLOBALS_JS);
+    instance.runGlobal(GLOBALS_JS);
+    instance.run("script/random.js");
+  }
+
+  /**
+   * Safe script evaluation that prevents global scope pollution.
+   * @param script The script to evaluate.
+   * @throws ScriptException If an error occurs executing the script.
+   */
+  public void eval(String script) throws ScriptException {
+    engine.eval(
+      "'use strict';\n" +
+      "(function() {\n" +
+      script.replaceAll("[\"']use\\s+strict[\"'][;]?", "") +
+      "})();\n");
+  }
+  /**
+   * Loads the string contents for the script with the given path.
+   * @param path Path of the script to load.
+   * @return The string contents of the script.
+   * @throws IOException If an io error occurs when reading the file.
+   * @throws ScriptException If an error occurs executing the script.
+   */
+  private String loadScript(String path)
+    throws IOException, ScriptException
+  {
+    return new String(Files.readAllBytes(Paths.get(path)));
   }
 
   /**
@@ -60,8 +86,18 @@ public class Engine {
    * @throws IOException If an io error occurs when reading the file.
    * @throws ScriptException If an error occurs executing the script.
    */
-  protected void run(String path) throws IOException, ScriptException {
-    String script = new String(Files.readAllBytes(Paths.get(path)));
-    engine.eval(script);
+  public void run(String path) throws IOException, ScriptException {
+    eval(loadScript(path));
+  }
+
+  /**
+   * Runs the javascript file with the given path on the scripting engine in
+   * the global scope.
+   * @param path Path of the javascript file to run.
+   * @throws IOException If an io error occurs when reading the file.
+   * @throws ScriptException If an error occurs executing the script.
+   */
+  protected void runGlobal(String path) throws IOException, ScriptException {
+    engine.eval(loadScript(path));
   }
 }
