@@ -3,10 +3,11 @@
 ### In Progress
 
 **Feature: Scripting engine 1.0**
-- Embedded Interpreted JS using Rhino:
-  https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino
-- Cooldown Scripting
-- Buff/Debuff Scripting
+- [x] Embedded JavaScript via Nashorn:
+  http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
+- [ ] Cooldown Action Scripting
+- [ ] Buff Scripting
+- [ ] Custom Command Scripting
 
 --------------------------------------------------------------------------------
 
