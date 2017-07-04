@@ -81,6 +81,18 @@ public class Clock implements Runnable {
     }
   }
 
+  /**
+   * The game wold has but one clock.
+   */
+  private static final Clock instance = new Clock();
+
+  /**
+   * Returns the game clock instance.
+   */
+  public static Clock getInstance() {
+    return instance;
+  }
+
   ScheduledExecutorService executor;
   ScheduledFuture tickFuture;
   List<Event> events;
@@ -97,6 +109,19 @@ public class Clock implements Runnable {
   }
 
   /**
+   * Moves the game time clock forward one tick.
+   */
+  public void run() {
+    try {
+      processEvents();
+      addEventsFromQueue();
+    } catch (InterruptedException ie) {
+      // This _shouldn't_ happen...
+      Log.warn("Game clock event processing interrupted, skipping tick...");
+    }
+  }
+
+  /**
    * Starts the game world clock.
    */
   public void start() {
@@ -108,20 +133,14 @@ public class Clock implements Runnable {
     int tickMs = Integer.parseInt(Config.get("world.clock.tick"));
     Log.info("Starting game clock, with tick interval " + tickMs + "ms");
     tickFuture = executor.scheduleAtFixedRate(
-      this,
-      0,
-      tickMs,
-      TimeUnit.MILLISECONDS
-    );
+      this, 0, tickMs, TimeUnit.MILLISECONDS);
   }
 
   /**
    * Pauses the game world clock.
    */
   public void pause() {
-    if (tickFuture == null) {
-      return;
-    }
+    if (tickFuture == null) return;
     tickFuture.cancel(false);
     tickFuture = null;
   }
@@ -132,6 +151,44 @@ public class Clock implements Runnable {
   public void stop() {
     pause();
     executor.shutdownNow();
+  }
+
+  /**
+   * Adds any pending events in the scheduling queue on to the clock's main
+   * schedule.
+   */
+  private void addEventsFromQueue () {
+    synchronized (scheduleQueue) {
+      Log.trace(String.format(
+        "addEventsFromQueue: adding %d events", scheduleQueue.size()));
+      for (Event event : scheduleQueue) {
+        events.add(event);
+      }
+      scheduleQueue.clear();
+    }
+  }
+
+  /**
+   * Thread safe method to process each event currently scheduled on the clock.
+   */
+  private void processEvents() throws InterruptedException {
+    Log.trace("processEvents: Acquiring event scheduling lock");
+    scheduleLock.acquire();
+    try {
+      Log.trace("processEvents: Processing game clock events");
+      synchronized (events) {
+        Iterator<Event> iter = events.iterator();
+        while (iter.hasNext()) {
+          Event event = iter.next();
+          if (event.tick()) {
+            iter.remove();
+          }
+        }
+      }
+    } finally {
+      Log.trace("processEvents: Releasing event scheduling lock");
+      scheduleLock.release();
+    }
   }
 
   /**
@@ -177,16 +234,18 @@ public class Clock implements Runnable {
     boolean hasLock = scheduleLock.tryAcquire();
     try {
       if (hasLock) {
-        // Need to acquire a lock here in the case where we are scheduling a new
-        // event as a result of running an existing event (in this case the )
+        // Needed to acquire a lock here in the case where we are scheduling a
+        // new event as a result of running an event that's being processed
+        // (in which case events will already be locked and we will cause a
+        // deadlock while we wait to synchronize for the add call)
         Log.trace("scheduleClockEvent: schedule lock acquired");
         synchronized (events) {
           Log.trace("scheduleClockEvent: adding event to schedule");
           events.add(event);
         }
       } else {
-        // No need for a lock here because we aren't running abitrary code when
-        // dealing with the queue.
+        // No need for a lock here because we should never be running abitrary
+        // code when dealing with the queue.
         Log.trace("scheduleClockEvent: could not acquire lock");
         synchronized (scheduleQueue) {
           Log.trace("scheduleClockEvent: adding event to schedule queue");
@@ -199,68 +258,5 @@ public class Clock implements Runnable {
         scheduleLock.release();
       }
     }
-  }
-
-  /**
-   * Adds any pending events in the scheduling queue on to the clock's main
-   * schedule.
-   */
-  private void addEventsFromQueue () {
-    synchronized (scheduleQueue) {
-      Log.trace(String.format(
-        "addEventsFromQueue: adding %d events", scheduleQueue.size()));
-      for (Event event : scheduleQueue) {
-        events.add(event);
-      }
-      scheduleQueue.clear();
-    }
-  }
-
-  /**
-   * Thread safe method to process each event currently scheduled on the clock.
-   */
-  private void processEvents() throws InterruptedException {
-    Log.trace("processEvents: Acquiring event scheduling lock");
-    scheduleLock.acquire();
-    try {
-      Log.trace("processEvents: Processing game clock events");
-      synchronized (events) {
-        Iterator<Event> iter = events.iterator();
-        while (iter.hasNext()) {
-          Event event = iter.next();
-          if (event.tick()) {
-            iter.remove();
-          }
-        }
-      }
-    } finally {
-      Log.trace("processEvents: Releasing event scheduling lock");
-      scheduleLock.release();
-    }
-  }
-
-  /**
-   * Moves the game time clock forward one tick.
-   */
-  public void run() {
-    try {
-      processEvents();
-      addEventsFromQueue();
-    } catch (InterruptedException ie) {
-      // This _shouldn't_ happen...
-      Log.warn("Game clock event processing interrupted, skipping tick...");
-    }
-  }
-
-  /**
-   * The game wold has but one clock.
-   */
-  private static final Clock instance = new Clock();
-
-  /**
-   * Returns the game clock instance.
-   */
-  public static Clock getInstance() {
-    return instance;
   }
 }
