@@ -7,8 +7,10 @@
 - [x] Spellcasting with cast times
 - [x] Fix game clock deadlock issue
 - [x] Add debug to Log service, fixed width labeling as well
+- [x] Added player state cleanup manager
+  - [x] Fix death checking to take negative health into account
+  - [x] fix "fighting" state if not fighting (server crash, etc.)
 - [ ] Add "shock" DoT spell for Evocation (for testing spell timing)
-- [ ] Fix death checking to take negative health into account
 - [ ] Saving Throws unit testing
 - [ ] Spells and Spellcasting help articles
 
@@ -30,7 +32,6 @@
 
 **Feature: Account System 2.0**
 - [ ] Account files should be saved to JSON
-- Auto fix "fighting" state on reload if not fighting (server crash, etc.)
 
 **Feature: Character Creation**
 - Stats 3.0

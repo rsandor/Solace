@@ -55,6 +55,7 @@ public class World {
     BattleManager.start();
     RecoveryManager.start();
     BuffsManager.start();
+    PlayerManager.start();
 
     Log.info("Game world loaded");
 
@@ -219,6 +220,19 @@ public class World {
    */
   public static Collection<solace.game.Character> getActiveCharacters() {
     return playing;
+  }
+
+  /**
+   * @return An unmodifiable collection of all player characters and mobiles
+   *   in the game world.
+   */
+  public static Collection<Player> getAllPlayers() {
+    List<Player> allPlayers = new LinkedList<Player>();
+    synchronized(playing) {
+      allPlayers.addAll(playing);
+    }
+    allPlayers.addAll(MobileManager.getInstance().getMobiles());
+    return Collections.unmodifiableCollection(allPlayers);
   }
 
   /**
