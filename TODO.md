@@ -5,9 +5,9 @@
 **Feature: Scripting engine 1.0**
 - [x] Embedded JavaScript via Nashorn:
   http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
+- [x] Play Command Scripting
 - [ ] Cooldown Action Scripting
 - [ ] Buff Scripting
-- [ ] Custom Command Scripting
 
 --------------------------------------------------------------------------------
 

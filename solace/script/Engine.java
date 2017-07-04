@@ -5,6 +5,7 @@ import javax.script.ScriptException;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.*;
 import java.io.*;
 import solace.util.Log;
 
@@ -23,6 +24,11 @@ public class Engine {
    * Path to the engine globals initialization script.
    */
   protected static final String GLOBALS_JS = "script/engine/globals.js";
+
+  /**
+   * Path to the scripts directory in the repository.
+   */
+  protected static final String SCRIPTS_DIR = "script/";
 
   /**
    * Singleton instance of the scripting engine.
@@ -51,8 +57,27 @@ public class Engine {
    */
   public static void start() throws IOException, ScriptException {
     Log.info("Starting scripting engine...");
+
+    // Initialize the global engine scope
     instance.runGlobal(GLOBALS_JS);
-    instance.run("script/random.js");
+
+    // Load all scripts defined in the scripts directory
+    Files.find(
+      Paths.get(SCRIPTS_DIR),
+      Integer.MAX_VALUE,
+      (path, attr) -> attr.isRegularFile()
+    ).forEach((path) -> {
+      try {
+        if (path.toString().startsWith("script/engine")) {
+          return;
+        }
+        Log.debug("Running " + path.toString());
+        instance.run(path);
+      } catch (Throwable e) {
+        Log.debug("Failed to load script");
+        e.printStackTrace();
+      }
+    });
   }
 
   /**
@@ -67,6 +92,7 @@ public class Engine {
       script.replaceAll("[\"']use\\s+strict[\"'][;]?", "") +
       "})();\n");
   }
+
   /**
    * Loads the string contents for the script with the given path.
    * @param path Path of the script to load.
@@ -77,7 +103,20 @@ public class Engine {
   private String loadScript(String path)
     throws IOException, ScriptException
   {
-    return new String(Files.readAllBytes(Paths.get(path)));
+    return loadScript(Paths.get(path));
+  }
+
+  /**
+   * Loads the string contents for the script with the given path.
+   * @param path Path of the script to load.
+   * @return The string contents of the script.
+   * @throws IOException If an io error occurs when reading the file.
+   * @throws ScriptException If an error occurs executing the script.
+   */
+  private String loadScript(Path path)
+    throws IOException, ScriptException
+  {
+    return new String(Files.readAllBytes(path));
   }
 
   /**
@@ -87,6 +126,16 @@ public class Engine {
    * @throws ScriptException If an error occurs executing the script.
    */
   public void run(String path) throws IOException, ScriptException {
+    eval(loadScript(path));
+  }
+
+  /**
+   * Runs the javascript file with the given path on the scripting engine.
+   * @param path Path of the javascript file to run.
+   * @throws IOException If an io error occurs when reading the file.
+   * @throws ScriptException If an error occurs executing the script.
+   */
+  public void run(Path path) throws IOException, ScriptException {
     eval(loadScript(path));
   }
 

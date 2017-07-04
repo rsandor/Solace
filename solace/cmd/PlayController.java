@@ -8,6 +8,8 @@ import solace.util.*;
 import solace.cmd.play.*;
 import solace.cmd.cooldown.*;
 import solace.cmd.admin.*;
+import solace.script.Commands;
+import solace.script.ScriptedPlayCommand;
 import com.google.common.base.Joiner;
 
 /**
@@ -187,13 +189,10 @@ public class PlayController extends AbstractStateController {
     addCommand(new Look(character));
     addCommand(new Say(character));
     addCommand(new Scan(character));
-    addCommand(new Get(character));
-    addCommand(new Drop(character));
     addCommand(new Tick());
 
     addCommand(new Score(character));
     addCommand(new Worth(character));
-    addCommand(new Inventory(character));
     addCommand(new ListSkills(character));
     addCommand(buffsAliases, new solace.cmd.play.Buffs(character));
     addCommand(new Cooldown(character));
@@ -220,11 +219,6 @@ public class PlayController extends AbstractStateController {
     addCommand(new Prompt(character));
     addCommand(new Hotbar(character));
 
-    // Emotes
-    Emote emote = new Emote(character);
-    addCommand(emote);
-    addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
-
     // Skill: One-handed
     addCommand(new Flurry(character));
     addCommand(new Slash(character));
@@ -242,6 +236,16 @@ public class PlayController extends AbstractStateController {
     addCommand(new Skullknock(character));
     addCommand(new Aetherflow(character));
     addCommand(new Vanish(character));
+
+    // Add all scripted play commands
+    for (ScriptedPlayCommand command : Commands.getPlayCommands()) {
+      addCommand(command.getInstance(character));
+    }
+
+    // Emotes
+    Emote emote = new Emote(character);
+    addCommand(emote);
+    addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
 
     // Admin Commands
     if (character.getAccount().isAdmin()) {
