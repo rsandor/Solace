@@ -553,12 +553,15 @@ public abstract class AbstractPlayer implements Player {
    * @see solace.game.Player
    */
   public void applyBuff(Buff b) {
-    if (hasBuff(b.getName())) {
-      // Directly remove the buffs from the table to not trigger messages
-      buffs.remove(b.getName());
+    String name = b.getName();
+    if (hasBuff(name)) {
+      Buff oldBuff = getBuff(name);
+      oldBuff.cancelTickAction();
+      buffs.remove(name); // Directly remove so we send no messages...
     }
     sendBuffBeginMessages(b);
     buffs.put(b.getName(), b);
+    b.scheduleTickAction();
   }
 
   /**
@@ -566,12 +569,14 @@ public abstract class AbstractPlayer implements Player {
    */
   public void applyBuff(String name) {
     if (hasBuff(name)) {
-      // Directly remove the buffs from the table to not trigger messages
-      buffs.remove(name);
+      Buff oldBuff = getBuff(name);
+      oldBuff.cancelTickAction();
+      buffs.remove(name); // Directly remove so we send no messages...
     }
     Buff b = Buffs.create(name);
     sendBuffBeginMessages(b);
     buffs.put(name, b);
+    b.scheduleTickAction();
   }
 
   /**
@@ -596,6 +601,7 @@ public abstract class AbstractPlayer implements Player {
       return;
     }
     Buff b = getBuff(name);
+    b.cancelTickAction();
     buffs.remove(name);
     sendBuffEndMessages(b);
   }

@@ -131,4 +131,19 @@ public class Buff {
     return Math.max(
       0, (int)((expiry.getTime() - new Date().getTime()) / 1000));
   }
+
+  /**
+   * Allows subclasses to schedule actions to occur using a game clock interval.
+   * Useful for buffs such as "regenerating" and debuffs such as "poisoned". By
+   * default this method has no effect.
+   */
+  public void scheduleTickAction() {
+  }
+
+  /**
+   * Interface for cancelling scheudled tick actions for buffs. This method is
+   * intended for use by subclasses and by default it has no effect.
+   */
+  public void cancelTickAction() {
+  }
 }
