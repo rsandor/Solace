@@ -38,6 +38,7 @@ public abstract class AbstractPlayer implements Player {
   }
 
   // Instance variables
+  boolean immortal = false;
   PlayState state = PlayState.STANDING;
   Room room = null;
   int level;
@@ -46,15 +47,17 @@ public abstract class AbstractPlayer implements Player {
   int sp;
   String majorStat = "none";
   String minorStat = "none";
+
   boolean onGCDCooldown = false;
-  String comboAction = null;
+  String comboAction;
+  boolean casting = false;
+  Clock.Event castingEvent;
+
   Hashtable<String, CooldownTimer> cooldownTimers =
     new Hashtable<String, CooldownTimer>();
   Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
   Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
   Hashtable<String, Buff> buffs = new Hashtable<String, Buff>();
-  boolean casting = false;
-  boolean immortal = false;
 
   // Abstract Player Methods
   public abstract void die(Player killer);
@@ -550,12 +553,15 @@ public abstract class AbstractPlayer implements Player {
    * @see solace.game.Player
    */
   public void applyBuff(Buff b) {
-    if (hasBuff(b.getName())) {
-      // Directly remove the buffs from the table to not trigger messages
-      buffs.remove(b.getName());
+    String name = b.getName();
+    if (hasBuff(name)) {
+      Buff oldBuff = getBuff(name);
+      oldBuff.cancelTickAction();
+      buffs.remove(name); // Directly remove so we send no messages...
     }
     sendBuffBeginMessages(b);
     buffs.put(b.getName(), b);
+    b.scheduleTickAction();
   }
 
   /**
@@ -563,12 +569,14 @@ public abstract class AbstractPlayer implements Player {
    */
   public void applyBuff(String name) {
     if (hasBuff(name)) {
-      // Directly remove the buffs from the table to not trigger messages
-      buffs.remove(name);
+      Buff oldBuff = getBuff(name);
+      oldBuff.cancelTickAction();
+      buffs.remove(name); // Directly remove so we send no messages...
     }
     Buff b = Buffs.create(name);
     sendBuffBeginMessages(b);
     buffs.put(name, b);
+    b.scheduleTickAction();
   }
 
   /**
@@ -593,6 +601,7 @@ public abstract class AbstractPlayer implements Player {
       return;
     }
     Buff b = getBuff(name);
+    b.cancelTickAction();
     buffs.remove(name);
     sendBuffEndMessages(b);
   }
@@ -624,6 +633,17 @@ public abstract class AbstractPlayer implements Player {
         if (b.hasExpired()) {
           removeBuff(b.getName());
         }
+      }
+    }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void removeAllBuffs() {
+    synchronized (buffs) {
+      for (Buff b : buffs.values()) {
+        removeBuff(b.getName());
       }
     }
   }
@@ -674,21 +694,6 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * @return True if the player is currently casting a spell, false otherwise.
-   */
-  public boolean isCasting() {
-    return casting;
-  }
-
-  /**
-   * Sets whether or not the player is casting a spell.
-   * @param c True to set the player as casting, false to set as not casting.
-   */
-  public void setCasting(boolean c) {
-    casting = c;
-  }
-
-  /**
    * @see solace.game.Player
    */
   public boolean isVisibleTo(Player viewer) {
@@ -714,5 +719,39 @@ public abstract class AbstractPlayer implements Player {
     if (hasBuff("vanished")) {
       removeBuff("vanished");
     }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public boolean isCasting() {
+    return casting;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void beginCasting(Clock.Event e) {
+    casting = true;
+    castingEvent = e;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void interruptCasting() {
+    if (castingEvent != null) {
+      castingEvent.cancel();
+    }
+    casting = false;
+    sendln("Your spell was interrupted!");
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public void finishCasting() {
+    casting = false;
+    castingEvent = null;
   }
 }

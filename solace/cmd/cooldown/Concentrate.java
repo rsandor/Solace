@@ -8,12 +8,9 @@ import solace.game.*;
  * @author Ryan Sandor Richards
  */
 public class Concentrate extends CooldownCommand {
-  protected static final int COOLDOWN_DURATION = 120;
-
   public Concentrate(Player p) {
     super("concentrate", p);
-    setCooldownDuration(COOLDOWN_DURATION);
-    setInitiatesCombat(false);
+    setCooldownDuration(120);
   }
 
   public boolean execute(int level, Player target) {

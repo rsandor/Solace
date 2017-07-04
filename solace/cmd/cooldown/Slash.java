@@ -13,17 +13,17 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Slash extends CooldownCommand {
-  static final int POTENCY = 150;
-  static final int COMBO_POTENCY = 225;
-
   public Slash(Player p) {
     super("slash", p);
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    setBasePotency(150);
+    setComboPotency(225);
+    setCombosWith("flurry");
     addResourceCost(new SpCost(4));
   }
 
   public boolean execute(int level, Player target) {
-    return executePhysicalAttack(target, POTENCY, "flurry", COMBO_POTENCY);
+    return executeAttack(target);
   }
 }

@@ -90,6 +90,15 @@ public class MobileManager {
   }
 
   /**
+   * @return An unmodifiable list of all mobiles.
+   */
+  public List<Mobile> getMobiles() {
+    synchronized (mobiles) {
+      return Collections.unmodifiableList(mobiles);
+    }
+  }
+
+  /**
    * Clears all mobiles from the manager.
    */
   public void clear() {

@@ -12,12 +12,9 @@ import solace.game.*;
  * @author Ryan Sandor Richards
  */
 public class Vanish extends CooldownCommand {
-  protected static final int COOLDOWN_DURATION = 180;
-
   public Vanish(Player p) {
     super("vanish", p);
-    setCooldownDuration(COOLDOWN_DURATION);
-    setInitiatesCombat(false);
+    setCooldownDuration(180);
   }
 
   public boolean execute(int level, Player target) {

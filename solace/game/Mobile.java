@@ -127,6 +127,7 @@ public class Mobile extends AbstractPlayer {
    * @see solace.game.Player
    */
   public void die(Player killer) {
+    removeAllBuffs();
     setPlayState(PlayState.DEAD);
     if (killer != null) {
       Player[] excludes = { this, killer };

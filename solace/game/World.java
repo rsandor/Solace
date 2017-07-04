@@ -52,10 +52,6 @@ public class World {
     namesToAccounts = new Hashtable<String, Account>();
     accountsToConnections = new Hashtable<Account, Connection>();
 
-    BattleManager.start();
-    RecoveryManager.start();
-    BuffsManager.start();
-
     Log.info("Game world loaded");
 
     initialized = true;
@@ -222,14 +218,16 @@ public class World {
   }
 
   /**
-   * Removes all expired buffs from players in the game world.
+   * @return An unmodifiable collection of all player characters and mobiles
+   *   in the game world.
    */
-  public static void removeExpiredPlayerBuffs() {
-    synchronized (playing) {
-      for (solace.game.Character ch : playing) {
-        ch.removeExpiredBuffs();
-      }
+  public static Collection<Player> getAllPlayers() {
+    List<Player> allPlayers = new LinkedList<Player>();
+    synchronized(playing) {
+      allPlayers.addAll(playing);
     }
+    allPlayers.addAll(MobileManager.getInstance().getMobiles());
+    return Collections.unmodifiableCollection(allPlayers);
   }
 
   /**

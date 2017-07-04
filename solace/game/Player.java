@@ -1,6 +1,6 @@
 package solace.game;
-
 import java.util.Collection;
+import solace.util.Clock;
 
 /**
  * Behavior set for objects representing people or monsters that can inhabit
@@ -455,15 +455,14 @@ public interface Player {
   public Collection<Buff> getBuffs();
 
   /**
-   * @return True if the player is currently casting a spell, false otherwise.
+   * Refreshes buffs for the player and removes those that have expired.
    */
-  public boolean isCasting();
+  public void removeExpiredBuffs();
 
   /**
-   * Sets whether or not the player is casting a spell.
-   * @param c True to set the player as casting, false to set as not casting.
+   * Removes all buffs from the player.
    */
-  public void setCasting(boolean c);
+  public void removeAllBuffs();
 
   /**
    * @return `true` if the player is flagged as immortal, `false` otherwise.
@@ -506,7 +505,23 @@ public interface Player {
   public void resetVisibilityOnAction(String event);
 
   /**
-   * Refreshes buffs for the player and removes those that have expired.
+   * @return `true` if the player is casting a spell, `false` otherwise.
    */
-  public void removeExpiredBuffs();
+  public boolean isCasting();
+
+  /**
+   * Sets whether or not the player is casting a spell.
+   * @param e The event associated with the casting of the spell.
+   */
+  public void beginCasting(Clock.Event e);
+
+  /**
+   * Interrupt the player if they are currently casting a spell.
+   */
+  public void interruptCasting();
+
+  /**
+   * Cleanup after spell is successfuly cast.
+   */
+  public void finishCasting();
 }

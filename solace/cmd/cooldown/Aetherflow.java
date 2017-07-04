@@ -8,12 +8,9 @@ import solace.game.*;
  * @author Ryan Sandor Richards
  */
 public class Aetherflow extends CooldownCommand {
-  protected static final int COOLDOWN_DURATION = 300;
-
   public Aetherflow(Player p) {
     super("aetherflow", p);
-    setCooldownDuration(COOLDOWN_DURATION);
-    setInitiatesCombat(false);
+    setCooldownDuration(300);
   }
 
   public boolean execute(int level, Player target) {

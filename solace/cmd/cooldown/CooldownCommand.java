@@ -3,13 +3,12 @@ package solace.cmd.cooldown;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 import solace.cmd.AbstractCommand;
 import solace.cmd.InvalidTargetException;
 
 /**
- * Base class for all cool down commands. Cool down commands are ones which
+ * Base class for all cooldown commands. Cool down commands are ones which
  * become unavailable for a certain duration after their use.
  * @author Ryan Sandor Richards
  */
@@ -20,7 +19,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @author Ryan Sandor Richards
    */
   protected class CooldownException extends Exception {
-    public CooldownException(String message) {
+    CooldownException(String message) {
       super(message);
     }
   }
@@ -28,14 +27,18 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * Indicates that the command uses the global cool down.
    */
-  public static final int GLOBAL_COOLDOWN = -1;
+  static final int GLOBAL_COOLDOWN = -1;
 
   Player player;
-  int cooldownDuration;
-  boolean initiatesCombat;
-  boolean onCooldown;
-  int castTime;
-  List<ResourceCost> resourceCosts = new LinkedList<ResourceCost>();
+  private int cooldownDuration;
+  private boolean onCooldown = false;
+  private List<ResourceCost> resourceCosts = new LinkedList<ResourceCost>();
+  private boolean initiatesCombat = false;
+  private String combosWith = null;
+  private int basePotency = 0;
+  private int comboPotency = 0;
+  private int castTime = 0;
+  private String savingThrow = null;
 
   /**
    * Creates a new cool down command with the given name and duration for the
@@ -46,8 +49,6 @@ public abstract class CooldownCommand extends AbstractCommand {
   public CooldownCommand(String name, Player p) {
     super(name);
     player = p;
-    onCooldown = false;
-    castTime = 0;
   }
 
   /**
@@ -60,7 +61,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * @return Amount of time for the cooldown.
    */
-  public int getCooldownDuration() {
+  protected int getCooldownDuration() {
     return cooldownDuration;
   }
 
@@ -68,14 +69,14 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Sets the coodown duration for the command.
    * @param d The duration to set.
    */
-  public void setCooldownDuration(int d) {
+  protected void setCooldownDuration(int d) {
     cooldownDuration = d;
   }
 
   /**
    * @return True if the command initiates combat, false otherwise.
    */
-  public boolean getInitiatesCombat() {
+  protected boolean getInitiatesCombat() {
     return initiatesCombat;
   }
 
@@ -83,20 +84,25 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Sets whether or not the cooldown initiates combat.
    * @param combat [description]
    */
-  public void setInitiatesCombat(boolean combat) {
+  protected void setInitiatesCombat(boolean combat) {
     initiatesCombat = combat;
   }
 
   /**
    * @return The cast time for the cooldown.
    */
-  public int getCastTime() { return castTime; }
+  protected int getCastTime() { return castTime; }
 
   /**
    * Sets the cast time for the cooldown.
    * @param ct Casting time in seconds.
    */
-  public void setCastTime(int ct) { castTime = ct; }
+  protected void setCastTime(int ct) { castTime = ct; }
+
+  /**
+   * @return `true` if the cooldown has a non-zero cast time `false` otherwise.
+   */
+  protected boolean hasCastTime() { return castTime > 0; }
 
   /**
    * @return The message to send when the player begins casting for this action.
@@ -107,7 +113,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Adds a resource cost to this cooldown action.
    * @param c The cost to add.
    */
-  public void addResourceCost(ResourceCost c) {
+  protected void addResourceCost(ResourceCost c) {
     resourceCosts.add(c);
   }
 
@@ -121,6 +127,71 @@ public abstract class CooldownCommand extends AbstractCommand {
         throw new CooldownException(cost.getInsufficentResourceMessage());
       }
     }
+  }
+
+  /**
+  * @return The name of the cooldown with which this combos.
+  */
+  protected String getCombosWith() { return combosWith; }
+
+  /**
+   * Sets the name of the cooldown off which this skill combos.
+   * @param c The name of the combo cooldown.
+   */
+  protected void setCombosWith(String c) { combosWith = c; }
+
+  /**
+  * @return The base attack potency for the cooldown.
+  */
+  protected int getBasePotency() { return basePotency; }
+
+  /**
+   * Sets the nase attack potency for the cooldown.
+   * @param i Potency to set.
+   */
+  protected void setBasePotency(int i) { basePotency = i; }
+
+  /**
+  * @return The combo potency for the cooldown.
+  */
+  protected int getComboPotency() { return comboPotency; }
+
+  /**
+   * Sets the combo potency for the cooldown.
+   * @param i Potency to set.
+   */
+  protected void setComboPotency(int i) { comboPotency = i; }
+
+  /**
+   * Determines if this cooldown should be executed as a combo.
+   * @return `true` if it's a combo, `false` otherwise.
+   */
+  protected boolean isCombo() {
+    return player.getComboAction().equals(getCombosWith());
+  }
+
+  /**
+   * Determines the potency for a cooldown attack based on whether or not it is
+   * a combo attack.
+   * @return The cooldown attack potency.
+   */
+  protected int getPotency() {
+    return isCombo() ? getComboPotency() : getBasePotency();
+  }
+
+  /**
+   * @return The name of the saving throw associated with the cooldown.
+   */
+  protected String getSavingThrow() { return savingThrow; }
+
+  /**
+   * Sets the name of the saving throw for the cooldown.
+   * @param s Name of the saving throw to set.
+   */
+  protected void setSavingThrow(String s) { savingThrow = s; }
+
+  protected boolean isSpellAttack() {
+    return getSavingThrow() != null;
   }
 
   /**
@@ -145,7 +216,7 @@ public abstract class CooldownCommand extends AbstractCommand {
     }
 
     // Check to see if the skill is on cooldown
-    boolean onGCD = cooldownDuration == GLOBAL_COOLDOWN && player.isOnGCD();
+    boolean onGCD = getCooldownDuration() == GLOBAL_COOLDOWN && player.isOnGCD();
     if (onGCD || onCooldown) {
       throw new CooldownException(String.format(
         "%s is not ready yet.", getName()));
@@ -175,7 +246,7 @@ public abstract class CooldownCommand extends AbstractCommand {
     }
 
     // Schedule global cooldowns
-    if (cooldownDuration == GLOBAL_COOLDOWN) {
+    if (getCooldownDuration() == GLOBAL_COOLDOWN) {
       player.setOnGCD();
     }
 
@@ -218,43 +289,45 @@ public abstract class CooldownCommand extends AbstractCommand {
     Connection c,
     String []params,
     Player target,
-    boolean result
+    boolean isHit
   ) {
     // Schedule off global cooldowns
-    if (cooldownDuration != GLOBAL_COOLDOWN && result) {
+    if (getCooldownDuration() != GLOBAL_COOLDOWN && isHit) {
       onCooldown = true;
       Clock.getInstance().schedule(
         String.format("%s cooldown for %s", getName(), player.getName()),
-        cooldownDuration,
+        getCooldownDuration(),
         new Runnable() {
-          public void run() {
-            onCooldown = false;
-          }
+          public void run() { onCooldown = false; }
         });
-      player.cooldownAt(getName(), cooldownDuration);
+      player.cooldownAt(getName(), getCooldownDuration());
     }
 
     // Handle GCD combos
-    if (cooldownDuration == GLOBAL_COOLDOWN && result) {
+    if (getCooldownDuration() == GLOBAL_COOLDOWN && isHit) {
       player.setComboAction(getName());
     }
 
-    // Initiate combat if applicable
-    if (!initiatesCombat || !result) {
+    // Bypass combat if ...
+    if (
+      target == null ||   // There is no target, OR
+      !initiatesCombat || // The cooldown does not initiate combat, OR
+      !isHit ||           // The cooldown didn't hit the target, OR
+      player == target    // The player is the target
+    ) {
       return;
     }
 
-    if (target != null) {
-      if (!player.isFighting() && !target.isFighting()) {
-        BattleManager.initiate(player, target);
-        if (c != null) {
-          c.skipNextPrompt();
-        }
-      } else if (player.isFighting() && !target.isFighting()) {
-        Battle playerBattle = BattleManager.getBattleFor(player);
-        playerBattle.add(target);
-        playerBattle.setAttacking(target, player);
+    // Initiate combat
+    if (!player.isFighting() && !target.isFighting()) {
+      BattleManager.initiate(player, target);
+      if (c != null) {
+        c.skipNextPrompt();
       }
+    } else if (player.isFighting() && !target.isFighting()) {
+      Battle playerBattle = BattleManager.getBattleFor(player);
+      playerBattle.add(target);
+      playerBattle.setAttacking(target, player);
     }
   }
 
@@ -270,25 +343,33 @@ public abstract class CooldownCommand extends AbstractCommand {
         boolean result = execute(player.getCooldownLevel(getName()), target);
         afterExecute(c, params, target, result);
       } else {
-        player.setCasting(true);
-        player.sendln(getCastMessage());
-        Clock.getInstance().schedule(
-          String.format("%s casting %s", player.getName(), getName()),
-          castTime,
-          new Runnable() {
-            public void run() {
-              try {
-                player.setCasting(false);
-                beforeExecute(params, target);
-                boolean result = execute(
-                  player.getCooldownLevel(getName()),
-                  target);
-                afterExecute(c, params, target, result);
-              } catch (CooldownException cnse) {
-                player.sendln(cnse.getMessage());
-              }
+        if (player.isCasting()) {
+          player.sendln("You are already casting a spell!");
+          return false;
+        }
+
+        Runnable eventRunnable = new Runnable() {
+          public void run() {
+            try {
+              player.finishCasting();
+              beforeExecute(params, target);
+              boolean result = execute(
+                player.getCooldownLevel(getName()),
+                target);
+              afterExecute(c, params, target, result);
+            } catch (CooldownException cnse) {
+              player.sendln(cnse.getMessage());
             }
-          });
+          }
+        };
+
+        String eventName = String.format(
+          "%s casting %s", player.getName(), getName());
+
+        player.beginCasting(Clock.getInstance().schedule(
+          eventName, castTime, eventRunnable));
+        player.sendln(getCastMessage());
+
         afterSchedule(params, target);
       }
     } catch (CooldownException cde) {
@@ -299,152 +380,120 @@ public abstract class CooldownCommand extends AbstractCommand {
   }
 
   /**
-   * Checks to determine if the target for the cooldown is valid.
+   * Checks to determine if the target for the cooldown is valid. This method
+   * is meant to be overriden by subclasses.
    * @param target Target to check.
    * @throws InvalidTargetException With a descriptive message if the target is
    *   not valid.
    */
-  protected void checkValidTarget(Player target) throws InvalidTargetException {
+  protected void checkValidTarget(Player target)
+    throws InvalidTargetException
+  {
+    if (target == null) {
+      Log.error("Unable to find target for cooldown command.");
+      throw new InvalidTargetException("Could not find the target!");
+    }
+  }
+
+  /**
+   * Resolves a target given to the command's execute method and determines if
+   * it is valid. If no target is given this method will attempt to find the
+   * executor's current battle target.
+   * @param givenTarget Target as given at the time of cooldown execution.
+   * @return The actual target for the cooldown.
+   * @throws InvalidTargetException If the final target is invalid.
+   */
+  Player resolveTarget(Player givenTarget)
+    throws InvalidTargetException
+  {
+    Player target = givenTarget;
+
+    if (target == null) {
+      if (player.isFighting()) {
+        target = BattleManager.getBattleFor(player).getTargetFor(player);
+      } else {
+        throw new InvalidTargetException(String.format(
+          "Who would you like to attack with {m%s{x?",
+          getDisplayName()));
+      }
+    }
+
+    checkValidTarget(target);
+    return target;
+  }
+
+  /**
+   * Performs a roll to determine if the cooldown attack hits, criticals or
+   * misses. By default this will use the `Battle.rollToHit` unless this
+   * cooldown defines is a spell. In the latter case it will use the
+   * `Battle.rollToCast` method.
+   * @param target The target of the attack.
+   * @return The result of the roll.
+   */
+  protected AttackResult rollToHit(Player target) {
+    if (isSpellAttack()) {
+      return Battle.rollToCast(player, target, getPotency(), getSavingThrow());
+    }
+    return Battle.rollToHit(player, target, getPotency());
+  }
+
+  /**
+   * Sends the player a message saying that the cooldown attack missed.
+   */
+  void sendMissMessage() {
+    player.sendln(String.format("Your {m%s{x misses!", getDisplayName()));
+  }
+
+  /**
+   * Sends messages to the player and that target that the cooldown attack hit.
+   * @param target The target of the attack.
+   * @param result The result of the to hit roll for the attack.
+   * @param damage The damage dealt by the attack.
+   */
+  private void sendHitMessages(Player target, AttackResult result, int damage) {
+    if (isCombo()) {
+      player.sendln(String.format(
+        "[{g%d{x] {y<{Ycombo{y>{x Your {m%s{x hits %s!",
+        damage, getDisplayName(), target.getName()));
+    } else {
+      player.sendln(String.format(
+        "[{g%d{x] Your {m%s{x hits %s!",
+        damage, getDisplayName(), target.getName()));
+    }
+    target.sendln(String.format(
+      "<{r%d{x> %s hits you with an {m%s{x!",
+      damage, player.getName(), getDisplayName()));
   }
 
   /**
    * Internal helper method for executing cooldown commands as attacks. Handles
    * targeting attack rolls, damage rolls, damage application, and battle
    * messages.
-   * @param target The target of the attack.
-   * @param basePotency The base potency of the attack.
-   * @param comboWith Name of a cooldown that causes this to be a combo strike.
-   * @param comboPotency Potency for the attack if it was performed as a combo.
-   * @param saveName Name of the saving throw if this is a magical attack.
+   * @param givenTarget The given target of the attack (if any).
    * @return `true` if the attack succeeded, `false` otherwise.
    */
-  private boolean executeAttack(
-    Player target,
-    int basePotency,
-    String comboWith,
-    int comboPotency,
-    String saveName
-  ) {
+  boolean executeAttack(Player givenTarget) {
     try {
-      if (!player.isFighting() && target == null) {
-        player.sendln(String.format(
-          "Who would you like to attack with {m%s{x?",
-          getDisplayName()));
+      // Resolve the target
+      Player target = resolveTarget(givenTarget);
+
+      // Make the "roll to hit" the target
+      AttackResult result = rollToHit(target);
+      if (result.isMiss()) {
+        sendMissMessage();
         return false;
       }
 
-      if (player.isFighting() && target == null) {
-        target = BattleManager.getBattleFor(player).getTargetFor(player);
-      }
-
-      checkValidTarget(target);
-
-      boolean isCombo = player.getComboAction().equals(comboWith);
-      int potency = isCombo ? comboPotency : basePotency;
-
-      AttackResult result;
-      if (saveName == null) {
-        result = Battle.rollToHit(player, target, potency);
-      } else {
-        result = Battle.rollToCast(player, target, potency, saveName);
-      }
-
-      if (result == AttackResult.MISS) {
-        player.sendMessage(String.format(
-          "Your {m%s{x misses!",
-          getDisplayName()));
-        return false;
-      }
-
-      boolean critical = result == AttackResult.CRITICAL;
-      int damage = Battle.rollDamage(player, target, critical, potency);
+      // Roll damage, apply it, and we're done!
+      int damage = Battle.rollDamage(
+        player, target, result.isCritical(), getPotency());
       target.applyDamage(damage);
-
-      if (isCombo) {
-        player.sendln(String.format(
-          "[{g%d{x] {y<{Ycombo{y>{x Your {m%s{x hits %s!",
-          damage, getDisplayName(), target.getName()));
-      } else {
-        player.sendln(String.format(
-          "[{g%d{x] Your {m%s{x hits %s!",
-          damage, getDisplayName(), target.getName()));
-      }
-
-      target.sendln(String.format(
-        "<{r%d{x> %s hits you with an {m%s{x!",
-        damage, player.getName(), getDisplayName()));
-
+      sendHitMessages(target, result, damage);
       return true;
     } catch (InvalidTargetException ite) {
       player.sendln(ite.getMessage());
       return false;
     }
-  }
-
-  /**
-   * Helper for executing physical attacks that handles rolls and messaging.
-   * @param target The target of the attack.
-   * @param potency The potency of the attack.
-   * @return `true` if the attack succeeds, `false` otherwise.
-   */
-  protected boolean executePhysicalAttack(
-    Player target,
-    int potency
-  ) {
-    return executePhysicalAttack(target, potency, null, 0);
-  }
-
-  /**
-   * Helper for executing physical attacks that handles rolls, messaging, and
-   * combo attacks.
-   * @param target The target of the attack.
-   * @param basePotency The base potency of the attack.
-   * @param comboWith Name of a cooldown that causes this to be a combo strike.
-   * @param comboPotency Potency for the attack if it was performed as a combo.
-   * @return `true` if the attack succeeds, `false` otherwise.
-   */
-  protected boolean executePhysicalAttack(
-    Player target,
-    int basePotency,
-    String comboWith,
-    int comboPotency
-  ) {
-    return executeAttack(target, basePotency, comboWith, comboPotency, null);
-  }
-
-  /**
-   * Helper for executing magical attacks that handles rolls and messaging.
-   * @param target The target of the attack.
-   * @param potency The potency of the attack.
-   * @param save Name of the opposing saving throw.
-   * @return `true` if the attack succeeds, `false` otherwise.
-   */
-  protected boolean executeMagicAttack(
-    Player target,
-    int potency,
-    String save
-  ) {
-    return executeMagicAttack(target, potency, null, 0, save);
-  }
-
-  /**
-   * Helper for executing magical attacks that handles rolls, messaging, and
-   * combo attacks.
-   * @param target The target of the attack.
-   * @param potency The potency of the attack.
-   * @param comboWith Name of a cooldown that causes this to be a combo strike.
-   * @param comboPotency Potency for the attack if it was performed as a combo.
-   * @param save Name of the opposing saving throw.
-   * @return `true` if the attack succeeds, `false` otherwise.
-   */
-  protected boolean executeMagicAttack(
-    Player target,
-    int basePotency,
-    String comboWith,
-    int comboPotency,
-    String save
-  ) {
-    return executeAttack(target, basePotency, comboWith, comboPotency, save);
   }
 
   /**

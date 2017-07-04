@@ -234,6 +234,7 @@ public class PlayController extends AbstractStateController {
     // Skill: Evocation
     addCommand(new Icespike(character));
     addCommand(new Flamestrike(character));
+    addCommand(new Shock(character));
 
     // Racial Skills
     addCommand(new Survivor(character));

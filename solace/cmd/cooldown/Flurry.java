@@ -12,17 +12,16 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class Flurry extends CooldownCommand {
-  static final int POTENCY = 150;
-
   public Flurry(Player p) {
     super("flurry", p);
     setDisplayName("flurry of blows");
     setCooldownDuration(CooldownCommand.GLOBAL_COOLDOWN);
     setInitiatesCombat(true);
+    setBasePotency(150);
     addResourceCost(new SpCost(2));
   }
 
   public boolean execute(int level, Player target) {
-    return executePhysicalAttack(target, POTENCY);
+    return executeAttack(target);
   }
 }

@@ -18,9 +18,9 @@ a complete copy of the tome, however, may prove no small feat.
 - [15] `flamestrike` (GCD, instant, 20% MP, save: reflex)
   Flames erupt from the caster's hands and envelop the target dealing damage
   with potency 800.
-- [25] Shock (3s cooldown, 4s cast, 5% MP, save: will)
+- [25] `shock` (6s cooldown, 3s cast, 5% MP, save: will)
   Electricity envelops the target applying a 30 second `shocked` debuff that
-  deals 20 potency damage to the target each round.
+  deals 20-30 potency damage to the target each round.
 - [35] Landslide (90s cooldown, 6s cast, 50% MP, save: vigor)
   A wave of earth bursts forth from the caster and sweeps across the target
   dealing damage with potency 1000. The target gains the `slowed` debuff for 8
