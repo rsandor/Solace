@@ -3,7 +3,12 @@
 ### In Progress
 
 **Feature: Advanced Spellcasting**
-- [ ] Spellcasting with cast times
+- [x] Prevent cooldowns from initiating combat when using on self
+- [x] Spellcasting with cast times
+- [x] Fix game clock deadlock issue
+- [x] Add debug to Log service, fixed width labeling as well
+- [ ] Add "shock" DoT spell for Evocation (for testing spell timing)
+- [ ] Fix death checking to take negative health into account
 - [ ] Saving Throws unit testing
 - [ ] Spells and Spellcasting help articles
 
