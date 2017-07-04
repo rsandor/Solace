@@ -53,24 +53,23 @@ public class Game
     // Start the main game world clock
     Clock.getInstance().start();
 
+    // Start all management services
+    BattleManager.start();
+    RecoveryManager.start();
+    PlayerManager.start();
+
     // Initialize and start the game server
     server = new Server(port);
     server.listen();
   }
 
   /**
-   * Safely shuts the game down by saving all characters and
-   * stopping all network communication to clients.
+   * Safely shuts the game down by saving all characters, stopping all network
+   * communication to clients, etc.
    */
   public static void shutdown() {
-    BattleManager.stop();
-    BuffsManager.stop();
-
-    Log.info("Stopping account writer.");
-    writer.stop();
-
-    Log.info("Stopping game clock.");
     Clock.getInstance().stop();
+    writer.stop();
     server.shutdown();
   }
 

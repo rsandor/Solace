@@ -239,6 +239,8 @@ public class Character extends AbstractPlayer {
   public void die(Player killer) {
     try {
       setPlayState(PlayState.DEAD);
+      removeAllBuffs();
+
       hp = 1;
       mp = 0;
       sp = 0;

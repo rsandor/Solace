@@ -40,8 +40,9 @@ public class PlayerManager {
    * Handles cleanup for player states when data get corrupted due to server
    * crashes, buggy code, etc.
    */
-  private static void cleanupPlayerStates() {
+  private static void cleanupPlayers() {
     for (Player p : World.getAllPlayers()) {
+      p.removeExpiredBuffs();
       PlayerManager.cleanFightingState(p);
       PlayerManager.cleanDeathState(p);
     }
@@ -54,7 +55,7 @@ public class PlayerManager {
     if (event != null) { return; }
     Log.info("Starting player manager");
     event = Clock.getInstance().interval("player-cleanup", 2, new Runnable() {
-      public void run() { PlayerManager.cleanupPlayerStates(); }
+      public void run() { PlayerManager.cleanupPlayers(); }
     });
   }
 

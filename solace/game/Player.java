@@ -455,6 +455,16 @@ public interface Player {
   public Collection<Buff> getBuffs();
 
   /**
+   * Refreshes buffs for the player and removes those that have expired.
+   */
+  public void removeExpiredBuffs();
+
+  /**
+   * Removes all buffs from the player.
+   */
+  public void removeAllBuffs();
+
+  /**
    * @return `true` if the player is flagged as immortal, `false` otherwise.
    */
   public boolean isImmortal();
@@ -493,11 +503,6 @@ public interface Player {
    * @param event Name of the action that has occured involving the player.
    */
   public void resetVisibilityOnAction(String event);
-
-  /**
-   * Refreshes buffs for the player and removes those that have expired.
-   */
-  public void removeExpiredBuffs();
 
   /**
    * @return `true` if the player is casting a spell, `false` otherwise.

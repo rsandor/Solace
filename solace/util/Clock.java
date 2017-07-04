@@ -149,6 +149,7 @@ public class Clock implements Runnable {
    * Stops the game clock entirely.
    */
   public void stop() {
+    Log.info("Stopping game clock");
     pause();
     executor.shutdownNow();
   }

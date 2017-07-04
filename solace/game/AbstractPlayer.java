@@ -640,6 +640,17 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
+  public void removeAllBuffs() {
+    synchronized (buffs) {
+      for (Buff b : buffs.values()) {
+        removeBuff(b.getName());
+      }
+    }
+  }
+
+  /**
+   * @see solace.game.Player
+   */
   public boolean isImmortal() {
     return immortal;
   }

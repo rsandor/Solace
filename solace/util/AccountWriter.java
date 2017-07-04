@@ -36,6 +36,7 @@ public class AccountWriter implements Runnable {
    * all active players are saved.
    */
   public void stop() {
+    Log.info("Stopping account writer.");
     running = false;
     saveActive();
     saveQueued();
