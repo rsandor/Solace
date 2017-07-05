@@ -39,6 +39,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   private int comboPotency = 0;
   private int castTime = 0;
   private String savingThrow = null;
+  private String castMessage = "You begin casting...";
 
   /**
    * Creates a new cool down command with the given name and duration for the
@@ -61,7 +62,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * @return Amount of time for the cooldown.
    */
-  protected int getCooldownDuration() {
+  public int getCooldownDuration() {
     return cooldownDuration;
   }
 
@@ -69,14 +70,14 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Sets the coodown duration for the command.
    * @param d The duration to set.
    */
-  protected void setCooldownDuration(int d) {
+  public void setCooldownDuration(int d) {
     cooldownDuration = d;
   }
 
   /**
    * @return True if the command initiates combat, false otherwise.
    */
-  protected boolean getInitiatesCombat() {
+  public boolean getInitiatesCombat() {
     return initiatesCombat;
   }
 
@@ -84,36 +85,42 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Sets whether or not the cooldown initiates combat.
    * @param combat [description]
    */
-  protected void setInitiatesCombat(boolean combat) {
+  public void setInitiatesCombat(boolean combat) {
     initiatesCombat = combat;
   }
 
   /**
    * @return The cast time for the cooldown.
    */
-  protected int getCastTime() { return castTime; }
+  public int getCastTime() { return castTime; }
 
   /**
    * Sets the cast time for the cooldown.
    * @param ct Casting time in seconds.
    */
-  protected void setCastTime(int ct) { castTime = ct; }
+  public void setCastTime(int ct) { castTime = ct; }
 
   /**
    * @return `true` if the cooldown has a non-zero cast time `false` otherwise.
    */
-  protected boolean hasCastTime() { return castTime > 0; }
+  public boolean hasCastTime() { return castTime > 0; }
 
   /**
    * @return The message to send when the player begins casting for this action.
    */
-  protected String getCastMessage() { return "You begin casting..."; }
+  public String getCastMessage() { return castMessage; }
+
+  /**
+   * Sets the casting message for this cooldown.
+   * @param String msg Message to set.
+   */
+  public void setCastMessage(String msg) { castMessage = msg; }
 
   /**
    * Adds a resource cost to this cooldown action.
    * @param c The cost to add.
    */
-  protected void addResourceCost(ResourceCost c) {
+  public void addResourceCost(ResourceCost c) {
     resourceCosts.add(c);
   }
 
@@ -130,37 +137,37 @@ public abstract class CooldownCommand extends AbstractCommand {
   }
 
   /**
-  * @return The name of the cooldown with which this combos.
-  */
-  protected String getCombosWith() { return combosWith; }
+   * @return The name of the cooldown with which this combos.
+   */
+  public String getCombosWith() { return combosWith; }
 
   /**
    * Sets the name of the cooldown off which this skill combos.
    * @param c The name of the combo cooldown.
    */
-  protected void setCombosWith(String c) { combosWith = c; }
+  public void setCombosWith(String c) { combosWith = c; }
 
   /**
   * @return The base attack potency for the cooldown.
   */
-  protected int getBasePotency() { return basePotency; }
+  public int getBasePotency() { return basePotency; }
 
   /**
    * Sets the nase attack potency for the cooldown.
    * @param i Potency to set.
    */
-  protected void setBasePotency(int i) { basePotency = i; }
+  public void setBasePotency(int i) { basePotency = i; }
 
   /**
   * @return The combo potency for the cooldown.
   */
-  protected int getComboPotency() { return comboPotency; }
+  public int getComboPotency() { return comboPotency; }
 
   /**
    * Sets the combo potency for the cooldown.
    * @param i Potency to set.
    */
-  protected void setComboPotency(int i) { comboPotency = i; }
+  public void setComboPotency(int i) { comboPotency = i; }
 
   /**
    * Determines if this cooldown should be executed as a combo.
@@ -175,20 +182,20 @@ public abstract class CooldownCommand extends AbstractCommand {
    * a combo attack.
    * @return The cooldown attack potency.
    */
-  protected int getPotency() {
+  public int getPotency() {
     return isCombo() ? getComboPotency() : getBasePotency();
   }
 
   /**
    * @return The name of the saving throw associated with the cooldown.
    */
-  protected String getSavingThrow() { return savingThrow; }
+  public String getSavingThrow() { return savingThrow; }
 
   /**
    * Sets the name of the saving throw for the cooldown.
    * @param s Name of the saving throw to set.
    */
-  protected void setSavingThrow(String s) { savingThrow = s; }
+  public void setSavingThrow(String s) { savingThrow = s; }
 
   protected boolean isSpellAttack() {
     return getSavingThrow() != null;
@@ -310,10 +317,10 @@ public abstract class CooldownCommand extends AbstractCommand {
 
     // Bypass combat if ...
     if (
-      target == null ||   // There is no target, OR
-      !initiatesCombat || // The cooldown does not initiate combat, OR
-      !isHit ||           // The cooldown didn't hit the target, OR
-      player == target    // The player is the target
+      target == null ||         // There is no target, OR
+      !getInitiatesCombat() ||  // The cooldown does not initiate combat, OR
+      !isHit ||                 // The cooldown didn't hit the target, OR
+      getPlayer() == target     // The player is the target
     ) {
       return;
     }
@@ -386,7 +393,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @throws InvalidTargetException With a descriptive message if the target is
    *   not valid.
    */
-  protected void checkValidTarget(Player target)
+  public void checkValidTarget(Player target)
     throws InvalidTargetException
   {
     if (target == null) {
@@ -403,7 +410,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @return The actual target for the cooldown.
    * @throws InvalidTargetException If the final target is invalid.
    */
-  Player resolveTarget(Player givenTarget)
+  public Player resolveTarget(Player givenTarget)
     throws InvalidTargetException
   {
     Player target = givenTarget;
@@ -430,7 +437,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @param target The target of the attack.
    * @return The result of the roll.
    */
-  protected AttackResult rollToHit(Player target) {
+  public AttackResult rollToHit(Player target) {
     if (isSpellAttack()) {
       return Battle.rollToCast(player, target, getPotency(), getSavingThrow());
     }
@@ -440,7 +447,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * Sends the player a message saying that the cooldown attack missed.
    */
-  void sendMissMessage() {
+  public void sendMissMessage() {
     player.sendln(String.format("Your {m%s{x misses!", getDisplayName()));
   }
 
@@ -472,7 +479,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @param givenTarget The given target of the attack (if any).
    * @return `true` if the attack succeeded, `false` otherwise.
    */
-  boolean executeAttack(Player givenTarget) {
+  public boolean executeAttack(Player givenTarget) {
     try {
       // Resolve the target
       Player target = resolveTarget(givenTarget);

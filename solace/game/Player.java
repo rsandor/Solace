@@ -524,4 +524,21 @@ public interface Player {
    * Cleanup after spell is successfuly cast.
    */
   public void finishCasting();
+
+  /**
+   * @return The battle the player is currently engaged in, if applicable.
+   *   `null` otheriws.e
+   */
+  public Battle getBattle();
+
+  /**
+   * Applies a "Damage over time" (DoT) buff to the player.
+   * TODO We may remove this once we have fully scriptable buffs.
+   * @param String name Name of the buff.
+   * @param int    avg  Average damage.
+   * @param int    d    Duration for the buff.
+   * @param int    f    Frequency in ticks when to apply damage (round = 2).
+   * @param String msg  Damage message format.
+   */
+  public void applyDot(String name, int avg, int d, int f, String msg);
 }

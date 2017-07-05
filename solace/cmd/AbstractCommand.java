@@ -59,11 +59,11 @@ public abstract class AbstractCommand
   }
 
   /**
-   * Method for use by subclasses for setting the display name if it differs
-   * from the command name.
+   * Method used to set the display name of the command if it differs from the
+   * name.
    * @param d Desired display name for the command.
    */
-  protected void setDisplayName(String d) {
+  public void setDisplayName(String d) {
     displayName = d;
   }
 

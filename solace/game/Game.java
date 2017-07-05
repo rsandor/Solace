@@ -3,10 +3,12 @@ package solace.game;
 import solace.net.*;
 import solace.util.*;
 import solace.xml.*;
+import solace.script.Engine;
 import solace.cmd.GameException;
 
 import java.io.*;
 import java.util.*;
+import javax.script.ScriptException;
 
 /**
  * Main application class for the Solace engine.
@@ -27,7 +29,9 @@ public class Game
   /**
    * Initializes the game and starts the game server.
    */
-  protected static void init(String[] args) throws IOException, GameException {
+  protected static void init(String[] args)
+    throws IOException, GameException, ScriptException
+  {
     int port;
 
     try {
@@ -58,6 +62,9 @@ public class Game
     RecoveryManager.start();
     PlayerManager.start();
 
+    // Initialize the scripting engine
+    Engine.start();
+
     // Initialize and start the game server
     server = new Server(port);
     server.listen();
@@ -78,17 +85,16 @@ public class Game
    * game server.
    * @param args
    */
-  public static void main(String[] args)
-  {
+  public static void main(String[] args) {
     try {
       init(args);
-    }
-    catch (GameException e) {
+    } catch (GameException e) {
       Log.error("Unable to initialize game: " + e.getMessage());
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       Log.error("Unable to initialize and start game server:");
       e.printStackTrace();
+    } catch (ScriptException e) {
+      Log.error("Unable to initialize scripting engine: " + e.getMessage());
     }
   }
 }
