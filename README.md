@@ -22,6 +22,7 @@ what they all contain:
 
 * `build.xml` - The ant build script
 * `solace/` - Root source directory
+* `script/` - Root embedded scripts directory
 * `data/accounts` - user account flat files
 * `data/messages` - static game messages such as the MOTD
 * `data/config` - various configuration files
