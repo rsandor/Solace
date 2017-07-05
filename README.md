@@ -5,7 +5,7 @@ By Ryan Sandor Richards
 
 Solace requires two things to compile and run:
 
-1. Java Runtime Environment and Compiling tools (version >= 7)
+1. Java Runtime Environment and Compiling tools (version >= 8)
 2. Apache Ant
 
 If you are running a newer version of Mac OSX you're in luck because both of
