@@ -29,6 +29,12 @@ public interface Command
   public String getDisplayName();
 
   /**
+   * Sets the display name for the command.
+   * @param String n Name to set.
+   */
+  public void setDisplayName(String n);
+
+  /**
    * Determines if the given string matches the command's name (this can
    * somtimes be different than the two strings being lexically identical,
    * consider prefix matches which many MUDs use).

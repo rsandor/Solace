@@ -6,29 +6,60 @@
 - [x] Embedded JavaScript via Nashorn:
   http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
 - [x] Play Command Scripting
-- [ ] Cooldown Action Scripting
+- [ ] Cooldown Scripting
 - [ ] Buff Scripting
+
+**Feature: Better Color Encoding**
+- [ ] Add a better format for color encoding in strings
+- [ ] Update all references to old color codes to use new format
 
 --------------------------------------------------------------------------------
 
 ### Bugs
 
-- Shutdown command sometimes hangs when shutting down subsystems, investigate
+- Shutdown command sometimes hangs, investigate
 
 --------------------------------------------------------------------------------
 
 ### Backlog
 
+**Feature: Commands 2.0**
+- [ ] Add `reload` command as a play command for admins (easier testing)
+- [ ] Centralized command registry
+  - [ ] Commands as singletons
+  - [ ] Can reload scripted commands on-the-fly
+- [ ] Overhaul command and controllers abstraction
+  - [ ] Controllers should no longer hold player specific command instances
+  - [ ] Prompt parsers can lookup commands in the registry
+  - [ ] Commands should be able to provide an ordering field that helps with
+        selecting the correct command even if they have a common prefix
+- [ ] Scripting engine access to command aliases (move data out of controllers)
+- [ ] Fully Script all commands that can be scripted (this should be most)
+
+**Feature: Help system 2.0**
+- Create a better direct indexing system for help pages
+- Use Apache Lucene for full help text search
+- Allow help files to be defined along side objects they describe
+  (perhaps use a `.help.md` extension and a recursive find along with
+  the ability to assign keywords from within the help markdown itself
+  that are stripped and ingested upon parsing).
+
+**The "game/" directory**
+- [ ] Move from using `data/` to `game/`
+- [ ] Passive scripting
+- [ ] Race scripting
+- [ ] Skill scripting (with localized scripts)
+- [ ] Basic area scripting
+
 **Feature: Account System 2.0**
 - [ ] Account files should be saved to JSON
 
-**Feature: Character Creation**
-- Stats 3.0
-  - Floating point based
+**Feature: Character Creation 2.0**
 - Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
   - Incorporate ability scores into game math for skills
   - Incorporate skill level into game math for skill cooldowns
-- Character Creator 2.0
+- New Interactive Character Creator
+  - Provide access to help files from within creator
 
 **Feature: Presentation & Communication**
 - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
@@ -58,6 +89,13 @@
   - Crafting loot from mobs
 
 **Feature: Areas 2.0**
+- Room scripting
+  - Spawn points for mobiles and items
+  - React to player enter/exit
+  - Interactive features (levers, etc.)
+- Mobile scripting
+  - Wandering (with sensible built-in scripts)
+  - Aggro Mobs  
 - Area links: allow move command to work across areas
 - Room lighting, light source equipment, etc.
 - Banks (items and gold)
@@ -70,11 +108,14 @@
   - Quests?
   - Skill leveling?
 
-**Feature: Tactics System 1.0**
-  - Design Forthcoming
-
-**Feature: Battle System 2.0**
-- Skill balancing and playtesting
+**Feature: Battle and Tactics System 2.0**
+- Tactics System 1.0
+- Stats 3.0
+  - Floating point based
+  - Fetch constants from a data file
+    - Allow admins to reload stats on-the-fly
+  - Better caching for faster lookup
+  - Mild skill balancing and playtesting
 - Interrupt casting (performing certain actions interrupts the spell, etc.)
 - better attack roll potency scaling (currently too powerful)
 - magic attacks currently based on weapon, should be different
@@ -84,35 +125,21 @@
 - Flesh out player (apply a debuff?) and mobile death (generate a corpse and loot?)
 - [ ] Full help article describing battle
 
+**Feature: Quest System 1.0**
+- Dungeon Instances 1.0
+- Further design needed
+
+**Feature: Single Player Instance Parties**
+- Requires: dungeon instances and tactics
 
 **Feature: Server 2.0**
 - SSL Termination for secure client connection
 - Connection proxy so the game can be fully recompiled and reloaded
 - Data layer for storing game state (mongo?)
 
-**Feature: Mobiles 2.0**
-- Spawn Points
-- Better Wandering
-- Aggro mobs
-- Mobile Scripting
-
-**Feature: Quest System 1.0**
-- Dungeon Instances 1.0
-- Mobile, item, & room scripting
-
-**Feature: Help system 2.0**
-- Create a better direct indexing system for help pages
-- Use Apache Lucene for full help text search
-
-**Feature: Single Player Instance Parties**
-- Requires: dungeon instances and tactics
-
 --------------------------------------------------------------------------------
 
-Unorganized:
-
-
-- Stats 2.1 (caching)
+### Unorganized:
 
 --------------------------------------------------------------------------------
 

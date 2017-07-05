@@ -56,7 +56,7 @@ public class Engine {
    * @throws ScriptException If a requires startup script fails to evaluate.
    */
   public static void start() {
-    Log.info("Starting scripting engine...");
+    Log.info("Starting scripting engine");
     reload();
   }
 
@@ -64,7 +64,7 @@ public class Engine {
    * Reloads all game scripts.
    */
   public static void reload() {
-    Log.info("Reloading game scripts...");
+    Log.info("Reloading game scripts");
     try {
       instance.runAll(Paths.get(ENGINE_JS), null, true);
       instance.runAll(Paths.get(SCRIPTS_DIR), ENGINE_JS ,false);
@@ -115,11 +115,18 @@ public class Engine {
    * @throws ScriptException If an error occurs executing the script.
    */
   public void eval(String script) throws ScriptException {
-    engine.eval(
-      "'use strict';\n" +
-      "(function() {\n" +
-      script.replaceAll("[\"']use\\s+strict[\"'][;]?", "") +
-      "})();\n");
+    String scriptFormat = "'use strict';\n(function(){\n%s\n})();";
+    String original = script.replaceAll("[\"']use\\s+strict[\"'][;]?", "");
+    String safeScript = String.format(scriptFormat, original);
+
+    try {
+      engine.eval(safeScript);
+    } catch (ScriptException e) {
+      int line = e.getLineNumber();
+      String[] lines = safeScript.split("\n");
+      String format = "%s\n%s";
+      Log.error(String.format(format, e.getMessage(), lines[line]));
+    }
   }
 
   /**

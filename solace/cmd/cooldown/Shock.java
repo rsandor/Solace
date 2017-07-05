@@ -24,7 +24,7 @@ public class Shock extends CooldownCommand {
   /**
    * @see solace.cmd.cooldown.CooldownCommand
    */
-  protected String getCastMessage() {
+  public String getCastMessage() {
     return "You begin casting shock...";
   }
 

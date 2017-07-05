@@ -1,47 +1,42 @@
 package solace.script;
+import solace.cmd.Command;
 import solace.cmd.play.PlayCommand;
 import solace.net.Connection;
-import solace.game.Character;
+import solace.game.Player;
 import java.util.function.BiPredicate;
 
-public class ScriptedPlayCommand {
-  private String name;
-  private BiPredicate<Character, String[]> lambda;
-
-  public ScriptedPlayCommand(String name) {
-    setName(name);
-    setLambda((character, params) -> false);
-  }
-
+/**
+ * Data model for scripted gameplay commands (`PlayCommand`). Gameplay commands
+ * handle basic actions such as getting items, movement, etc.
+ * @author Ryan Sandor Richards
+ */
+public class ScriptedPlayCommand extends AbstractScriptedCommand {
+  /**
+   * Creates a new play command with the given names and run lamdba.
+   * @param name Name of the command.
+   * @param displayName The display name for the command.
+   * @param runLambda Run lambda for the command.
+   */
   public ScriptedPlayCommand(
     String name,
-    BiPredicate<Character, String[]> lambda
+    String displayName,
+    BiPredicate<Player, String[]> runLambda
   ) {
-    setName(name);
-    setLambda(lambda);
+    super(name, displayName, runLambda);
   }
 
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String n) {
-    name = n;
-  }
-
-  public BiPredicate<Character, String[]> getLambda() {
-    return lambda;
-  }
-
-  public void setLambda(BiPredicate<Character, String[]> l) {
-    lambda = l;
-  }
-
-  public PlayCommand getInstance(Character ch) {
-    return new PlayCommand(name, ch) {
+  /**
+   * Creates an instance of the play command for use by the game engine.
+   * @param ch Character for the play command.
+   * @return The play command instance.
+   */
+  public Command getInstance(solace.game.Character ch) {
+    Command command = new PlayCommand(getName(), ch) {
       public boolean run(Connection c, String[] params) {
-        return lambda.test(ch, params);
+        return getRunLambda().test(ch, params);
       }
     };
+    command.setDisplayName(getDisplayName());
+    return command;
   }
 }

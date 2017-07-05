@@ -6,22 +6,22 @@ import java.util.*;
  * @author Ryan Sandor Richards
  */
 public class Commands {
-  public static List<ScriptedPlayCommand> playCommands =
-    Collections.synchronizedList(new LinkedList<ScriptedPlayCommand>());
+  private static List<ScriptedCommand> commands =
+    Collections.synchronizedList(new LinkedList<ScriptedCommand>());
 
   /**
-   * Adds a new play command.
+   * Adds a new scripted command.
    * @param c The command to add.
    */
-  public static void addPlayCommand(ScriptedPlayCommand c) {
-    playCommands.add(c);
+  public static void add(ScriptedCommand c) {
+    commands.add(c);
   }
 
   /**
    * @return An unmodifiable collection of all play commands registered via
    *   the scripting engine.
    */
-  public static Collection<ScriptedPlayCommand> getPlayCommands() {
-    return playCommands;
+  public static Collection<ScriptedCommand> getCommands() {
+    return Collections.unmodifiableCollection(commands);
   }
 }

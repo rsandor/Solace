@@ -9,7 +9,7 @@ import solace.cmd.play.*;
 import solace.cmd.cooldown.*;
 import solace.cmd.admin.*;
 import solace.script.Commands;
-import solace.script.ScriptedPlayCommand;
+import solace.script.ScriptedCommand;
 import com.google.common.base.Joiner;
 
 /**
@@ -234,11 +234,11 @@ public class PlayController extends AbstractStateController {
     addCommand(new Survivor(character));
     addCommand(new Concentrate(character));
     addCommand(new Skullknock(character));
-    addCommand(new Aetherflow(character));
+    // addCommand(new Aetherflow(character));
     addCommand(new Vanish(character));
 
     // Add all scripted play commands
-    for (ScriptedPlayCommand command : Commands.getPlayCommands()) {
+    for (ScriptedCommand command : Commands.getCommands()) {
       addCommand(command.getInstance(character));
     }
 
