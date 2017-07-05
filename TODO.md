@@ -2,20 +2,15 @@
 
 ### In Progress
 
-**Feature: Scripting engine 1.0**
-- [x] Embedded JavaScript via Nashorn:
-  http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
-- [x] Play Command Scripting
-- [x] Cooldown Scripting
-  - [x] Convert all cooldowns to scripts
-- [ ] Buff Scripting
-  - [ ] Convert all buffs to scripts
-
 --------------------------------------------------------------------------------
 
 ### Bugs
 
 - Shutdown command sometimes hangs, investigate
+
+--------------------------------------------------------------------------------
+
+### Unorganized:
 
 --------------------------------------------------------------------------------
 
@@ -26,10 +21,10 @@
 - [ ] Update all references to old color codes to use new format
 
 **Feature: Commands 2.0**
-- [ ] Add `reload` command as a play command for admins (easier testing)
 - [ ] Centralized command registry
   - [ ] Commands as singletons
-  - [ ] Can reload scripted commands on-the-fly
+  - [ ] Add `reload` command as a PlayCommand for admins only (easier testing)
+  - [ ] Add `reload scripts` so we can update commands on-the-fly
 - [ ] Overhaul command and controllers abstraction
   - [ ] Controllers should no longer hold player specific command instances
   - [ ] Prompt parsers can lookup commands in the registry
@@ -48,6 +43,8 @@
 
 **The "game/" directory**
 - [ ] Move from using `data/` to `game/`
+- [ ] Buff scripting
+  - [ ] Convert existing buffs to scripts
 - [ ] Passive scripting
 - [ ] Race scripting
 - [ ] Skill scripting (with localized scripts)
@@ -57,11 +54,12 @@
 - [ ] Account files should be saved to JSON
 
 **Feature: Character Creation 2.0**
-- Skills 2.0 (Flesh out game skills, passives, cooldowns, etc.)
-  - Incorporate ability scores into game math for skills
-  - Incorporate skill level into game math for skill cooldowns
-- New Interactive Character Creator
-  - Provide access to help files from within creator
+- [ ] Skills 2.0
+  - [ ] Flesh out design for and implement remaining skills
+  - [ ] Incorporate ability scores into game math for skills
+  - [ ] Incorporate skill level into game math for skill cooldowns
+- [ ] New Interactive Character Creator
+  - [ ] Provide access to help files from within creator
 
 **Feature: Presentation & Communication**
 - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
@@ -141,12 +139,13 @@
 
 --------------------------------------------------------------------------------
 
-### Unorganized:
-
---------------------------------------------------------------------------------
-
 ### Done
-
+**Feature: Scripting engine 1.0**
+- [x] Embedded JavaScript via Nashorn:
+  http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
+- [x] Play Command Scripting
+- [x] Cooldown Scripting
+  - [x] Convert all cooldowns to scripts
 **Feature: Advanced Spell Casting**
 - [x] Prevent cooldowns from initiating combat when using on self
 - [x] Spell casting with cast times
@@ -159,7 +158,6 @@
 - [x] Refactor buffs manager into player manager
 - [x] Move manager startup to main game class from world class
 - [x] Add "shock" DoT spell for Evocation (for testing spell timing)
-
 **Feature: Help Cleanup**
 - [x] Cleanup skills and add major/minor associated abilities
 - [x] Help articles for `cooldown` and `hotbar` commands
