@@ -65,7 +65,7 @@ public class Exit {
    */
   public boolean matches(String n) {
     for (String name : names)
-      if (name.startsWith(n))
+      if (name.toLowerCase().startsWith(n.toLowerCase()))
         return true;
     return false;
   }

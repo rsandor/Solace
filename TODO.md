@@ -7,7 +7,6 @@
 ### Bugs
 
 - [ ] **Bug:** Shutdown command sometimes hangs, investigate
-- [ ] **Bug:** Movement commands to not check exit names against lowercase
 
 --------------------------------------------------------------------------------
 
@@ -138,6 +137,7 @@
 
 ### Done
 
+- [x] **Bug:** Movement commands to not check exit names against lowercase
 **Feature: Better Color Encoding**
 - [x] Add a better format for color encoding in strings
 - [x] Update all references to old color codes to use new format
