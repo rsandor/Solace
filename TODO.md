@@ -2,6 +2,19 @@
 
 ### In Progress
 
+**Feature: Commands 2.0**
+- [ ] Centralized command registry
+  - [ ] Commands as singletons
+  - [ ] Add `reload` command as a PlayCommand for admins only (easier testing)
+  - [ ] Add `reload scripts` so we can update commands on-the-fly
+- [ ] Overhaul command and controllers abstraction
+  - [ ] Controllers should no longer hold player specific command instances
+  - [ ] Prompt parsers can lookup commands in the registry
+  - [ ] Commands should be able to provide an ordering field that helps with
+        selecting the correct command even if they have a common prefix
+- [ ] Scripting engine access to command aliases (move data out of controllers)
+- [ ] Fully Script all commands that can be scripted (this should be most)
+
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -15,19 +28,6 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
-
-**Feature: Commands 2.0**
-- [ ] Centralized command registry
-  - [ ] Commands as singletons
-  - [ ] Add `reload` command as a PlayCommand for admins only (easier testing)
-  - [ ] Add `reload scripts` so we can update commands on-the-fly
-- [ ] Overhaul command and controllers abstraction
-  - [ ] Controllers should no longer hold player specific command instances
-  - [ ] Prompt parsers can lookup commands in the registry
-  - [ ] Commands should be able to provide an ordering field that helps with
-        selecting the correct command even if they have a common prefix
-- [ ] Scripting engine access to command aliases (move data out of controllers)
-- [ ] Fully Script all commands that can be scripted (this should be most)
 
 **Feature: Help system 2.0**
 - Create a better direct indexing system for help pages
