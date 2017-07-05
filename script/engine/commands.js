@@ -55,7 +55,8 @@ this.Commands = (function () {
         'Commands.addCooldown: invalid options given for ' + name + '.'
       )
     }
-    if (typeof options.run !== 'function') {
+
+    if (typeof options.run !== 'function' && !options.executeAttack) {
       throw new Error(
         'Commands.addCooldown: missing run function for ' + name + '.'
       );
@@ -63,10 +64,10 @@ this.Commands = (function () {
 
     var cooldown = new ScriptedCooldown(name, options.displayName || name)
     cooldown.setCooldownDuration(options.cooldownDuration || 180);
-    cooldown.setInitiatesCombat(!!options.initiatesCombat);
-    cooldown.setCastTime(options.initiatesCombat || 0);
+    cooldown.setInitiatesCombat(options.initiatesCombat || false);
+    cooldown.setCastTime(options.castTime || 0);
     cooldown.setCastMessage(options.castMessage || "You begin to cast...");
-    cooldown.setComboPotency(options.combosWith || null);
+    cooldown.setCombosWith(options.combosWith || null);
     cooldown.setBasePotency(options.basePotency || 100);
     cooldown.setComboPotency(options.comboPotency || 0);
     cooldown.setSavingThrow(options.savingThrow || null);
@@ -79,6 +80,10 @@ this.Commands = (function () {
       cooldown.addResourceCost(new MpCost(options.mpCost));
     }
 
+    if (typeof options.checkValidTarget == 'function') {
+      cooldown.setCheckValidTarget(options.checkValidTarget);
+    }
+
     Commands.add(cooldown);
   }
 
@@ -86,6 +91,7 @@ this.Commands = (function () {
    * Expose the interface for the script command service.
    */
   return {
+    GLOBAL_COOLDOWN: -1,
     add: function (name, options) {
       try {
         addPlayCommand(name, options);
@@ -99,6 +105,6 @@ this.Commands = (function () {
       } catch(e) {
         errorHandler(e);
       }
-    }
+    },
   };
 })();

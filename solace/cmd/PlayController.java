@@ -219,24 +219,6 @@ public class PlayController extends AbstractStateController {
     addCommand(new Prompt(character));
     addCommand(new Hotbar(character));
 
-    // Skill: One-handed
-    addCommand(new Flurry(character));
-    addCommand(new Slash(character));
-    addCommand(new Riposte(character));
-    addCommand(new CoupDeGrace(character));
-
-    // Skill: Evocation
-    addCommand(new Icespike(character));
-    addCommand(new Flamestrike(character));
-    addCommand(new Shock(character));
-
-    // Racial Skills
-    addCommand(new Survivor(character));
-    addCommand(new Concentrate(character));
-    addCommand(new Skullknock(character));
-    // addCommand(new Aetherflow(character));
-    addCommand(new Vanish(character));
-
     // Add all scripted play commands
     for (ScriptedCommand command : Commands.getCommands()) {
       addCommand(command.getInstance(character));

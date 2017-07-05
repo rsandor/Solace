@@ -6,12 +6,10 @@
 - [x] Embedded JavaScript via Nashorn:
   http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html
 - [x] Play Command Scripting
-- [ ] Cooldown Scripting
+- [x] Cooldown Scripting
+  - [x] Convert all cooldowns to scripts
 - [ ] Buff Scripting
-
-**Feature: Better Color Encoding**
-- [ ] Add a better format for color encoding in strings
-- [ ] Update all references to old color codes to use new format
+  - [ ] Convert all buffs to scripts
 
 --------------------------------------------------------------------------------
 
@@ -22,6 +20,10 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
+
+**Feature: Better Color Encoding**
+- [ ] Add a better format for color encoding in strings
+- [ ] Update all references to old color codes to use new format
 
 **Feature: Commands 2.0**
 - [ ] Add `reload` command as a play command for admins (easier testing)

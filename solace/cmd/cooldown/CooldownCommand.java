@@ -317,10 +317,10 @@ public abstract class CooldownCommand extends AbstractCommand {
 
     // Bypass combat if ...
     if (
-      target == null ||   // There is no target, OR
-      !initiatesCombat || // The cooldown does not initiate combat, OR
-      !isHit ||           // The cooldown didn't hit the target, OR
-      player == target    // The player is the target
+      target == null ||         // There is no target, OR
+      !getInitiatesCombat() ||  // The cooldown does not initiate combat, OR
+      !isHit ||                 // The cooldown didn't hit the target, OR
+      getPlayer() == target     // The player is the target
     ) {
       return;
     }
@@ -393,7 +393,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @throws InvalidTargetException With a descriptive message if the target is
    *   not valid.
    */
-  protected void checkValidTarget(Player target)
+  public void checkValidTarget(Player target)
     throws InvalidTargetException
   {
     if (target == null) {
@@ -410,7 +410,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @return The actual target for the cooldown.
    * @throws InvalidTargetException If the final target is invalid.
    */
-  Player resolveTarget(Player givenTarget)
+  public Player resolveTarget(Player givenTarget)
     throws InvalidTargetException
   {
     Player target = givenTarget;
@@ -437,7 +437,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @param target The target of the attack.
    * @return The result of the roll.
    */
-  protected AttackResult rollToHit(Player target) {
+  public AttackResult rollToHit(Player target) {
     if (isSpellAttack()) {
       return Battle.rollToCast(player, target, getPotency(), getSavingThrow());
     }
@@ -447,7 +447,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * Sends the player a message saying that the cooldown attack missed.
    */
-  void sendMissMessage() {
+  public void sendMissMessage() {
     player.sendln(String.format("Your {m%s{x misses!", getDisplayName()));
   }
 
@@ -479,7 +479,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @param givenTarget The given target of the attack (if any).
    * @return `true` if the attack succeeded, `false` otherwise.
    */
-  boolean executeAttack(Player givenTarget) {
+  public boolean executeAttack(Player givenTarget) {
     try {
       // Resolve the target
       Player target = resolveTarget(givenTarget);

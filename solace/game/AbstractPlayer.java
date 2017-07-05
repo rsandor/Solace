@@ -754,4 +754,19 @@ public abstract class AbstractPlayer implements Player {
     casting = false;
     castingEvent = null;
   }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Battle getBattle() {
+    return BattleManager.getBattleFor(this);
+  }
+
+  /**
+   * TODO We may remove this once we have fully scriptable buffs.
+   * @see solace.game.Player
+   */
+  public void applyDot(String name, int avg, int d, int f, String msg) {
+    applyBuff(new DotBuff(name, this, avg, d, f, msg));
+  }
 }

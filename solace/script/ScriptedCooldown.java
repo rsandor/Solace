@@ -1,6 +1,8 @@
 package solace.script;
-import java.util.*;
+import java.util.List;
+import java.util.LinkedList;
 import solace.cmd.Command;
+import solace.cmd.InvalidTargetException;
 import solace.cmd.cooldown.CooldownCommand;
 import solace.cmd.cooldown.ResourceCost;
 import solace.util.Log;
@@ -13,11 +15,24 @@ import solace.game.Player;
  */
 public class ScriptedCooldown extends AbstractScriptedCommand {
   /**
-   * Functional interface for cooldown execution methods defined in JavaScript.
+   * Functional interface for execution function.
    */
   @FunctionalInterface
   public interface CooldownExecuteFunction {
-    public boolean execute(int level, Player player, Player target);
+    public boolean execute(
+      int level,
+      Player player,
+      Player target,
+      CooldownCommand cooldown
+    );
+  }
+
+  /**
+   * Functional interface for the check valid target hook.
+   */
+  @FunctionalInterface
+  public interface CooldownCheckValidTargetFunction {
+    public void execute(Player target) throws Throwable;
   }
 
   private int cooldownDuration = 0;
@@ -30,6 +45,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
   private int comboPotency = 0;
   private String savingThrow;
   private CooldownExecuteFunction executeLambda;
+  private CooldownCheckValidTargetFunction checkValidTarget;
 
   /**
    * Creates a new scripted cooldown.
@@ -160,14 +176,36 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
   }
 
   /**
+   * Sets the "check valid target" hook handler for the cooldown.
+   * @param CooldownCheckValidTargetFunction l The handler.
+   */
+  public void setCheckValidTarget(CooldownCheckValidTargetFunction l) {
+    checkValidTarget = l;
+  }
+
+  /**
    * Creates an instance of the play command for use by the game engine.
    * @param ch Character for the play command.
    * @return The play command instance.
    */
   public Command getInstance(solace.game.Character ch) {
     CooldownCommand command = new CooldownCommand(getName(), ch) {
+      public void checkValidTarget(Player target)
+        throws InvalidTargetException
+      {
+        super.checkValidTarget(target);
+        if (checkValidTarget == null) {
+          return;
+        }
+        try {
+          checkValidTarget.execute(target);
+        } catch (Throwable e) {
+          throw new InvalidTargetException(e.getMessage());
+        }
+      }
+
       public boolean execute(int level, Player target) {
-        return executeLambda.execute(level, getPlayer(), target);
+        return executeLambda.execute(level, getPlayer(), target, this);
       }
     };
     command.setDisplayName(getDisplayName());
