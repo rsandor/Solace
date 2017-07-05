@@ -22,7 +22,7 @@ public class Character extends AbstractPlayer {
    * Default prompt given to new characters.
    */
   public static final String DEFAULT_PROMPT =
-    "(( {G%h{x/{g%H{xhp {M%m{x/{m%M{xmp {Y%s{x/{y%S{xsp )) {Y%gg{x %T>";
+    "(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>";
 
   /**
    * Determines if the given slot name is a valid equipment slot.
@@ -247,9 +247,9 @@ public class Character extends AbstractPlayer {
 
       if (killer != null) {
         sendMessage(String.format(
-          "You have been {Rkilled{x by %s!", killer.getName()));
+          "You have been {R}killed{x} by %s!", killer.getName()));
       } else {
-        sendMessage("\n\rYou have {Rdied{x!\n\r");
+        sendMessage("\n\rYou have {R}died{x}!\n\r");
       }
 
       Room origin = getRoom();
@@ -260,7 +260,7 @@ public class Character extends AbstractPlayer {
       if (killer != null) {
         Player[] excludes = { this, killer };
         origin.sendMessage(
-          String.format("%s has {Rkilled{x %s!", killer.getName(), getName()),
+          String.format("%s has {R}killed{x} %s!", killer.getName(), getName()),
           excludes);
       } else {
         origin.sendMessage(String.format("%s has died!", getName()));

@@ -12,7 +12,7 @@ Commands.addCooldown('aetherflow', {
     var healed = Math.min(maxMp / 2, maxMp - mp);
     player.setMp(Math.min(maxMp, mp + healed));
     player.sendln(
-      'You draw upon the {maetherflow{x healing [{M' + healed + '{x] mp!'
+      'You draw upon the {m}aetherflow{x} healing [{M}' + healed + '{x}] mp!'
     );
     return true;
   }

@@ -338,21 +338,21 @@ public class Battle {
           "Your attack missed %s.\n\r",
           target.getName()));
         messageBuffers.get(target).append(String.format(
-          "%s {gmissed{x you completely!\n\r",
+          "%s {g}missed{x} you completely!\n\r",
           attacker.getName()));
       } else if (hits == 1) {
         messageBuffers.get(attacker).append(String.format(
-          "[{g%d{x] You hit %s!\n\r",
+          "[{g}%d{x}] You hit %s!\n\r",
           actualDamage, target.getName()));
         messageBuffers.get(target).append(String.format(
-          "<{r%d{x> %s hit you!\n\r",
+          "<{r}%d{x}> %s hit you!\n\r",
           actualDamage, attacker.getName()));
       } else {
         messageBuffers.get(attacker).append(String.format(
-          "[{g%d{x] You hit %s {y%d{x times!\n\r",
+          "[{g}%d{x}] You hit %s {y}%d{x} times!\n\r",
           actualDamage, target.getName(), hits));
         messageBuffers.get(target).append(String.format(
-          "<{r%d{x> %s hit you {y%d{x times!\n\r",
+          "<{r}%d{x}> %s hit you {y}%d{x} times!\n\r",
           actualDamage, attacker.getName(), hits));
       }
     }

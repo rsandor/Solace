@@ -420,7 +420,7 @@ public abstract class CooldownCommand extends AbstractCommand {
         target = BattleManager.getBattleFor(player).getTargetFor(player);
       } else {
         throw new InvalidTargetException(String.format(
-          "Who would you like to attack with {m%s{x?",
+          "Who would you like to attack with {m}%s{x}?",
           getDisplayName()));
       }
     }
@@ -448,7 +448,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Sends the player a message saying that the cooldown attack missed.
    */
   public void sendMissMessage() {
-    player.sendln(String.format("Your {m%s{x misses!", getDisplayName()));
+    player.sendln(String.format("Your {m}%s{x} misses!", getDisplayName()));
   }
 
   /**
@@ -460,15 +460,15 @@ public abstract class CooldownCommand extends AbstractCommand {
   private void sendHitMessages(Player target, AttackResult result, int damage) {
     if (isCombo()) {
       player.sendln(String.format(
-        "[{g%d{x] {y<{Ycombo{y>{x Your {m%s{x hits %s!",
+        "[{g}%d{x}] {y}<{Y}combo{y}>{x} Your {m}%s{x} hits %s!",
         damage, getDisplayName(), target.getName()));
     } else {
       player.sendln(String.format(
-        "[{g%d{x] Your {m%s{x hits %s!",
+        "[{g}%d{x}] Your {m}%s{x} hits %s!",
         damage, getDisplayName(), target.getName()));
     }
     target.sendln(String.format(
-      "<{r%d{x> %s hits you with an {m%s{x!",
+      "<{r}%d{x}> %s hits you with an {m}%s{x}!",
       damage, player.getName(), getDisplayName()));
   }
 

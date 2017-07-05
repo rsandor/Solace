@@ -43,6 +43,6 @@ public class SpCost extends AbstractResourceCost {
    * @see solace.cmd.cooldown.ResourceCost
    */
   public String getInsufficentResourceMessage() {
-    return "Not enough {ysp{x.";
+    return "Not enough {y}sp{x}.";
   }
 }

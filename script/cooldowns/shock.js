@@ -30,7 +30,7 @@ Commands.addCooldown("shock", {
       // TODO Perhaps too specific an interface...
       target.applyDot(
         "shocked", avgDamage, 30, 2,
-        "<{r%d{x> you are shocked by the envoloping electricity!");
+        "<{r}%d{x}> you are shocked by the envoloping electricity!");
 
       return true;
     } catch (e) {

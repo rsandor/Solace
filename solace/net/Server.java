@@ -116,7 +116,7 @@ public class Server
       while (i.hasNext())
       {
         Connection c = (Connection)i.next();
-        c.sendln("\n{RServer Shutdown!{x\n");
+        c.sendln("\n{R}Server Shutdown!{x}\n");
         c.close();
       }
     }

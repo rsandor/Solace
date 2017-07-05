@@ -24,7 +24,7 @@ public class Worth extends PlayCommand {
   public boolean run(Connection c, String []params) {
     DecimalFormat dec = new DecimalFormat("#,###,###");
     c.wrapln(String.format(
-      "You are currently carrying {y%s{x gold.",
+      "You are currently carrying {y}%s{x} gold.",
       dec.format(character.getGold())
     ));
     return true;

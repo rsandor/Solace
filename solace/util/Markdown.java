@@ -25,14 +25,14 @@ public class Markdown {
 
       if (line.startsWith("##")) {
         String hd = line.split("[#]+\\s*")[1].trim();
-        buf.append("{c# " + hd + "{x\n\r");
+        buf.append("{c}# " + hd + "{x}\n\r");
         continue;
       }
 
       if (line.startsWith("#")) {
         String h1 = line.split("#\\s*")[1].trim();
         buf.append(RULE);
-        buf.append(" ){B " + h1 + "{x");
+        buf.append(" ){B} " + h1 + "{x}");
 
         for (int i = 80 - h1.length() - 5; i > 0; i--) {
           buf.append(" ");
@@ -46,11 +46,11 @@ public class Markdown {
       buf.append(
         line
           // Backticks should be yellow
-          .replaceAll("`([^`]+)`", "{y$1{x")
+          .replaceAll("`([^`]+)`", "{y}$1{x}")
           // Bullet points should display as green
-          .replaceAll("^\\s*\\*\\s*", "{g*{x ")
+          .replaceAll("^\\s*\\*\\s*", "{g}*{x} ")
           // Brackets should be cyan
-          .replaceAll("\\[([^\\]]+)\\]", "{c[$1]{x")
+          .replaceAll("\\[([^\\]]+)\\]", "{c}[$1]{x}")
       );
 
       buf.append("\n\r");

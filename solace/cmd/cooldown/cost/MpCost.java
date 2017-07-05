@@ -47,6 +47,6 @@ public class MpCost extends AbstractResourceCost {
    * @see solace.cmd.cooldown.ResourceCost
    */
   public String getInsufficentResourceMessage() {
-    return "Not enough {mmp{x.";
+    return "Not enough {m}mp{x}.";
   }
 }

@@ -36,7 +36,7 @@ public class Hotbar extends PlayCommand {
         command = "<none>";
         buf.append(String.format("  [%s]: %s\n\r", key, command));
       } else {
-        buf.append(String.format("  {y[%s]:{x {m%s{x\n\r", key, command));
+        buf.append(String.format("  {y}[%s]:{x} {m}%s{x}\n\r", key, command));
       }
     }
     character.sendln(buf.toString());

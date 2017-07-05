@@ -63,7 +63,7 @@ public class LoginController
 
     // Ensure they are not attempting to login twice
     if (World.isLoggedIn(aname)) {
-      connection.sendln("{rAccount already logged in!{x");
+      connection.sendln("{r}Account already logged in!{x}");
       Log.info(
         "Double login attempt for account '" + aname + "' from " +
         connection.getInetAddress()
@@ -81,7 +81,7 @@ public class LoginController
     catch (IOException ioe) {
       connection.sendln(
         "Account not found, " +
-        "enter '{ynew{x' to create a new account!"
+        "enter '{y}new{x}' to create a new account!"
       );
     }
   }

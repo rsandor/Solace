@@ -55,7 +55,7 @@ public class Inspect extends PlayCommand {
       return true;
     }
 
-    c.sendln("Game entity with name '{g" + name + "{x' was not found.");
+    c.sendln("Game entity with name '{g}" + name + "{x}' was not found.");
     return true;
   }
 
@@ -69,31 +69,31 @@ public class Inspect extends PlayCommand {
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
-      "| {cTitle:{x          %-60s |\n\r", room.getTitle()));
+      "| {c}Title:{x}          %-60s |\n\r", room.getTitle()));
     buffer.append(String.format(
-      "| {cID:{x             %-60s |\n\r", room.getId()));
+      "| {c}ID:{x}             %-60s |\n\r", room.getId()));
     buffer.append(String.format(
-      "| {cArea:{x           %-60s |\n\r", room.getArea().getTitle()));
+      "| {c}Area:{x}           %-60s |\n\r", room.getArea().getTitle()));
 
     if (room.hasShop()) {
       Shop shop = room.getShop();
       Mobile owner = shop.getOwner();
       buffer.append(Strings.RULE);
       buffer.append(String.format(
-        "| {cShop ID:{x        %-60s |\n\r", shop.getId()));
+        "| {c}Shop ID:{x}        %-60s |\n\r", shop.getId()));
       buffer.append(String.format(
-        "| {cShop Name:{x      %-60s |\n\r", shop.getName()));
+        "| {c}Shop Name:{x}      %-60s |\n\r", shop.getName()));
       if (owner != null) {
         buffer.append(String.format(
-          "| {cShop Owner:{x     %-60s |\n\r", shop.getOwner().getName()));
+          "| {c}Shop Owner:{x}     %-60s |\n\r", shop.getOwner().getName()));
       } else {
         buffer.append(String.format(
-          "| {cShop Owner:{x     %-60s |\n\r", "(none)"));
+          "| {c}Shop Owner:{x}     %-60s |\n\r", "(none)"));
       }
       buffer.append(String.format(
-        "| {cBuy Multipler:{x  %-60.2f |\n\r", shop.getBuyMultiplier()));
+        "| {c}Buy Multipler:{x}  %-60.2f |\n\r", shop.getBuyMultiplier()));
       buffer.append(String.format(
-        "| {cSell Multipler:{x %-60.2f |\n\r", shop.getSellMultiplier()));
+        "| {c}Sell Multipler:{x} %-60.2f |\n\r", shop.getSellMultiplier()));
     }
 
     buffer.append(Strings.RULE);
@@ -111,7 +111,7 @@ public class Inspect extends PlayCommand {
     for (String key : props.keySet()) {
       String value = props.get(key);
       buffer.append(Strings.toFixedWidth(
-        String.format("{c%s:{x %s", key, value)));
+        String.format("{c}%s:{x} %s", key, value)));
       buffer.append("\n\r");
     }
     return buffer.toString();
@@ -128,65 +128,65 @@ public class Inspect extends PlayCommand {
     buffer.append(Strings.RULE);
 
     if (player.isMobile()) {
-      buffer.append(String.format("| {cName:{x   %-72s |\n\r",
-        player.getName() + " {y(mobile){x"));
+      buffer.append(String.format("| {c}Name:{x}   %-72s |\n\r",
+        player.getName() + " {y}(mobile){x}"));
     } else {
-      buffer.append(String.format("| {cName:{x   %-68s |\n\r",
+      buffer.append(String.format("| {c}Name:{x}   %-68s |\n\r",
         player.getName()));
     }
     buffer.append(String.format(
-      "| {cState:{x  %-68s |\n\r", player.getPlayState().toString()));
+      "| {c}State:{x}  %-68s |\n\r", player.getPlayState().toString()));
     buffer.append(String.format(
-      "| {cRoom:{x   %-68s |\n\r", player.getRoom().getTitle()));
+      "| {c}Room:{x}   %-68s |\n\r", player.getRoom().getTitle()));
 
     buffer.append(Strings.RULE);
 
     if (player.isMobile()) {
       buffer.append(String.format(
-        "| {cLevel:{x %-29d | {cPower:{x %-30d |\n\r",
+        "| {c}Level:{x} %-29d | {c}Power:{x} %-30d |\n\r",
         player.getLevel(), mobile.getPower()));
     } else {
       buffer.append(String.format(
-        "| {cLevel:{x  %-68s |\n\r", player.getLevel()));
+        "| {c}Level:{x}  %-68s |\n\r", player.getLevel()));
     }
 
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
-      "| {cStrength:{x %-26s | {cVitality:{x %-27s |\n\r",
+      "| {c}Strength:{x} %-26s | {c}Vitality:{x} %-27s |\n\r",
       player.getStrength(), player.getVitality()));
     buffer.append(String.format(
-      "| {cMagic:{x    %-26s | {cSpeed:{x    %-27s |\n\r",
+      "| {c}Magic:{x}    %-26s | {c}Speed:{x}    %-27s |\n\r",
       player.getMagic(), player.getSpeed()));
 
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
-      "| {cHit Points:{x  %-63s |\n\r",
+      "| {c}Hit Points:{x}  %-63s |\n\r",
       (player.getHp() + " / " + player.getMaxHp())));
     buffer.append(String.format(
-      "| {cArmor Class:{x %-63s |\n\r", player.getAC()));
+      "| {c}Armor Class:{x} %-63s |\n\r", player.getAC()));
     buffer.append(String.format(
-      "| {cAttack Roll:{x %-63s |\n\r", player.getAttackRoll()));
+      "| {c}Attack Roll:{x} %-63s |\n\r", player.getAttackRoll()));
     buffer.append(String.format(
-      "| {cHit Mod:{x     %-63s |\n\r", player.getHitMod()));
+      "| {c}Hit Mod:{x}     %-63s |\n\r", player.getHitMod()));
     buffer.append(String.format(
-      "| {cDamage Mod:{x  %-63s |\n\r", player.getDamageMod()));
+      "| {c}Damage Mod:{x}  %-63s |\n\r", player.getDamageMod()));
     buffer.append(String.format(
-      "| {cAvg Damage:{x  %-63s |\n\r", player.getAverageDamage()));
+      "| {c}Avg Damage:{x}  %-63s |\n\r", player.getAverageDamage()));
     buffer.append(String.format(
-      "| {cNum Attacks:{x %-63s |\n\r", player.getNumberOfAttacks()));
+      "| {c}Num Attacks:{x} %-63s |\n\r", player.getNumberOfAttacks()));
 
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
-      "| {cWill Save:{x     %-22s | {cReflex Save:{x %-23s |\n\r",
+      "| {c}Will Save:{x}     %-22s | {c}Reflex Save:{x} %-23s |\n\r",
       player.getWillSave(), player.getReflexSave()));
     buffer.append(String.format(
-      "| {cResolve Save:{x  %-22s | {cVigor Save:{x  %-23s |\n\r",
+      "| {c}Resolve Save:{x}  %-22s | {c}Vigor Save:{x}  %-23s |\n\r",
       player.getResolveSave(), player.getVigorSave()));
     buffer.append(String.format(
-      "| {cPrudence Save:{x %-22s | {cGuile Save:{x  %-23s |\n\r",
+      "| {c}Prudence Save:{x} %-22s | {c}Guile Save:{x}  %-23s |\n\r",
       player.getPrudenceSave(), player.getGuileSave()));
 
     buffer.append(Strings.RULE);

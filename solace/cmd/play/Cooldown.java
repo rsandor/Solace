@@ -20,9 +20,9 @@ public class Cooldown extends PlayCommand {
     for (String cooldown : character.getCooldowns()) {
       int time = character.getCooldownDuration(cooldown);
       if (time < 1) continue;
-      buffer.append(String.format("  [{C%3ds{x] {m%s{x\n\r", time, cooldown));
+      buffer.append(String.format("  [{C}%3ds{x}] {m}%s{x}\n\r", time, cooldown));
     }
-    
+
     if (buffer.length() > 0) {
       character.sendln("Actions on cooldown:\n\r");
       character.sendln(buffer.toString());

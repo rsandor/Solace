@@ -30,9 +30,9 @@
 	<!-- Defines coloring for various game objects -->
 	<colors>
 		<room>
-			<option name="exit" value="{r" />
-			<option name="object" value="{y" />
-			<option name="look" value="{g" />
+			<option name="exit" value="{r}" />
+			<option name="object" value="{y}" />
+			<option name="look" value="{g}" />
 		</room>
 	</colors>
 

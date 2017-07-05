@@ -123,14 +123,14 @@ public class BattleManager {
       Player[] excludes = { attacker, target };
       attacker.getRoom().sendMessage(
         String.format(
-          "%s {Rattacks{x %s!",
+          "%s {R}attacks{x} %s!",
           attacker.getName(),
           target.getName()),
         excludes
       );
 
       String attackerMessage = String.format(
-        "You {Rattack{x %s!", target.getName());
+        "You {R}attack{x} %s!", target.getName());
       if (!attacker.isMobile()) {
         ((solace.game.Character)attacker).send(attackerMessage);
       } else {
@@ -138,7 +138,7 @@ public class BattleManager {
       }
 
       target.sendMessage(String.format(
-        "%s {Rattacks{x you!", attacker.getName()));
+        "%s {R}attacks{x} you!", attacker.getName()));
 
       // Attacker always gets the first shots
       battle.round();

@@ -23,7 +23,7 @@ public class ChatController extends AbstractStateController {
   }
 
   public String getPrompt() {
-    return "{cchat>{x ";
+    return "{c}chat>{x} ";
   }
 
   /**
@@ -45,7 +45,7 @@ public class ChatController extends AbstractStateController {
    */
   protected void broadcast(String msg) {
     String name = connection.getAccount().getName().toLowerCase();
-    String format = "{y" + name + ": {x" + msg;
+    String format = "{y}" + name + ": {x}" + msg;
 
     Collection chatters = Collections.synchronizedCollection(
       World.getChatConnections()

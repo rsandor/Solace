@@ -21,11 +21,11 @@ public class Buffs extends PlayCommand {
 
     for (Buff buff : character.getBuffs()) {
       StringBuilder buffer = buff.isDebuff() ? debuffs : buffs;
-      buffer.append(buff.isDebuff() ? "{R-{x" : "{g+{x");
+      buffer.append(buff.isDebuff() ? "{R}-{x}" : "{g}+{x}");
 
       int time = buff.getTimeRemaining();
       StringBuilder timeRemaining = new StringBuilder();
-      timeRemaining.append("{b({c");
+      timeRemaining.append("{b}({c}");
       if (time > 3600) {
         timeRemaining.append(String.format(
           "%dh%dm", time / 3600, (time % 3600) / 60));
@@ -36,9 +36,9 @@ public class Buffs extends PlayCommand {
       } else if (time <= Buff.TIME_REMAINING_INDEFINATE) {
         timeRemaining.append("special");
       }
-      timeRemaining.append("{b){x");
+      timeRemaining.append("{b}){x}");
 
-      buffer.append(String.format(" %-16s {M%-18s{x %-50s\n\r",
+      buffer.append(String.format(" %-16s {M}%-18s{x} %-50s\n\r",
         timeRemaining.toString(), buff.getName(), buff.getDescription()));
     }
 
