@@ -1,5 +1,5 @@
-As an {yadministrator{x you also have the following options:
+As an {y}administrator{x} you also have the following options:
 
-	{ypeek{x     - {cView a user's connection statistics{x
-	{yreload{x   - {cReload Game Messages or Areas{x
-	{yshutdown{x - {cShut the server down{x
+	{y}peek{x}     - {c}View a user's connection statistics{x}
+	{y}reload{x}   - {c}Reload Game Messages or Areas{x}
+	{y}shutdown{x} - {c}Shut the server down{x}

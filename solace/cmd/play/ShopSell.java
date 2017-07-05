@@ -55,7 +55,7 @@ public class ShopSell extends ShopCommand {
     character.removeItem(item);
     character.addGold(price);
     character.wrapln(String.format(
-      "You sell %s for {y%dg{x.",
+      "You sell %s for {y}%dg{x}.",
       item.get("description.inventory"),
       price
     ));

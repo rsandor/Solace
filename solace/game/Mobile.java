@@ -132,7 +132,7 @@ public class Mobile extends AbstractPlayer {
     if (killer != null) {
       Player[] excludes = { this, killer };
       getRoom().sendMessage(String.format(
-        "%s has been {Rkilled{x by %s!", getName(), killer.getName()),
+        "%s has been {R}killed{x} by %s!", getName(), killer.getName()),
         excludes);
     } else {
       getRoom().sendMessage(String.format("%s has died.", getName()), this);

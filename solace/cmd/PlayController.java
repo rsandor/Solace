@@ -78,17 +78,17 @@ public class PlayController extends AbstractStateController {
       out = out.replace("%t", " " + healthRemaining);
 
       if (targetHealthRemaning > 85) {
-        out = out.replace("%T", "{G" + healthRemaining + "{x");
+        out = out.replace("%T", "{G}" + healthRemaining + "{x}");
       } else if (targetHealthRemaning > 70) {
-        out = out.replace("%T", "{g" + healthRemaining + "{x");
+        out = out.replace("%T", "{g}" + healthRemaining + "{x}");
       } else if (targetHealthRemaning > 55) {
-        out = out.replace("%T", "{y" + healthRemaining + "{x");
+        out = out.replace("%T", "{y}" + healthRemaining + "{x}");
       } else if (targetHealthRemaning > 40) {
-        out = out.replace("%T", "{Y" + healthRemaining + "{x");
+        out = out.replace("%T", "{Y}" + healthRemaining + "{x}");
       } else if (targetHealthRemaning > 25) {
-        out = out.replace("%T", "{r" + healthRemaining + "{x");
+        out = out.replace("%T", "{r}" + healthRemaining + "{x}");
       } else {
-        out = out.replace("%T", "{R" + healthRemaining + "{x");
+        out = out.replace("%T", "{R}" + healthRemaining + "{x}");
       }
     }
     // TODO end "refactor the fuck out of me"
@@ -106,7 +106,7 @@ public class PlayController extends AbstractStateController {
     throws GameException
   {
     // Initialize the menu
-    super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
+    super(c, "Sorry, that is not an option. Type '{y}help{x}' to see a list.");
     character = ch;
 
     // Character location initialization
@@ -125,7 +125,7 @@ public class PlayController extends AbstractStateController {
 
     // Place the player in the world
     World.getActiveCharacters().add(ch);
-    c.sendln("\n\rNow playing as {y" + ch.getName() + "{x, welcome!\n\r");
+    c.sendln("\n\rNow playing as {y}" + ch.getName() + "{x}, welcome!\n\r");
 
     // Describe the room to the player
     if (ch.isSleeping()) {

@@ -280,7 +280,7 @@ public class Room {
     // Title and description of the room
     StringBuffer buffer = new StringBuffer();
 
-    buffer.append("{y" + getTitle().trim() + "{x\n\r\n\r");
+    buffer.append("{y}" + getTitle().trim() + "{x}\n\r\n\r");
     buffer.append(
       Strings.toFixedWidth(getDescription(), 80).trim() +
       "\n\r\n\r"
@@ -289,7 +289,7 @@ public class Room {
     // Show the items in the room
     if (items.size() > 0) {
       synchronized(items) {
-        buffer.append("{cThe following items are present:{x\n\r");
+        buffer.append("{c}The following items are present:{x}\n\r");
         for (Item item : items) {
           buffer.append("    " + item.get("description.room") + "\n\r");
         }
@@ -299,13 +299,13 @@ public class Room {
 
     // Show a list of characters in the room
     if (others.size() > 0) {
-      buffer.append("{cThe following characters are present:{x\n\r");
+      buffer.append("{c}The following characters are present:{x}\n\r");
       for (Player c : others) {
         buffer.append("    " + c.getName() + "\n\r");
       }
     }
     else {
-      buffer.append("{cYou are the only one here.{x\n\r");
+      buffer.append("{c}You are the only one here.{x}\n\r");
     }
 
     return buffer.toString();

@@ -1,7 +1,7 @@
-Welcome to the {rCharacter Creator{x, here is the process:
+Welcome to the {r}Character Creator{x}, here is the process:
 
-	{y1){x {cChoose a name
-	{y2){x {cPick your character's race
-	{y3){x {cConfigure your character's class
-	{y4){x {cCustomize Statistics
-	{y5){x {cPersonalize your character{x
+	{y}1){x} {c}Choose a name
+	{y}2){x} {c}Pick your character's race
+	{y}3){x} {c}Configure your character's class
+	{y}4){x} {c}Customize Statistics
+	{y}5){x} {c}Personalize your character{x}

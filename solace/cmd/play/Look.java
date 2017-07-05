@@ -79,7 +79,7 @@ public class Look extends PlayCommand {
     }
 
     // Default "You don't see that" message
-    c.sendln("You do not see '{g" + name + "{x' here.");
+    c.sendln("You do not see '{g}" + name + "{x}' here.");
     return true;
   }
 }

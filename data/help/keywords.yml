@@ -67,6 +67,7 @@ cooldowns/slash.md: slash
 cooldowns/shock.md: shock
 misc/gold.md: gold currency
 misc/shops.md: shops
+misc/colors.md: colors
 misc/prompt-format.md: format
 skills/index.md: skills
 skills/one-handed.md: one-handed

@@ -130,7 +130,7 @@ public class Strings {
   public static String shopBanner(String name) {
     StringBuffer b = new StringBuffer();
     b.append(RULE);
-    b.append(centerText(name, 80, "| {g$$${x", "{r$$${x |"));
+    b.append(centerText(name, 80, "| {g}$$${x}", "{r}$$${x} |"));
     b.append(RULE);
     return b.toString();
   }

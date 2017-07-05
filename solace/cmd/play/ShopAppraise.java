@@ -53,7 +53,7 @@ public class ShopAppraise extends ShopCommand {
     }
     else {
       character.wrapln(String.format(
-        "The shop owner will pay {y%dg{x for %s.",
+        "The shop owner will pay {y}%dg{x} for %s.",
         price,
         item.get("description.inventory")
       ));

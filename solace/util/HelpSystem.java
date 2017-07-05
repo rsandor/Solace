@@ -150,7 +150,7 @@ public class HelpSystem {
     StringBuffer result = new StringBuffer();
     result.append("The following articles match your search:\n\r\n\r");
     for (String path : articlePaths) {
-      result.append("  {y" + primaryKeyword.get(path) + "{x\n\r");
+      result.append("  {y}" + primaryKeyword.get(path) + "{x}\n\r");
     }
     return result.toString();
   }

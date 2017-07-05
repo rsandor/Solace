@@ -21,7 +21,7 @@ public class MainMenu
   public MainMenu(Connection c)
   {
     // Initialize the menu
-    super(c, "Sorry, that is not an option. Type '{yhelp{x' to see a list.");
+    super(c, "Sorry, that is not an option. Type '{y}help{x}' to see a list.");
 
     // Neato trick, actually use the help command to show the menu on login:
     Command help = new Help();
@@ -42,7 +42,7 @@ public class MainMenu
   }
 
   public String getPrompt() {
-    return "{cChoose an option:{x ";
+    return "{c}Choose an option:{x} ";
   }
 
   /**
@@ -56,12 +56,12 @@ public class MainMenu
       if (chars.size() == 0) {
         c.sendln(
           "You have no characters, " +
-          "use the '{ycreate{x' command to create a new one."
+          "use the '{y}create{x}' command to create a new one."
         );
         c.sendln("");
       }
       else {
-        c.sendln("{y---- {xYour Characters {y----{x");
+        c.sendln("{y}---- {x}Your Characters {y}----{x}");
         for (solace.game.Character ch : chars) {
           c.sendln(ch.getName());
         }
@@ -95,7 +95,7 @@ public class MainMenu
 
         if (!act.hasCharacter()) {
           c.sendln(
-            "You currently have no characters. Use the {ycreate{x command " +
+            "You currently have no characters. Use the {y}create{x} command " +
             "to create a new character."
           );
           c.sendln("");
@@ -110,7 +110,7 @@ public class MainMenu
           if (!act.hasCharacter(name)) {
             c.sendln(
               "Character '" + name + "' not found, " +
-              "use the '{ylist{x' command to see a list of your characters."
+              "use the '{y}list{x}' command to see a list of your characters."
             );
             c.sendln("");
             return false;
@@ -132,7 +132,7 @@ public class MainMenu
       }
       catch (GameException ge) {
         Log.error(ge.getMessage());
-        c.sendln("An {rerror{x occured, please try again later.");
+        c.sendln("An {r}error{x} occured, please try again later.");
         c.sendln("");
         return false;
       }
@@ -207,7 +207,7 @@ public class MainMenu
     public boolean run(Connection c, String []params) {
       Collection connections = World.getConnections();
 
-      c.sendln("{y---- {xPlayers Online{y ----{x");
+      c.sendln("{y}---- {x}Players Online{y} ----{x}");
       synchronized (connections) {
         Iterator iter = connections.iterator();
         while (iter.hasNext()) {
@@ -274,7 +274,7 @@ public class MainMenu
           // TODO: Once battle is in place we will need to freeze battle as well
           for (solace.game.Character ch : players) {
             Connection con = ch.getConnection();
-            con.sendln("\n{yGame areas being reloaded, please stand by...{x");
+            con.sendln("\n{y}Game areas being reloaded, please stand by...{x}");
             con.setIgnoreInput(true);
           }
 
@@ -355,7 +355,7 @@ public class MainMenu
           // Un-freeze the players and force them to take a look around :)
           for (solace.game.Character ch : players) {
             Connection con = ch.getConnection();
-            con.sendln("{yAreas reloaded, thanks for your patience!{x\n");
+            con.sendln("{y}Areas reloaded, thanks for your patience!{x}\n");
             con.getStateController().force("look");
             con.setIgnoreInput(false);
             con.send(con.getStateController().getPrompt());

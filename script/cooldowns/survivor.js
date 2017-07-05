@@ -18,8 +18,8 @@ Commands.addCooldown('survivor', {
     player.setHp(player.getHp() + hpHealed);
     player.setSp(player.getSp() + spHealed);
     player.sendln(
-      'You are a {msurvivor{x! You\'ve been healed [{G' + hpHealed +
-      '{x] hp and [{Y' + spHealed + '{x] sp!'
+      'You are a {m}survivor{x}! You\'ve been healed [{G}' + hpHealed +
+      '{x}] hp and [{Y}' + spHealed + '{x}] sp!'
     );
 
     return true;

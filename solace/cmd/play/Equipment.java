@@ -21,7 +21,7 @@ public class Equipment extends PlayCommand {
       Item item = character.getEquipment(slot);
       String name = (item == null) ?
         "---" : item.get("description.inventory");
-      String line = String.format("| [ {y%-8s{x ]: %s", slot, name);
+      String line = String.format("| [ {y}%-8s{x} ]: %s", slot, name);
       b.append(line);
       b.append(Strings.spaces(80 - 1 - Color.strip(line).length()) + "|\n\r");
     }

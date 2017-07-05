@@ -213,7 +213,7 @@ public class AreaHandler extends Handler {
       }
 
       public State end(String name) {
-        description.append("{x");
+        description.append("{x}");
         return ROOM_DESCRIBE;
       }
     },
@@ -251,7 +251,7 @@ public class AreaHandler extends Handler {
       public State end(String name) {
         // String desc = room.getDescription();
         // String endColor =
-        //   Config.get("world.colors.room.exit") == null ? "" : "{x";
+        //   Config.get("world.colors.room.exit") == null ? "" : "{x}";
         // room.setDescription(desc.trim() + endColor);
         room.addExit(exit);
         return ROOM;

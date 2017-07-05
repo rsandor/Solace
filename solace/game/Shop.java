@@ -111,7 +111,7 @@ public class Shop {
         int quantity = item.getQuantity();
 
         b.append(String.format(
-          "| {c%-9s{x {y%11s{x   %-43s {m%-8s{x |\n\r",
+          "| {c}%-9s{x} {y}%11s{x}   %-43s {m}%-8s{x} |\n\r",
           "[" + (++index) + "]",
           sellPrice(item) + "g",
           sample.get("description.inventory"),

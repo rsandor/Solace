@@ -58,7 +58,7 @@ public class Log {
    */
   public static void fatal(String s) {
     Date d = new Date();
-    System.out.println(Color.format("{R[FATAL]{x ("+d+"): " + s));
+    System.out.println(Color.format("{R}[FATAL]{x} ("+d+"): " + s));
   }
 
   /**
@@ -68,7 +68,7 @@ public class Log {
   public static void error(String s) {
     if (!show("error")) { return; }
     Date d = new Date();
-    System.out.println(Color.format("{R[ERROR  ]{x ("+d+"): " + s));
+    System.out.println(Color.format("{R}[ERROR]{x} ("+d+"): " + s));
   }
 
   /**
@@ -78,7 +78,7 @@ public class Log {
   public static void warn(String s) {
     if (!show("warn")) { return; }
     Date d = new Date();
-    System.out.println(Color.format("{y[WARNING]{x ("+d+"): " + s));
+    System.out.println(Color.format("{y}[WARNING]{x} ("+d+"): " + s));
   }
 
   /**
@@ -88,7 +88,7 @@ public class Log {
   public static void info(String s) {
     if (!show("info")) { return; }
     Date d = new Date();
-    System.out.println("[INFO   ] ("+d+"): "+s);
+    System.out.println("[INFO] ("+d+"): "+s);
   }
 
   /**
@@ -98,7 +98,7 @@ public class Log {
   public static void debug(String s) {
     if (!show("debug")) { return; }
     Date d = new Date();
-    System.out.println(Color.format("{g[DEBUG  ]{x ("+d+"): "+s));
+    System.out.println(Color.format("{g}[DEBUG]{x} ("+d+"): "+s));
   }
 
   /**
@@ -108,6 +108,6 @@ public class Log {
   public static void trace(String s) {
     if (!show("trace")) { return; }
     Date d = new Date();
-    System.out.println("[TRACE  ] ("+d+"): "+s);
+    System.out.println("[TRACE] ("+d+"): "+s);
   }
 }

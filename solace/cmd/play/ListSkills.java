@@ -22,7 +22,7 @@ public class ListSkills extends PlayCommand {
 
     for (Skill s : skills) {
       b.append(String.format(
-        "[{y%d/100{x] {c%s{x\n\r",
+        "[{y}%d/100{x}] {c}%s{x}\n\r",
         s.getLevel(),
         s.getName()
       ));

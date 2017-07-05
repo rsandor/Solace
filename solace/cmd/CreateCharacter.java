@@ -17,7 +17,7 @@ class CreateCharacter implements StateController {
    */
   private enum State {
 
-    CHOOSE_NAME("{cChoose a name, or '{ycancel{c' to exit:{x ") {
+    CHOOSE_NAME("{c}Choose a name, or '{y}cancel{c}' to exit:{x} ") {
       public State parse(Connection c, String input) {
         if (input.trim().equals("cancel")) {
           c.sendln("Character creation cancelled.");

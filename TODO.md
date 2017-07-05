@@ -6,7 +6,8 @@
 
 ### Bugs
 
-- Shutdown command sometimes hangs, investigate
+- [ ] **Bug:** Shutdown command sometimes hangs, investigate
+- [ ] **Bug:** Movement commands to not check exit names against lowercase
 
 --------------------------------------------------------------------------------
 
@@ -15,10 +16,6 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
-
-**Feature: Better Color Encoding**
-- [ ] Add a better format for color encoding in strings
-- [ ] Update all references to old color codes to use new format
 
 **Feature: Commands 2.0**
 - [ ] Centralized command registry
@@ -140,6 +137,11 @@
 --------------------------------------------------------------------------------
 
 ### Done
+
+**Feature: Better Color Encoding**
+- [x] Add a better format for color encoding in strings
+- [x] Update all references to old color codes to use new format
+- [x] Add Help File for How to use Colors
 **Feature: Scripting engine 1.0**
 - [x] Embedded JavaScript via Nashorn:
   http://www.oracle.com/technetwork/articles/java/jf14-nashorn-2126515.html

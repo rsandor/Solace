@@ -20,8 +20,8 @@ public class Chat
     return true;
   }
 
-  public String getFormat() 
+  public String getFormat()
   {
-    return "{c%n{y: {x%m";
+    return "{c}%n{y}: {x}%m";
   }
 }
