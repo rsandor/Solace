@@ -4,7 +4,6 @@ import solace.game.*;
 import solace.net.*;
 import solace.util.*;
 import java.util.*;
-import java.io.*;
 
 /**
  * Allows for characters to flee combat.
@@ -12,7 +11,7 @@ import java.io.*;
  * - TODO Flesh out flee flavor text...
  * @author Ryan Sandor Richards
  */
-public class Flee extends PlayCommand {
+public class Flee extends PlayStateCommand {
   public Flee(solace.game.Character ch) {
     super("flee", ch);
   }

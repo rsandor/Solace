@@ -1,16 +1,12 @@
 package solace.cmd.play;
 
-import java.util.*;
-import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
 
 /**
  * Displays a list of passive abilities for the character.
  * @author Ryan Sandor Richards
  */
-public class Passive extends PlayCommand {
+public class Passive extends PlayStateCommand {
   public Passive(solace.game.Character ch) {
     super("passive", ch);
   }

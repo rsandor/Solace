@@ -2,16 +2,13 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Allows the player to sit down either on the ground or in objects such as
  * chairs, benches, etc.
  * @author Ryan Sandor Richards
  */
-public class Sit extends PlayCommand {
+public class Sit extends PlayStateCommand {
   public Sit(solace.game.Character ch) {
     super("sit", ch);
   }

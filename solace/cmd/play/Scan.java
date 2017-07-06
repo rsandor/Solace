@@ -3,14 +3,12 @@ package solace.cmd.play;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
 
 /**
  * Scan command, shows players and mobiles in adjacent rooms.
  * @author Ryan Sandor Richards
  */
-public class Scan extends PlayCommand {
+public class Scan extends PlayStateCommand {
   public Scan(solace.game.Character ch) {
     super("scan", ch);
   }

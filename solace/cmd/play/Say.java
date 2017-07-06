@@ -1,16 +1,14 @@
 package solace.cmd.play;
 
-import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
  * The say command, allows players to speak to eachother in a given room.
  * @author Ryan Sandor Richards
  */
-public class Say extends PlayCommand {
+public class Say extends PlayStateCommand {
   static final String[] sleepTalkNouns = {
     "a baboon", "a silver fork", "Mr. Bojangles", "a thick slice of foie gras",
     "a pesant lady", "a busty bar maid", "a strapping horse theif", "the gods",

@@ -8,7 +8,7 @@ import solace.game.*;
  * Equipment command, displays a character's current equipment.
  * @author Ryan Sandor Richards
  */
-public class Equipment extends PlayCommand {
+public class Equipment extends PlayStateCommand {
   public Equipment(solace.game.Character ch) {
     super("equipment", ch);
   }

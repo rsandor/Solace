@@ -1,16 +1,13 @@
 package solace.cmd.play;
 
-import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
 
 /**
  * Buy command, allows the player to buy items from shops.
  * @author Ryan Sandor Richards
  */
-public abstract class ShopCommand extends PlayCommand {
+public abstract class ShopCommand extends PlayStateCommand {
   public ShopCommand(String cmd, solace.game.Character ch) {
     super(cmd, ch);
   }

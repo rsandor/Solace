@@ -2,15 +2,12 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Allows the player wake up from sleeping.
  * @author Ryan Sandor Richards
  */
-public class Wake extends PlayCommand {
+public class Wake extends PlayStateCommand {
   public Wake(solace.game.Character ch) {
     super("wake", ch);
   }

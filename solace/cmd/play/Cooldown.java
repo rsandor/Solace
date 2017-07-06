@@ -1,16 +1,12 @@
 package solace.cmd.play;
 
-import java.util.*;
-import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
 
 /**
  * Displays a list of non-global cooldowns and the time remaning for each.
  * @author Ryan Sandor Richards
  */
-public class Cooldown extends PlayCommand {
+public class Cooldown extends PlayStateCommand {
   public Cooldown(solace.game.Character ch) {
     super("cooldown", ch);
   }

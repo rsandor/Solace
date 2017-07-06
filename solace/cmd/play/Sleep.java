@@ -2,9 +2,6 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Allows the player to sleep. Sleeping dramatically increases the rate at which
@@ -12,7 +9,7 @@ import java.io.*;
  * the game world.
  * @author Ryan Sandor Richards
  */
-public class Sleep extends PlayCommand {
+public class Sleep extends PlayStateCommand {
   public Sleep(solace.game.Character ch) {
     super("sleep", ch);
   }

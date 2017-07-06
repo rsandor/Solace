@@ -1,10 +1,9 @@
 package solace.cmd.admin;
 
-import solace.cmd.play.PlayCommand;
+import solace.cmd.play.PlayStateCommand;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
@@ -15,7 +14,7 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Inspect extends PlayCommand {
+public class Inspect extends PlayStateCommand {
   public Inspect(solace.game.Character ch) {
     super("inspect", ch);
   }

@@ -1,6 +1,6 @@
 package solace.cmd.admin;
 
-import solace.cmd.play.PlayCommand;
+import solace.cmd.play.PlayStateCommand;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
@@ -14,7 +14,7 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Set extends PlayCommand {
+public class Set extends PlayStateCommand {
   /**
    * Default constructor.
    * @param ch Character associated with the command.

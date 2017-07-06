@@ -1,9 +1,7 @@
 package solace.cmd.play;
 
-import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
@@ -16,7 +14,7 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Look extends PlayCommand {
+public class Look extends PlayStateCommand {
   public Look(solace.game.Character ch) {
     super("look", ch);
   }

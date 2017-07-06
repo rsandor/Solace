@@ -8,7 +8,7 @@ import solace.game.*;
  * Remove command, allows players to remove equipment from their characters.
  * @author Ryan Sandor Richards
  */
-public class Remove extends PlayCommand {
+public class Remove extends PlayStateCommand {
   public Remove(solace.game.Character ch) {
     super("remove", ch);
   }

@@ -1,12 +1,12 @@
 package solace.script;
 import solace.cmd.StateCommand;
-import solace.cmd.play.PlayCommand;
+import solace.cmd.play.PlayStateCommand;
 import solace.net.Connection;
 import solace.game.Player;
 import java.util.function.BiPredicate;
 
 /**
- * Data model for scripted gameplay commands (`PlayCommand`). Gameplay commands
+ * Data model for scripted gameplay commands (`PlayStateCommand`). Gameplay commands
  * handle basic actions such as getting items, movement, etc.
  * @author Ryan Sandor Richards
  */
@@ -31,7 +31,7 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
    * @return The play command instance.
    */
   public StateCommand getInstance(solace.game.Character ch) {
-    StateCommand command = new PlayCommand(getName(), ch) {
+    StateCommand command = new PlayStateCommand(getName(), ch) {
       public void run(Connection c, String[] params) {
         getRunLambda().test(ch, params);
       }

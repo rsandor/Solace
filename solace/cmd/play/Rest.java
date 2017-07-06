@@ -2,16 +2,13 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Allows the player to rest. Resting allows a player to be aware of the game
  * world while increasing the regeneration rate of resource stats such as HP.
  * @author Ryan Sandor Richards
  */
-public class Rest extends PlayCommand {
+public class Rest extends PlayStateCommand {
   public Rest(solace.game.Character ch) {
     super("rest", ch);
   }

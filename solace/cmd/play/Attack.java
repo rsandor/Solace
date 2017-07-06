@@ -2,16 +2,13 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * The attack command is used to attack other players in the game and initiate
  * combat.
  * @author Ryan Sandor Richards
  */
-public class Attack extends PlayCommand {
+public class Attack extends PlayStateCommand {
   public Attack(solace.game.Character ch) {
     super("attack", ch);
   }

@@ -1,16 +1,13 @@
 package solace.cmd.play;
 
-import java.util.*;
-import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
  * Score command, shows players their ability scores and statistics.
  * @author Ryan Sandor Richards
  */
-public class Score extends PlayCommand {
+public class Score extends PlayStateCommand {
   public Score(solace.game.Character ch) {
     super("score", ch);
   }

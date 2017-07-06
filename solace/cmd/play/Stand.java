@@ -2,15 +2,12 @@ package solace.cmd.play;
 
 import solace.game.*;
 import solace.net.*;
-import solace.util.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * Allows the player to stand up from a sitting, resting, or sleeping state.
  * @author Ryan Sandor Richards
  */
-public class Stand extends PlayCommand {
+public class Stand extends PlayStateCommand {
   public Stand(solace.game.Character ch) {
     super("stand", ch);
   }

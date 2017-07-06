@@ -2,10 +2,10 @@ package solace.cmd.play;
 
 import solace.cmd.AbstractStateCommand;
 
-public abstract class PlayCommand extends AbstractStateCommand {
+public abstract class PlayStateCommand extends AbstractStateCommand {
   solace.game.Character character;
 
-  public PlayCommand(String name, solace.game.Character ch) {
+  public PlayStateCommand(String name, solace.game.Character ch) {
     super(name);
     character = ch;
   }

@@ -1,16 +1,13 @@
 package solace.cmd.play;
 
-import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
 
 /**
  * Displays a list of all buffs and debuffs currently affecting the player.
  * @author Ryan Sandor Richards
  */
-public class Buffs extends PlayCommand {
+public class Buffs extends PlayStateCommand {
   public Buffs(solace.game.Character ch) {
     super("buffs", ch);
   }

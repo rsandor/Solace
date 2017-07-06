@@ -3,7 +3,6 @@ package solace.cmd.play;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 import com.google.common.base.Joiner;
 
@@ -11,7 +10,7 @@ import com.google.common.base.Joiner;
  * Lists a character's skills and unlocked abilities therein.
  * @author Ryan Sandor Richards
  */
-public class ListSkills extends PlayCommand {
+public class ListSkills extends PlayStateCommand {
   public ListSkills(solace.game.Character ch) {
     super("skills", ch);
   }

@@ -8,7 +8,7 @@ import solace.game.*;
  * Wear command, used to equip items.
  * @author Ryan Sandor Richards
  */
-public class Wear extends PlayCommand {
+public class Wear extends PlayStateCommand {
   public Wear(solace.game.Character ch) {
     super("wear", ch);
   }

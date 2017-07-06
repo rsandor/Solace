@@ -1,15 +1,12 @@
 package solace.cmd.play;
 
-import solace.util.*;
 import solace.net.*;
-import solace.cmd.*;
-import java.util.*;
 
 /**
  * Command that allows players to set custom prompt formats.
  * @author Ryan Sandor Richards
  */
-public class Prompt extends PlayCommand {
+public class Prompt extends PlayStateCommand {
   public Prompt(solace.game.Character ch) {
     super("prompt", ch);
   }

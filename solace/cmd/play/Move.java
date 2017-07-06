@@ -1,9 +1,7 @@
 package solace.cmd.play;
 
-import java.util.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
@@ -21,7 +19,7 @@ import solace.util.*;
  *   enter [place]
  *   exit [place]
  */
-public class Move extends PlayCommand {
+public class Move extends PlayStateCommand {
   public Move(solace.game.Character ch) {
     super("move", ch);
   }

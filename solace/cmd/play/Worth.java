@@ -1,10 +1,7 @@
 package solace.cmd.play;
 
-import java.util.*;
-import solace.game.*;
 import solace.net.*;
-import java.io.*;
-import solace.util.*;
+
 import java.text.DecimalFormat;
 
 /**
@@ -16,7 +13,7 @@ import java.text.DecimalFormat;
  *
  * @author Ryan Sandor Richards
  */
-public class Worth extends PlayCommand {
+public class Worth extends PlayStateCommand {
   public Worth(solace.game.Character ch) {
     super("worth", ch);
   }

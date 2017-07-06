@@ -1,7 +1,6 @@
 package solace.cmd.play;
 
 import solace.net.*;
-import solace.util.*;
 import solace.game.*;
 import solace.cmd.*;
 
@@ -9,7 +8,7 @@ import solace.cmd.*;
  * Quit command. Exits the game and returns to the main menu.
  * @author Ryan Sandor Richards.
  */
-public class Quit extends PlayCommand {
+public class Quit extends PlayStateCommand {
   public Quit(solace.game.Character ch) {
     super("quit", ch);
   }

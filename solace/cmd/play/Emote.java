@@ -2,7 +2,6 @@ package solace.cmd.play;
 
 import solace.util.*;
 import solace.net.*;
-import solace.cmd.*;
 import solace.game.*;
 import java.util.*;
 
@@ -11,7 +10,7 @@ import java.util.*;
  * the has no impact on gameplay and is added for flavor.
  * @author Ryan Sandor Richards
  */
-public class Emote extends PlayCommand {
+public class Emote extends PlayStateCommand {
   HelpSystem help;
   Emotes emotes;
 

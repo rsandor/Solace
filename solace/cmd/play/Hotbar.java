@@ -1,13 +1,12 @@
 package solace.cmd.play;
 
-import solace.game.Character;
 import solace.net.Connection;
 
 /**
  * Manages and displays a character's hotbar.
  * @author Ryan Sandor Richards
  */
-public class Hotbar extends PlayCommand {
+public class Hotbar extends PlayStateCommand {
   /**
    * Set of all valid hotbar keys.
    */
