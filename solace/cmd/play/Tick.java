@@ -2,13 +2,12 @@ package solace.cmd.play;
 
 import solace.net.*;
 import solace.util.*;
-import solace.game.*;
 import solace.cmd.*;
 
 /**
  * Toggles the tick indication (shows ticks to admins).
  */
-public class Tick extends AdminCommand {
+public class Tick extends AdminStateCommand {
   boolean show = false;
   Clock.Event tickEvent;
   Clock clock = Clock.getInstance();

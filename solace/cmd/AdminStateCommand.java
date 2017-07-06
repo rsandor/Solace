@@ -10,8 +10,8 @@ import solace.net.Connection;
  *
  * @author Ryan Sandor Richards
  */
-public abstract class AdminCommand extends AbstractStateCommand {
-  public AdminCommand(String n) {
+public abstract class AdminStateCommand extends AbstractStateCommand {
+  public AdminStateCommand(String n) {
     super(n);
   }
 

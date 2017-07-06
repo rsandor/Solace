@@ -218,7 +218,7 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Shutdown extends AdminCommand {
+  class Shutdown extends AdminStateCommand {
     public Shutdown() { super("shutdown"); }
     public void run(Connection c, String []params) {
       Game.shutdown();
@@ -233,7 +233,7 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Reload extends AdminCommand {
+  class Reload extends AdminStateCommand {
     public Reload() { super("reload"); }
 
     /**
@@ -411,7 +411,7 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Peek extends AdminCommand {
+  class Peek extends AdminStateCommand {
     public Peek() { super("peek"); }
 
     public void run(Connection c, String []params) {
