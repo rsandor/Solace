@@ -1,4 +1,4 @@
-package solace.cmd;
+package solace.cmd.play;
 import solace.game.Player;
 
 /**
@@ -29,12 +29,12 @@ public abstract class AbstractPlayCommand implements PlayCommand {
   }
 
   /**
-   * @see solace.cmd.PlayCommand;
+   * @see PlayCommand ;
    */
   public abstract void run(Player player, String[] params);
 
   /**
-   * @see solace.cmd.PlayCommand;
+   * @see PlayCommand ;
    */
   public abstract boolean hasCommand(Player player);
 

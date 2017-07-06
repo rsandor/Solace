@@ -1,6 +1,7 @@
 package solace.cmd.admin;
 
 import solace.cmd.deprecated.play.PlayStateCommand;
+import solace.cmd.play.PlayCommand;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
@@ -75,7 +76,7 @@ public class Set extends PlayStateCommand {
   }
 
   /**
-   * @see solace.cmd.PlayCommand
+   * @see PlayCommand
    */
   public void run(Connection c, String []params) {
     solace.game.Character character = getCharacter();

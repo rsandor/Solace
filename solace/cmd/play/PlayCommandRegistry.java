@@ -1,5 +1,4 @@
-package solace.cmd;
-import solace.game.Player;
+package solace.cmd.play;
 
 import java.util.List;
 import java.util.ArrayList;

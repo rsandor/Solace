@@ -4,7 +4,7 @@ import solace.cmd.deprecated.play.*;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
-import solace.cmd.play.*;
+import solace.cmd.deprecated.play.*;
 import solace.cmd.admin.*;
 import solace.script.Commands;
 import solace.script.ScriptedCommand;

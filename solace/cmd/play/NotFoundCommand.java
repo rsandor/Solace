@@ -1,4 +1,4 @@
-package solace.cmd;
+package solace.cmd.play;
 import solace.game.Player;
 
 /**

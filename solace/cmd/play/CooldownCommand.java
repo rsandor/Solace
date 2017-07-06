@@ -1,7 +1,9 @@
-package solace.cmd;
+package solace.cmd.play;
 
 import java.util.*;
 
+import solace.cmd.AbstractStateCommand;
+import solace.cmd.InvalidTargetException;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
