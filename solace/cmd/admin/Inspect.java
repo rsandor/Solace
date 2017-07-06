@@ -1,6 +1,6 @@
 package solace.cmd.admin;
 
-import solace.cmd.play.PlayStateCommand;
+import solace.cmd.deprecated.play.PlayStateCommand;
 import java.util.*;
 import solace.game.*;
 import solace.net.*;

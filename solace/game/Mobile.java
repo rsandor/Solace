@@ -1,9 +1,6 @@
 package solace.game;
 
-import solace.cmd.play.Move;
 import solace.util.*;
-import solace.game.*;
-import java.util.*;
 import solace.util.EventEmitter;
 import solace.util.EventListener;
 

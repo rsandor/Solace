@@ -1,9 +1,8 @@
 package solace.cmd;
 
-import java.util.*;
+import solace.cmd.deprecated.play.*;
 import solace.game.*;
 import solace.net.*;
-import java.io.*;
 import solace.util.*;
 import solace.cmd.play.*;
 import solace.cmd.admin.*;
@@ -193,7 +192,7 @@ public class PlayController extends AbstractStateController {
     addCommand(new Score(character));
     addCommand(new Worth(character));
     addCommand(new ListSkills(character));
-    addCommand(buffsAliases, new solace.cmd.play.Buffs(character));
+    addCommand(buffsAliases, new solace.cmd.deprecated.play.Buffs(character));
     addCommand(new Cooldown(character));
     addCommand(new Passive(character));
 
