@@ -10,7 +10,7 @@ import solace.net.Connection;
  * @author Ryan Sandor Richards (Gaius)
  */
 public abstract class AbstractCommand
-  implements Command
+  implements StateCommand
 {
   String name;
   String displayName;

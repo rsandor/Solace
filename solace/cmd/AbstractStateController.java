@@ -9,7 +9,7 @@ import solace.util.CommandParser;
 /**
  * Base class for all state controllers used in the Solace Engine. Works as a
  * nice implementation of StateController adding some features that allow
- * controllers to work more fluidly with the <code>Command</code> objects.
+ * controllers to work more fluidly with the <code>StateCommand</code> objects.
  *
  * @author Ryan Sandor Richards
  */
@@ -21,13 +21,13 @@ public abstract class AbstractStateController implements StateController {
   protected class CommandTuple {
     // Instance variables
     String name;
-    Command command;
+    StateCommand command;
 
     /**
      * Creates a new command tuple.
      * @param n Name for the command.
      */
-    public CommandTuple(String n, Command c) {
+    public CommandTuple(String n, StateCommand c) {
       name = n;
       command = c;
     }
@@ -42,7 +42,7 @@ public abstract class AbstractStateController implements StateController {
     /**
      * @return The executable command.
      */
-    public Command getCommand() {
+    public StateCommand getCommand() {
       return command;
     }
 
@@ -107,7 +107,7 @@ public abstract class AbstractStateController implements StateController {
    * Adds a command to this controller.
    * @param c Command to add.
    */
-  public void addCommand(Command c) {
+  public void addCommand(StateCommand c) {
     commands.add(new CommandTuple(c.getName(), c));
   }
 
@@ -119,7 +119,7 @@ public abstract class AbstractStateController implements StateController {
    * @param alias Alias for the command.
    * @param c Command to add.
    */
-  public void addCommand(String alias, Command c) {
+  public void addCommand(String alias, StateCommand c) {
     commands.add(new CommandTuple(alias, c));
   }
 
@@ -128,7 +128,7 @@ public abstract class AbstractStateController implements StateController {
    * @param aliases Alias names for the command.
    * @param c Command to add.
    */
-  public void addCommand(String[] aliases, Command c) {
+  public void addCommand(String[] aliases, StateCommand c) {
     for (String alias : aliases) {
       commands.add(new CommandTuple(alias, c));
     }
@@ -139,7 +139,7 @@ public abstract class AbstractStateController implements StateController {
    * @param aliases Alias names for the command.
    * @param c Command to add.
    */
-  public void addCommand(Collection<String> aliases, Command c) {
+  public void addCommand(Collection<String> aliases, StateCommand c) {
     for (String alias : aliases) {
       commands.add(new CommandTuple(alias, c));
     }
@@ -150,7 +150,7 @@ public abstract class AbstractStateController implements StateController {
    * @param c Search criteria.
    * @return A command that matches, or null if no commands match the string.
    */
-  protected Command findCommand(String c) {
+  protected StateCommand findCommand(String c) {
     for (CommandTuple t : commands)
       if (t.matches(c))
         return t.getCommand();
@@ -184,7 +184,7 @@ public abstract class AbstractStateController implements StateController {
       return;
     }
 
-    Command cmd = findCommand(params[0]);
+    StateCommand cmd = findCommand(params[0]);
     if (cmd != null && cmd.canExecute(connection)) {
       try {
         cmd.run(connection, params);

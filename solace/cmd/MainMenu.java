@@ -24,7 +24,7 @@ public class MainMenu
     super(c, "Sorry, that is not an option. Type '{y}help{x}' to see a list.");
 
     // Neato trick, actually use the help command to show the menu on login:
-    Command help = new Help();
+    StateCommand help = new Help();
     help.run(c, new String("help").split(" "));
 
     // Add all of the commands to the main menu

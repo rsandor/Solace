@@ -1,7 +1,7 @@
 package solace.script;
 import java.util.List;
 import java.util.LinkedList;
-import solace.cmd.Command;
+import solace.cmd.StateCommand;
 import solace.cmd.InvalidTargetException;
 import solace.cmd.cooldown.CooldownCommand;
 import solace.cmd.cooldown.ResourceCost;
@@ -188,7 +188,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
    * @param ch Character for the play command.
    * @return The play command instance.
    */
-  public Command getInstance(solace.game.Character ch) {
+  public StateCommand getInstance(solace.game.Character ch) {
     CooldownCommand command = new CooldownCommand(getName(), ch) {
       public void checkValidTarget(Player target)
         throws InvalidTargetException

@@ -1,5 +1,5 @@
 package solace.script;
-import solace.cmd.Command;
+import solace.cmd.StateCommand;
 import solace.cmd.play.PlayCommand;
 import solace.net.Connection;
 import solace.game.Player;
@@ -30,8 +30,8 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
    * @param ch Character for the play command.
    * @return The play command instance.
    */
-  public Command getInstance(solace.game.Character ch) {
-    Command command = new PlayCommand(getName(), ch) {
+  public StateCommand getInstance(solace.game.Character ch) {
+    StateCommand command = new PlayCommand(getName(), ch) {
       public void run(Connection c, String[] params) {
         getRunLambda().test(ch, params);
       }

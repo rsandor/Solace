@@ -3,16 +3,12 @@ package solace.cmd;
 import solace.net.Connection;
 
 /**
- * Commands are essentially programmatic representations of user submitted
- * commands, which contain the code to be executed when the command is executed.
- * Commands have a name, which is used by controllers to determine if/when the
- * command is executed.
- * @author Ryan Sandor Richards (Gaius)
+ * Defines the behaviors of state controller commands.
+ * @author Ryan Sandor Richards
  */
-public interface Command
-{
+public interface StateCommand {
   /**
-   * Determines if a connected user has permissions to execute the command.
+   * Determines if a connected account has permissions to execute the command.
    * @param c Connection to test against.
    * @return True if the user can run the command, false otherwise.
    */
