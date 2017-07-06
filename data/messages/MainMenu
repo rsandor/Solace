@@ -1,8 +1,8 @@
 You are at the {r}Main Menu{x}, the following options are available:
 
+	{y}create{x} - {c}Create a new character
+	{y}play{x}   - {c}Login and play a character{x}
+	{y}list{x}   - {c}List all of your characters
 	{y}who{x}    - {c}See who's online and what they're doing
 	{y}chat{x}   - {c}Enter the "out of game" chat room.
 	{y}quit{x}   - {c}Exit the game and logout.
-	{y}list{x}   - {c}List all of your characters
-	{y}create{x} - {c}Create a new character
-	{y}play{x}   - {c}Login and play a character{x}
