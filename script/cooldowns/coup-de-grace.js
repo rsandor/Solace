@@ -12,7 +12,7 @@ Commands.addCooldown('coup', {
   basePotency: 1000,
   spCost: 10,
   run: function (level, player, target, cooldown) {
-    cooldown.executeAttack(target);
+    return cooldown.executeAttack(target);
   },
   checkValidTarget: function (target) {
     if (target.getHp() / target.getMaxHp() >= 0.3) {

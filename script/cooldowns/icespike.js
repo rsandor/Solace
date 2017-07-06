@@ -10,10 +10,12 @@ Commands.addCooldown('icespike', {
   basePotency: 200,
   savingThrow: 'prudence',
   run: function (level, player, target, cooldown) {
-    if (cooldown.executeAttack(target)) {
+    var isHit = cooldown.executeAttack(target);
+    if (isHit) {
       var pctHeal = 0.05 + (0.05 * level / 100.0);
       var mpHeal = parseInt(player.getMaxMp() * pctHeal, 10);
       player.setMp(Math.min(player.getMaxMp(), player.getMp() + mpHeal));
     }
+    return isHit;
   }
 });

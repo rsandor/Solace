@@ -11,6 +11,6 @@ Commands.addCooldown('flamestrike', {
   savingThrow: 'reflex',
   mpCost: 20,
   run: function (level, player, target, cooldown) {
-    cooldown.executeAttack(target);
+    return cooldown.executeAttack(target);
   }
 });

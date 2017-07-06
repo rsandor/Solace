@@ -1,11 +1,11 @@
-package solace.cmd.cooldown;
+package solace.cmd;
 
 import java.util.*;
+
+import solace.cmd.cost.ResourceCost;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
-import solace.cmd.AbstractCommand;
-import solace.cmd.InvalidTargetException;
 
 /**
  * Base class for all cooldown commands. Cool down commands are ones which
@@ -112,7 +112,7 @@ public abstract class CooldownCommand extends AbstractCommand {
 
   /**
    * Sets the casting message for this cooldown.
-   * @param String msg Message to set.
+   * @param msg Message to set.
    */
   public void setCastMessage(String msg) { castMessage = msg; }
 
@@ -304,9 +304,7 @@ public abstract class CooldownCommand extends AbstractCommand {
       Clock.getInstance().schedule(
         String.format("%s cooldown for %s", getName(), player.getName()),
         getCooldownDuration(),
-        new Runnable() {
-          public void run() { onCooldown = false; }
-        });
+        () -> onCooldown = false);
       player.cooldownAt(getName(), getCooldownDuration());
     }
 
@@ -314,6 +312,11 @@ public abstract class CooldownCommand extends AbstractCommand {
     if (getCooldownDuration() == GLOBAL_COOLDOWN && isHit) {
       player.setComboAction(getName());
     }
+
+    System.out.println("Target = " + target);
+    System.out.println("initatesCombat = " + getInitiatesCombat());
+    System.out.println("isHit = " + isHit);
+    System.out.println("target is player = " + (getPlayer() == target));
 
     // Bypass combat if ...
     if (

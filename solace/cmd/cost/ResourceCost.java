@@ -1,4 +1,4 @@
-package solace.cmd.cooldown;
+package solace.cmd.cost;
 
 import solace.game.Player;
 

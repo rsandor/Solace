@@ -1,4 +1,4 @@
-package solace.cmd.cooldown;
+package solace.cmd.cost;
 
 import solace.game.Player;
 
@@ -17,22 +17,22 @@ public class SpCost extends AbstractResourceCost {
    * Creates a new sp cost of the given type and amount.
    * @param t Type for the cost.
    * @param a Amount for the cost.
-   * @see solace.cmd.cooldown.AbstractResourceCost.CostType
+   * @see CostType
    */
   public SpCost(AbstractResourceCost.CostType t, int a) { super(t, a); }
 
   /**
-   * @see solace.cmd.cooldown.AbstractResourceCost
+   * @see AbstractResourceCost
    */
   protected int getPlayerResource(Player p) { return p.getSp(); }
 
   /**
-   * @see solace.cmd.cooldown.AbstractResourceCost
+   * @see AbstractResourceCost
    */
   protected int getPlayerResourceMax(Player p) { return p.getMaxSp(); }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public void withdraw(Player p) {
     if (!canWithdraw(p)) return;
@@ -40,7 +40,7 @@ public class SpCost extends AbstractResourceCost {
   }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public String getInsufficentResourceMessage() {
     return "Not enough {y}sp{x}.";

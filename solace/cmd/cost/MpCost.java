@@ -1,4 +1,4 @@
-package solace.cmd.cooldown;
+package solace.cmd.cost;
 
 import solace.game.Player;
 
@@ -17,22 +17,22 @@ public class MpCost extends AbstractResourceCost {
    * Creates a new mp cost of the given type and amount.
    * @param t Type for the cost.
    * @param a Amount for the cost.
-   * @see solace.cmd.cooldown.AbstractResourceCost.CostType
+   * @see CostType
    */
   public MpCost(AbstractResourceCost.CostType t, int a) { super(t, a); }
 
   /**
-   * @see solace.cmd.cooldown.AbstractResourceCost
+   * @see AbstractResourceCost
    */
   protected int getPlayerResource(Player p) { return p.getMp(); }
 
   /**
-   * @see solace.cmd.cooldown.AbstractResourceCost
+   * @see AbstractResourceCost
    */
   protected int getPlayerResourceMax(Player p) { return p.getMaxMp(); }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public void withdraw(Player p) {
     if (!canWithdraw(p)) return;
@@ -44,7 +44,7 @@ public class MpCost extends AbstractResourceCost {
   }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public String getInsufficentResourceMessage() {
     return "Not enough {m}mp{x}.";

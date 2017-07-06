@@ -1,4 +1,4 @@
-package solace.cmd.cooldown;
+package solace.cmd.cost;
 
 import solace.game.Player;
 
@@ -61,19 +61,19 @@ public abstract class AbstractResourceCost implements ResourceCost {
   }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public boolean canWithdraw(Player p) {
     return getPlayerResource(p) >= getCost(p);
   }
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public abstract void withdraw(Player p);
 
   /**
-   * @see solace.cmd.cooldown.ResourceCost
+   * @see ResourceCost
    */
   public abstract String getInsufficentResourceMessage();
 }

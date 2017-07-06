@@ -3,10 +3,8 @@ import java.util.List;
 import java.util.LinkedList;
 import solace.cmd.StateCommand;
 import solace.cmd.InvalidTargetException;
-import solace.cmd.cooldown.CooldownCommand;
-import solace.cmd.cooldown.ResourceCost;
-import solace.util.Log;
-import solace.net.Connection;
+import solace.cmd.CooldownCommand;
+import solace.cmd.cost.ResourceCost;
 import solace.game.Player;
 
 /**
