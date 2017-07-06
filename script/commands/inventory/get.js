@@ -6,13 +6,11 @@
  */
 Commands.add('get', function (player, params) {
   if (params.length < 2) {
-    player.sendln('What would you like to get?\n\r');
-    return false;
+    return player.sendln('What would you like to get?\n\r');
   }
 
   if (player.isSleeping()) {
-    player.sendln('You cannot get anything while alseep.');
-    return false;
+    return player.sendln('You cannot get anything while alseep.');
   }
 
   var name = params[1];
@@ -21,8 +19,7 @@ Commands.add('get', function (player, params) {
 
   // If there is no such item, then we're done, inform the player
   if (!item) {
-    player.sendln('You could not find \'' + name + '\' here.\n\r');
-    return false;
+    return player.sendln('You could not find \'' + name + '\' here.\n\r');
   }
 
   player.resetVisibilityOnAction('get');
@@ -35,6 +32,4 @@ Commands.add('get', function (player, params) {
   var description = item.get('description.inventory');
   player.sendln('You get ' + description);
   room.sendMessage(player.getName() + ' gets ' + description, player);
-
-  return true;
 });

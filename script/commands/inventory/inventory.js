@@ -5,8 +5,7 @@
  */
 Commands.add('inventory', function (character, params) {
   if (character.getInventory().size() == 0) {
-    character.sendln('You do not have any items.\n\r');
-    return true;
+    return character.sendln('You do not have any items.\n\r');
   }
 
   var buf = ['You have the following items:\n\r'];
@@ -14,6 +13,4 @@ Commands.add('inventory', function (character, params) {
     buf.push('    ' + item.get('description.inventory'));
   });
   character.sendln(buf.join('\n\r') + '\n\r');
-
-  return true;
 });

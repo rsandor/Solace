@@ -14,6 +14,6 @@ Commands.addCooldown('riposte', {
   combosWith: 'slash',
   spCost: 6,
   run: function (level, player, target, cooldown) {
-    return cooldown.executeAttack(target);
+    cooldown.executeAttack(target);
   }
 });

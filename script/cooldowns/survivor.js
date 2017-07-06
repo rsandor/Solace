@@ -21,7 +21,5 @@ Commands.addCooldown('survivor', {
       'You are a {m}survivor{x}! You\'ve been healed [{G}' + hpHealed +
       '{x}] hp and [{Y}' + spHealed + '{x}] sp!'
     );
-
-    return true;
   }
 });

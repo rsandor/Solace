@@ -7,21 +7,18 @@
 
 Commands.add('drop', function (player, params) {
   if (params.length == 1) {
-    player.sendln('What would you like to drop?');
-    return false;
+    return player.sendln('What would you like to drop?');
   }
 
   if (player.isSleeping()) {
-    player.sendln('You cannot drop anything, for you are fast asleep.');
-    return false;
+    return player.sendln('You cannot drop anything, for you are fast asleep.');
   }
 
   var name = params[1];
   var item = player.findItem(name);
 
   if (item == null) {
-    player.sendln('You do not currently possess \'' + name + '\'.');
-    return false;
+    return player.sendln('You do not currently possess \'' + name + '\'.');
   }
 
   player.resetVisibilityOnAction('drop');
@@ -32,7 +29,6 @@ Commands.add('drop', function (player, params) {
 
   player.sendln('You drop ' + description);
   player.getRoom().sendMessage(
-    player.getName() + ' drops ' + description + '\n\r', player);
-
-  return true;
+    player.getName() + ' drops ' + description + '\n\r', player
+  );
 });

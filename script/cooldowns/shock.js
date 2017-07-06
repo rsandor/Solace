@@ -31,11 +31,8 @@ Commands.addCooldown("shock", {
       target.applyDot(
         "shocked", avgDamage, 30, 2,
         "<{r}%d{x}> you are shocked by the envoloping electricity!");
-
-      return true;
     } catch (e) {
       player.sendln(e.getMessage());
-      return false;
     }
   }
 });

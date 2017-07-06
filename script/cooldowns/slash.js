@@ -14,6 +14,6 @@ Commands.addCooldown('slash', {
   combosWith: 'flurry',
   spCost: 4,
   run: function (level, player, target, cooldown) {
-    return cooldown.executeAttack(target);
+    cooldown.executeAttack(target);
   }
 });
