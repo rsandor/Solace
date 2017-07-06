@@ -2,7 +2,6 @@ package solace.cmd;
 
 import java.util.*;
 
-import solace.cmd.cost.ResourceCost;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
@@ -313,10 +312,13 @@ public abstract class CooldownCommand extends AbstractStateCommand {
       player.setComboAction(getName());
     }
 
+    /*
+    // Keep this here, this has broken A LOT.
     System.out.println("Target = " + target);
     System.out.println("initatesCombat = " + getInitiatesCombat());
     System.out.println("isHit = " + isHit);
     System.out.println("target is player = " + (getPlayer() == target));
+    */
 
     // Bypass combat if ...
     if (

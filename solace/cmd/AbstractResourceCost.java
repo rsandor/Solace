@@ -1,4 +1,4 @@
-package solace.cmd.cost;
+package solace.cmd;
 
 import solace.game.Player;
 

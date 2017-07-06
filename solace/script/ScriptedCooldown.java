@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import solace.cmd.StateCommand;
 import solace.cmd.InvalidTargetException;
 import solace.cmd.CooldownCommand;
-import solace.cmd.cost.ResourceCost;
+import solace.cmd.ResourceCost;
 import solace.game.Player;
 
 /**
