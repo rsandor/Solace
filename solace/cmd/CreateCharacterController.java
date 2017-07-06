@@ -11,9 +11,9 @@ import java.io.*;
  * State controller for creating a new character.
  * @author Ryan Sandor Richards
  */
-class CreateCharacter implements Controller {
+class CreateCharacterController implements Controller {
   /**
-   * State set for the <code>CreateCharacter</code> state controller.
+   * State set for the <code>CreateCharacterController</code> state controller.
    */
   private enum State {
 
@@ -87,12 +87,12 @@ class CreateCharacter implements Controller {
     }
   }
 
-  Connection connection;
-  State state;
+  private Connection connection;
+  private State state;
 
-  public CreateCharacter(Connection c) {
-    init(c);
-    state = state.CHOOSE_NAME;
+  CreateCharacterController(Connection c) {
+    connection = c;
+    state = State.CHOOSE_NAME;
     c.sendln(Message.get("NewCharacter"));
   }
 
@@ -100,19 +100,8 @@ class CreateCharacter implements Controller {
     return state.getPrompt();
   }
 
-  public void init(Connection c) {
-    connection = c;
-  }
-
   /**
-   * @see Controller.force();
-   */
-  public void force(String command) {
-    parse(command);
-  }
-
-  /**
-   * @see Controller.parse();
+   * @see solace.cmd.Controller
    */
   public void parse(String input) {
     state = state.parse(connection, input);

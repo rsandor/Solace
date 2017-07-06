@@ -4,7 +4,7 @@ import solace.net.Connection;
 
 /**
  * Abstract base class for all StateCommand implementations. This classes that
- * extend this are primarily used by AbstractStateControllers.
+ * extend this are used by AbstractStateControllers.
  * @see solace.cmd.AbstractStateController
  * @author Ryan Sandor Richards
  */

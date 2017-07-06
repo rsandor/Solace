@@ -516,6 +516,10 @@ public class Character extends AbstractPlayer {
 
     b.append("<character ");
 
+    if (race == null) {
+      race = Races.get("human");
+    }
+
     b.append(String.format(
       "name=\"%s\" level=\"%d\" race=\"%s\" ",
       name, level, race.getName()

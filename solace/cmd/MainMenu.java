@@ -77,7 +77,7 @@ public class MainMenu
   class Create extends AbstractStateCommand {
     public Create() { super("create"); }
     public void run(Connection c, String []params) {
-      c.setStateController( new CreateCharacter(c) );
+      c.setStateController( new CreateCharacterController(c) );
     }
   }
 
