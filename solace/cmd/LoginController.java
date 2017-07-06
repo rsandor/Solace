@@ -8,7 +8,7 @@ import solace.game.*;
 import solace.net.*;
 
 public class LoginController
-  implements StateController
+  implements Controller
 {
   /*
    * Login State Constants
@@ -211,7 +211,7 @@ public class LoginController
   }
 
   /**
-   * @see solace.cmd.StateController.force()
+   * @see Controller.force()
    */
   public void force(String c) {
     parse(c);

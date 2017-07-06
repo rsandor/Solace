@@ -335,7 +335,6 @@ public class MainMenu
           for (solace.game.Character ch : players) {
             Connection con = ch.getConnection();
             con.sendln("{y}Areas reloaded, thanks for your patience!{x}\n");
-            con.getStateController().force("look");
             con.setIgnoreInput(false);
             con.send(con.getStateController().getPrompt());
           }

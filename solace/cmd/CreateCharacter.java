@@ -11,7 +11,7 @@ import java.io.*;
  * State controller for creating a new character.
  * @author Ryan Sandor Richards
  */
-class CreateCharacter implements StateController {
+class CreateCharacter implements Controller {
   /**
    * State set for the <code>CreateCharacter</code> state controller.
    */
@@ -31,10 +31,6 @@ class CreateCharacter implements StateController {
           try {
             Account act = c.getAccount();
             solace.game.Character ch = new solace.game.Character(input);
-
-            // TODO Need to flesh out the character creation once we have
-            // classes, skills and races. This will do for now to ensure each
-            // character has basic stats.
 
             ch.setMajorStat("strength");
             ch.setMinorStat("vitality");
@@ -109,14 +105,14 @@ class CreateCharacter implements StateController {
   }
 
   /**
-   * @see solace.cmd.StateController.force();
+   * @see Controller.force();
    */
   public void force(String command) {
     parse(command);
   }
 
   /**
-   * @see solace.cmd.StateController.parse();
+   * @see Controller.parse();
    */
   public void parse(String input) {
     state = state.parse(connection, input);

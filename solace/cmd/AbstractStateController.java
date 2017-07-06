@@ -1,19 +1,17 @@
 package solace.cmd;
-
-import solace.net.Connection;
 import java.util.*;
-import java.util.concurrent.*;
+import solace.net.Connection;
 import solace.util.Log;
 import solace.util.CommandParser;
 
 /**
  * Base class for all state controllers used in the Solace Engine. Works as a
- * nice implementation of StateController adding some features that allow
+ * nice implementation of Controller adding some features that allow
  * controllers to work more fluidly with the <code>StateCommand</code> objects.
  *
  * @author Ryan Sandor Richards
  */
-public abstract class AbstractStateController implements StateController {
+public abstract class AbstractStateController implements Controller {
   /**
    * Simple command tuple.
    * @author Ryan Sandor Richards
@@ -27,7 +25,7 @@ public abstract class AbstractStateController implements StateController {
      * Creates a new command tuple.
      * @param n Name for the command.
      */
-    public CommandTuple(String n, StateCommand c) {
+    CommandTuple(String n, StateCommand c) {
       name = n;
       command = c;
     }
@@ -59,31 +57,8 @@ public abstract class AbstractStateController implements StateController {
 
   // Instance Variables
   Connection connection;
-  LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
-  String invalidCommandMessage;
-
-  /**
-   * @return the invalidCommandMessage
-   */
-  public String getInvalidCommandMessage() {
-    return invalidCommandMessage;
-  }
-
-  /**
-   * @param invalidCommandMessage the invalidCommandMessage to set
-   */
-  public void setInvalidCommandMessage(String invalidCommandMessage) {
-    this.invalidCommandMessage = invalidCommandMessage;
-  }
-
-  /**
-   * Creates a new controller.
-   * @param c Connection the controller is to work with.
-   */
-  public AbstractStateController(Connection c) {
-    init(c);
-    invalidCommandMessage = "Unknown command.";
-  }
+  private LinkedList<CommandTuple> commands = new LinkedList<>();
+  private String invalidCommandMessage;
 
   /**
    * Creates a new controller with the specified connection and invalid command
@@ -91,36 +66,17 @@ public abstract class AbstractStateController implements StateController {
    * @param c Connection for the controller.
    * @param icm Invalid command message for the controller.
    */
-  public AbstractStateController(Connection c, String icm) {
-    init(c);
-    invalidCommandMessage = icm;
-  }
-
-  /**
-   * Initializes this controller to work with the given connection.
-   */
-  public void init(Connection c) {
+  AbstractStateController(Connection c, String icm) {
     connection = c;
+    invalidCommandMessage = icm;
   }
 
   /**
    * Adds a command to this controller.
    * @param c Command to add.
    */
-  public void addCommand(StateCommand c) {
+  void addCommand(StateCommand c) {
     commands.add(new CommandTuple(c.getName(), c));
-  }
-
-  /**
-   * Adds a command to the controller under the given alias.
-   * This is useful for commands that can be executed via
-   * multiple names (such as movement commands).
-   *
-   * @param alias Alias for the command.
-   * @param c Command to add.
-   */
-  public void addCommand(String alias, StateCommand c) {
-    commands.add(new CommandTuple(alias, c));
   }
 
   /**
@@ -128,7 +84,7 @@ public abstract class AbstractStateController implements StateController {
    * @param aliases Alias names for the command.
    * @param c Command to add.
    */
-  public void addCommand(String[] aliases, StateCommand c) {
+  void addCommand(String[] aliases, StateCommand c) {
     for (String alias : aliases) {
       commands.add(new CommandTuple(alias, c));
     }
@@ -139,7 +95,7 @@ public abstract class AbstractStateController implements StateController {
    * @param aliases Alias names for the command.
    * @param c Command to add.
    */
-  public void addCommand(Collection<String> aliases, StateCommand c) {
+  void addCommand(Collection<String> aliases, StateCommand c) {
     for (String alias : aliases) {
       commands.add(new CommandTuple(alias, c));
     }
@@ -150,21 +106,11 @@ public abstract class AbstractStateController implements StateController {
    * @param c Search criteria.
    * @return A command that matches, or null if no commands match the string.
    */
-  protected StateCommand findCommand(String c) {
+  private StateCommand findCommand(String c) {
     for (CommandTuple t : commands)
       if (t.matches(c))
         return t.getCommand();
     return null;
-  }
-
-  /**
-   * Forces a user to execute a command.
-   * Note: This function is VERY useful for unit testing :).
-   * @param command Command to execute.
-   */
-  public void force(String command) {
-    connection.sendln(command);
-    parse(command);
   }
 
   /**
@@ -203,7 +149,7 @@ public abstract class AbstractStateController implements StateController {
   }
 
   /**
-   * @see solace.cmd.StateController
+   * @see Controller
    */
   public abstract String getPrompt();
 }

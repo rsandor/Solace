@@ -1,7 +1,5 @@
 package solace.cmd;
 
-import java.util.*;
-
 import solace.game.*;
 import solace.net.Connection;
 import solace.util.*;
@@ -13,75 +11,44 @@ import solace.util.*;
  * general banter when not actually playing).
  * @author Ryan Sandor Richards (Gaius)
  */
-public class ChatController extends AbstractStateController {
-  public ChatController(Connection c) {
-    super(c);
-    addCommand(new Quit());
-    addCommand(new Help());
-    World.getChatConnections().add(c);
+public class ChatController implements Controller {
+  private Connection connection;
+
+  ChatController(Connection c) {
+    connection = c;
+    World.addChatConnection(connection);
     connection.sendln(Message.get("ChatIntro"));
   }
 
+  /**
+   * @see solace.cmd.Controller
+   */
   public String getPrompt() {
     return "{c}chat>{x} ";
   }
 
   /**
-   * Specialized parser for handling basic chatting.
+   * Parses chat commands and broadcasts messages.
+   * @param message Message or command to parse.
    */
-  public void parse(String s) {
-    if (s == null || s.length() == 0)
+  public void parse(String message) {
+    if (message == null || message.length() == 0) {
       return;
-
-    if (s.charAt(0) == '/')
-      super.parse(s);
-    else
-      broadcast(s);
-  }
-
-  /**
-   * Sends a message from the connected user to all the people in the oog chat.
-   * @param msg Message to send.
-   */
-  protected void broadcast(String msg) {
-    String name = connection.getAccount().getName().toLowerCase();
-    String format = "{y}" + name + ": {x}" + msg;
-
-    Collection chatters = Collections.synchronizedCollection(
-      World.getChatConnections()
-    );
-
-    synchronized (chatters) {
-      Iterator i = chatters.iterator();
-      while (i.hasNext()) {
-        Connection c = (Connection)i.next();
+    }
+    if (message.toLowerCase().startsWith("/quit")) {
+      connection.sendln("Later!");
+      World.removeChatconnection(connection);
+      connection.setStateController(new MainMenu(connection));
+    } else if (message.toLowerCase().startsWith("/help")) {
+      String help = Message.get("ChatHelp");
+      connection.sendln(help);
+    } else {
+      String name = connection.getAccount().getName().toLowerCase();
+      String format = "{y}" + name + ": {x}" + message;
+      for (Object chatter : World.getChatConnections()) {
+        Connection c = (Connection) chatter;
         c.sendln(format);
       }
-    }
-  }
-
-  /**
-   * OOG Chat help command.
-   * @author Ryan Sandor Richards (Gaius)
-   */
-  class Help extends AbstractCommand {
-    public Help() { super("/help"); }
-    public void run(Connection c, String []args) {
-      String help = Message.get("ChatHelp");
-      c.sendln(help);
-    }
-  }
-
-  /**
-   * Exits the out of game chat.
-   * @author Ryan Sandor Richards (Gaius)
-   */
-  class Quit extends AbstractCommand {
-    public Quit() { super("/quit"); }
-    public void run(Connection c, String []args) {
-      c.sendln("Later!");
-      World.getChatConnections().remove(c);
-      connection.setStateController(new MainMenu(connection));
     }
   }
 }

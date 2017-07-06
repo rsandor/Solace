@@ -239,11 +239,28 @@ public class World {
   }
 
   /**
-   * @return the oogChat
+   * @return An unmodifiable list of chat connections.
    */
-  public static Collection<Connection> getChatConnections()
-  {
-    return oogChat;
+  public static Collection<Connection> getChatConnections() {
+    synchronized (oogChat) {
+      return Collections.unmodifiableCollection(oogChat);
+    }
+  }
+
+  /**
+   * Adds a connection to the out of game chat.
+   * @param c Connection to add.
+   */
+  public static void addChatConnection(Connection c) {
+    oogChat.add(c);
+  }
+
+  /**
+   * Removes a connection for out of game chat.
+   * @param c The connection to remove.
+   */
+  public static void removeChatconnection(Connection c) {
+    oogChat.remove(c);
   }
 
 
