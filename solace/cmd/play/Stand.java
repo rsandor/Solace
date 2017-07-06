@@ -15,12 +15,12 @@ public class Stand extends PlayCommand {
     super("stand", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isStandingOrFighting()) {
       character.sendln("You are already standing.");
-      return false;
+      return;
     }
 
     String characterMessage = "";
@@ -43,7 +43,5 @@ public class Stand extends PlayCommand {
     );
     character.sendln(characterMessage);
     character.setStanding();
-
-    return true;
   }
 }

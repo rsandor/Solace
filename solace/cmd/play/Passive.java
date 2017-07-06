@@ -15,7 +15,7 @@ public class Passive extends PlayCommand {
     super("passive", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuilder buffer = new StringBuilder();
 
     int k = 0;
@@ -31,7 +31,5 @@ public class Passive extends PlayCommand {
     } else {
       character.sendln("You have no passive abilities.");
     }
-
-    return true;
   }
 }

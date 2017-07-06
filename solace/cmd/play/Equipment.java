@@ -13,7 +13,7 @@ public class Equipment extends PlayCommand {
     super("equipment", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuffer b = new StringBuffer();
     b.append(Strings.banner("Equipment"));
 
@@ -29,7 +29,5 @@ public class Equipment extends PlayCommand {
     b.append(Strings.RULE);
 
     character.sendln(b.toString());
-
-    return true;
   }
 }

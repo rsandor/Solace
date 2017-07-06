@@ -47,7 +47,6 @@ public interface Command
    * Executes the command.
    * @param c Connection which issued the command.
    * @param params Parameters sent along with the command by the connection.
-   * @return True if the command was successful, false otherwise.
    */
-  public boolean run(Connection c, String []params);
+  public void run(Connection c, String []params);
 }

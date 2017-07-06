@@ -16,17 +16,17 @@ public class Rest extends PlayCommand {
     super("rest", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isResting()) {
       character.sendln("You are already resting.");
-      return false;
+      return;
     }
 
     if (character.isFighting()) {
       character.sendln("You cannot rest while fighting!");
-      return false;
+      return;
     }
 
     String characterMessage = "";
@@ -49,7 +49,5 @@ public class Rest extends PlayCommand {
     );
     character.sendln(characterMessage);
     character.setResting();
-
-    return true;
   }
 }

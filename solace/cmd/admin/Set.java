@@ -28,9 +28,8 @@ public class Set extends PlayCommand {
    * @param p The player for which to set the parameter.
    * @param param Name of the parameter to set.
    * @param value Value to set for the parameter.
-   * @return True if the parameter was set, false otherwise.
    */
-  protected boolean setPlayerParam(Player p, String param, String value) {
+  protected void setPlayerParam(Player p, String param, String value) {
     solace.game.Character character = getCharacter();
     try {
       if (param.equals("level")) {
@@ -68,23 +67,21 @@ public class Set extends PlayCommand {
       } else {
         throw new Exception("Invalid parameter: " + param);
       }
-      return true;
     } catch (NumberFormatException nfe) {
       character.sendln("Invalid number format: " + value);
     } catch (Exception e) {
       character.sendln(e.getMessage());
     }
-    return false;
   }
 
   /**
    * @see solace.cmd.PlayCommand
    */
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     solace.game.Character character = getCharacter();
     if (params.length != 4) {
       character.sendln("Usage: set [target] [param] [value]");
-      return false;
+      return;
     }
 
     String target = params[1];
@@ -94,9 +91,9 @@ public class Set extends PlayCommand {
     Player playerTarget = character.getRoom().findPlayer(target);
     if (playerTarget == null) {
       character.sendln("Could not find player with name: " + target);
-      return false;
+      return;
     }
 
-    return setPlayerParam(playerTarget, param, value);
+    setPlayerParam(playerTarget, param, value);
   }
 }

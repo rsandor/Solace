@@ -16,27 +16,27 @@ public class Attack extends PlayCommand {
     super("attack", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isFighting()) {
       character.sendln("You are already in battle!");
-      return false;
+      return;
     }
 
     if (character.isRestingOrSitting()) {
       character.sendln("You cannot initiate battle unless standing and alert.");
-      return false;
+      return;
     }
 
     if (character.isSleeping()) {
       character.sendln("You dream of attacking, as you are asleep.");
-      return false;
+      return;
     }
 
     if (params.length < 2) {
       character.sendln("Who would you like to attack?");
-      return false;
+      return;
     }
 
     String name = params[1];
@@ -44,22 +44,22 @@ public class Attack extends PlayCommand {
 
     if (target == null) {
       character.sendln(String.format("You do not see %s here.", name));
-      return false;
+      return;
     }
 
     if (!target.isMobile()) {
       character.sendln("You cannot attack other players.");
-      return false;
+      return;
     }
 
     if (target.isDead()) {
       character.sendln("You cannot attack a target that is already dead!");
-      return false;
+      return;
     }
 
     if (((Mobile)target).isProtected()) {
       character.sendln("You cannot attack " + target.getName() + ".");
-      return false;
+      return;
     }
 
     // TODO going to have to modify this when player groups come along
@@ -68,12 +68,11 @@ public class Attack extends PlayCommand {
         String.format("%s is already engaged in battle.",
         target.getName()
       ));
-      return false;
+      return;
     }
 
     // Start the battle
     BattleManager.initiate(character, target);
     c.skipNextPrompt();
-    return true;
   }
 }

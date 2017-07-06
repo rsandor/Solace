@@ -21,12 +21,11 @@ public class Worth extends PlayCommand {
     super("worth", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     DecimalFormat dec = new DecimalFormat("#,###,###");
     c.wrapln(String.format(
       "You are currently carrying {y}%s{x} gold.",
       dec.format(character.getGold())
     ));
-    return true;
   }
 }

@@ -16,7 +16,7 @@ public class ListSkills extends PlayCommand {
     super("skills", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuffer b = new StringBuffer();
     Collection<Skill> skills = character.getSkills();
 
@@ -40,7 +40,5 @@ public class ListSkills extends PlayCommand {
     }
 
     character.sendln(b.toString());
-
-    return true;
   }
 }

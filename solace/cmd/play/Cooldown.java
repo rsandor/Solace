@@ -15,7 +15,7 @@ public class Cooldown extends PlayCommand {
     super("cooldown", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuilder buffer = new StringBuilder();
     for (String cooldown : character.getCooldowns()) {
       int time = character.getCooldownDuration(cooldown);
@@ -29,7 +29,5 @@ public class Cooldown extends PlayCommand {
     } else {
       character.sendln("You have no skills on cooldown.");
     }
-
-    return true;
   }
 }

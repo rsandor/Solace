@@ -341,7 +341,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * @see solace.cmd.AbstractCommand
    */
-  public boolean run(Connection c, String[] params) {
+  public void run(Connection c, String[] params) {
     try {
       Player target = beforeSchedule(params);
       if (castTime < 1) {
@@ -352,7 +352,7 @@ public abstract class CooldownCommand extends AbstractCommand {
       } else {
         if (player.isCasting()) {
           player.sendln("You are already casting a spell!");
-          return false;
+          return;
         }
 
         Runnable eventRunnable = new Runnable() {
@@ -381,9 +381,7 @@ public abstract class CooldownCommand extends AbstractCommand {
       }
     } catch (CooldownException cde) {
       player.sendln(cde.getMessage());
-      return false;
     }
-    return true;
   }
 
   /**

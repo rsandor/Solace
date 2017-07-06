@@ -15,7 +15,7 @@ public class Buffs extends PlayCommand {
     super("buffs", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuilder buffs = new StringBuilder();
     StringBuilder debuffs = new StringBuilder();
 
@@ -54,7 +54,5 @@ public class Buffs extends PlayCommand {
         character.sendln(debuffs.toString());
       }
     }
-
-    return true;
   }
 }

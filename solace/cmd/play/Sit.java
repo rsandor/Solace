@@ -16,17 +16,17 @@ public class Sit extends PlayCommand {
     super("sit", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isSitting()) {
       character.sendln("You are already sitting.");
-      return false;
+      return;
     }
 
     if (character.isFighting()) {
       character.sendln("You cannot sit down in the middle of battle!");
-      return false;
+      return;
     }
 
     String characterMessage = "";
@@ -49,7 +49,5 @@ public class Sit extends PlayCommand {
     );
     character.sendln(characterMessage);
     character.setSitting();
-
-    return true;
   }
 }

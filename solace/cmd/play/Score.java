@@ -15,7 +15,7 @@ public class Score extends PlayCommand {
     super("score", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     StringBuffer buf = new StringBuffer();
 
     buf.append(Strings.RULE);
@@ -82,7 +82,5 @@ public class Score extends PlayCommand {
     buf.append(Strings.RULE);
 
     character.sendln(buf.toString());
-
-    return true;
   }
 }

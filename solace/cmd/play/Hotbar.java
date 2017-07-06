@@ -27,7 +27,7 @@ public class Hotbar extends PlayCommand {
    * Displays the hotbar settings for the character.
    * @return True if the command succeeds, false otherwise.
    */
-  public boolean displayHotbar() {
+  public void displayHotbar() {
     StringBuilder buf = new StringBuilder();
     buf.append("Hotbar Assignments:\n\r\n\r");
     for (String key : HOTBAR_KEYS) {
@@ -40,7 +40,6 @@ public class Hotbar extends PlayCommand {
       }
     }
     character.sendln(buf.toString());
-    return true;
   }
 
   /**
@@ -49,16 +48,15 @@ public class Hotbar extends PlayCommand {
    * @param params Parameters for the command.
    * @return True if the command succeeds, false otherwise.
    */
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (params.length == 1) {
-      return displayHotbar();
+      displayHotbar();
+      return;
     } else if (params.length == 3) {
       String key = params[1];
       String command = params[2];
       character.setHotbarCommand(key, command);
-      return true;
     }
     character.sendln("Usage: hotbar [<key> <command>]");
-    return false;
   }
 }

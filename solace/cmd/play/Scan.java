@@ -15,20 +15,20 @@ public class Scan extends PlayCommand {
     super("scan", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (character.isRestingOrSitting()) {
       character.sendln("You cannot scan around unless standing.");
-      return false;
+      return;
     }
 
     if (character.isFighting()) {
       character.sendln("You are too busy to scan while engaged in combat!");
-      return false;
+      return;
     }
 
     if (character.isSleeping()) {
       character.sendln("You cannot scan whilst asleep.");
-      return false;
+      return;
     }
 
     Room room = character.getRoom();
@@ -62,7 +62,5 @@ public class Scan extends PlayCommand {
     );
 
     c.sendln(message);
-
-    return true;
   }
 }

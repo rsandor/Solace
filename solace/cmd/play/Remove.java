@@ -13,15 +13,15 @@ public class Remove extends PlayCommand {
     super("remove", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (params.length < 2) {
       character.sendln("What would you like to remove?");
-      return false;
+      return;
     }
 
     if (character.isSleeping()) {
       character.sendln("You cannot remove equipment whilst alseep.");
-      return false;
+      return;
     }
 
     String itemName = params[1];
@@ -40,7 +40,7 @@ public class Remove extends PlayCommand {
 
     if (removeItem == null) {
       character.sendln("You are not wearing " + itemName + ".");
-      return false;
+      return;
     }
 
     String itemDesc = removeItem.get("description.inventory");
@@ -54,16 +54,14 @@ public class Remove extends PlayCommand {
       Log.error("Attempted to remove non-equipment item: " + itemDesc);
       ne.printStackTrace();
       character.sendln("You cannot remove " + itemDesc);
-      return false;
+      return;
     }
     catch (NoSuchItemException nse) {
       // Shouldn't happen because of checks above...
       Log.error("Attempted to remove unheld item: " + itemDesc);
       nse.printStackTrace();
       character.sendln("You cannot remove: " + itemDesc);
-      return false;
+      return;
     }
-
-    return true;
   }
 }

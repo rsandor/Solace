@@ -14,10 +14,10 @@ public class Quit extends PlayCommand {
     super("quit", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (character.isFighting()) {
-      character.sendln("You cannot quit, you are in BATTLE!");
-      return false;
+      character.sendln("You cannot quit, you are in {R}BATTLE{x}!");
+      return;
     }
 
     Room room = character.getRoom();
@@ -33,7 +33,5 @@ public class Quit extends PlayCommand {
     Game.writer.save(character);
 
     c.setStateController( new MainMenu(c) );
-
-    return true;
   }
 }

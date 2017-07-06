@@ -18,10 +18,10 @@ public class Help extends AbstractCommand {
     help = HelpSystem.getInstance();
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (params.length < 2) {
       c.wrapln( help.getArticle("index.md") );
-      return true;
+      return;
     }
 
     List<String> keywords = new LinkedList<String>();
@@ -29,7 +29,5 @@ public class Help extends AbstractCommand {
       keywords.add(params[i].toLowerCase());
     }
     c.send("\n\r" + help.query(keywords) + "\n\r");
-
-    return true;
   }
 }

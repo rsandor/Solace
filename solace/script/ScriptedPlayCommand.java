@@ -32,8 +32,8 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
    */
   public Command getInstance(solace.game.Character ch) {
     Command command = new PlayCommand(getName(), ch) {
-      public boolean run(Connection c, String[] params) {
-        return getRunLambda().test(ch, params);
+      public void run(Connection c, String[] params) {
+        getRunLambda().test(ch, params);
       }
     };
     command.setDisplayName(getDisplayName());

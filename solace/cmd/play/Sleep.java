@@ -17,17 +17,17 @@ public class Sleep extends PlayCommand {
     super("sleep", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isSleeping()) {
       character.sendln("You are already asleep.");
-      return false;
+      return;
     }
 
     if (character.isFighting()) {
-      character.sendln("Are you daft? You cannot sleep while fighting!");
-      return false;
+      character.sendln("You cannot sleep while in {R}BATTLE{x}!");
+      return;
     }
 
     String characterMessage = "";
@@ -50,7 +50,5 @@ public class Sleep extends PlayCommand {
     );
     character.sendln(characterMessage);
     character.setSleeping();
-
-    return true;
   }
 }

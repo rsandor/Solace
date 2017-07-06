@@ -15,7 +15,7 @@ public class ShopList extends ShopCommand {
     super("list", ch);
   }
 
-  public boolean command(
+  public void command(
     Connection c,
     String[] params,
     Shop shop,
@@ -23,10 +23,8 @@ public class ShopList extends ShopCommand {
   ) {
     if (character.isFighting()) {
       character.sendln("You cannot browse a shop while fighting!");
-      return false;
+      return;
     }
-
     character.sendln(room.getShop().list());
-    return true;
   }
 }

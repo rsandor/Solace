@@ -51,7 +51,7 @@ public class MainMenu
    */
   class List extends AbstractCommand {
     public List() { super("list"); }
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       Collection<solace.game.Character> chars = c.getAccount().getCharacters();
       if (chars.size() == 0) {
         c.sendln(
@@ -67,7 +67,6 @@ public class MainMenu
         }
         c.sendln("");
       }
-      return true;
     }
   }
 
@@ -77,9 +76,8 @@ public class MainMenu
    */
   class Create extends AbstractCommand {
     public Create() { super("create"); }
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       c.setStateController( new CreateCharacter(c) );
-      return true;
     }
   }
 
@@ -88,7 +86,7 @@ public class MainMenu
    */
   class Play extends AbstractCommand {
     public Play() { super("play"); }
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       try {
         Account act = c.getAccount();
         solace.game.Character ch;
@@ -99,7 +97,7 @@ public class MainMenu
             "to create a new character."
           );
           c.sendln("");
-          return false;
+          return;
         }
 
         if (params.length < 2) {
@@ -113,7 +111,7 @@ public class MainMenu
               "use the '{y}list{x}' command to see a list of your characters."
             );
             c.sendln("");
-            return false;
+            return;
           }
           ch = act.getCharacter(name);
         }
@@ -127,14 +125,11 @@ public class MainMenu
 
         act.setActiveCharacter(ch);
         c.setStateController(new PlayController(c, ch));
-
-        return true;
       }
       catch (GameException ge) {
         Log.error(ge.getMessage());
         c.sendln("An {r}error{x} occured, please try again later.");
         c.sendln("");
-        return false;
       }
     }
   }
@@ -146,9 +141,8 @@ public class MainMenu
   class Chat extends AbstractCommand
   {
     public Chat() { super("chat"); }
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       c.setStateController(new ChatController(c));
-      return true;
     }
   }
 
@@ -156,15 +150,12 @@ public class MainMenu
    * Help Command
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Help extends AbstractCommand
-  {
+  class Help extends AbstractCommand {
     public Help() { super("help"); }
-    public boolean run(Connection c, String []params)
-    {
+    public void run(Connection c, String []params) {
       c.sendln(Message.get("MainMenu"));
       if (c.getAccount().isAdmin())
         c.sendln(Message.get("AdminMenu"));
-      return true;
     }
   }
 
@@ -172,11 +163,9 @@ public class MainMenu
    * Quit Command
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Quit extends AbstractCommand
-  {
+  class Quit extends AbstractCommand {
     public Quit() { super("quit"); }
-    public synchronized boolean run(Connection c, String []params)
-    {
+    public void run(Connection c, String []params) {
       c.sendln("Goodbye!");
 
       // If the connection has an account, remove it from the accounts list
@@ -188,7 +177,6 @@ public class MainMenu
       World.removeConnection(connection);
 
       c.close();
-      return true;
     }
   }
 
@@ -196,17 +184,15 @@ public class MainMenu
    * Who command - lists who is online.
    * @author Ryan Sandor Richards
    */
-  class Who extends AbstractCommand
-  {
+  class Who extends AbstractCommand {
     public Who() { super("who"); }
 
     /*
      * Note: This whole thing will become SIGNIFICANTLY easier
      * when I switch the code base to java 6.
      */
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       Collection connections = World.getConnections();
-
       c.sendln("{y}---- {x}Players Online{y} ----{x}");
       synchronized (connections) {
         Iterator iter = connections.iterator();
@@ -219,11 +205,8 @@ public class MainMenu
         }
       }
       c.sendln("");
-
-      return true;
     }
   }
-
 
   /**
    * Shutdown (Admin Command) - Safely shuts the game server down and exits the
@@ -235,13 +218,10 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Shutdown extends AdminCommand
-  {
+  class Shutdown extends AdminCommand {
     public Shutdown() { super("shutdown"); }
-    public boolean run(Connection c, String []params)
-    {
+    public void run(Connection c, String []params) {
       Game.shutdown();
-      return true;
     }
   }
 
@@ -253,8 +233,7 @@ public class MainMenu
    *
    * @author Ryan Sandor Richards
    */
-  class Reload extends AdminCommand
-  {
+  class Reload extends AdminCommand {
     public Reload() { super("reload"); }
 
     /**
@@ -381,7 +360,7 @@ public class MainMenu
       HelpSystem.reload();
     }
 
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       String errorStr = "";
 
       try {
@@ -414,8 +393,6 @@ public class MainMenu
             "', you can either reload 'areas' or 'messages'."
           );
         }
-
-        return true;
       }
       catch (IOException ioe) {
         c.sendln("An error occured while trying to reload " + errorStr + ".");
@@ -423,7 +400,6 @@ public class MainMenu
           "An IO exception occured when reloading " + errorStr + " by user '" +
           c.getAccount().getName().toLowerCase() + "'"
         );
-        return false;
       }
     }
   }
@@ -439,10 +415,10 @@ public class MainMenu
   class Peek extends AdminCommand {
     public Peek() { super("peek"); }
 
-    public boolean run(Connection c, String []params) {
+    public void run(Connection c, String []params) {
       if (params.length < 2) {
         c.sendln("Syntax: peek <player1> <player2> ... | all");
-        return false;
+        return;
       }
 
       if (params[1].toLowerCase().equals("all")) {
@@ -468,8 +444,6 @@ public class MainMenu
           c.sendln("");
         }
       }
-
-      return true;
     }
 
     /**

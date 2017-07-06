@@ -15,7 +15,7 @@ public class ShopSell extends ShopCommand {
     super("sell", ch);
   }
 
-  public boolean command(
+  public void command(
     Connection c,
     String[] params,
     Shop shop,
@@ -23,12 +23,12 @@ public class ShopSell extends ShopCommand {
   ) {
     if (character.isFighting()) {
       character.sendln("You're too distracted to sell items while fighting!");
-      return false;
+      return;
     }
 
     if (params.length < 2) {
       character.wrapln("What item would you like to sell?");
-      return false;
+      return;
     }
 
     String name = params[1];
@@ -38,7 +38,7 @@ public class ShopSell extends ShopCommand {
       character.wrapln(String.format(
         "You do not currently possess %s", name
       ));
-      return false;
+      return;
     }
 
     character.resetVisibilityOnAction("sell");
@@ -49,7 +49,7 @@ public class ShopSell extends ShopCommand {
         "The shop owner is uninterested in %s",
         item.get("description.inventory")
       ));
-      return false;
+      return;
     }
 
     character.removeItem(item);
@@ -59,7 +59,5 @@ public class ShopSell extends ShopCommand {
       item.get("description.inventory"),
       price
     ));
-
-    return true;
   }
 }

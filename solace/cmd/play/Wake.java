@@ -15,13 +15,13 @@ public class Wake extends PlayCommand {
     super("wake", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     PlayState state = character.getPlayState();
     Room room = character.getRoom();
 
     if (character.isStanding()) {
       character.sendln("You are already awake and standing.");
-      return false;
+      return;
     }
 
     room.sendMessage(
@@ -30,7 +30,5 @@ public class Wake extends PlayCommand {
     );
     character.sendln("You wake and stand up.");
     character.setStanding();
-
-    return true;
   }
 }

@@ -16,7 +16,7 @@ public class ShopAppraise extends ShopCommand {
     super("appraise", ch);
   }
 
-  public boolean command(
+  public void command(
     Connection c,
     String[] params,
     Shop shop,
@@ -24,12 +24,12 @@ public class ShopAppraise extends ShopCommand {
   ) {
     if (character.isFighting()) {
       character.sendln("You cannot have items appraised while fighting!");
-      return false;
+      return;
     }
 
     if (params.length < 2) {
       character.wrapln("What item would you like appraised?");
-      return false;
+      return;
     }
 
     String name = params[1];
@@ -39,7 +39,7 @@ public class ShopAppraise extends ShopCommand {
       character.wrapln(String.format(
         "You do not currently possess %s", name
       ));
-      return false;
+      return;
     }
 
     character.resetVisibilityOnAction("appraise");
@@ -58,7 +58,5 @@ public class ShopAppraise extends ShopCommand {
         item.get("description.inventory")
       ));
     }
-
-    return true;
   }
 }

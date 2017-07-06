@@ -20,19 +20,19 @@ public class Inspect extends PlayCommand {
     super("inspect", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     solace.game.Character character = getCharacter();
 
     if (!character.getAccount().isAdmin()) {
-      c.sendln("You are unable to perform this command.");
       Log.error("Admin level play command executed by a normal account.");
-      return false;
+      c.sendln("You are unable to perform this command.");
+      return;
     }
 
     Room room = character.getRoom();
     if (params.length == 1) {
       c.sendln(inspectRoom(room));
-      return true;
+      return;
     }
 
     String name = params[1];
@@ -40,23 +40,22 @@ public class Inspect extends PlayCommand {
     Item item = room.findItem(name);
     if (item != null) {
       c.sendln(inspectItem(item));
-      return true;
+      return;
     }
 
     Player player = room.findPlayer(name);
     if (player != null) {
       c.sendln(inspectPlayer(player));
-      return true;
+      return;
     }
 
     Item inventoryItem = character.findItem(name);
     if (inventoryItem != null) {
       c.sendln(inspectItem(inventoryItem));
-      return true;
+      return;
     }
 
     c.sendln("Game entity with name '{g}" + name + "{x}' was not found.");
-    return true;
   }
 
   /**

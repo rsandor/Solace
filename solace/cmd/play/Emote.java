@@ -20,18 +20,18 @@ public class Emote extends PlayCommand {
     emotes = Emotes.getInstance();
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isSleeping()) {
       character.sendln("You cannot display emotes while asleep.");
-      return false;
+      return;
     }
 
     if (params[0].equals("emote")) {
       if (params.length < 2) {
         character.sendln("What would you like to emote?");
-        return false;
+        return;
       }
 
       StringBuffer buffer = new StringBuffer();
@@ -47,15 +47,14 @@ public class Emote extends PlayCommand {
         character
       );
       character.sendln("You " + msg);
-
-      return true;
+      return;
     }
 
     try {
       if (params.length == 1) {
         character.wrapln(emotes.toSource(params[0]));
         room.sendMessage(emotes.toRoom(params[0]), character);
-        return true;
+        return;
       }
 
       String emote = params[0];
@@ -64,7 +63,7 @@ public class Emote extends PlayCommand {
 
       if (target == null) {
         character.wrapln("You do not see " + targetName + " here.");
-        return false;
+        return;
       }
 
       character.resetVisibilityOnAction("emote");
@@ -86,8 +85,6 @@ public class Emote extends PlayCommand {
 
       character.sendln(emotes.toSource(emote, target.getName()));
       target.sendMessage(emotes.toTarget(emote, character.getName()));
-
-      return true;
     }
     catch (EmoteNotFoundException enfe) {
       Log.error(enfe.getMessage());
@@ -97,7 +94,5 @@ public class Emote extends PlayCommand {
       Log.error(iee.getMessage());
       character.sendln("Could not emote. Try again later.");
     }
-
-    return false;
   }
 }

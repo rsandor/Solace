@@ -13,15 +13,15 @@ public class Wear extends PlayCommand {
     super("wear", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (character.isSleeping()) {
       character.sendln("You cannot wear anything while fast asleep.");
-      return false;
+      return;
     }
 
     if (params.length < 2) {
       character.sendln("What would you like to wear?");
-      return false;
+      return;
     }
 
     String itemName = params[1];
@@ -30,7 +30,7 @@ public class Wear extends PlayCommand {
     // Do they have the item?
     if (item == null) {
       character.sendln("You do not possess " + itemName);
-      return false;
+      return;
     }
 
     String itemDesc = item.get("description.inventory");
@@ -39,7 +39,7 @@ public class Wear extends PlayCommand {
     // Can it be equipped?
     if (!item.isEquipment()) {
       character.sendln("You cannot wear " + itemDesc);
-      return false;
+      return;
     }
 
     // Are they high enough level to wear it?
@@ -54,7 +54,7 @@ public class Wear extends PlayCommand {
       if (itemLevel != null) {
         if (Integer.parseInt(itemLevel) > levelOffset + character.getLevel()) {
           character.sendln("You are not powerful enough to wear " + itemDesc);
-          return false;
+          return;
         }
       }
     }
@@ -75,9 +75,6 @@ public class Wear extends PlayCommand {
       Log.error("Check for valid equipment failed in wear command");
       e.printStackTrace();
       character.sendln("You cannot wear " + itemDesc);
-      return false;
     }
-
-    return true;
   }
 }

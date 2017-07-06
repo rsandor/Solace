@@ -15,7 +15,7 @@ public class ShopBuy extends ShopCommand {
      super("buy", ch);
   }
 
-  public boolean command(
+  public void command(
     Connection c,
     String[] params,
     Shop shop,
@@ -23,12 +23,12 @@ public class ShopBuy extends ShopCommand {
   ) {
     if (character.isFighting()) {
       character.sendln("You cannot buy items while in battle!");
-      return false;
+      return;
     }
 
     if (params.length < 2) {
       character.wrapln("What would you like to buy?");
-      return false;
+      return;
     }
 
     String name = params[1];
@@ -45,7 +45,7 @@ public class ShopBuy extends ShopCommand {
       character.wrapln(String.format(
         "This shop does not sell %s.", name
       ));
-      return false;
+      return;
     }
 
     character.resetVisibilityOnAction("buy");
@@ -58,7 +58,7 @@ public class ShopBuy extends ShopCommand {
       character.wrapln(String.format(
         "The owner refuses to sell %s.", name
       ));
-      return false;
+      return;
     }
 
     try {
@@ -78,7 +78,7 @@ public class ShopBuy extends ShopCommand {
       character.wrapln(String.format(
         "The owner refuses to sell %s.", name
       ));
-      return false;
+      return;
     }
     catch (CurrencyException ce) {
       character.wrapln(String.format(
@@ -87,6 +87,6 @@ public class ShopBuy extends ShopCommand {
       ));
     }
 
-    return true;
+    return;
   }
 }

@@ -9,13 +9,11 @@ import solace.util.CommandParser;
 /**
  * Base class for all state controllers used in the Solace Engine. Works as a
  * nice implementation of StateController adding some features that allow
- * controllers to work more fluidly with the <code>Command</code> class.
+ * controllers to work more fluidly with the <code>Command</code> objects.
  *
  * @author Ryan Sandor Richards
  */
-public abstract class AbstractStateController
-  implements StateController
-{
+public abstract class AbstractStateController implements StateController {
   /**
    * Simple command tuple.
    * @author Ryan Sandor Richards
@@ -55,23 +53,13 @@ public abstract class AbstractStateController
      *   otherwise.
      */
     public boolean matches(String s) {
-      return name.startsWith(s);
+      return name.toLowerCase().startsWith(s.toLowerCase());
     }
   }
-
 
   // Instance Variables
   Connection connection;
   LinkedList<CommandTuple> commands = new LinkedList<CommandTuple>();
-
-  // Event tables
-  Hashtable<Command, List<Callable<Boolean>>> beforeCallbacks =
-    new Hashtable<Command, List<Callable<Boolean>>>();
-  Hashtable<Command, List<Callable<Boolean>>> afterCallbacks =
-    new Hashtable<Command, List<Callable<Boolean>>>();
-  Hashtable<Command, List<Callable<Boolean>>> afterSuccessCallbacks =
-    new Hashtable<Command, List<Callable<Boolean>>>();
-
   String invalidCommandMessage;
 
   /**
@@ -170,62 +158,6 @@ public abstract class AbstractStateController
   }
 
   /**
-   * Finds a list of callbacks for a given command and map. If no such
-   * list exists in the map then this method will create and assign one
-   * for the given command.
-   *
-   * @param map Map to search for callback list.
-   * @param c Command to use as a key to the map.
-   * @return The callback list associated with the command in the given map.
-   */
-  protected List<Callable<Boolean>> getCallbacks(
-    Hashtable<Command, List<Callable<Boolean>>> map,
-    Command c
-  ) {
-    if (map.containsKey(c))
-      return map.get(c);
-    List<Callable<Boolean>> list = new LinkedList<Callable<Boolean>>();
-    map.put(c, list);
-    return list;
-  }
-
-  /**
-   * Registers a callabck event to execute immediately before a command is
-   * processed. Since the callback returns a boolean the command will fail to
-   * execute unless it returns true.
-   *
-   * This is useful for adding precondition logic to commands that may be
-   * outside the scope of the command itself (aka, requires knowledge about the
-   * game state the command may not have access to, etc.).
-   *
-   * @param c Command for which to add the callback.
-   * @param fn Callback to execute.
-   */
-  public void before(Command c, Callable<Boolean> fn) {
-    getCallbacks(beforeCallbacks, c).add(fn);
-  }
-
-  /**
-   * Registers a callback event to execute immediately after a command has been
-   * processed.
-   * @param c Command for which to add the callback.
-   * @param fn Callback to execute.
-   */
-  public void after(Command c, Callable<Boolean> fn) {
-    getCallbacks(afterCallbacks, c).add(fn);
-  }
-
-  /**
-   * Registers an after callback that only executes if the command was
-   * successful (aka it's run() method returns true).
-   * @param c Command for which to add the callback.
-   * @param fn Callback to execute after the command is successful.
-   */
-  public void afterSuccess(Command c, Callable<Boolean> fn) {
-    getCallbacks(afterSuccessCallbacks, c).add(fn);
-  }
-
-  /**
    * Forces a user to execute a command.
    * Note: This function is VERY useful for unit testing :).
    * @param command Command to execute.
@@ -255,24 +187,7 @@ public abstract class AbstractStateController
     Command cmd = findCommand(params[0]);
     if (cmd != null && cmd.canExecute(connection)) {
       try {
-        // Handle before listeners
-        for (Callable<Boolean> fn : getCallbacks(beforeCallbacks, cmd)) {
-          if (!fn.call())
-            return;
-        }
-
-        // Execute the command (and success callbacks if applicable)
-        if (cmd.run(connection, params)) {
-          for (Callable<Boolean> fn : getCallbacks(afterSuccessCallbacks, cmd))
-          {
-            fn.call();
-          }
-        }
-
-        // Handle after listeners
-        for (Callable<Boolean> fn : getCallbacks(afterCallbacks, cmd)) {
-          fn.call();
-        }
+        cmd.run(connection, params);
       }
       catch (Exception e) {
         Log.error(
@@ -288,9 +203,7 @@ public abstract class AbstractStateController
   }
 
   /**
-   * @return The prompt the connection should send to the client.
+   * @see solace.cmd.StateController
    */
-  public String getPrompt() {
-    return "> ";
-  }
+  public abstract String getPrompt();
 }

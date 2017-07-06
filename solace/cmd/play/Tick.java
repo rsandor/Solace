@@ -17,7 +17,7 @@ public class Tick extends AdminCommand {
     super("ticks");
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     show = !show;
     if (show) {
       tickEvent = clock.interval("admin.tick", 1, new Runnable() {
@@ -30,6 +30,5 @@ public class Tick extends AdminCommand {
       tickEvent.cancel();
       tickEvent = null;
     }
-    return true;
   }
 }

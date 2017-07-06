@@ -14,10 +14,10 @@ public class Prompt extends PlayCommand {
     super("prompt", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (params.length < 2) {
       c.sendln("Please enter a prompt format string to set.");
-      return false;
+      return;
     }
 
     if (params.length > 2) {
@@ -26,6 +26,5 @@ public class Prompt extends PlayCommand {
     }
 
     character.setPrompt(params[1]);
-    return true;
   }
 }

@@ -56,10 +56,10 @@ public class Say extends PlayCommand {
     );
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (params.length < 2) {
       c.sendln("What would you like to say?");
-      return false;
+      return;
     }
 
     character.resetVisibilityOnAction("say");
@@ -67,7 +67,7 @@ public class Say extends PlayCommand {
     // Oh-ho-ho, sleep talking...
     if (character.isSleeping()) {
       sleepTalk();
-      return true;
+      return;
     }
 
     // Format the message
@@ -89,7 +89,5 @@ public class Say extends PlayCommand {
           ch.sendMessage(character.getName() + " says " + message);
       }
     }
-
-    return true;
   }
 }

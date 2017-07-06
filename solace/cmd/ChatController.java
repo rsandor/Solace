@@ -51,11 +51,9 @@ public class ChatController extends AbstractStateController {
       World.getChatConnections()
     );
 
-    synchronized (chatters)
-    {
+    synchronized (chatters) {
       Iterator i = chatters.iterator();
-      while (i.hasNext())
-      {
+      while (i.hasNext()) {
         Connection c = (Connection)i.next();
         c.sendln(format);
       }
@@ -68,11 +66,9 @@ public class ChatController extends AbstractStateController {
    */
   class Help extends AbstractCommand {
     public Help() { super("/help"); }
-    public boolean run(Connection c, String []args)
-    {
+    public void run(Connection c, String []args) {
       String help = Message.get("ChatHelp");
       c.sendln(help);
-      return true;
     }
   }
 
@@ -82,11 +78,10 @@ public class ChatController extends AbstractStateController {
    */
   class Quit extends AbstractCommand {
     public Quit() { super("/quit"); }
-    public boolean run(Connection c, String []args) {
+    public void run(Connection c, String []args) {
       c.sendln("Later!");
       World.getChatConnections().remove(c);
       connection.setStateController(new MainMenu(connection));
-      return true;
     }
   }
 }

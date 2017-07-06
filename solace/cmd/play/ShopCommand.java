@@ -15,37 +15,37 @@ public abstract class ShopCommand extends PlayCommand {
     super(cmd, ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     Room room = character.getRoom();
 
     if (character.isRestingOrSitting()) {
       character.sendln("You cannot shop unless standing.");
-      return false;
+      return;
     }
 
     if (character.isSleeping()) {
       character.sendln("You dream about shopping, whilst asleep.");
-      return false;
+      return;
     }
 
     if (character.isFighting()) {
       character.sendln("You don't have time for shopping, you're in combat!");
-      return false;
+      return;
     }
 
     // Ensure the room has a shop
     if (room == null || !room.hasShop()) {
       character.sendln("There is no shop here.");
-      return false;
+      return;
     }
 
-    return command(c, params, room.getShop(), room);
+    command(c, params, room.getShop(), room);
   }
 
   /**
    * Override this method to add specific code to the shop command.
    */
-  public abstract boolean command(
+  public abstract void command(
     Connection c,
     String[] params,
     Shop shop,

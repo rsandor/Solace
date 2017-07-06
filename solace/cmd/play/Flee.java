@@ -17,10 +17,10 @@ public class Flee extends PlayCommand {
     super("flee", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (!character.isFighting()) {
       character.sendln("You are not currently fighting.");
-      return false;
+      return;
     }
 
     Battle battle = BattleManager.getBattleFor(character);
@@ -30,7 +30,7 @@ public class Flee extends PlayCommand {
         "Player '" + character.getName() + "' is set as fighting" +
         " but is not in a battle");
       character.sendln("You are not currently fighting.");
-      return false;
+      return;
     }
 
     Room origin = character.getRoom();
@@ -39,7 +39,7 @@ public class Flee extends PlayCommand {
 
     if (exits.size() == 0) {
       character.sendln("There is no way to escape!");
-      return false;
+      return;
     }
 
     // Find a random exit and destination room
@@ -62,7 +62,5 @@ public class Flee extends PlayCommand {
     destination.sendMessage(String.format(enterFormat, character.getName()));
     destination.getCharacters().add(character);
     character.sendln(destination.describeTo(character));
-
-    return true;
   }
 }

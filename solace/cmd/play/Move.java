@@ -26,20 +26,20 @@ public class Move extends PlayCommand {
     super("move", ch);
   }
 
-  public boolean run(Connection c, String []params) {
+  public void run(Connection c, String []params) {
     if (character.isFighting()) {
       character.sendln("You cannot leave while engaged in battle!");
-      return false;
+      return;
     }
 
     if (character.isRestingOrSitting()) {
       character.sendln("You must stand up before you can leave.");
-      return false;
+      return;
     }
 
     if (character.isSleeping()) {
       character.sendln("You cannot move while you are asleep.");
-      return false;
+      return;
     }
 
     String cmd = params[0];
@@ -49,21 +49,21 @@ public class Move extends PlayCommand {
     if (cmd.equals("move") || cmd.equals("go")) {
       if (params.length < 2) {
         character.sendln("What direction would you like to move?");
-        return false;
+        return;
       }
       direction = params[1];
     }
     else if (new String("enter").startsWith(cmd) && notEast) {
       if (params.length < 2) {
         character.sendln("Where would you like to enter?");
-        return false;
+        return;
       }
       direction = params[1];
     }
     else if (new String("exit").startsWith(cmd) && notEast) {
       if (params.length < 2) {
         character.sendln("Where would you like to exit?");
-        return false;
+        return;
       }
       direction = params[1];
     }
@@ -74,13 +74,13 @@ public class Move extends PlayCommand {
     if (direction == null) {
       character.sendln("That is not a direction.");
       Log.error("Null direction encountered during move.");
-      return false;
+      return;
     }
 
     Exit exit = character.getRoom().findExit(direction);
     if (exit == null) {
       character.sendln("There is no exit '" + direction + "'.");
-      return false;
+      return;
     }
 
     Area area = character.getRoom().getArea();
@@ -92,7 +92,7 @@ public class Move extends PlayCommand {
       Log.error("Null destination encountered on move from '" +
         character.getRoom().getId() + "' along exit with names '" +
         exit.getCompiledNames() + "'");
-      return false;
+      return;
     }
 
     // Determine the exit and enter messages
@@ -146,7 +146,5 @@ public class Move extends PlayCommand {
 
     // Show them the room they just entered
     character.sendln(destination.describeTo(character));
-
-    return true;
   }
 }
