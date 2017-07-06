@@ -10,7 +10,7 @@ import java.util.*;
  * articles in the solace help system.
  * @author Ryan Sandor Richards
  */
-public class Help extends AbstractCommand {
+public class Help extends AbstractStateCommand {
   HelpSystem help;
 
   public Help() {

@@ -49,7 +49,7 @@ public class MainMenu
    * List command - lists all the characters for the user's account.
    * @author Ryan Sandor Richards.
    */
-  class List extends AbstractCommand {
+  class List extends AbstractStateCommand {
     public List() { super("list"); }
     public void run(Connection c, String []params) {
       Collection<solace.game.Character> chars = c.getAccount().getCharacters();
@@ -74,7 +74,7 @@ public class MainMenu
    * Create command - allows players to create new characters.
    * @author Ryan Sandor Richards
    */
-  class Create extends AbstractCommand {
+  class Create extends AbstractStateCommand {
     public Create() { super("create"); }
     public void run(Connection c, String []params) {
       c.setStateController( new CreateCharacter(c) );
@@ -84,7 +84,7 @@ public class MainMenu
   /**
    * Play - enter and play the main game with a character.
    */
-  class Play extends AbstractCommand {
+  class Play extends AbstractStateCommand {
     public Play() { super("play"); }
     public void run(Connection c, String []params) {
       try {
@@ -138,7 +138,7 @@ public class MainMenu
    * Chat command - Logs people into the out of game (OOG) chat room.
    * @author Ryan Sandor Richards
    */
-  class Chat extends AbstractCommand
+  class Chat extends AbstractStateCommand
   {
     public Chat() { super("chat"); }
     public void run(Connection c, String []params) {
@@ -150,7 +150,7 @@ public class MainMenu
    * Help Command
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Help extends AbstractCommand {
+  class Help extends AbstractStateCommand {
     public Help() { super("help"); }
     public void run(Connection c, String []params) {
       c.sendln(Message.get("MainMenu"));
@@ -163,7 +163,7 @@ public class MainMenu
    * Quit Command
    * @author Ryan Sandor Richards (Gaius)
    */
-  class Quit extends AbstractCommand {
+  class Quit extends AbstractStateCommand {
     public Quit() { super("quit"); }
     public void run(Connection c, String []params) {
       c.sendln("Goodbye!");
@@ -184,7 +184,7 @@ public class MainMenu
    * Who command - lists who is online.
    * @author Ryan Sandor Richards
    */
-  class Who extends AbstractCommand {
+  class Who extends AbstractStateCommand {
     public Who() { super("who"); }
 
     /*

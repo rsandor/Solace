@@ -12,7 +12,7 @@ import solace.util.*;
  * become unavailable for a certain duration after their use.
  * @author Ryan Sandor Richards
  */
-public abstract class CooldownCommand extends AbstractCommand {
+public abstract class CooldownCommand extends AbstractStateCommand {
   /**
    * Exception thrown before scheduling or executing the cooldown action in the
    * case where the action cannot be scheduled or executed.
@@ -342,7 +342,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   }
 
   /**
-   * @see solace.cmd.AbstractCommand
+   * @see AbstractStateCommand
    */
   public void run(Connection c, String[] params) {
     try {

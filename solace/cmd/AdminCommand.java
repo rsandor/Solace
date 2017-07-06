@@ -1,7 +1,6 @@
 package solace.cmd;
 
 import solace.net.Connection;
-import solace.game.Account;
 
 /**
  * This serves as the base class for all immortal commands in the game.
@@ -11,7 +10,7 @@ import solace.game.Account;
  *
  * @author Ryan Sandor Richards
  */
-public abstract class AdminCommand extends AbstractCommand {
+public abstract class AdminCommand extends AbstractStateCommand {
   public AdminCommand(String n) {
     super(n);
   }

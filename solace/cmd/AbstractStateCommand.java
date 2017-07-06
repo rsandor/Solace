@@ -3,24 +3,20 @@ package solace.cmd;
 import solace.net.Connection;
 
 /**
- * Basic abstract command class that serves as the base class for all commands.
- * This class handles command name storage and retrieval, as well as the command
- * matching by using the well known "prefix" match.
- *
- * @author Ryan Sandor Richards (Gaius)
+ * Abstract base class for all StateCommand implementations. This classes that
+ * extend this are primarily used by AbstractStateControllers.
+ * @see solace.cmd.AbstractStateController
+ * @author Ryan Sandor Richards
  */
-public abstract class AbstractCommand
-  implements StateCommand
-{
-  String name;
-  String displayName;
-  boolean skipPrompt = false;
+public abstract class AbstractStateCommand implements StateCommand {
+  private String name;
+  private String displayName;
 
   /**
-   * Creates a new <code>AbstractCommand</code> with the given name.
+   * Creates a new <code>AbstractStateCommand</code> with the given name.
    * @param n Name for the command.
    */
-  public AbstractCommand(String n) {
+  public AbstractStateCommand(String n) {
     name = n.toLowerCase();
     setDisplayName(n);
   }
@@ -41,34 +37,32 @@ public abstract class AbstractCommand
    *   otherwise.
    */
   public boolean matches(String s) {
-    return name.startsWith(s);
+    return name.toLowerCase().startsWith(s.toLowerCase());
   }
 
   /**
-   * @see solace.cmd.Command.getName()
+   * @see solace.cmd.StateCommand
    */
   public String getName() {
     return name;
   }
 
   /**
-   * @see solace.cmd.Command.getName()
+   * @see solace.cmd.StateCommand
    */
   public String getDisplayName() {
     return displayName;
   }
 
   /**
-   * Method used to set the display name of the command if it differs from the
-   * name.
-   * @param d Desired display name for the command.
+   * @see solace.cmd.StateCommand
    */
   public void setDisplayName(String d) {
     displayName = d;
   }
 
   /**
-   * @see solace.cmd.Command.run(Connection c, String []params)
+   * @see solace.cmd.Command
    */
   public abstract void run(Connection c, String[] params);
 }
