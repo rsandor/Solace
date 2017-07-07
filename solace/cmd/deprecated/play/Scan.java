@@ -37,13 +37,13 @@ public class Scan extends PlayStateCommand {
     for (Exit ex : exits) {
       Room r = area.getRoom(ex.getToId());
 
-      if (r.getCharacters().size() == 0)
+      if (r.getPlayers().size() == 0)
         continue;
 
       message += ex.getDescription().trim() + ":\n\r";
 
-      synchronized(r.getCharacters()) {
-        for (Player ch : r.getCharacters()) {
+      synchronized(r.getPlayers()) {
+        for (Player ch : r.getPlayers()) {
           message += "  " + ch.getName() + "\n\r";
         }
       }

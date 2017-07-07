@@ -19,7 +19,7 @@ public class Character extends AbstractPlayer {
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
   /**
-   * Default prompt given to new characters.
+   * Default prompt given to new players.
    */
   public static final String DEFAULT_PROMPT =
     "(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>";
@@ -255,7 +255,7 @@ public class Character extends AbstractPlayer {
       Room origin = getRoom();
       Room destination = World.getDefaultRoom();
 
-      origin.getCharacters().remove(this);
+      origin.getPlayers().remove(this);
 
       if (killer != null) {
         Player[] excludes = { this, killer };
@@ -270,7 +270,7 @@ public class Character extends AbstractPlayer {
         "A bright light flashes and %s reconstitues here battered and bruised.",
         getName()
       ));
-      destination.getCharacters().add(this);
+      destination.getPlayers().add(this);
 
       setPlayState(PlayState.RESTING);
       setRoom(destination);
@@ -471,6 +471,13 @@ public class Character extends AbstractPlayer {
    */
   public boolean isMobile() {
     return false;
+  }
+
+  /**
+   * @see solace.game.Player
+   */
+  public solace.game.Character getCharacter() {
+    return this;
   }
 
   /**

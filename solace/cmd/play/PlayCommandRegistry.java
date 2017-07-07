@@ -1,5 +1,7 @@
 package solace.cmd.play;
 
+import solace.cmd.deprecated.play.*;
+import solace.game.Player;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,13 +31,70 @@ public class PlayCommandRegistry {
   public PlayCommandRegistry() {
     commands = Collections.synchronizedList(new ArrayList<PlayCommand>());
     notFound = new NotFoundCommand();
+    addCommands();
+  }
+
+  // TODO Remove me
+  void addCommands() {
+    add(new Quit());
+    add(new Move());
+    add(new Look());
+
+    /*
+    add(new Help());
+    add(new Say());
+    add(new Scan());
+    add(new Tick());
+
+    add(new Score());
+    add(new Worth());
+    add(new ListSkills());
+    add(new solace.cmd.deprecated.play.Buffs());
+    add(new Cooldown());
+    add(new Passive());
+
+    add(new Wear());
+    add(new Equipment());
+    add(new Remove());
+
+    add(new ShopList());
+    add(new ShopBuy());
+    add(new ShopAppraise());
+    add(new ShopSell());
+
+    add(new Attack());
+    add(new Flee());
+
+    add(new Sit());
+    add(new Stand());
+    add(new Rest());
+    add(new Sleep());
+    add(new Wake());
+
+    add(new Prompt());
+    add(new Hotbar());
+
+    // Add all scripted play commands
+    for (ScriptedCommand command : Commands.getCommands()) {
+      add(command.getInstance());
+    }
+
+    // Emotes
+    Emote emote = new Emote();
+    add(emote);
+    add(Emotes.getInstance().getEmoteAliases(), new Emote());
+
+    // Admin Commands
+    add(new Inspect());
+    add(new solace.cmd.admin.Set());
+    */
   }
 
   /**
    * Adds a command to the registry.
    * @param command Command to add to the registry.
    */
-  public void addCommand(PlayCommand command) {
+  public void add(PlayCommand command) {
     commands.add(command);
   }
 
@@ -51,9 +110,10 @@ public class PlayCommandRegistry {
   /**
    * Finds the command with the name matching the given search string.
    * @param search String to match against.
+   * @param player Player for which the command is being sought.
    * @return The first command that matches the given string or the "not found" command.
    */
-  public PlayCommand get(String search) {
+  public PlayCommand find(String search, Player player) {
     synchronized (commands) {
       List<PlayCommand> found = new LinkedList<>();
       for (PlayCommand command : commands) {
@@ -61,7 +121,13 @@ public class PlayCommandRegistry {
           found.add(command);
         }
       }
-      return (found.size() > 0) ? found.get(0) : notFound;
+      // TODO We need a way to rank commands with like prefixes...
+      for (PlayCommand command : found) {
+        if (command.hasCommand(player)) {
+          return command;
+        }
+      }
+      return notFound;
     }
   }
 }

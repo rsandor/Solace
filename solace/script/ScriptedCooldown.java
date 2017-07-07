@@ -102,7 +102,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Sets the casting message for this cooldown.
-   * @param String m Message to set.
+   * @param m Message to set.
    */
   public void setCastMessage(String m) { castMessage = m; }
 
@@ -175,7 +175,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Sets the "check valid target" hook handler for the cooldown.
-   * @param CooldownCheckValidTargetFunction l The handler.
+   * @param l The handler.
    */
   public void setCheckValidTarget(CooldownCheckValidTargetFunction l) {
     checkValidTarget = l;
@@ -183,11 +183,11 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Creates an instance of the play command for use by the game engine.
-   * @param ch Character for the play command.
+   * @param player Character for the play command.
    * @return The play command instance.
    */
-  public StateCommand getInstance(solace.game.Character ch) {
-    CooldownCommand command = new CooldownCommand(getName(), ch) {
+  public StateCommand getInstance(Player player) {
+    CooldownCommand command = new CooldownCommand(getName(), player) {
       public void checkValidTarget(Player target)
         throws InvalidTargetException
       {

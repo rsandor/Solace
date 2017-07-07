@@ -68,6 +68,11 @@ public class Mobile extends AbstractPlayer {
   public boolean isMobile() { return true; }
 
   /**
+   * @see solace.game.Player
+   */
+  public solace.game.Character getCharacter() { return null; }
+
+  /**
    * @return The power level for the mobile. The power level is an additional
    *   parameter that tweaks the overall power between mobiles of the same
    *   level.
@@ -181,7 +186,7 @@ public class Mobile extends AbstractPlayer {
     hp = getMaxHp();
 
     room.getMobiles().add(this);
-    room.getCharacters().add(this);
+    room.addPlayer(this);
   }
 
   /**
@@ -190,7 +195,7 @@ public class Mobile extends AbstractPlayer {
   public void pluck() {
     if (!isPlaced) { return; }
     Room room = getRoom();
-    room.getCharacters().remove(this);
+    room.removePlayer(this);
     room.getMobiles().remove(this);
     setRoom(null);
     isPlaced = false;

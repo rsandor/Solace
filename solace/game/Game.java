@@ -71,7 +71,7 @@ public class Game
   }
 
   /**
-   * Safely shuts the game down by saving all characters, stopping all network
+   * Safely shuts the game down by saving all players, stopping all network
    * communication to clients, etc.
    */
   public static void shutdown() {

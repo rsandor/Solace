@@ -1,42 +1,38 @@
 package solace.cmd.deprecated.play;
 
+import solace.cmd.play.AbstractPlayCommand;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
 
 /**
  * The movement command is used to move about the game world.
- *
- * Syntax:
- *   move [direction]
- *   go [direction]
- *   north
- *   south
- *   east
- *   west
- *   up
- *   down
- *   enter [place]
- *   exit [place]
+ * @author Ryan Sandor Richards
  */
-public class Move extends PlayStateCommand {
-  public Move(solace.game.Character ch) {
-    super("move", ch);
+public class Move extends AbstractPlayCommand {
+  private static final String[] aliases = {
+    "go", "north", "south",
+    "east", "west", "up", "down",
+    "exit", "enter"
+  };
+
+  public Move() {
+    super("move", aliases);
   }
 
-  public void run(Connection c, String []params) {
-    if (character.isFighting()) {
-      character.sendln("You cannot leave while engaged in battle!");
+  public void run(Player player, String []params) {
+    if (player.isFighting()) {
+      player.sendln("You cannot leave while engaged in battle!");
       return;
     }
 
-    if (character.isRestingOrSitting()) {
-      character.sendln("You must stand up before you can leave.");
+    if (player.isRestingOrSitting()) {
+      player.sendln("You must stand up before you can leave.");
       return;
     }
 
-    if (character.isSleeping()) {
-      character.sendln("You cannot move while you are asleep.");
+    if (player.isSleeping()) {
+      player.sendln("You cannot move while you are asleep.");
       return;
     }
 
@@ -46,21 +42,21 @@ public class Move extends PlayStateCommand {
 
     if (cmd.equals("move") || cmd.equals("go")) {
       if (params.length < 2) {
-        character.sendln("What direction would you like to move?");
+        player.sendln("What direction would you like to move?");
         return;
       }
       direction = params[1];
     }
     else if (new String("enter").startsWith(cmd) && notEast) {
       if (params.length < 2) {
-        character.sendln("Where would you like to enter?");
+        player.sendln("Where would you like to enter?");
         return;
       }
       direction = params[1];
     }
     else if (new String("exit").startsWith(cmd) && notEast) {
       if (params.length < 2) {
-        character.sendln("Where would you like to exit?");
+        player.sendln("Where would you like to exit?");
         return;
       }
       direction = params[1];
@@ -70,25 +66,25 @@ public class Move extends PlayStateCommand {
     }
 
     if (direction == null) {
-      character.sendln("That is not a direction.");
+      player.sendln("That is not a direction.");
       Log.error("Null direction encountered during move.");
       return;
     }
 
-    Exit exit = character.getRoom().findExit(direction);
+    Exit exit = player.getRoom().findExit(direction);
     if (exit == null) {
-      character.sendln("There is no exit '" + direction + "'.");
+      player.sendln("There is no exit '" + direction + "'.");
       return;
     }
 
-    Area area = character.getRoom().getArea();
-    Room origin = character.getRoom();
+    Area area = player.getRoom().getArea();
+    Room origin = player.getRoom();
     Room destination = area.getRoom(exit.getToId());
 
     if (destination == null) {
-      character.sendln("There is no exit '" + direction + "'");
+      player.sendln("There is no exit '" + direction + "'");
       Log.error("Null destination encountered on move from '" +
-        character.getRoom().getId() + "' along exit with names '" +
+        player.getRoom().getId() + "' along exit with names '" +
         exit.getCompiledNames() + "'");
       return;
     }
@@ -129,20 +125,20 @@ public class Move extends PlayStateCommand {
       enterFormat = "%s arrives from " + origin.getTitle() + ".";
     }
 
-    String charName = character.getName();
+    String charName = player.getName();
 
-    character.resetVisibilityOnAction("move");
+    player.resetVisibilityOnAction("move");
 
     // Remove the character from its current room
-    origin.getCharacters().remove(character);
+    origin.removePlayer(player);
     origin.sendMessage(String.format(exitFormat, charName));
 
     // Send it to the destination room
-    character.setRoom(destination);
+    player.setRoom(destination);
     destination.sendMessage(String.format(enterFormat, charName));
-    destination.getCharacters().add(character);
+    destination.addPlayer(player);
 
     // Show them the room they just entered
-    character.sendln(destination.describeTo(character));
+    player.sendln(destination.describeTo(player));
   }
 }

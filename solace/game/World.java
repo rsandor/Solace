@@ -218,7 +218,7 @@ public class World {
   }
 
   /**
-   * @return An unmodifiable collection of all player characters and mobiles
+   * @return An unmodifiable collection of all player players and mobiles
    *   in the game world.
    */
   public static Collection<Player> getAllPlayers() {

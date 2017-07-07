@@ -15,7 +15,7 @@ public class Room {
   LinkedList<Exit> exits = new LinkedList<Exit>();
   Hashtable<String, String> features = new Hashtable<String, String>();
   List<String> itemInstances = new LinkedList<String>();
-  List<Player> characters;
+  List<Player> players;
   List<Item> items;
   Shop shop = null;
   List<Mobile> mobiles;
@@ -26,7 +26,7 @@ public class Room {
    */
   public Room(String i) {
     id = i;
-    characters = Collections.synchronizedList(new LinkedList<Player>());
+    players = Collections.synchronizedList(new LinkedList<Player>());
     mobiles = Collections.synchronizedList(new LinkedList<Mobile>());
   }
 
@@ -47,19 +47,19 @@ public class Room {
   }
 
   /**
-   * Sends a message to all of the characters in a room.
+   * Sends a message to all of the players in a room.
    * @param message Message to send.
    */
   public void sendMessage(String message) {
-    synchronized(characters) {
-      for (Player ch : characters) {
+    synchronized(players) {
+      for (Player ch : players) {
         ch.sendMessage(message);
       }
     }
   }
 
   /**
-   * Sends a message to all of the characters in a room. Excluding the given
+   * Sends a message to all of the players in a room. Excluding the given
    * player character (useful for messages sent as a result of a character's
    * actions). Players who cannot see the excluded player will not recieve the
    * message.
@@ -67,8 +67,8 @@ public class Room {
    * @param exclude Player to exclude when sending the message.
    */
   public void sendMessage(String message, Player exclude) {
-    synchronized(characters) {
-      for (Player ch : characters) {
+    synchronized(players) {
+      for (Player ch : players) {
         if (ch == exclude || !exclude.isVisibleTo(ch))
           continue;
         ch.sendMessage(message);
@@ -77,14 +77,14 @@ public class Room {
   }
 
   /**
-   * Sends a message to all of the characters in a room excepting those in the
+   * Sends a message to all of the players in a room excepting those in the
    * given array of players.
    * @param message Message to send.
    * @param excludes Players to exclude when sending the message.
    */
   public void sendMessage(String message, Player[] excludes) {
-    synchronized(characters) {
-      for (Player ch : characters) {
+    synchronized(players) {
+      for (Player ch : players) {
         boolean exclude = false;
         for (Player x : excludes) {
           if (ch == x) {
@@ -99,10 +99,29 @@ public class Room {
   }
 
   /**
-   * @return The list of characters and mobiles in the room.
+   * @return The list of players and mobiles in the room.
    */
-  public List<Player> getCharacters() {
-    return characters;
+  public List<Player> getPlayers() {
+    return Collections.unmodifiableList(players);
+  }
+
+  /**
+   * Removes the given player from the room if they currently inhabit it.
+   * @param p Player to remove.
+   */
+  public void removePlayer(Player p) {
+    players.remove(p);
+    if (p.getRoom() == this) {
+      p.setRoom(null);
+    }
+  }
+
+  /**
+   * Adds a player to the room.
+   * @param p Player to add.
+   */
+  public void addPlayer(Player p) {
+    players.add(p);
   }
 
   /**
@@ -114,12 +133,12 @@ public class Room {
 
   /**
    * @param exclude Character or mobile to exclude.
-   * @return A list of characters or mobiles excluding the one given.
+   * @return A list of players or mobiles excluding the one given.
    */
   public List<Player> getOtherPlayers(Player exclude) {
     List<Player> others = new LinkedList<Player>();
-    synchronized (characters) {
-      for (Player ch : characters) {
+    synchronized (players) {
+      for (Player ch : players) {
         if (ch == exclude)
           continue;
         others.add(ch);
@@ -130,7 +149,7 @@ public class Room {
 
   /**
    * @param viewer Character or mobile to exclude.
-   * @return A list of visible characters or mobiles excluding and from the
+   * @return A list of visible players or mobiles excluding and from the
    *   perspective of the given one.
    */
   public List<Player> getOtherVisiblePlayers(Player viewer) {
@@ -150,8 +169,8 @@ public class Room {
    * @return The character or null if none was found.
    */
   public Player findPlayer(String namePrefix) {
-    synchronized (characters) {
-      for (Player p : characters) {
+    synchronized (players) {
+      for (Player p : players) {
         if (p.hasName(namePrefix)) {
           return p;
         }
@@ -168,8 +187,8 @@ public class Room {
    * @return The character or null if none was found.
    */
   public Player findPlayerIfVisible(String namePrefix, Player viewer) {
-    synchronized (characters) {
-      for (Player p : characters) {
+    synchronized (players) {
+      for (Player p : players) {
         if (p.hasName(namePrefix) && p.isVisibleTo(viewer)) {
           return p;
         }
@@ -237,7 +256,7 @@ public class Room {
   }
 
   /**
-   * @param desc the desc to set
+   * @param d the desc to set
    */
   public void setDescription(String d) {
     desc = d;
@@ -266,16 +285,16 @@ public class Room {
   }
 
   /**
-   * Builds a string that discribes the room to the given character. This is the
+   * Builds a string that describes the room to the given character. This is the
    * method used by the game's look command. We define the method here because
-   * it is used in various places ouside the scope of that command (after
+   * it is used in various places outside the scope of that command (after
    * moving/teleporting, upon login, etc.).
    *
-   * @param ch Character who's perspective will be used.
+   * @param player Character who's perspective will be used.
    * @return A string describing the room.
    */
-  public String describeTo(solace.game.Character ch) {
-    List<Player> others = getOtherVisiblePlayers(ch);
+  public String describeTo(Player player) {
+    List<Player> others = getOtherVisiblePlayers(player);
 
     // Title and description of the room
     StringBuffer buffer = new StringBuffer();
@@ -297,9 +316,9 @@ public class Room {
       buffer.append("\n\r");
     }
 
-    // Show a list of characters in the room
+    // Show a list of players in the room
     if (others.size() > 0) {
-      buffer.append("{c}The following characters are present:{x}\n\r");
+      buffer.append("{c}The following players are present:{x}\n\r");
       for (Player c : others) {
         buffer.append("    " + c.getName() + "\n\r");
       }

@@ -1,36 +1,42 @@
 package solace.cmd.deprecated.play;
 
-import solace.net.*;
+import solace.cmd.play.AbstractPlayCommand;
 import solace.game.*;
 import solace.cmd.*;
+import solace.net.Connection;
 
 /**
  * Quit command. Exits the game and returns to the main menu.
  * @author Ryan Sandor Richards.
  */
-public class Quit extends PlayStateCommand {
-  public Quit(solace.game.Character ch) {
-    super("quit", ch);
+public class Quit extends AbstractPlayCommand {
+  public Quit() {
+    super("quit");
   }
 
-  public void run(Connection c, String []params) {
-    if (character.isFighting()) {
-      character.sendln("You cannot quit, you are in {R}BATTLE{x}!");
+  public void run(Player player, String []params) {
+    if (player.isMobile()) {
+      player.sendln("Sorry, mobiles cannot quit the game.");
       return;
     }
 
-    Room room = character.getRoom();
-    room.getCharacters().remove(character);
+    if (player.isFighting()) {
+      player.sendln("You cannot quit, you are in {R}BATTLE{x}!");
+      return;
+    }
 
-    String message = String.format(
-      "%s has left the game.",
-      character.getName()
-    );
+    Room room = player.getRoom();
+    room.removePlayer(player);
+
+    String message = String.format("%s has left the game.", player.getName());
     room.sendMessage(message);
 
-    World.getActiveCharacters().remove(character);
-    Game.writer.save(character);
-
-    c.setStateController( new MainMenu(c) );
+    solace.game.Character character = player.getCharacter();
+    if (character != null) {
+      World.getActiveCharacters().remove(character);
+      Game.writer.save(character);
+      Connection c = character.getConnection();
+      c.setStateController( new MainMenu(c) );
+    }
   }
 }

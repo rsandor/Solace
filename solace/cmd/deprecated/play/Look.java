@@ -1,7 +1,7 @@
 package solace.cmd.deprecated.play;
 
+import solace.cmd.play.AbstractPlayCommand;
 import solace.game.*;
-import solace.net.*;
 import solace.util.*;
 
 /**
@@ -14,22 +14,22 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Look extends PlayStateCommand {
-  public Look(solace.game.Character ch) {
-    super("look", ch);
+public class Look extends AbstractPlayCommand {
+  public Look() {
+    super("look");
   }
 
-  public void run(Connection c, String []params) {
-    Room room = character.getRoom();
+  public void run(Player player, String []params) {
+    Room room = player.getRoom();
 
-    if (character.isSleeping()) {
-      character.sendln("You cannot see anything, for you are alseep.");
+    if (player.isSleeping()) {
+      player.sendln("You cannot see anything, for you are asleep.");
       return;
     }
 
     if (params.length == 1) {
-      c.sendln(room.describeTo(character));
-      room.sendMessage(character.getName() + " looks around.", character);
+      player.sendln(room.describeTo(player));
+      room.sendMessage(player.getName() + " looks around.", player);
       return;
     }
 
@@ -37,45 +37,48 @@ public class Look extends PlayStateCommand {
 
     String featureDesc = room.describeFeature(name);
     if (featureDesc != null) {
-      c.wrapln(featureDesc);
+      player.wrapln(featureDesc);
       return;
     }
 
     Item item = room.findItem(name);
     if (item != null) {
-      c.wrapln(Strings.toFixedWidth(item.get("description")));
+      player.wrapln(Strings.toFixedWidth(item.get("description")));
       return;
     }
 
-    Player player = room.findPlayerIfVisible(name, character);
-    if (player != null) {
-      String desc = player.getDescription();
+    Player other = room.findPlayerIfVisible(name, player);
+    if (other != null) {
+      String desc = other.getDescription();
       if (desc == null) {
         desc = "They are nondescript.";
       }
-      c.wrapln(Strings.toFixedWidth(desc));
+      player.wrapln(Strings.toFixedWidth(desc));
 
-      if (!player.isMobile()) {
-        if (character.isVisibleTo(player)) {
-          player.sendMessage(String.format(
-            "%s looks at you.", character.getName()));
+      if (!other.isMobile()) {
+        if (player.isVisibleTo(other)) {
+          other.sendMessage(String.format(
+            "%s looks at you.", player.getName()));
         } else {
           // TODO I feel like there should be some sort of check here that
-          //      determines wherther or not you even see this message. Some
-          //      sort of inate perception check?
-          player.sendMessage("You feel as if you are being watched.");
+          //      determines whether or not you even see this message. Some
+          //      sort of innate perception check?
+          other.sendMessage("You feel as if you are being watched.");
         }
       }
       return;
     }
 
-    Item inventoryItem = character.findItem(name);
-    if (inventoryItem != null) {
-      c.wrapln(Strings.toFixedWidth(inventoryItem.get("description")));
-      return;
+    solace.game.Character character = player.getCharacter();
+    if (character != null) {
+      Item inventoryItem = character.findItem(name);
+      if (inventoryItem != null) {
+        player.wrapln(Strings.toFixedWidth(inventoryItem.get("description")));
+        return;
+      }
     }
 
     // Default "You don't see that" message
-    c.sendln("You do not see '{g}" + name + "{x}' here.");
+    player.sendln("You do not see '{g}" + name + "{x}' here.");
   }
 }

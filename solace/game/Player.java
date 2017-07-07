@@ -15,6 +15,11 @@ public interface Player {
   public boolean isMobile();
 
   /**
+   * @return The character for the player, or `null` if the player is a mobile.
+   */
+  public solace.game.Character getCharacter();
+
+  /**
    * @return The state of the player.
    */
   public PlayState getPlayState();

@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * Implements common functionality of the player interface shared by both
- * characters and mobiles.
+ * players and mobiles.
  * @author Ryan Sandor Richards
  */
 public abstract class AbstractPlayer implements Player {
@@ -74,6 +74,7 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getDamageMod();
   public abstract int getAverageDamage();
   public abstract int getNumberOfAttacks();
+  public abstract solace.game.Character getCharacter();
 
   /**
    * Sets the passives and cooldowns for this character. This method should be
@@ -698,7 +699,7 @@ public abstract class AbstractPlayer implements Player {
    */
   public boolean isVisibleTo(Player viewer) {
     // TODO Add a special buff that allows players to see "vanished" players
-    //      this should not be easy to attain for player characters, but some
+    //      this should not be easy to attain for player players, but some
     //      "god" level mobs should always have the buff.
     if (hasBuff("vanished")) {
       return false;

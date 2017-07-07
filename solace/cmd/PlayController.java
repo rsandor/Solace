@@ -1,35 +1,51 @@
 package solace.cmd;
 
-import solace.cmd.deprecated.play.*;
+import solace.cmd.play.PlayCommandRegistry;
+import solace.cmd.play.PlayCommand;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
-import solace.cmd.deprecated.play.*;
-import solace.cmd.admin.*;
-import solace.script.Commands;
-import solace.script.ScriptedCommand;
 import com.google.common.base.Joiner;
 
 /**
  * Main game play controller (the actual game).
  * @author Ryan Sandor Richards
  */
-public class PlayController extends AbstractStateController {
+public class PlayController implements Controller {
   solace.game.Character character;
 
-  static final String[] moveAliases = {
-    "move", "go", "north", "south",
-    "east", "west", "up", "down",
-    "exit", "enter"
-  };
+  /**
+   * Creates a new game play controller.
+   * @param ch The character.
+   * @throws GameException if anything goes wrong when logging the user in.
+   */
+  public PlayController(solace.game.Character ch)
+    throws GameException
+  {
+    character = ch;
 
-  static final String[] attackAliases = {
-    "attack", "kill", "fight"
-  };
+    // Character location initialization
+    if (ch.getRoom() == null) {
+      Room room = World.getDefaultRoom();
+      room.addPlayer(ch);
+      ch.setRoom(room);
+    }
 
-  static final String[] buffsAliases = {
-    "buffs", "affects"
-  };
+    // Inform other players in the room that they player has entered the game
+    ch.getRoom()
+      .sendMessage(ch.getName() + " has entered the game.", character);
+
+    // Place the player in the world
+    World.getActiveCharacters().add(ch);
+    ch.sendln("\n\rNow playing as {y}" + ch.getName() + "{x}, welcome!\n\r");
+
+    // Describe the room to the player
+    if (ch.isSleeping()) {
+      ch.sendln("You are fast asleep.");
+    } else {
+      ch.sendln(ch.getRoom().describeTo(ch));
+    }
+  }
 
   /**
    * Generates the dynamic custom prompt for the player.
@@ -95,45 +111,6 @@ public class PlayController extends AbstractStateController {
   }
 
   /**
-   * Creates a new game play controller.
-   * @param c The connection.
-   * @param ch The character.
-   * @throws GameException if anything goes wrong when logging the user in.
-   */
-  public PlayController(Connection c, solace.game.Character ch)
-    throws GameException
-  {
-    // Initialize the menu
-    super(c, "Sorry, that is not an option. Type '{y}help{x}' to see a list.");
-    character = ch;
-
-    // Character location initialization
-    if (ch.getRoom() == null) {
-      Room room = World.getDefaultRoom();
-      room.getCharacters().add(ch);
-      ch.setRoom(room);
-    }
-
-    // Inform other players in the room that they player has entered the game
-    ch.getRoom()
-      .sendMessage(ch.getName() + " has entered the game.", character);
-
-    // Add commands
-    addCommands();
-
-    // Place the player in the world
-    World.getActiveCharacters().add(ch);
-    c.sendln("\n\rNow playing as {y}" + ch.getName() + "{x}, welcome!\n\r");
-
-    // Describe the room to the player
-    if (ch.isSleeping()) {
-      ch.sendln("You are fast asleep.");
-    } else {
-      c.sendln(ch.getRoom().describeTo(ch));
-    }
-  }
-
-  /**
    * Determines if a input command from a user represents a hotbar command.
    * @param  input [description]
    * @return       [description]
@@ -161,76 +138,32 @@ public class PlayController extends AbstractStateController {
       return;
     }
 
-    if (input == null || connection == null || input.length() < 1) return;
-    String[] params = input.split("\\s");
-    if (params.length < 1) return;
-
-    if (isHotbarCommand(params[0])) {
-      String command = character.getHotbarCommand(params[0]);
-      if (command != null && command.length() > 0) {
-        params[0] = command;
-      }
-      super.parse(Joiner.on(" ").join(params));
+    if (input == null || input.length() < 1) {
       return;
     }
 
-    super.parse(input);
-  }
-
-  /**
-   * Adds basic gameplay commands to the controller.
-   */
-  protected void addCommands() {
-    addCommand(new Quit(character));
-    addCommand(new Help());
-    addCommand(moveAliases, new Move(character));
-    addCommand(new Look(character));
-    addCommand(new Say(character));
-    addCommand(new Scan(character));
-    addCommand(new Tick());
-
-    addCommand(new Score(character));
-    addCommand(new Worth(character));
-    addCommand(new ListSkills(character));
-    addCommand(buffsAliases, new solace.cmd.deprecated.play.Buffs(character));
-    addCommand(new Cooldown(character));
-    addCommand(new Passive(character));
-
-    addCommand(new Wear(character));
-    addCommand(new Equipment(character));
-    addCommand(new Remove(character));
-
-    addCommand(new ShopList(character));
-    addCommand(new ShopBuy(character));
-    addCommand(new ShopAppraise(character));
-    addCommand(new ShopSell(character));
-
-    addCommand(attackAliases, new Attack(character));
-    addCommand(new Flee(character));
-
-    addCommand(new Sit(character));
-    addCommand(new Stand(character));
-    addCommand(new Rest(character));
-    addCommand(new Sleep(character));
-    addCommand(new Wake(character));
-
-    addCommand(new Prompt(character));
-    addCommand(new Hotbar(character));
-
-    // Add all scripted play commands
-    for (ScriptedCommand command : Commands.getCommands()) {
-      addCommand(command.getInstance(character));
+    String[] tokens = input.split("\\s");
+    if (tokens.length < 1) {
+      return;
     }
 
-    // Emotes
-    Emote emote = new Emote(character);
-    addCommand(emote);
-    addCommand(Emotes.getInstance().getEmoteAliases(), new Emote(character));
+    if (isHotbarCommand(tokens[0])) {
+      String command = character.getHotbarCommand(tokens[0]);
+      if (command != null && command.length() > 0) {
+        tokens[0] = command;
+      }
+      input = Joiner.on(" ").join(tokens);
+    }
 
-    // Admin Commands
-    if (character.getAccount().isAdmin()) {
-      addCommand(new Inspect(character));
-      addCommand(new solace.cmd.admin.Set(character));
+    String[] params = CommandParser.parse(input);
+    String namePrefix = params[0];
+    PlayCommand command = PlayCommandRegistry.getInstance().find(namePrefix, character);
+    try {
+      command.run(character, params);
+    } catch (Throwable t) {
+      Log.error(String.format(
+        "Error processing command %s: %s", command.getName(), t.getMessage()));
+      t.printStackTrace();
     }
   }
 }

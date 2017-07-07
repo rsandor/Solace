@@ -8,6 +8,7 @@ import solace.game.Player;
 public abstract class AbstractPlayCommand implements PlayCommand {
   private String name;
   private String displayName;
+  private String[] aliases = new String[0];
 
   /**
    * Creates an abstract play command with the given name.
@@ -16,6 +17,16 @@ public abstract class AbstractPlayCommand implements PlayCommand {
   public AbstractPlayCommand(String n) {
     name = n;
     displayName = n;
+  }
+
+  /**
+   * Creates an abstract play command with the given name and aliases.
+   * @param n Name for the command.
+   */
+  public AbstractPlayCommand(String n, String[] a) {
+    name = n;
+    displayName = n;
+    aliases = a;
   }
 
   /**
@@ -29,14 +40,27 @@ public abstract class AbstractPlayCommand implements PlayCommand {
   }
 
   /**
-   * @see PlayCommand ;
+   * Creates a new abstract play command with the given name, display name, and aliases.
+   * @param n Name for the command.
+   * @param d Display name for the command.
+   */
+  public AbstractPlayCommand(String n, String d, String[] a) {
+    name = n;
+    displayName = d;
+    aliases = a;
+  }
+
+  /**
+   * @see PlayCommand
    */
   public abstract void run(Player player, String[] params);
 
   /**
-   * @see PlayCommand ;
+   * @see PlayCommand
    */
-  public abstract boolean hasCommand(Player player);
+  public boolean hasCommand(Player player) {
+    return true;
+  }
 
   /**
    * @see solace.cmd.Command;
@@ -61,7 +85,15 @@ public abstract class AbstractPlayCommand implements PlayCommand {
    */
   @Override
   public boolean matches(String s) {
-    return name.toLowerCase().startsWith(s.toLowerCase());
+    if (name.toLowerCase().startsWith(s.toLowerCase())) {
+      return true;
+    }
+    for (String alias : aliases) {
+      if (alias.toLowerCase().startsWith(s.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

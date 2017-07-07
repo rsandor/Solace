@@ -1,4 +1,5 @@
 package solace.script;
+import solace.cmd.play.PlayCommand;
 import solace.cmd.StateCommand;
 import solace.game.Player;
 import java.util.function.BiPredicate;
@@ -71,5 +72,5 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
   /**
    * @see solace.script.ScriptedCommand
    */
-  public abstract StateCommand getInstance(solace.game.Character ch);
+  public abstract StateCommand getInstance(Player player);
 }

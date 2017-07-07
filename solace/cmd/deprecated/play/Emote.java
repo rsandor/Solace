@@ -68,7 +68,7 @@ public class Emote extends PlayStateCommand {
       character.resetVisibilityOnAction("emote");
 
       // TODO This might need to use `room.sendMessage` instead...
-      Collection<Player> roomChars = room.getCharacters();
+      Collection<Player> roomChars = room.getPlayers();
       synchronized(roomChars) {
         for (Player ch : roomChars) {
           if (ch == character || ch == target) {

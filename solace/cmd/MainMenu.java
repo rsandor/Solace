@@ -18,8 +18,7 @@ public class MainMenu
   /**
    * Creates a new main menu controller.
    */
-  public MainMenu(Connection c)
-  {
+  public MainMenu(Connection c) {
     // Initialize the menu
     super(c, "Sorry, that is not an option. Type '{y}help{x}' to see a list.");
 
@@ -121,10 +120,10 @@ public class MainMenu
           room = World.getDefaultRoom();
           ch.setRoom(room);
         }
-        room.getCharacters().add(ch);
+        room.addPlayer(ch);
 
         act.setActiveCharacter(ch);
-        c.setStateController(new PlayController(c, ch));
+        c.setStateController(new PlayController(ch));
       }
       catch (GameException ge) {
         Log.error(ge.getMessage());

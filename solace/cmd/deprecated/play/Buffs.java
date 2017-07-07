@@ -1,22 +1,26 @@
 package solace.cmd.deprecated.play;
 
+import solace.cmd.play.AbstractPlayCommand;
 import solace.game.*;
-import solace.net.*;
 
 /**
  * Displays a list of all buffs and debuffs currently affecting the player.
  * @author Ryan Sandor Richards
  */
-public class Buffs extends PlayStateCommand {
-  public Buffs(solace.game.Character ch) {
-    super("buffs", ch);
+public class Buffs extends AbstractPlayCommand {
+  private static final String[] aliases = {
+    "affects"
+  };
+
+  public Buffs() {
+    super("buffs", aliases);
   }
 
-  public void run(Connection c, String []params) {
+  public void run(Player player, String []params) {
     StringBuilder buffs = new StringBuilder();
     StringBuilder debuffs = new StringBuilder();
 
-    for (Buff buff : character.getBuffs()) {
+    for (Buff buff : player.getBuffs()) {
       StringBuilder buffer = buff.isDebuff() ? debuffs : buffs;
       buffer.append(buff.isDebuff() ? "{R}-{x}" : "{g}+{x}");
 
@@ -40,15 +44,15 @@ public class Buffs extends PlayStateCommand {
     }
 
     if (buffs.length() == 0 && debuffs.length() == 0) {
-      character.sendln("You are affected by no buffs or debuffs.");
+      player.sendln("You are affected by no buffs or debuffs.");
     } else {
       if (buffs.length() > 0) {
-        character.sendln("Current Buffs:");
-        character.sendln(buffs.toString());
+        player.sendln("Current Buffs:");
+        player.sendln(buffs.toString());
       }
       if (debuffs.length() > 0) {
-        character.sendln("Current Debuffs:");
-        character.sendln(debuffs.toString());
+        player.sendln("Current Debuffs:");
+        player.sendln(debuffs.toString());
       }
     }
   }

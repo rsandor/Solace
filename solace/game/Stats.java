@@ -3,7 +3,7 @@ package solace.game;
 import java.util.*;
 
 /**
- * Class used to generate various stats for characters, mobiles, items, etc.
+ * Class used to generate various stats for players, mobiles, items, etc.
  * in the game world. In short: this is the master mathematics engine behind the
  * entire game.
  *

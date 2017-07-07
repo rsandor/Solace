@@ -79,8 +79,8 @@ public class Say extends PlayStateCommand {
 
     // Broadcast to the room
     Room room = character.getRoom();
-    synchronized(room.getCharacters()) {
-      for (Player ch : room.getCharacters()) {
+    synchronized(room.getPlayers()) {
+      for (Player ch : room.getPlayers()) {
         if (ch == character)
           c.sendln("You say " + message);
         else

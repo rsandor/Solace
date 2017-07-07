@@ -141,14 +141,14 @@ public class Account
   }
 
   /**
-   * @return The account's characters.
+   * @return The account's players.
    */
   public List<solace.game.Character> getCharacters() {
     return characters;
   }
 
   /**
-   * @return The account's first character, or null if there are no characters.
+   * @return The account's first character, or null if there are no players.
    */
   public solace.game.Character getFirstCharacter() {
     return characters.get(0);
@@ -168,7 +168,7 @@ public class Account
   }
 
   /**
-   * Determines if the account has any characters.
+   * Determines if the account has any players.
    * @return <code>true</code> if the account has at least one character,
    *   <code>false</code> otherwise.
    */

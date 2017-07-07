@@ -54,12 +54,12 @@ public class Flee extends PlayStateCommand {
     String enterFormat = "%s arrives, panting and scared.";
 
     // Move the character from the current room to the random destination
-    origin.getCharacters().remove(character);
+    origin.getPlayers().remove(character);
     origin.sendMessage(String.format(exitFormat, character.getName()));
 
     character.setRoom(destination);
     destination.sendMessage(String.format(enterFormat, character.getName()));
-    destination.getCharacters().add(character);
+    destination.getPlayers().add(character);
     character.sendln(destination.describeTo(character));
   }
 }
