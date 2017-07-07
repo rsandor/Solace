@@ -12,7 +12,7 @@
   - [x] Prompt parsers can lookup commands in the registry
   - [ ] Commands should be able to provide an ordering field that helps with
         selecting the correct command even if they have a common prefix
-- [ ] Scripting engine access to command aliases (move data out of controllers)
+- [x] Scripting engine access to command aliases (move data out of controllers)
 - [ ] Fully Script all commands that can be scripted (this should be most)
 
 --------------------------------------------------------------------------------

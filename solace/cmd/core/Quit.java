@@ -1,4 +1,4 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
 import solace.cmd.AbstractCommand;
 import solace.game.*;

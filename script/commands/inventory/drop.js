@@ -4,7 +4,6 @@
  * The `drop` command allows players to drop items from their inventory into
  * the game world.
  */
-
 Commands.add('drop', function (player, params) {
   if (params.length == 1) {
     return player.sendln('What would you like to drop?');

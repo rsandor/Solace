@@ -1,18 +1,16 @@
 package solace.cmd;
 
-import solace.cmd.deprecated.Look;
-import solace.cmd.deprecated.Move;
-import solace.cmd.deprecated.Quit;
-
+import solace.cmd.core.*;
 import solace.game.Player;
 import solace.script.ScriptedCommand;
 import solace.script.ScriptedCommands;
 import solace.util.Log;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Collections;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Registry for all game play commands. This keeps track of the master
@@ -22,6 +20,7 @@ import java.util.Collections;
  */
 public class CommandRegistry {
   private final List<Command> commands;
+  private final Hashtable<String, Boolean> names;
   private final Command notFound;
   private static final CommandRegistry instance = new CommandRegistry();
 
@@ -47,6 +46,7 @@ public class CommandRegistry {
    */
   private CommandRegistry() {
     commands = Collections.synchronizedList(new ArrayList<Command>());
+    names = new Hashtable<>();
     notFound = new NotFoundCommand();
   }
 
@@ -56,11 +56,13 @@ public class CommandRegistry {
   private synchronized void reloadCommands() {
     Log.info("Reloading game commands");
     commands.clear();
+    names.clear();
 
     // Core built-in commands
-    commands.add(new Quit());
-    commands.add(new Move());
-    commands.add(new Look());
+    add(new Quit());
+    add(new Move());
+    add(new Look());
+    add(new Attack());
 
     /*
     // Emotes
@@ -77,10 +79,27 @@ public class CommandRegistry {
 
     // Add scripted commands
     for (ScriptedCommand command : ScriptedCommands.getCommands()) {
-      Log.debug("Adding scripted command to registry");
-      Log.debug(command.getName());
-      commands.add(command.getInstance());
+      add(command.getInstance());
     }
+  }
+
+  /**
+   * Adds a command to the registry.
+   * @param c The command to add.
+   */
+  private void add(Command c) {
+    String name = c.getName();
+    if (name == null || name.length() == 0) {
+      Log.warn("Encountered command with empty name, skipping");
+      return;
+    }
+    Log.trace(String.format("Adding command: %s", name));
+    if (names.containsKey(name)) {
+      Log.warn(String.format("Encountered duplicate command name for '%s'", name));
+      return;
+    }
+    commands.add(c);
+    names.put(name, true);
   }
 
   /**

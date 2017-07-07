@@ -1,7 +1,8 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
 import solace.cmd.AbstractCommand;
 import solace.game.*;
+import solace.net.Connection;
 
 /**
  * The attack command is used to attack other players in the game and initiate
@@ -75,7 +76,10 @@ public class Attack extends AbstractCommand {
     // Start the battle
     BattleManager.initiate(player, target);
 
-    // TODO Need a way to handle this
-    // c.skipNextPrompt();
+    // Skip next prompt
+    Connection connection = player.getConnection();
+    if (connection != null) {
+      connection.skipNextPrompt();
+    }
   }
 }

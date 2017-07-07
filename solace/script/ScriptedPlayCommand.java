@@ -19,9 +19,10 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
   public ScriptedPlayCommand(
     String name,
     String displayName,
+    String[] aliases,
     BiPredicate<Player, String[]> runLambda
   ) {
-    super(name, displayName, runLambda);
+    super(name, displayName, aliases, runLambda);
   }
 
   /**
@@ -29,7 +30,7 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
    * @return The play command instance.
    */
   public Command getInstance() {
-    return new AbstractCommand(getName(), getDisplayName()) {
+    return new AbstractCommand(getName(), getDisplayName(), getAliases()) {
       public void run(Player p, String[] params) {
         getRunLambda().test(p, params);
       }

@@ -5,3 +5,8 @@
  * all scripts.
  */
 this.Log = Packages.solace.util.Log;
+
+/**
+ * Expose Java's String.format method as a globale.
+ */
+this.format = java.lang.String.format;

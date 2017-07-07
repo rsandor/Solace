@@ -10,6 +10,7 @@ import java.util.function.BiPredicate;
 public abstract class AbstractScriptedCommand implements ScriptedCommand {
   private String name;
   private String displayName;
+  private String[] aliases;
   private BiPredicate<Player, String[]> runLambda;
 
   /**
@@ -31,11 +32,26 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
   public AbstractScriptedCommand(
     String name,
     String displayName,
+    String[] aliases,
     BiPredicate<Player, String[]> runLambda
   ) {
     setName(name);
     setDisplayName(displayName);
     setRunLambda(runLambda);
+    setAliases(aliases);
+  }
+
+  /**
+   * Sets the aliases for the scripted command.
+   * @param a Aliases to set.
+   */
+  public void setAliases(String[] a) { aliases = a; }
+
+  /**
+   * @return Aliases for the scripted command.
+   */
+  public String[] getAliases() {
+    return aliases;
   }
 
   /**

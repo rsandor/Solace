@@ -28,23 +28,25 @@ this.Commands = (function () {
    *   command.
    */
   function addPlayCommand (name, options) {
-    var displayName, runLambda;
+    var displayName, runLambda, aliases;
 
     if (typeof options === 'function') {
       displayName = name;
       runLambda = options;
+      aliases = [];
     } else if (typeof options === 'object') {
       if (!options.run) {
         throw new Error('Commands.add: missing run function for ' + name + '.');
       }
       displayName = options.displayName || name;
+      aliases = options.aliases || [];
       runLambda = options.run;
     } else {
       throw new Error('Commands.add: invalid options given for ' + name);
     }
 
-
-    var command = new ScriptedPlayCommand(name, displayName, runLambda);
+    var command = new ScriptedPlayCommand(
+      name, displayName, aliases, runLambda);
     ScriptedCommands.add(command);
   }
 
