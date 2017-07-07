@@ -73,6 +73,11 @@ public class Mobile extends AbstractPlayer {
   public solace.game.Character getCharacter() { return null; }
 
   /**
+   * @see solace.game.Player
+   */
+  public solace.net.Connection getConnection() { return null; }
+
+  /**
    * @return The power level for the mobile. The power level is an additional
    *   parameter that tweaks the overall power between mobiles of the same
    *   level.

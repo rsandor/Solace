@@ -3,6 +3,7 @@ package solace.game;
 import solace.util.Clock;
 import solace.util.Log;
 import solace.util.Buffs;
+import solace.net.Connection;
 import java.util.*;
 
 /**
@@ -75,6 +76,7 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getAverageDamage();
   public abstract int getNumberOfAttacks();
   public abstract solace.game.Character getCharacter();
+  public abstract Connection getConnection();
 
   /**
    * Sets the passives and cooldowns for this character. This method should be

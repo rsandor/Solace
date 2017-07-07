@@ -5,7 +5,7 @@ import java.util.*;
  * Service for adding and accessing commands generated via the scripting engine.
  * @author Ryan Sandor Richards
  */
-public class Commands {
+public class ScriptedCommands {
   private static List<ScriptedCommand> commands =
     Collections.synchronizedList(new LinkedList<ScriptedCommand>());
 

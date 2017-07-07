@@ -1,6 +1,7 @@
 package solace.game;
 import java.util.Collection;
 import solace.util.Clock;
+import solace.net.Connection;
 
 /**
  * Behavior set for objects representing people or monsters that can inhabit
@@ -18,6 +19,11 @@ public interface Player {
    * @return The character for the player, or `null` if the player is a mobile.
    */
   public solace.game.Character getCharacter();
+
+  /**
+   * @return The game connection associated with the player.
+   */
+  public Connection getConnection();
 
   /**
    * @return The state of the player.

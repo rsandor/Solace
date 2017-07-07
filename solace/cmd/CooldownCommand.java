@@ -1,8 +1,5 @@
 package solace.cmd;
-
 import java.util.*;
-
-import solace.cmd.deprecated.AbstractStateCommand;
 import solace.game.*;
 import solace.net.*;
 import solace.util.*;
@@ -12,7 +9,7 @@ import solace.util.*;
  * become unavailable for a certain duration after their use.
  * @author Ryan Sandor Richards
  */
-public abstract class CooldownCommand extends AbstractStateCommand {
+public abstract class CooldownCommand extends AbstractCommand {
   /**
    * Exception thrown before scheduling or executing the cooldown action in the
    * case where the action cannot be scheduled or executed.
@@ -27,12 +24,10 @@ public abstract class CooldownCommand extends AbstractStateCommand {
   /**
    * Indicates that the command uses the global cool down.
    */
-  static final int GLOBAL_COOLDOWN = -1;
-
-  Player player;
+  private static final int GLOBAL_COOLDOWN = -1;
   private int cooldownDuration;
   private boolean onCooldown = false;
-  private List<ResourceCost> resourceCosts = new LinkedList<ResourceCost>();
+  private List<ResourceCost> resourceCosts = new LinkedList<>();
   private boolean initiatesCombat = false;
   private String combosWith = null;
   private int basePotency = 0;
@@ -42,21 +37,19 @@ public abstract class CooldownCommand extends AbstractStateCommand {
   private String castMessage = "You begin casting...";
 
   /**
-   * Creates a new cool down command with the given name and duration for the
-   * specified player.
+   * Creates a new cool down command with the given name.
    * @param name Name of the command.
-   * @param p Player for the command.
    */
-  public CooldownCommand(String name, Player p) {
+  public CooldownCommand(String name) {
     super(name);
-    player = p;
   }
 
   /**
-   * @return The player associated with the command.
+   * Creates a new cool down command with the given name and display name.
+   * @param name Name of the command.
    */
-  public Player getPlayer() {
-    return player;
+  public CooldownCommand(String name, String displayName) {
+    super(name, displayName);
   }
 
   /**
@@ -126,9 +119,10 @@ public abstract class CooldownCommand extends AbstractStateCommand {
 
   /**
    * Determines if the player can pay resource costs.
+   * @param player Player for which to check costs.
    * @throws CooldownException If the player cannot pay the resource costs.
    */
-  protected void checkResourceCosts() throws CooldownException {
+  protected void checkResourceCosts(Player player) throws CooldownException {
     for (ResourceCost cost : resourceCosts) {
       if (!cost.canWithdraw(player)) {
         throw new CooldownException(cost.getInsufficentResourceMessage());
@@ -173,7 +167,7 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * Determines if this cooldown should be executed as a combo.
    * @return `true` if it's a combo, `false` otherwise.
    */
-  protected boolean isCombo() {
+  protected boolean isCombo(Player player) {
     return player.getComboAction().equals(getCombosWith());
   }
 
@@ -182,8 +176,8 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * a combo attack.
    * @return The cooldown attack potency.
    */
-  public int getPotency() {
-    return isCombo() ? getComboPotency() : getBasePotency();
+  public int getPotency(Player player) {
+    return isCombo(player) ? getComboPotency() : getBasePotency();
   }
 
   /**
@@ -203,11 +197,12 @@ public abstract class CooldownCommand extends AbstractStateCommand {
 
   /**
    * Handles behaviors required before scheduling the cooldown action.
+   * @param player Player executing the cooldown.
    * @param params Parameters sent along with the command.
    * @return The target for the action, if applicable, otherwise null.
    * @throws CooldownException
    */
-  protected Player beforeSchedule(String []params)
+  protected Player beforeSchedule(Player player, String []params)
     throws CooldownException
   {
     // Determine if the player even has the skill
@@ -258,29 +253,32 @@ public abstract class CooldownCommand extends AbstractStateCommand {
     }
 
     // Check to ensure all the resource costs can be met
-    checkResourceCosts();
+    checkResourceCosts(player
+    );
 
     return target;
   }
 
   /**
    * Performs tasks immediately after scheduling the action.
-   * @param params Params to the action.
-   * @param target Target of the action.
+   * @param player Player executing the cooldown.
+   * @param target Target for the cooldown.
+   * @param params Params to the cooldown.
    */
-  protected void afterSchedule(String []params, Player target) {
+  protected void afterSchedule(Player player, Player target, String []params) {
   }
 
   /**
    * Performs tasks before executing the action.
-   * @param params Params to the action.
-   * @param target Target of the action.
+   * @param player Player executing the cooldown.
+   * @param target Target for the cooldown.
+   * @param params Params to the cooldown.
    * @throws CooldownException If the action should not be executed.
    */
-  protected void beforeExecute(String []params, Player target)
+  protected void beforeExecute(Player player, Player target, String []params)
     throws CooldownException
   {
-    checkResourceCosts();
+    checkResourceCosts(player);
     for (ResourceCost cost : resourceCosts) {
       cost.withdraw(player);
     }
@@ -288,16 +286,12 @@ public abstract class CooldownCommand extends AbstractStateCommand {
 
   /**
    * Performs tasks immediately after executing the action.
-   * @param params Params to the action.
-   * @param target Target of the action.
-   * @param result The result of the action.
+   * @param player Player executing the cooldown.
+   * @param params Params for the cooldown.
+   * @param target Target of the cooldown (if any).
+   * @param isHit Whether or not the target (if any) was hit.
    */
-  protected void afterExecute(
-    Connection c,
-    String []params,
-    Player target,
-    boolean isHit
-  ) {
+  protected void afterExecute(Player player, String []params, Player target, boolean isHit) {
     // Schedule off global cooldowns
     if (getCooldownDuration() != GLOBAL_COOLDOWN && isHit) {
       onCooldown = true;
@@ -326,7 +320,7 @@ public abstract class CooldownCommand extends AbstractStateCommand {
       target == null ||         // There is no target, OR
       !getInitiatesCombat() ||  // The cooldown does not initiate combat, OR
       !isHit ||                 // The cooldown didn't hit the target, OR
-      getPlayer() == target     // The player is the target
+      player == target     // The player is the target
     ) {
       return;
     }
@@ -334,8 +328,9 @@ public abstract class CooldownCommand extends AbstractStateCommand {
     // Initiate combat
     if (!player.isFighting() && !target.isFighting()) {
       BattleManager.initiate(player, target);
-      if (c != null) {
-        c.skipNextPrompt();
+      Connection connection = player.getConnection();
+      if (connection != null) {
+        connection.skipNextPrompt();
       }
     } else if (player.isFighting() && !target.isFighting()) {
       Battle playerBattle = BattleManager.getBattleFor(player);
@@ -345,16 +340,17 @@ public abstract class CooldownCommand extends AbstractStateCommand {
   }
 
   /**
-   * @see AbstractStateCommand
+   * @see Command
    */
-  public void run(Connection c, String[] params) {
+  public void run(Player player, String[] params) {
     try {
-      Player target = beforeSchedule(params);
+      Player target = beforeSchedule(player, params);
+      int level = player.getCooldownLevel(getName());
       if (castTime < 1) {
-        afterSchedule(params, target);
-        beforeExecute(params, target);
-        boolean result = execute(player.getCooldownLevel(getName()), target);
-        afterExecute(c, params, target, result);
+        afterSchedule(player, target, params);
+        beforeExecute(player, target, params);
+        boolean result = execute(player, target, level);
+        afterExecute(player, params, target, result);
       } else {
         if (player.isCasting()) {
           player.sendln("You are already casting a spell!");
@@ -365,11 +361,9 @@ public abstract class CooldownCommand extends AbstractStateCommand {
           public void run() {
             try {
               player.finishCasting();
-              beforeExecute(params, target);
-              boolean result = execute(
-                player.getCooldownLevel(getName()),
-                target);
-              afterExecute(c, params, target, result);
+              beforeExecute(player, target, params);
+              boolean result = execute(player, target, level);
+              afterExecute(player, params, target, result);
             } catch (CooldownException cnse) {
               player.sendln(cnse.getMessage());
             }
@@ -383,7 +377,7 @@ public abstract class CooldownCommand extends AbstractStateCommand {
           eventName, castTime, eventRunnable));
         player.sendln(getCastMessage());
 
-        afterSchedule(params, target);
+        afterSchedule(player, target, params);
       }
     } catch (CooldownException cde) {
       player.sendln(cde.getMessage());
@@ -410,11 +404,12 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * Resolves a target given to the command's execute method and determines if
    * it is valid. If no target is given this method will attempt to find the
    * executor's current battle target.
+   * @param player Player executing the cooldown.
    * @param givenTarget Target as given at the time of cooldown execution.
    * @return The actual target for the cooldown.
    * @throws InvalidTargetException If the final target is invalid.
    */
-  public Player resolveTarget(Player givenTarget)
+  public Player resolveTarget(Player player, Player givenTarget)
     throws InvalidTargetException
   {
     Player target = givenTarget;
@@ -441,39 +436,41 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * @param target The target of the attack.
    * @return The result of the roll.
    */
-  public AttackResult rollToHit(Player target) {
+  public AttackResult rollToHit(Player attacker, Player target) {
     if (isSpellAttack()) {
-      return Battle.rollToCast(player, target, getPotency(), getSavingThrow());
+      return Battle.rollToCast(attacker, target, getPotency(attacker), getSavingThrow());
     }
-    return Battle.rollToHit(player, target, getPotency());
+    return Battle.rollToHit(attacker, target, getPotency(attacker));
   }
 
   /**
    * Sends the player a message saying that the cooldown attack missed.
+   * @param attacker The player using the cooldown.
    */
-  public void sendMissMessage() {
-    player.sendln(String.format("Your {m}%s{x} misses!", getDisplayName()));
+  public void sendMissMessage(Player attacker) {
+    attacker.sendln(String.format("Your {m}%s{x} misses!", getDisplayName()));
   }
 
   /**
    * Sends messages to the player and that target that the cooldown attack hit.
+   * @param attacker Player that is executing the cooldown.
    * @param target The target of the attack.
    * @param result The result of the to hit roll for the attack.
    * @param damage The damage dealt by the attack.
    */
-  private void sendHitMessages(Player target, AttackResult result, int damage) {
-    if (isCombo()) {
-      player.sendln(String.format(
+  private void sendHitMessages(Player attacker, Player target, AttackResult result, int damage) {
+    if (isCombo(attacker)) {
+      attacker.sendln(String.format(
         "[{g}%d{x}] {y}<{Y}combo{y}>{x} Your {m}%s{x} hits %s!",
         damage, getDisplayName(), target.getName()));
     } else {
-      player.sendln(String.format(
+      attacker.sendln(String.format(
         "[{g}%d{x}] Your {m}%s{x} hits %s!",
         damage, getDisplayName(), target.getName()));
     }
     target.sendln(String.format(
       "<{r}%d{x}> %s hits you with an {m}%s{x}!",
-      damage, player.getName(), getDisplayName()));
+      damage, attacker.getName(), getDisplayName()));
   }
 
   /**
@@ -483,26 +480,25 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * @param givenTarget The given target of the attack (if any).
    * @return `true` if the attack succeeded, `false` otherwise.
    */
-  public boolean executeAttack(Player givenTarget) {
+  public boolean executeAttack(Player attacker, Player givenTarget) {
     try {
       // Resolve the target
-      Player target = resolveTarget(givenTarget);
+      Player target = resolveTarget(attacker, givenTarget);
 
       // Make the "roll to hit" the target
-      AttackResult result = rollToHit(target);
+      AttackResult result = rollToHit(attacker, target);
       if (result.isMiss()) {
-        sendMissMessage();
+        sendMissMessage(attacker);
         return false;
       }
 
       // Roll damage, apply it, and we're done!
-      int damage = Battle.rollDamage(
-        player, target, result.isCritical(), getPotency());
+      int damage = Battle.rollDamage(attacker, target, result.isCritical(), getPotency(attacker));
       target.applyDamage(damage);
-      sendHitMessages(target, result, damage);
+      sendHitMessages(attacker, target, result, damage);
       return true;
     } catch (InvalidTargetException ite) {
-      player.sendln(ite.getMessage());
+      attacker.sendln(ite.getMessage());
       return false;
     }
   }
@@ -513,5 +509,5 @@ public abstract class CooldownCommand extends AbstractStateCommand {
    * @param target A target, if any, for the action.
    * @return True if the action successfully executed, false otheriwse.
    */
-  public abstract boolean execute(int level, Player target);
+  public abstract boolean execute(Player player, Player target, int level);
 }

@@ -5,7 +5,7 @@ import solace.util.*;
 import com.google.common.base.Joiner;
 
 /**
- * Main game play controller (the actual game).
+ * Main game play controller.
  * @author Ryan Sandor Richards
  */
 public class PlayController implements Controller {
@@ -52,8 +52,7 @@ public class PlayController implements Controller {
    * @return The generated prompt for the player.
    */
   public String getPrompt() {
-    String out = new String(character.getPrompt());
-    out = out
+    String out = character.getPrompt()
       .replace("%h", character.getHp() + "")
       .replace("%H", character.getMaxHp() + "")
       .replace("%m", character.getMp() + "")
@@ -112,7 +111,7 @@ public class PlayController implements Controller {
    * @param  input [description]
    * @return       [description]
    */
-  public boolean isHotbarCommand(String input) {
+  private boolean isHotbarCommand(String input) {
     return input.length() == 1 && (
       (input.charAt(0) >= '0' && input.charAt(0) <= '9') ||
       input.charAt(0) == '-' ||
@@ -154,7 +153,7 @@ public class PlayController implements Controller {
 
     String[] params = CommandParser.parse(input);
     String namePrefix = params[0];
-    Command command = Registry.getInstance().find(namePrefix, character);
+    Command command = CommandRegistry.find(namePrefix, character);
     try {
       command.run(character, params);
     } catch (Throwable t) {

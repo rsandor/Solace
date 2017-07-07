@@ -69,7 +69,7 @@ public class MainMenuController implements Controller {
       }
     }
 
-    // Admin Commands
+    // Admin ScriptedCommands
     if (connection.hasAccount() && connection.getAccount().isAdmin()) {
       for (String name : Collections.list(adminCommands.keys())) {
         if (name.toLowerCase().startsWith(s.toLowerCase())) {

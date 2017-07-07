@@ -7,7 +7,7 @@
  */
 Commands.addCooldown('concentrate', {
   cooldownDuration: 180,
-  run: function (level, player, target) {
+  run: function (player, target, level, cooldown) {
     player.applyBuff('concentrating');
   }
 });

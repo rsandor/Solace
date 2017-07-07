@@ -1,8 +1,8 @@
 package solace.script;
+import solace.cmd.AbstractCommand;
+import solace.cmd.Command;
 import solace.game.Player;
 import java.util.function.BiPredicate;
-
-import solace.cmd.deprecated.StateCommand;
 
 /**
  * Data model for scripted gameplay commands (`PlayStateCommand`). Gameplay commands
@@ -26,18 +26,13 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
 
   /**
    * Creates an instance of the play command for use by the game engine.
-   * @param ch Character for the play command.
    * @return The play command instance.
    */
-  public StateCommand getInstance(Player p) {
-    return null;
-    /*
-    Command command = new AbstractCommand(getName(), getDisplayName()) {
+  public Command getInstance() {
+    return new AbstractCommand(getName(), getDisplayName()) {
       public void run(Player p, String[] params) {
         getRunLambda().test(p, params);
       }
     };
-    return command;
-    */
   }
 }

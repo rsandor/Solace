@@ -443,7 +443,7 @@ public class Character extends AbstractPlayer {
   }
 
   /**
-   * @return The connection associated with this character.
+   * @see solace.game.Player
    */
   public Connection getConnection() {
     if (account != null) {

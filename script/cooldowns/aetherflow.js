@@ -6,7 +6,7 @@
  */
 Commands.addCooldown('aetherflow', {
   cooldownDuration: 300,
-  run: function (level, player, target) {
+  run: function (player, target, level, cooldown) {
     var maxMp = player.getMaxMp();
     var mp = player.getMp();
     var healed = Math.min(maxMp / 2, maxMp - mp);

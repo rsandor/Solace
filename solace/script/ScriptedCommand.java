@@ -1,7 +1,7 @@
 package solace.script;
 import java.util.function.BiPredicate;
 
-import solace.cmd.deprecated.StateCommand;
+import solace.cmd.Command;
 import solace.game.Player;
 
 /**
@@ -48,5 +48,5 @@ public interface ScriptedCommand {
    * Gets an instance of the command for a given player character.
    * @return An instance of the command.
    */
-  public StateCommand getInstance(Player p);
+  public Command getInstance();
 }

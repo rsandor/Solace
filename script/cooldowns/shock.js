@@ -11,12 +11,12 @@ Commands.addCooldown("shock", {
   basePotency: 100,
   savingThrow: 'will',
   castMessage: 'You begin casting shock...',
-  run: function (level, player, givenTarget, cooldown) {
+  run: function (player, target, level, cooldown) {
     try {
       var target = cooldown.resolveTarget(givenTarget);
-      var result = cooldown.rollToHit(target);
+      var result = cooldown.rollToHit(player, target);
       if (result.isMiss()) {
-        cooldown.sendMissMessage();
+        cooldown.sendMissMessage(player);
         return false;
       }
 

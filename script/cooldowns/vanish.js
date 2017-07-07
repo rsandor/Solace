@@ -9,7 +9,7 @@
  */
 Commands.addCooldown('vanish', {
   cooldownDuration: 180,
-  run: function (level, player) {
+  run: function (player, target, level, cooldown) {
     player.applyBuff("vanished");
     var battle = player.getBattle();
     if (battle !== null) {

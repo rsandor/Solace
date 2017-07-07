@@ -11,7 +11,7 @@ Commands.addCooldown('coup', {
   initiatesCombat: true,
   basePotency: 1000,
   spCost: 10,
-  run: function (level, player, target, cooldown) {
+  run: function (player, target, level, cooldown) {
     return cooldown.executeAttack(target);
   },
   checkValidTarget: function (target) {

@@ -5,7 +5,7 @@
  * @author Ryan Sandor Richards
  */
 this.Commands = (function () {
-  var Commands = Packages.solace.script.Commands;
+  var ScriptedCommands = Packages.solace.script.ScriptedCommands;
   var ScriptedPlayCommand = Packages.solace.script.ScriptedPlayCommand;
   var ScriptedCooldown = Packages.solace.script.ScriptedCooldown;
   var SpCost = Packages.solace.cmd.SpCost;
@@ -17,6 +17,7 @@ this.Commands = (function () {
    */
   function errorHandler (e) {
     Log.error('Cannot create script command - ' + e.getMessage());
+    e.printStackTrace();
   }
 
   /**
@@ -42,8 +43,9 @@ this.Commands = (function () {
       throw new Error('Commands.add: invalid options given for ' + name);
     }
 
+
     var command = new ScriptedPlayCommand(name, displayName, runLambda);
-    Commands.add(command);
+    ScriptedCommands.add(command);
   }
 
   /**
@@ -84,7 +86,7 @@ this.Commands = (function () {
       cooldown.setCheckValidTarget(options.checkValidTarget);
     }
 
-    Commands.add(cooldown);
+    ScriptedCommands.add(cooldown);
   }
 
   /**

@@ -1,7 +1,8 @@
 package solace.script;
 import java.util.List;
 import java.util.LinkedList;
-import solace.cmd.deprecated.StateCommand;
+
+import solace.cmd.Command;
 import solace.cmd.InvalidTargetException;
 import solace.cmd.CooldownCommand;
 import solace.cmd.ResourceCost;
@@ -18,9 +19,9 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
   @FunctionalInterface
   public interface CooldownExecuteFunction {
     public boolean execute(
-      int level,
       Player player,
       Player target,
+      int level,
       CooldownCommand cooldown
     );
   }
@@ -186,8 +187,8 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
    * @param player Character for the play command.
    * @return The play command instance.
    */
-  public StateCommand getInstance(Player player) {
-    CooldownCommand command = new CooldownCommand(getName(), player) {
+  public Command getInstance() {
+    CooldownCommand command = new CooldownCommand(getName(), getDisplayName()) {
       public void checkValidTarget(Player target)
         throws InvalidTargetException
       {
@@ -202,11 +203,10 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
         }
       }
 
-      public boolean execute(int level, Player target) {
-        return executeLambda.execute(level, getPlayer(), target, this);
+      public boolean execute(Player player, Player target, int level) {
+        return executeLambda.execute(player, target, level, this);
       }
     };
-    command.setDisplayName(getDisplayName());
     command.setCooldownDuration(getCooldownDuration());
     command.setInitiatesCombat(getInitiatesCombat());
     command.setCastTime(getCastTime());
