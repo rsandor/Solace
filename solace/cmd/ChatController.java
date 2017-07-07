@@ -38,7 +38,7 @@ public class ChatController implements Controller {
     if (message.toLowerCase().startsWith("/quit")) {
       connection.sendln("Later!");
       World.removeChatconnection(connection);
-      connection.setStateController(new MainMenu(connection));
+      connection.setStateController(new MainMenuController(connection));
     } else if (message.toLowerCase().startsWith("/help")) {
       String help = Message.get("ChatHelp");
       connection.sendln(help);

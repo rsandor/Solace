@@ -1,9 +1,6 @@
 package solace.cmd;
 
-import solace.cmd.play.PlayCommandRegistry;
-import solace.cmd.play.PlayCommand;
 import solace.game.*;
-import solace.net.*;
 import solace.util.*;
 import com.google.common.base.Joiner;
 
@@ -157,7 +154,7 @@ public class PlayController implements Controller {
 
     String[] params = CommandParser.parse(input);
     String namePrefix = params[0];
-    PlayCommand command = PlayCommandRegistry.getInstance().find(namePrefix, character);
+    Command command = PlayCommandRegistry.getInstance().find(namePrefix, character);
     try {
       command.run(character, params);
     } catch (Throwable t) {

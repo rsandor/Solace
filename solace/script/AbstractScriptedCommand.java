@@ -1,6 +1,5 @@
 package solace.script;
-import solace.cmd.play.PlayCommand;
-import solace.cmd.StateCommand;
+import solace.cmd.deprecated.StateCommand;
 import solace.game.Player;
 import java.util.function.BiPredicate;
 

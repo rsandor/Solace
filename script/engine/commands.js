@@ -8,8 +8,8 @@ this.Commands = (function () {
   var Commands = Packages.solace.script.Commands;
   var ScriptedPlayCommand = Packages.solace.script.ScriptedPlayCommand;
   var ScriptedCooldown = Packages.solace.script.ScriptedCooldown;
-  var SpCost = Packages.solace.cmd.play.SpCost;
-  var MpCost = Packages.solace.cmd.play.MpCost;
+  var SpCost = Packages.solace.cmd.SpCost;
+  var MpCost = Packages.solace.cmd.MpCost;
 
   /**
    * General error handler for logging issues when adding game commands.

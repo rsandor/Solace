@@ -1,10 +1,10 @@
 package solace.script;
 import java.util.List;
 import java.util.LinkedList;
-import solace.cmd.StateCommand;
+import solace.cmd.deprecated.StateCommand;
 import solace.cmd.InvalidTargetException;
-import solace.cmd.play.CooldownCommand;
-import solace.cmd.play.ResourceCost;
+import solace.cmd.CooldownCommand;
+import solace.cmd.ResourceCost;
 import solace.game.Player;
 
 /**

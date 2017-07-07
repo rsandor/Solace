@@ -106,7 +106,7 @@ class CreateCharacterController implements Controller {
   public void parse(String input) {
     state = state.parse(connection, input);
     if (state == State.EXIT) {
-      connection.setStateController( new MainMenu(connection) );
+      connection.setStateController( new MainMenuController(connection) );
     }
   }
 }

@@ -129,7 +129,7 @@ public class LoginController
       "' logged into from " + connection.getInetAddress()
     );
     connection.sendln("\n\rWelcome " + connection.getAccount().getName() + "!");
-    connection.setStateController( new MainMenu(connection) );
+    connection.setStateController( new MainMenuController(connection) );
     connection.echoOn();
   }
 
