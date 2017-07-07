@@ -154,7 +154,7 @@ public class PlayController implements Controller {
 
     String[] params = CommandParser.parse(input);
     String namePrefix = params[0];
-    Command command = PlayCommandRegistry.getInstance().find(namePrefix, character);
+    Command command = Registry.getInstance().find(namePrefix, character);
     try {
       command.run(character, params);
     } catch (Throwable t) {

@@ -16,22 +16,22 @@ import java.util.Collections;
  * main game.
  * @author Ryan Sandor Richards
  */
-public class PlayCommandRegistry {
+public class Registry {
   private final List<Command> commands;
   private final Command notFound;
-  private static final PlayCommandRegistry instance = new PlayCommandRegistry();
+  private static final Registry instance = new Registry();
 
   /**
    * @return An instance of the play command registry.
    */
-  public static final PlayCommandRegistry getInstance() {
+  public static final Registry getInstance() {
     return instance;
   }
 
   /**
    * Creates a new game play commands registry.
    */
-  public PlayCommandRegistry() {
+  public Registry() {
     commands = Collections.synchronizedList(new ArrayList<Command>());
     notFound = new NotFoundCommand();
     addCommands();
