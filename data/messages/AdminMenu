@@ -1,5 +1,3 @@
 As an {y}administrator{x} you also have the following options:
 
-	{y}peek{x}     - {c}View a user's connection statistics{x}
-	{y}reload{x}   - {c}Reload Game Messages or Areas{x}
-	{y}shutdown{x} - {c}Shut the server down{x}
+	{y}shutdown{x}    - {c}Shut the server down{x}
