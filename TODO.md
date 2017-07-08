@@ -18,9 +18,11 @@
   - [x] `reload messages`
   - [x] `reload areas`
   - [x] `reload help`
-  - [ ] `reload emotes`
+  - [x] `reload emotes`
   - [ ] `reload skills`
   - [ ] `reload races`
+- [ ] Write general "CommandTrie" which primarily will be used to do prefix
+      lookup for commands and apply priority ordering.
 - [ ] Fully Script all commands that can be scripted (this should be most)
 
 --------------------------------------------------------------------------------
@@ -28,6 +30,8 @@
 ### Bugs
 
 - [ ] **Bug:** Shutdown command sometimes hangs, investigate
+      Seems to hang when there are logged in players
+      It catches right after it says "Stopping account writer"
 
 --------------------------------------------------------------------------------
 
@@ -39,20 +43,23 @@
 
 **The "game/" directory**
 - [ ] Move from using `data/` to `game/`
+- [ ] Come up with and document a file extension scheme
+      (e.g. `.emote.json`, `.help.md`, etc.)
 - [ ] Buff scripting
   - [ ] Convert existing buffs to scripts
 - [ ] Passive scripting
 - [ ] Race scripting
 - [ ] Skill scripting (with localized scripts)
 - [ ] Basic area scripting
-- [ ] Help 2.0
+- [ ] Allow help files to be defined along side objects they describe
+      (perhaps use a `.help.md` extension and a recursive find along with
+      the ability to assign keywords from within the help markdown itself
+      that are stripped and ingested upon parsing).
+
+**Help 2.0**
   - Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
   - [ ] Better direct indexing scheme for help files
-  - [ ] Allow help files to be defined along side objects they describe
-        (perhaps use a `.help.md` extension and a recursive find along with
-        the ability to assign keywords from within the help markdown itself
-        that are stripped and ingested upon parsing).
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON

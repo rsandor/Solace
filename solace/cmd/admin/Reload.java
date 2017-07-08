@@ -7,6 +7,7 @@ import solace.game.Character;
 import solace.net.Connection;
 import solace.script.Engine;
 import solace.cmd.CompositeCommand;
+import solace.util.Emotes;
 import solace.util.HelpSystem;
 import solace.util.Log;
 import solace.util.Message;
@@ -26,6 +27,7 @@ public class Reload extends CompositeCommand {
     addSubCommand("messages", this::messages);
     addSubCommand("help", this::help);
     addSubCommand("areas", this::areas);
+    addSubCommand("emotes", this::emotes);
   }
 
   @Override
@@ -175,6 +177,22 @@ public class Reload extends CompositeCommand {
           con.send(con.getStateController().getPrompt());
         }
       }
+    }
+  }
+
+  /**
+   * Reloads game help files.
+   * @param player Player initiating the reload.
+   * @param params Original command parameters.
+   */
+  @SuppressWarnings("unused")
+  private void emotes(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated emote reload...", player.getName()));
+    try {
+      Emotes.getInstance().reload();
+      player.sendln("Emotes articles reloaded.");
+    } catch (Throwable t) {
+      player.sendln("An error occurred when reloading emotes.");
     }
   }
 }
