@@ -7,10 +7,7 @@ import solace.game.Character;
 import solace.net.Connection;
 import solace.script.Engine;
 import solace.cmd.CompositeCommand;
-import solace.util.Emotes;
-import solace.util.HelpSystem;
-import solace.util.Log;
-import solace.util.Message;
+import solace.util.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +25,7 @@ public class Reload extends CompositeCommand {
     addSubCommand("help", this::help);
     addSubCommand("areas", this::areas);
     addSubCommand("emotes", this::emotes);
+    addSubCommand("skills", this::skills);
   }
 
   @Override
@@ -181,7 +179,7 @@ public class Reload extends CompositeCommand {
   }
 
   /**
-   * Reloads game help files.
+   * Reloads game emotes.
    * @param player Player initiating the reload.
    * @param params Original command parameters.
    */
@@ -191,6 +189,23 @@ public class Reload extends CompositeCommand {
     try {
       Emotes.getInstance().reload();
       player.sendln("Emotes articles reloaded.");
+    } catch (Throwable t) {
+      player.sendln("An error occurred when reloading emotes.");
+    }
+  }
+
+  /**
+   * Reloads game skills.
+   * @param player Player initiating the reload.
+   * @param params Original command parameters.
+   */
+  @SuppressWarnings("unused")
+  private void skills(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated skill reload...", player.getName()));
+    try {
+      Skills.getInstance().reload();
+      World.getActiveCharacters().forEach(Character::resetSkills);
+      player.sendln("Skills reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading emotes.");
     }

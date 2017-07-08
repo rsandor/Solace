@@ -33,12 +33,12 @@ public class World {
    * @throws GameException If the default room could not be found after areas
    *   are loaded.
    */
-  public static void init() throws GameException
+  public static void init() throws GameException, IOException
   {
     if (initialized)
       return;
 
-    Skills.initialize();
+    Skills.getInstance().reload();
     Races.initialize();
     Buffs.initialize();
 

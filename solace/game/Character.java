@@ -21,12 +21,12 @@ public class Character extends AbstractPlayer {
   /**
    * Character returned when instead of null when a character could not be found.
    */
-  public static final Character NULL = new Character();
+  static final Character NULL = new Character();
 
   /**
    * Default prompt given to new players.
    */
-  public static final String DEFAULT_PROMPT =
+  private static final String DEFAULT_PROMPT =
     "(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>";
 
   /**
@@ -34,22 +34,22 @@ public class Character extends AbstractPlayer {
    * @param name Name of the slot to check.
    * @return `true` if the slot is valid, `false` otherwise.
    */
-  public static boolean isValidEquipmentSlot(String name) {
+  static boolean isValidEquipmentSlot(String name) {
     return EQ_SLOTS.contains(name);
   }
 
   String id = "";
   String name = "";
-  String description = "";
-  long gold = 0;
-  List<Item> inventory = Collections.synchronizedList(new ArrayList<Item>());
-  Hashtable<String, Item> equipment = new Hashtable<String, Item>();
-  HashSet<String> skillIds = new HashSet<String>();
-  List<Skill> skills = new ArrayList<Skill>();
-  Account account = Account.NULL;
-  String prompt = Character.DEFAULT_PROMPT;
-  Hashtable<String, String> hotbar = new Hashtable<String, String>();
-  Race race = Race.NULL;
+  private String description = "";
+  private long gold = 0;
+  private final List<Item> inventory = Collections.synchronizedList(new ArrayList<Item>());
+  private Hashtable<String, Item> equipment = new Hashtable<>();
+  private Hashtable<String, Skill> skills = new Hashtable<>();
+
+  private Account account = Account.NULL;
+  private String prompt = Character.DEFAULT_PROMPT;
+  private Hashtable<String, String> hotbar = new Hashtable<>();
+  private Race race = Race.NULL;
 
   /**
    * Creates a null character.
@@ -68,7 +68,6 @@ public class Character extends AbstractPlayer {
     super();
     name = n;
     level = 1;
-    inventory = Collections.synchronizedList(new ArrayList<Item>());
   }
 
   /**
@@ -79,7 +78,7 @@ public class Character extends AbstractPlayer {
     super.setPassivesAndCooldowns();
 
     // Skill based passives and cooldowns
-    for (Skill skill : skills) {
+    for (Skill skill : skills.values()) {
       int skillLevel = skill.getLevel();
       for (String passive : skill.getPassives()) {
         if (skillLevel > getPassiveLevel(passive)) {
@@ -110,7 +109,7 @@ public class Character extends AbstractPlayer {
    * @param name Name of the modifier to tally.
    * @return The total modifier of the given name granted by the equipment.
    */
-  protected int getModFromEquipment(String name) {
+  private int getModFromEquipment(String name) {
     int stat = 0;
     for (Item item : equipment.values()) {
       try {
@@ -304,21 +303,43 @@ public class Character extends AbstractPlayer {
   public void addSkill(String id, int level)
     throws SkillNotFoundException
   {
-    if (skillIds.contains(id)) {
+    if (skills.keySet().contains(id)) {
+      Log.warn(String.format(
+        "Duplicate skill '%s' encountered for player '%s', skipping",
+        id, getName()));
       return;
     }
-    Skill skill = Skills.cloneSkill(id);
+    Log.debug(String.format("Adding skill: '%s' at level %d to player '%s", id, level, getName()));
+    Skill skill = Skills.getInstance().cloneSkill(id);
     skill.setLevel(level);
-    skillIds.add(id);
-    skills.add(skill);
+    skills.put(id, skill);
   }
 
   /**
    * @return An unmodifiable collection of the character's skills.
    */
   public Collection<Skill> getSkills() {
-    return Collections.unmodifiableCollection(skills);
-  };
+    return skills.values();
+  }
+
+  /**
+   * Reset each skill on the character (used when skills are reloaded).
+   */
+  public void resetSkills() {
+    Hashtable<String, Integer> skillToLevel = new Hashtable<>();
+    skills.values().forEach(s -> skillToLevel.put(s.getId(), s.getLevel()));
+    skills.clear();
+    skillToLevel.keySet().forEach(id -> {
+      try {
+        addSkill(id, skillToLevel.get(id));
+      } catch (SkillNotFoundException e) {
+        Log.warn(String.format(
+          "Unknown skill id '%s' encountered when reloading skills for '%s', skipping.",
+          id, getName()));
+      }
+    });
+    setPassivesAndCooldowns();
+  }
 
   /**
    * @return The amount of gold the character is carrying.
@@ -381,13 +402,11 @@ public class Character extends AbstractPlayer {
    * any game limits on number of items, or carrying capacity, this method
    * will not add the given item and return false.
    * @param item Item to add to the player's inventory.
-   * @return True if the item could be added, false otherwise.
    */
-  public synchronized boolean addItem(Item item) {
+  public void addItem(Item item) {
     // TODO: Currently no limits on number of items / weight
     //  need to add this when the time comes.
     inventory.add(item);
-    return true;
   }
 
   /**
@@ -396,10 +415,9 @@ public class Character extends AbstractPlayer {
    * etc.).
    * @param item Item to remove.
    */
-  public synchronized boolean removeItem(Item item) {
+  public void removeItem(Item item) {
     // TODO: No limits on item removal yet, implement them when applicable
     inventory.remove(item);
-    return true;
   }
 
   /**
@@ -538,14 +556,17 @@ public class Character extends AbstractPlayer {
 
     b.append("<character ");
 
-    if (race == null) {
-      race = Races.get("human");
-    }
-
     b.append(String.format(
-      "name=\"%s\" level=\"%d\" race=\"%s\" ",
-      name, level, race.getName()
+      "name=\"%s\" level=\"%d\" ",
+      name, level
     ));
+
+    if (race != null) {
+      b.append(String.format("race=\"%s\" ", race.getName()));
+    } else {
+      Log.error(String.format("Null race encountered for '%s'", getName()));
+      b.append("race=\"human\" ");
+    }
 
     b.append(String.format(
       "hp=\"%d\" mp=\"%d\" sp=\"%d\" gold=\"%d\" ",
@@ -575,13 +596,7 @@ public class Character extends AbstractPlayer {
 
     // Skills
     b.append("<skills>");
-    for (Skill s : skills) {
-      b.append(String.format(
-        "<skill id=\"%s\" level=\"%d\" />",
-        s.getId(),
-        s.getLevel()
-      ));
-    }
+    skills.values().forEach(s -> b.append(String.format("<skill id=\"%s\" level=\"%d\" />", s.getId(),  s.getLevel())));
     b.append("</skills>");
 
     // Inventory
@@ -643,11 +658,12 @@ public class Character extends AbstractPlayer {
 
   /**
    * Determines if a player has a skill with the given name.
-   * @param  name Name of the skill.
-   * @return      `true` if they have the skill, `false` otherwise.
+   * @param id Name of the skill.
+   * @return `true` if they have the skill, `false` otherwise.
    */
-  public boolean hasSkill(String name) {
-    return skillIds.contains(name);
+  @SuppressWarnings("unused")
+  public boolean hasSkill(String id) {
+    return skills.keySet().contains(id);
   }
 
   /**

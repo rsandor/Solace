@@ -19,7 +19,7 @@
   - [x] `reload areas`
   - [x] `reload help`
   - [x] `reload emotes`
-  - [ ] `reload skills`
+  - [x] `reload skills`
   - [ ] `reload races`
 - [ ] Write general "CommandTrie" which primarily will be used to do prefix
       lookup for commands and apply priority ordering.
