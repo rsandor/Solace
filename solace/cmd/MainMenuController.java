@@ -12,9 +12,16 @@ import solace.util.*;
 public class MainMenuController implements Controller {
   private static final String commandNotFound =
     "Unknown option, use {y}help{x} to see all menu options.";
-  private final Hashtable<String, Runnable> commands = new Hashtable<>();
-  private final Hashtable<String, Runnable> adminCommands = new Hashtable<>();
+
   private Connection connection;
+  private NameTrie<MenuCommand> commands = new NameTrie<>(this::notFound);
+
+  /**
+   * Functional interface for menu commands.
+   */
+  private interface MenuCommand {
+    void run(String[] params);
+  }
 
   /**
    * Creates a new main menu controller for the given connection.
@@ -22,18 +29,14 @@ public class MainMenuController implements Controller {
    */
   public MainMenuController(Connection c) {
     connection = c;
-
-    // Add commands
     commands.put("help", this::help);
     commands.put("quit", this::quit);
     commands.put("who", this::who);
     commands.put("chat", this::chat);
     commands.put("list", this::list);
     commands.put("create", this::create);
-    adminCommands.put("shutdown", () -> Game.shutdown());
-
-    // Show the main menu
-    help();
+    commands.put("play", this::play);
+    help(new String[0]);
   }
 
   /**
@@ -47,70 +50,47 @@ public class MainMenuController implements Controller {
    * @see solace.cmd.Controller
    */
   public void parse(String s) {
-    String[] params = s.split("\\s");
-    if (params.length == 0 || params[0] == null) {
-      connection.sendln(commandNotFound);
-      return;
-    }
+    commands.find(s).run(s.split("\\s"));
+  }
 
-    String prefix = params[0].toLowerCase();
-
-    // Handle special case for play, which takes parameters
-    if ("play".startsWith(prefix)) {
-      play(params);
-      return;
-    }
-
-    // Regular commands
-    for (String name : Collections.list(commands.keys())) {
-      if (name.toLowerCase().startsWith(prefix)) {
-        commands.get(name).run();
-        return;
-      }
-    }
-
-    // Admin ScriptedCommands
-    if (connection.hasAccount() && connection.getAccount().isAdmin()) {
-      for (String name : Collections.list(adminCommands.keys())) {
-        if (name.toLowerCase().startsWith(s.toLowerCase())) {
-          adminCommands.get(name).run();
-          return;
-        }
-      }
-    }
-
-    // Command was not found, send the not found message
+  /**
+   * Command that is run with no commands could be found.
+   * @param params Ignored.
+   */
+  @SuppressWarnings("unused")
+  private void notFound(String[] params) {
     connection.sendln(commandNotFound);
   }
 
   /**
    * Sends player to out of game chat.
    */
-  private void chat() {
+  @SuppressWarnings("unused")
+  private void chat(String[] params) {
     connection.setStateController(new ChatController(connection));
   }
 
   /**
    * Sends player to the character creator.
    */
-  private void create() {
+  @SuppressWarnings("unused")
+  private void create(String[] params) {
     connection.setStateController(new CreateCharacterController(connection));
   }
 
   /**
    * Displays the main menu help.
    */
-  private void help() {
+  @SuppressWarnings("unused")
+  private void help(String[] params) {
     connection.sendln(Message.get("MainMenu"));
-    if (connection.getAccount().isAdmin()) {
-      connection.sendln(Message.get("AdminMenu"));
-    }
   }
 
   /**
    * Quits the game.
    */
-  private void quit() {
+  @SuppressWarnings("unused")
+  private void quit(String[] params) {
     connection.sendln("Goodbye!");
     if (connection.hasAccount()) {
       World.removeAccount(connection.getAccount());
@@ -122,7 +102,8 @@ public class MainMenuController implements Controller {
   /**
    * Displays a list of player accounts connected to the game.
    */
-  private void who() {
+  @SuppressWarnings("unused")
+  private void who(String[] params) {
     connection.sendln("{y}---- {x}Players Online{y} ----{x}");
     for (Connection c : World.getConnections()) {
       if (c.hasAccount()) {
@@ -136,7 +117,8 @@ public class MainMenuController implements Controller {
   /**
    * Lists an account's player characters.
    */
-  private void list() {
+  @SuppressWarnings("unused")
+  private void list(String[] params) {
     if (!connection.hasAccount()) {
       return;
     }
@@ -157,6 +139,10 @@ public class MainMenuController implements Controller {
     }
   }
 
+  /**
+   * Enters the connected user into the game.
+   * @param params First parameter should be the name of the character they wish to play.
+   */
   private void play(String[] params) {
     try {
       Account act = connection.getAccount();
