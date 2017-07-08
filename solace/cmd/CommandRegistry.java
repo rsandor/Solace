@@ -68,7 +68,6 @@ public class CommandRegistry {
     Log.info("Reloading game commands");
     commands.clear();
     names.clear();
-    Log.info(""+ names.size());
 
     // Core built-in commands
     add(new Quit());

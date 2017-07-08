@@ -16,7 +16,7 @@
 - [ ] Add + Flesh-out `reload` command (core in-game command, admin only)
   - [x] `reload scripts` - update commands on-the-fly!
   - [x] `reload messages`
-  - [ ] `reload areas`
+  - [x] `reload areas`
   - [x] `reload help`
   - [ ] `reload emotes`
   - [ ] `reload skills`
