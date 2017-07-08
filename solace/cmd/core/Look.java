@@ -17,6 +17,7 @@ import solace.util.*;
 public class Look extends AbstractCommand {
   public Look() {
     super("look");
+    setPriority(AbstractCommand.ORDER_CORE);
   }
 
   public void run(Player player, String []params) {

@@ -3,15 +3,17 @@ package solace.game;
 import java.util.*;
 
 /**
- * Holds information pretaining to an area.
+ * Holds information for areas.
  * @author Ryan Sandor Richards
  */
 public class Area {
+  public static final Area NULL = new Area("", "null area", "");
+
   String id = "";
-  String title = "";
-  String author = "";
-  Hashtable<String, Room> rooms = new Hashtable<String, Room>();
-  List<Shop> shops = new LinkedList<Shop>();
+  private String title = "";
+  private String author = "";
+  private Hashtable<String, Room> rooms = new Hashtable<>();
+  private List<Shop> shops = new LinkedList<>();
 
   /**
    * Creates a new area with the given name and name of the creator.
@@ -38,6 +40,7 @@ public class Area {
    * Removes a room from this area.
    * @param r Room to remove.
    */
+  @SuppressWarnings("unused")
   public void removeRoom(Room r) {
     rooms.remove(r.getId());
   }
@@ -54,6 +57,7 @@ public class Area {
    * Returns a collection of the rooms in this area.
    * @return A collection of the rooms in this area.
    */
+  @SuppressWarnings("WeakerAccess")
   public Collection<Room> getRooms() {
     return rooms.values();
   }
@@ -71,7 +75,7 @@ public class Area {
   public String getId() { return id; }
 
   /**
-   * @param name The id to set for the area.
+   * @param i The id to set for the area.
    */
   public void setId(String i) { id = i; }
 
@@ -84,6 +88,7 @@ public class Area {
    * Sets the area's title.
    * @param t The title to set.
    */
+  @SuppressWarnings("unused")
   public void setTitle(String t) { title = t; }
 
   /**
@@ -92,7 +97,7 @@ public class Area {
   public String getAuthor() { return author; }
 
   /**
-   * @param author The area's author.
+   * @param a The area's author.
    */
   public void setAuthor(String a) { author = a; }
 }

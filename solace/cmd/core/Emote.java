@@ -1,7 +1,7 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
+import solace.cmd.AbstractCommand;
 import solace.util.*;
-import solace.net.*;
 import solace.game.*;
 import java.util.*;
 
@@ -10,26 +10,28 @@ import java.util.*;
  * the has no impact on gameplay and is added for flavor.
  * @author Ryan Sandor Richards
  */
-public class Emote extends PlayStateCommand {
+public class Emote extends AbstractCommand {
   HelpSystem help;
   Emotes emotes;
 
-  public Emote(solace.game.Character ch) {
-    super("emote", ch);
+  public Emote() {
+    super("emote");
     emotes = Emotes.getInstance();
+    setAliases(emotes.getEmoteAliases());
+    setPriority(AbstractCommand.ORDER_LOW);
   }
 
-  public void run(Connection c, String []params) {
-    Room room = character.getRoom();
+  public void run(Player player, String []params) {
+    Room room = player.getRoom();
 
-    if (character.isSleeping()) {
-      character.sendln("You cannot display emotes while asleep.");
+    if (player.isSleeping()) {
+      player.sendln("You cannot display emotes while asleep.");
       return;
     }
 
     if (params[0].equals("emote")) {
       if (params.length < 2) {
-        character.sendln("What would you like to emote?");
+        player.sendln("What would you like to emote?");
         return;
       }
 
@@ -40,58 +42,58 @@ public class Emote extends PlayStateCommand {
 
       String msg = buffer.toString().trim();
 
-      character.resetVisibilityOnAction("emote");
+      player.resetVisibilityOnAction("emote");
       room.sendMessage(
-        character.getName() + " " + msg,
-        character
+        player.getName() + " " + msg,
+        player
       );
-      character.sendln("You " + msg);
+      player.sendln("You " + msg);
       return;
     }
 
     try {
       if (params.length == 1) {
-        character.wrapln(emotes.toSource(params[0]));
-        room.sendMessage(emotes.toRoom(params[0]), character);
+        player.wrapln(emotes.toSource(params[0]));
+        room.sendMessage(emotes.toRoom(params[0]), player);
         return;
       }
 
       String emote = params[0];
       String targetName = params[1];
-      Player target = room.findPlayerIfVisible(targetName, character);
+      Player target = room.findPlayerIfVisible(targetName, player);
 
       if (target == null) {
-        character.wrapln("You do not see " + targetName + " here.");
+        player.wrapln("You do not see " + targetName + " here.");
         return;
       }
 
-      character.resetVisibilityOnAction("emote");
+      player.resetVisibilityOnAction("emote");
 
       // TODO This might need to use `room.sendMessage` instead...
       Collection<Player> roomChars = room.getPlayers();
       synchronized(roomChars) {
         for (Player ch : roomChars) {
-          if (ch == character || ch == target) {
+          if (ch == player || ch == target) {
             continue;
           }
           ch.sendMessage(emotes.toRoom(
             emote,
-            character.getName(),
+            player.getName(),
             target.getName()
           ));
         }
       }
 
-      character.sendln(emotes.toSource(emote, target.getName()));
-      target.sendMessage(emotes.toTarget(emote, character.getName()));
+      player.sendln(emotes.toSource(emote, target.getName()));
+      target.sendMessage(emotes.toTarget(emote, player.getName()));
     }
     catch (EmoteNotFoundException enfe) {
       Log.error(enfe.getMessage());
-      character.sendln("Could not emote. Try again later.");
+      player.sendln("Could not emote. Try again later.");
     }
     catch (InvalidEmoteException iee) {
       Log.error(iee.getMessage());
-      character.sendln("Could not emote. Try again later.");
+      player.sendln("Could not emote. Try again later.");
     }
   }
 }

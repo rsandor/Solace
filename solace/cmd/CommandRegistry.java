@@ -1,16 +1,14 @@
 package solace.cmd;
 
 import solace.cmd.core.*;
+import solace.cmd.admin.*;
 import solace.game.Player;
 import solace.script.ScriptedCommand;
 import solace.script.ScriptedCommands;
 import solace.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Registry for all game play commands. This keeps track of the master
@@ -19,9 +17,15 @@ import java.util.List;
  * @author Ryan Sandor Richards
  */
 public class CommandRegistry {
-  private final List<Command> commands;
-  private final Hashtable<String, Boolean> names;
-  private final Command notFound;
+  private final List<Command> commands = Collections.synchronizedList(
+    new ArrayList<Command>()
+  );
+  private final Set<String> names = new HashSet<>();
+  private final Command notFound = new NotFoundCommand();
+
+  /**
+   * Static singleton instance.
+   */
   private static final CommandRegistry instance = new CommandRegistry();
 
   /**
@@ -42,12 +46,19 @@ public class CommandRegistry {
   }
 
   /**
+   * Determines if the given player has a command for the given search string.
+   * @param search String to match against.
+   * @param player Player for which the command is being sought.
+   * @return `true` if the player has a command that matches, `false` otherwise.
+   */
+  public static boolean has(String search, Player player) {
+    return instance.hasCommand(search, player);
+  }
+
+  /**
    * Creates a new game play commands registry.
    */
   private CommandRegistry() {
-    commands = Collections.synchronizedList(new ArrayList<Command>());
-    names = new Hashtable<>();
-    notFound = new NotFoundCommand();
   }
 
   /**
@@ -57,25 +68,21 @@ public class CommandRegistry {
     Log.info("Reloading game commands");
     commands.clear();
     names.clear();
+    Log.info(""+ names.size());
 
     // Core built-in commands
     add(new Quit());
     add(new Move());
     add(new Look());
     add(new Attack());
+    add(new Help());
+    add(new Hotbar());
+    add(new Emote());
 
-    /*
-    // Emotes
-    Emote emote = new Emote();
-    add(emote);
-    add(Emotes.getInstance().getEmoteAliases(), new Emote());
-    */
-
-    /*
     // Admin Commands
-    add(new Inspect());
-    add(new solace.cmd.deprecated.admin.Set());
-    */
+    add(new Reload());
+    // add(new Inspect());
+    // add(new solace.cmd.deprecated.admin.Set());
 
     // Add scripted commands
     for (ScriptedCommand command : ScriptedCommands.getCommands()) {
@@ -88,18 +95,19 @@ public class CommandRegistry {
    * @param c The command to add.
    */
   private void add(Command c) {
-    String name = c.getName();
+    Log.debug("Adding: " + c.getName());
+    String name = c.getName().toLowerCase();
     if (name == null || name.length() == 0) {
       Log.warn("Encountered command with empty name, skipping");
       return;
     }
-    Log.trace(String.format("Adding command: %s", name));
-    if (names.containsKey(name)) {
-      Log.warn(String.format("Encountered duplicate command name for '%s'", name));
+    if (names.contains(name)) {
+      Log.warn(String.format("Encountered duplicate command name for '%s', skipping", name));
       return;
     }
+    Log.trace(String.format("Adding command: %s", name));
     commands.add(c);
-    names.put(name, true);
+    names.add(name);
   }
 
   /**
@@ -109,18 +117,16 @@ public class CommandRegistry {
    * @return The first command that matches the given string or the "not found" command.
    */
   private synchronized Command findCommand(String search, Player player) {
-    List<Command> found = new LinkedList<>();
-    for (Command command : commands) {
-      if (command.matches(search)) {
-        found.add(command);
-      }
-    }
-    // TODO We need a way to rank commands with like prefixes...
-    for (Command command : found) {
-      if (command.hasCommand(player)) {
-        return command;
-      }
-    }
-    return notFound;
+    List<Command> found = commands.stream()
+      .filter((c) -> c.matches(search) && c.hasCommand(player))
+      .collect(Collectors.toList());
+    found.sort((Command a, Command b) -> a.getPriority() < b.getPriority() ? -1 : 1);
+    return found.size() >= 1 ? found.get(0) : notFound;
+  }
+
+  private synchronized boolean hasCommand(String search, Player player) {
+    return commands.stream()
+      .filter((c) -> c.matches(search) && c.hasCommand(player))
+      .collect(Collectors.toList()).size() > 0;
   }
 }

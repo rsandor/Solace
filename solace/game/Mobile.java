@@ -70,11 +70,6 @@ public class Mobile extends AbstractPlayer {
   /**
    * @see solace.game.Player
    */
-  public solace.game.Character getCharacter() { return null; }
-
-  /**
-   * @see solace.game.Player
-   */
   public solace.net.Connection getConnection() { return null; }
 
   /**

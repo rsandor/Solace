@@ -1,7 +1,8 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
+import solace.cmd.AbstractCommand;
+import solace.game.Player;
 import solace.util.*;
-import solace.net.*;
 
 import java.util.*;
 
@@ -10,24 +11,22 @@ import java.util.*;
  * articles in the solace help system.
  * @author Ryan Sandor Richards
  */
-public class Help extends AbstractStateCommand {
-  HelpSystem help;
+public class Help extends AbstractCommand {
+  HelpSystem help = HelpSystem.getInstance();
 
   public Help() {
     super("help");
-    help = HelpSystem.getInstance();
+    setPriority(AbstractCommand.ORDER_CORE);
   }
 
-  public void run(Connection c, String []params) {
-    if (params.length < 2) {
-      c.wrapln( help.getArticle("index.md") );
+  public void run(Player player, String []params) {
+    Set<String> keywords = new HashSet<>(
+      Arrays.asList(params).subList(1, params.length)
+    );
+    if (keywords.size() == 0) {
+      player.wrapln( help.getArticle("index.md") );
       return;
     }
-
-    List<String> keywords = new LinkedList<String>();
-    for (int i = 1; i < params.length; i++) {
-      keywords.add(params[i].toLowerCase());
-    }
-    c.send("\n\r" + help.query(keywords) + "\n\r");
+    player.send("\n\r" + help.query(keywords) + "\n\r");
   }
 }

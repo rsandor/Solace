@@ -19,6 +19,11 @@ public class Character extends AbstractPlayer {
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
   /**
+   * Character returned when instead of null when a character could not be found.
+   */
+  public static final Character NULL = new Character();
+
+  /**
    * Default prompt given to new players.
    */
   public static final String DEFAULT_PROMPT =
@@ -33,18 +38,27 @@ public class Character extends AbstractPlayer {
     return EQ_SLOTS.contains(name);
   }
 
-  String id = null;
-  String name;
-  String description;
-  long gold;
-  List<Item> inventory = null;
+  String id = "";
+  String name = "";
+  String description = "";
+  long gold = 0;
+  List<Item> inventory = Collections.synchronizedList(new ArrayList<Item>());
   Hashtable<String, Item> equipment = new Hashtable<String, Item>();
   HashSet<String> skillIds = new HashSet<String>();
   List<Skill> skills = new ArrayList<Skill>();
-  Account account = null;
+  Account account = Account.NULL;
   String prompt = Character.DEFAULT_PROMPT;
   Hashtable<String, String> hotbar = new Hashtable<String, String>();
-  Race race;
+  Race race = Race.NULL;
+
+  /**
+   * Creates a null character.
+   */
+  public Character() {
+    super();
+    id = "null";
+    name = "null character";
+  }
 
   /**
    * Creates a new character.
@@ -462,6 +476,7 @@ public class Character extends AbstractPlayer {
   /**
    * @return The account to which the character belongs.
    */
+  @Override
   public Account getAccount() {
     return account;
   }

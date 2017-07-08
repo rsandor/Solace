@@ -16,6 +16,7 @@ public class Attack extends AbstractCommand {
 
   public Attack() {
     super("attack", Attack.aliases);
+    setPriority(AbstractCommand.ORDER_CORE);
   }
 
   public void run(Player player, String []params) {

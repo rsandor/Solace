@@ -9,21 +9,30 @@ public interface Command {
   /**
    * @return The name of the command.
    */
-  public String getName();
+  String getName();
 
   /**
    * @return The display name of the command used for messages.
    */
-  public String getDisplayName();
+  String getDisplayName();
+
+  /**
+   * Returns the ordering priority for the command. This is used to sort
+   * a collection of commands returned during a search operation in order
+   * to decide which command should be chose (e.g. in for multiple commands
+   * that match a common prefix).
+   * @return The ordering priority for the command.
+   */
+  int getPriority();
 
   /**
    * Determines if the given string matches the command's name (this can
-   * somtimes be different than the two strings being lexically identical,
+   * sometimes be different than the two strings being lexically identical,
    * consider prefix matches which many MUDs use).
    * @param s String to test for a match
    * @return True if the string matches the command's name, false otherwise.
    */
-  public boolean matches(String s);
+  boolean matches(String s);
 
   /**
    * Determines if a player has access to this command.

@@ -21,6 +21,11 @@ public interface Player {
   public solace.game.Character getCharacter();
 
   /**
+   * @return The account for the player.
+   */
+  public Account getAccount();
+
+  /**
    * @return The game connection associated with the player.
    */
   public Connection getConnection();

@@ -3,16 +3,24 @@
 ### In Progress
 
 **Feature: Commands 2.0**
-- [x] Centralized command registry
-  - [x] Commands as singletons
-  - [ ] Add `reload` command as a PlayCommand for admins only (easier testing)
-  - [ ] Add `reload scripts` so we can update commands on-the-fly
-- [ ] Overhaul command and controllers abstraction
+- [x] Overhaul command and controllers abstraction
   - [x] Controllers should no longer hold player specific command instances
   - [x] Prompt parsers can lookup commands in the registry
-  - [ ] Commands should be able to provide an ordering field that helps with
+  - [x] Commands should provide an ordering field that helps with
         selecting the correct command even if they have a common prefix
 - [x] Scripting engine access to command aliases (move data out of controllers)
+- [x] Centralized command registry
+  - [x] Commands as singletons
+  - [x] Add command registry
+  - [x] Ability to reload all commands on the fly (including scripted commands)
+- [ ] Add + Flesh-out `reload` command (core in-game command, admin only)
+  - [x] `reload scripts` - update commands on-the-fly!
+  - [ ] `reload areas`
+  - [ ] `reload messages`
+  - [ ] `reload help`
+  - [ ] `reload emotes`
+  - [ ] `reload skills`
+  - [ ] `reload races`
 - [ ] Fully Script all commands that can be scripted (this should be most)
 
 --------------------------------------------------------------------------------

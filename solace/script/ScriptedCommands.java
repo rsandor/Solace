@@ -9,6 +9,8 @@ public class ScriptedCommands {
   private static List<ScriptedCommand> commands =
     Collections.synchronizedList(new LinkedList<ScriptedCommand>());
 
+  public static void clear() { commands.clear(); }
+
   /**
    * Adds a new scripted command.
    * @param c The command to add.

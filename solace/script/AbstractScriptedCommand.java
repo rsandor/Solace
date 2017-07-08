@@ -11,6 +11,7 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
   private String name;
   private String displayName;
   private String[] aliases;
+  private int order;
   private BiPredicate<Player, String[]> runLambda;
 
   /**
@@ -40,6 +41,17 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
     setRunLambda(runLambda);
     setAliases(aliases);
   }
+
+  /**
+   * Sets the order for the scripted command.
+   * @param o Order to set.
+   */
+  public void setOrder(int o) { order = o; }
+
+  /**
+   * @return The order for the scripted command.
+   */
+  public int getOrder() { return order; }
 
   /**
    * Sets the aliases for the scripted command.

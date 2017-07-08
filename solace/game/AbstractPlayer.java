@@ -23,7 +23,7 @@ public abstract class AbstractPlayer implements Player {
      * Creates a new cooldown timer for the given duration.
      * @param d Duration in seconds when the skill will be available.
      */
-    public CooldownTimer(int d) {
+    CooldownTimer(int d) {
       usedAt = new Date();
       duration = (long)d;
     }
@@ -31,7 +31,7 @@ public abstract class AbstractPlayer implements Player {
     /**
      * @return The time remaining, in seconds, until the cool down is complete.
      */
-    public int getTimeRemaining() {
+    int getTimeRemaining() {
       long elapsed = new Date().getTime() - usedAt.getTime();
       elapsed /= 1000;
       return (int)Math.max(0, duration - elapsed);
@@ -39,7 +39,7 @@ public abstract class AbstractPlayer implements Player {
   }
 
   // Instance variables
-  boolean immortal = false;
+  private boolean immortal = false;
   PlayState state = PlayState.STANDING;
   Room room = null;
   int level;
@@ -49,16 +49,15 @@ public abstract class AbstractPlayer implements Player {
   String majorStat = "none";
   String minorStat = "none";
 
-  boolean onGCDCooldown = false;
-  String comboAction;
-  boolean casting = false;
-  Clock.Event castingEvent;
+  private boolean onGCDCooldown = false;
+  private String comboAction;
+  private boolean casting = false;
+  private Clock.Event castingEvent;
 
-  Hashtable<String, CooldownTimer> cooldownTimers =
-    new Hashtable<String, CooldownTimer>();
-  Hashtable<String, Integer> passives = new Hashtable<String, Integer>();
-  Hashtable<String, Integer> cooldowns = new Hashtable<String, Integer>();
-  Hashtable<String, Buff> buffs = new Hashtable<String, Buff>();
+  private Hashtable<String, CooldownTimer> cooldownTimers = new Hashtable<>();
+  private Hashtable<String, Integer> passives = new Hashtable<>();
+  private Hashtable<String, Integer> cooldowns = new Hashtable<>();
+  private final Hashtable<String, Buff> buffs = new Hashtable<>();
 
   // Abstract Player Methods
   public abstract void die(Player killer);
@@ -75,8 +74,19 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getDamageMod();
   public abstract int getAverageDamage();
   public abstract int getNumberOfAttacks();
-  public abstract solace.game.Character getCharacter();
   public abstract Connection getConnection();
+
+  /**
+   * @see solace.game.Player
+   */
+  public solace.game.Character getCharacter() { return Character.NULL; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public Account getAccount() {
+    return Account.NULL;
+  }
 
   /**
    * Sets the passives and cooldowns for this character. This method should be
@@ -119,7 +129,7 @@ public abstract class AbstractPlayer implements Player {
    * Determines the ability score of the given name.
    * @param name Name of the ability score.
    * @return The ability score for this player.
-   * @see solace.game.Stats.getAbility(Player, String)
+   * @see solace.game.Stats
    */
   protected int getAbility(String name) {
     return Stats.getAbility(this, name);
@@ -132,12 +142,10 @@ public abstract class AbstractPlayer implements Player {
    *   provided resource name is invalid.
    */
   protected int getMaxResource(String name) {
-    if (name.equals("hp")) {
-      return Stats.getMaxHp(this);
-    } else if (name.equals("mp")) {
-      return Stats.getMaxMp(this);
-    } else if (name.equals("sp")) {
-      return Stats.getMaxSp(this);
+    switch (name) {
+      case "hp": return Stats.getMaxHp(this);
+      case "mp": return Stats.getMaxMp(this);
+      case "sp": return Stats.getMaxSp(this);
     }
     return -1;
   }
@@ -423,8 +431,7 @@ public abstract class AbstractPlayer implements Player {
     // TODO GCD cooldowns should really be independent of the global clock...
     Clock.getInstance().schedule(
       String.format("GCD for %s", getName()),
-      2,
-      new Runnable() { public void run() { onGCDCooldown = false; } });
+      2, () -> onGCDCooldown = false);
   }
 
   /**
@@ -478,7 +485,7 @@ public abstract class AbstractPlayer implements Player {
    * @param name Name of the passive.
    * @param level Level of the passive.
    */
-  protected void setPassive(String name, int level) {
+  void setPassive(String name, int level) {
     passives.put(name, level);
   }
 
@@ -509,7 +516,7 @@ public abstract class AbstractPlayer implements Player {
    * @param name Name of the cooldown.
    * @param level Level of the cooldown.
    */
-  protected void setCooldown(String name, int level) {
+  void setCooldown(String name, int level) {
     cooldowns.put(name, level);
   }
 
@@ -524,7 +531,7 @@ public abstract class AbstractPlayer implements Player {
    * Sends messages to player when a buff is applied.
    * @param b Buff begin applied.
    */
-  protected void sendBuffBeginMessages(Buff b) {
+  private void sendBuffBeginMessages(Buff b) {
     String targetBeginMessage = b.getTargetBeginMessage();
     if (targetBeginMessage != null && !targetBeginMessage.equals("")) {
       sendln(targetBeginMessage);
@@ -540,7 +547,7 @@ public abstract class AbstractPlayer implements Player {
    * Sends messages to player when a buff is removed.
    * @param b Buff begin removed.
    */
-  protected void sendBuffEndMessages(Buff b) {
+  private void sendBuffEndMessages(Buff b) {
     String targetEndMessage = b.getTargetEndMessage();
     if (targetEndMessage != null && !targetEndMessage.equals("")) {
       sendln(targetEndMessage);
@@ -614,7 +621,7 @@ public abstract class AbstractPlayer implements Player {
    */
   public Collection<Buff> getBuffs() {
     synchronized (buffs) {
-      List<Buff> remove = new LinkedList<Buff>();
+      List<Buff> remove = new LinkedList<>();
       for (Buff b : buffs.values()) {
         if (!b.hasExpired()) continue;
         remove.add(b);
@@ -631,7 +638,6 @@ public abstract class AbstractPlayer implements Player {
    */
   public void removeExpiredBuffs() {
     synchronized (buffs) {
-      List<Buff> remove = new LinkedList<Buff>();
       for (Buff b : buffs.values()) {
         if (b.hasExpired()) {
           removeBuff(b.getName());
@@ -681,17 +687,13 @@ public abstract class AbstractPlayer implements Player {
       Log.warn(String.format(
         "Player '%s' has been set as immortal by player '%s'",
         getName(), setter.getName()));
-      sendMessage(String.format(
-        "You have been granted immortality! You are now impervious to damage!"
-        ));
+      sendMessage("You have been granted immortality! You are now impervious to damage!");
       setter.sendMessage(String.format("%s is now immortal.", getName()));
     } else {
       Log.warn(String.format(
         "Player '%s' has been has been set as NOT immortal by player '%s'",
         getName(), setter.getName()));
-      sendMessage(String.format(
-        "You are no longer immortal! Damage now applies as normal"
-        ));
+      sendMessage("You are no longer immortal! Damage now applies as normal");
       setter.sendMessage(String.format("%s is no longer immortal.", getName()));
     }
   }
@@ -703,10 +705,7 @@ public abstract class AbstractPlayer implements Player {
     // TODO Add a special buff that allows players to see "vanished" players
     //      this should not be easy to attain for player players, but some
     //      "god" level mobs should always have the buff.
-    if (hasBuff("vanished")) {
-      return false;
-    }
-    return true;
+    return !hasBuff("vanished");
   }
 
   /**

@@ -112,7 +112,7 @@ public class HelpSystem {
    * @param input Prefix keywords to use for the search (given by user)
    * @return A list of articles matching the given keywords or the article
    */
-  public String query(List<String> input) {
+  public String query(Set<String> input) {
     TreeSet<String> articlePaths = new TreeSet<String>();
     TreeSet<String> validKeywords = new TreeSet<String>();
 

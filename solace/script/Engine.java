@@ -66,6 +66,7 @@ public class Engine {
   public static void reload() {
     Log.info("Reloading game scripts");
     try {
+      ScriptedCommands.clear();
       instance.runAll(Paths.get(ENGINE_JS), null, true);
       instance.runAll(Paths.get(SCRIPTS_DIR), ENGINE_JS ,false);
     } catch (Throwable e) {

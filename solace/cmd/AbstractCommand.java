@@ -6,8 +6,15 @@ import solace.game.Player;
  * @author Ryan Sandor Richards.
  */
 public abstract class AbstractCommand implements Command {
+  // TODO Use an enum?
+  public static int ORDER_CORE = 0;
+  public static int ORDER_HIGH = 10;
+  public static int ORDER_DEFAULT = 20;
+  public static int ORDER_LOW = 30;
+
   private String name;
   private String displayName;
+  private int order = ORDER_DEFAULT;
   private String[] aliases = new String[0];
 
   /**
@@ -49,6 +56,23 @@ public abstract class AbstractCommand implements Command {
     displayName = d;
     aliases = a;
   }
+
+  /**
+   * Sets aliases for the command.
+   * @param a Aliases for the command.
+   */
+  protected void setAliases(String[] a) { aliases = a; }
+
+  /**
+   * @see Command
+   */
+  public int getPriority() { return order; }
+
+  /**
+   * Sets the ordering priority for the command.
+   * @param o Order to set.
+   */
+  public void setPriority(int o) { order = o; }
 
   /**
    * @see Command

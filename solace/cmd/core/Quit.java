@@ -12,6 +12,7 @@ import solace.net.Connection;
 public class Quit extends AbstractCommand {
   public Quit() {
     super("quit");
+    setPriority(AbstractCommand.ORDER_CORE);
   }
 
   public void run(Player player, String []params) {

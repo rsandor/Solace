@@ -17,6 +17,7 @@ public class Move extends AbstractCommand {
 
   public Move() {
     super("move", aliases);
+    setPriority(AbstractCommand.ORDER_CORE);
   }
 
   public void run(Player player, String []params) {

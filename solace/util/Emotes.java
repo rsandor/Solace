@@ -50,8 +50,8 @@ public class Emotes {
   /**
    * @return A collection of emote names for use with the emote command.
    */
-  public Collection<String> getEmoteAliases() {
-    return emotes.keySet();
+  public String[] getEmoteAliases() {
+    return emotes.keySet().toArray(new String[0]);
   }
 
   /**
