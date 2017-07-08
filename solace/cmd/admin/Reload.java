@@ -36,7 +36,7 @@ public class Reload extends CompositeCommand {
 
   @Override
   protected void defaultCommand(Player player, String[] params) {
-    player.sendln("Usage: reload (script)");
+    player.sendln("Usage: reload (script|messages|help|areas|emotes|skills|races)");
   }
 
   /**
@@ -49,6 +49,7 @@ public class Reload extends CompositeCommand {
     Log.info(String.format("User '{m}%s{x}' initiated script reload...", player.getName()));
     Engine.reload();
     CommandRegistry.reload();
+    player.sendln("Game scripts reloaded.");
   }
 
   /**
