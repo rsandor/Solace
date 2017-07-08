@@ -65,6 +65,7 @@ public abstract class AbstractPlayer implements Player {
   public abstract void sendMessage(String s);
   public abstract void send(String msg);
   public abstract void sendln(String msg);
+  public abstract void sendln(String... lines);
   public abstract void wrapln(String msg);
   public abstract String getName();
   public abstract boolean hasName(String namePrefix);

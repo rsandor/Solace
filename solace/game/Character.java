@@ -2,6 +2,7 @@ package solace.game;
 
 import java.util.*;
 
+import com.google.common.base.Joiner;
 import solace.net.Connection;
 import solace.util.*;
 import solace.xml.GameParser;
@@ -546,6 +547,11 @@ public class Character extends AbstractPlayer {
   public void sendln(String msg) {
     getConnection().sendln(msg);
   }
+
+  /**
+   * @see solace.game.Player;
+   */
+  public void sendln(String... lines) { sendln(Joiner.on("\n\r").join(lines)); }
 
   /**
    * Sends a string to the character wrapped with newlines.
