@@ -8,3 +8,5 @@ data/accounts/*.xml
 .idea/
 out/
 *.iml
+.*.swp
+
