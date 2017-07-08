@@ -15,8 +15,8 @@
   - [x] Ability to reload all commands on the fly (including scripted commands)
 - [ ] Add + Flesh-out `reload` command (core in-game command, admin only)
   - [x] `reload scripts` - update commands on-the-fly!
+  - [x] `reload messages`
   - [ ] `reload areas`
-  - [ ] `reload messages`
   - [ ] `reload help`
   - [ ] `reload emotes`
   - [ ] `reload skills`
@@ -37,14 +37,6 @@
 
 ### Backlog
 
-**Feature: Help system 2.0**
-- Create a better direct indexing system for help pages
-- Use Apache Lucene for full help text search
-- Allow help files to be defined along side objects they describe
-  (perhaps use a `.help.md` extension and a recursive find along with
-  the ability to assign keywords from within the help markdown itself
-  that are stripped and ingested upon parsing).
-
 **The "game/" directory**
 - [ ] Move from using `data/` to `game/`
 - [ ] Buff scripting
@@ -53,11 +45,17 @@
 - [ ] Race scripting
 - [ ] Skill scripting (with localized scripts)
 - [ ] Basic area scripting
-
-**Feature: Account System 2.0**
-- [ ] Account files should be saved to JSON
+- [ ] Help 2.0
+  - Use Apache Lucene for full help text search
+    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
+  - [ ] Better direct indexing scheme for help files
+  - [ ] Allow help files to be defined along side objects they describe
+        (perhaps use a `.help.md` extension and a recursive find along with
+        the ability to assign keywords from within the help markdown itself
+        that are stripped and ingested upon parsing).
 
 **Feature: Character Creation 2.0**
+- [ ] Account files should be saved to JSON
 - [ ] Skills 2.0
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
@@ -72,8 +70,8 @@
 - [ ] Random dreams while sleeping (fun and refreshes prompt)
 - Decorative banners for shops, inventory, character sheet, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
-- Global communication channels
-- Player-to-player auction house
+- [ ] Global communication channels
+- [ ] Player-to-player auction house
 - [ ] Create book type items that can be read
 - [ ] Book: Liber Particularum Magicae (book of elemental magic)
       (reading this unlocks ultimate level 100 evocation skill!)
