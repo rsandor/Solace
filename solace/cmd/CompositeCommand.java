@@ -2,15 +2,7 @@ package solace.cmd;
 
 import com.google.common.base.Joiner;
 import solace.game.Player;
-import solace.util.Log;
-
-import java.util.LinkedHashMap;
-import java.util.NoSuchElementException;
-import java.util.SortedMap;
-
-import org.apache.commons.collections4.Trie;
-import org.apache.commons.collections4.trie.PatriciaTrie;
-
+import solace.util.NameTrie;
 
 /**
  * Abstract base class for commands that are composites of SubCommands. Allows for various
@@ -18,7 +10,7 @@ import org.apache.commons.collections4.trie.PatriciaTrie;
  * @author Ryan Sandor Richards
  */
 public class CompositeCommand extends AbstractCommand {
-  private static Trie<String, SubCommand> subCommandTrie;
+  private static NameTrie<SubCommand> subCommands;
 
   /**
    * Creates a new composite command.
@@ -26,7 +18,7 @@ public class CompositeCommand extends AbstractCommand {
    */
   public CompositeCommand(String name) {
     super(name);
-    subCommandTrie = new PatriciaTrie<>(new LinkedHashMap<String, SubCommand>());
+    subCommands = new NameTrie<>(this::defaultCommand);
   }
 
   /**
@@ -35,11 +27,7 @@ public class CompositeCommand extends AbstractCommand {
    * @param subCommand The sub command to add.
    */
   protected void addSubCommand(String name, SubCommand subCommand) {
-    if (subCommandTrie.keySet().contains(name)) {
-      Log.warn(String.format("Duplicate name for SubCommand encountered: %s, skipping", name));
-      return;
-    }
-    subCommandTrie.put(name, subCommand);
+    subCommands.put(name, subCommand);
   }
 
   /**
@@ -48,7 +36,8 @@ public class CompositeCommand extends AbstractCommand {
    * @param params Original parameters to the command.
    */
   protected void defaultCommand(Player player, String[] params) {
-    player.sendln(String.format("Sub command '{y}%s{x}' not found.", Joiner.on(" ").join(params)));
+    player.sendln(String.format(
+      "Sub command '{y}%s{x}' not found.", Joiner.on(" ").join(params)));
   }
 
   /**
@@ -58,13 +47,9 @@ public class CompositeCommand extends AbstractCommand {
    *   If no such command could be found this returns a command that calls the
    *   defaultCommand method.
    */
+  @SuppressWarnings("WeakerAccess")
   protected SubCommand getSubCommand(String namePrefix) {
-    try {
-      SortedMap<String, SubCommand> matches = subCommandTrie.prefixMap(namePrefix);
-      return matches.get(matches.firstKey());
-    } catch (NoSuchElementException e) {
-      return this::defaultCommand;
-    }
+    return subCommands.find(namePrefix);
   }
 
   /**
@@ -72,6 +57,7 @@ public class CompositeCommand extends AbstractCommand {
    * @param player Player who is initiating the command.
    * @param params Parameters to this command.
    */
+  @SuppressWarnings("WeakerAccess")
   protected void runSubCommand(Player player, String[] params) {
     if (params.length != 2) {
       defaultCommand(player, params);
