@@ -4,6 +4,7 @@ import solace.cmd.CommandRegistry;
 import solace.game.Player;
 import solace.script.Engine;
 import solace.cmd.CompositeCommand;
+import solace.util.HelpSystem;
 import solace.util.Log;
 import solace.util.Message;
 
@@ -17,6 +18,7 @@ public class Reload extends CompositeCommand {
     super("reload");
     addSubCommand("scripts", this::scripts);
     addSubCommand("messages", this::messages);
+    addSubCommand("help", this::help);
   }
 
   @Override
@@ -36,24 +38,38 @@ public class Reload extends CompositeCommand {
    */
   @SuppressWarnings("unused")
   private void scripts(Player player, String[] params) {
-    Log.info(String.format("User '{m}%s{x}' initiated script reload", player.getName()));
+    Log.info(String.format("User '{m}%s{x}' initiated script reload...", player.getName()));
     Engine.reload();
     CommandRegistry.reload();
   }
+
   /**
    * Reloads game messages.
    * @param player Player initiating the reload.
    * @param params Original command parameters.
    */
+  @SuppressWarnings("unused")
   private void messages(Player player, String[] params) {
-    Log.info(String.format("User '{m}%s{x}' initiated messages reload", player.getName()));
     try {
+      Log.info(String.format("User '{m}%s{x}' initiated messages reload", player.getName()));
       Message.reload();
       player.sendln("Game messages reloaded.");
     } catch (Throwable t) {
-      player.sendln("Error encountered when reloading messages.");
+      player.sendln("Error encountered when reloading messages...");
       Log.error("Unable to reload game messages.");
       t.printStackTrace();
     }
+  }
+
+  /**
+   * Reloads game help files.
+   * @param player Player initiating the reload.
+   * @param params Original command parameters.
+   */
+  @SuppressWarnings("unused")
+  private void help(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated help reload...", player.getName()));
+    HelpSystem.reload();
+    player.sendln("Help articles reloaded.");
   }
 }

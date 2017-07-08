@@ -17,7 +17,7 @@
   - [x] `reload scripts` - update commands on-the-fly!
   - [x] `reload messages`
   - [ ] `reload areas`
-  - [ ] `reload help`
+  - [x] `reload help`
   - [ ] `reload emotes`
   - [ ] `reload skills`
   - [ ] `reload races`

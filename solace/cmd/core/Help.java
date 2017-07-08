@@ -12,14 +12,13 @@ import java.util.*;
  * @author Ryan Sandor Richards
  */
 public class Help extends AbstractCommand {
-  HelpSystem help = HelpSystem.getInstance();
-
   public Help() {
     super("help");
     setPriority(AbstractCommand.ORDER_CORE);
   }
 
   public void run(Player player, String []params) {
+    HelpSystem help = HelpSystem.getInstance();
     Set<String> keywords = new HashSet<>(
       Arrays.asList(params).subList(1, params.length)
     );
