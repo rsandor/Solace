@@ -70,13 +70,16 @@ public class CommandRegistry {
     names.clear();
 
     // Core built-in commands
-    add(new Quit());
-    add(new Move());
-    add(new Look());
-    add(new Attack());
-    add(new Help());
-    add(new Hotbar());
-    add(new Emote());
+    Arrays.asList(
+      new Quit(),
+      new Move(),
+      new Look(),
+      new Attack(),
+      new Help(),
+      new Hotbar(),
+      new Emote()
+    ).forEach(this::add);
+
 
     // Admin Commands
     add(new Reload());
@@ -96,7 +99,7 @@ public class CommandRegistry {
   private void add(Command c) {
     Log.debug("Adding: " + c.getName());
     String name = c.getName().toLowerCase();
-    if (name == null || name.length() == 0) {
+    if (name.length() == 0) {
       Log.warn("Encountered command with empty name, skipping");
       return;
     }
