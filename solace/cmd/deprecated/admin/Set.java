@@ -52,13 +52,13 @@ public class Set extends PlayStateCommand {
         int mp = Integer.parseInt(value);
         p.setMp(mp);
       } else if (param.equals("race")) {
-        if (!Races.has(value)) {
+        if (!Races.getInstance().has(value)) {
           throw new Exception("Invalid player race: " + value);
         }
         if (p.isMobile()) {
           throw new Exception("Mobiles cannot have races.");
         }
-        ((solace.game.Character)p).setRace(Races.get(value));
+        ((solace.game.Character)p).setRace(Races.getInstance().get(value));
       } else if (param.equals("immortal")) {
         // Player immortality can only be set by immortals, it prevents all
         // damage to the player who is currently flagged as such. This shouldn't

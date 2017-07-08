@@ -13,14 +13,14 @@
   - [x] Commands as singletons
   - [x] Add command registry
   - [x] Ability to reload all commands on the fly (including scripted commands)
-- [ ] Add + Flesh-out `reload` command (core in-game command, admin only)
+- [x] Add + Flesh-out `reload` command (core in-game command, admin only)
   - [x] `reload scripts` - update commands on-the-fly!
   - [x] `reload messages`
   - [x] `reload areas`
   - [x] `reload help`
   - [x] `reload emotes`
   - [x] `reload skills`
-  - [ ] `reload races`
+  - [x] `reload races`
 - [ ] Write general "CommandTrie" which primarily will be used to do prefix
       lookup for commands and apply priority ordering.
 - [ ] Fully Script all commands that can be scripted (this should be most)

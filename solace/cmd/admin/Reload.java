@@ -26,6 +26,7 @@ public class Reload extends CompositeCommand {
     addSubCommand("areas", this::areas);
     addSubCommand("emotes", this::emotes);
     addSubCommand("skills", this::skills);
+    addSubCommand("races", this::races);
   }
 
   @Override
@@ -185,7 +186,7 @@ public class Reload extends CompositeCommand {
    */
   @SuppressWarnings("unused")
   private void emotes(Player player, String[] params) {
-    Log.info(String.format("User '{m}%s{x}' initiated emote reload...", player.getName()));
+    Log.info(String.format("User '{m}%s{x}' initiated emotes reload...", player.getName()));
     try {
       Emotes.getInstance().reload();
       player.sendln("Emotes articles reloaded.");
@@ -201,11 +202,28 @@ public class Reload extends CompositeCommand {
    */
   @SuppressWarnings("unused")
   private void skills(Player player, String[] params) {
-    Log.info(String.format("User '{m}%s{x}' initiated skill reload...", player.getName()));
+    Log.info(String.format("User '{m}%s{x}' initiated skills reload...", player.getName()));
     try {
       Skills.getInstance().reload();
       World.getActiveCharacters().forEach(Character::resetSkills);
       player.sendln("Skills reloaded.");
+    } catch (Throwable t) {
+      player.sendln("An error occurred when reloading emotes.");
+    }
+  }
+
+  /**
+   * Reloads game races.
+   * @param player Player initiating the reload.
+   * @param params Original command parameters.
+   */
+  @SuppressWarnings("unused")
+  private void races(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated races reload...", player.getName()));
+    try {
+      Races.getInstance().reload();
+      World.getActiveCharacters().forEach(Character::resetRace);
+      player.sendln("Races reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading emotes.");
     }

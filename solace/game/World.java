@@ -39,7 +39,7 @@ public class World {
       return;
 
     Skills.getInstance().reload();
-    Races.initialize();
+    Races.getInstance().reload();
     Buffs.initialize();
 
     loadAreas();

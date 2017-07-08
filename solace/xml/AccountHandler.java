@@ -223,11 +223,13 @@ public class AccountHandler extends Handler {
       character.setPrompt(attrs.getValue("prompt"));
     }
 
+    Races races = Races.getInstance();
+
     String raceName = attrs.getValue("race");
-    if (raceName == null || !Races.has(raceName)) {
+    if (raceName == null || !races.has(raceName)) {
       raceName = "human";
     }
-    character.setRace(Races.get(raceName));
+    character.setRace(races.get(raceName));
 
     String immortal = attrs.getValue("immortal");
     if (immortal != null && immortal.equals("true")) {

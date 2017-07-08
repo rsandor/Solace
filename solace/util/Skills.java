@@ -29,6 +29,7 @@ public class Skills {
    * game data directory.
    */
   public void reload() throws IOException {
+    Log.info("Loading skill");
     skills.clear();
     Files.find(
       Paths.get(SKILLS_DIR),

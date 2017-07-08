@@ -323,7 +323,7 @@ public class Character extends AbstractPlayer {
   }
 
   /**
-   * Reset each skill on the character (used when skills are reloaded).
+   * Reset each skill on the character.
    */
   public void resetSkills() {
     Hashtable<String, Integer> skillToLevel = new Hashtable<>();
@@ -339,6 +339,13 @@ public class Character extends AbstractPlayer {
       }
     });
     setPassivesAndCooldowns();
+  }
+
+  /**
+   * Resets the race for the character.
+   */
+  public void resetRace() {
+    setRace(Races.getInstance().get(race.getName()));
   }
 
   /**
