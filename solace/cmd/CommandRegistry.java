@@ -6,9 +6,9 @@ import solace.game.Player;
 import solace.script.ScriptedCommand;
 import solace.script.ScriptedCommands;
 import solace.util.Log;
+import solace.util.NameTrie;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Registry for all game play commands. This keeps track of the master
@@ -17,11 +17,8 @@ import java.util.stream.Collectors;
  * @author Ryan Sandor Richards
  */
 public class CommandRegistry {
-  private final List<Command> commands = Collections.synchronizedList(
-    new ArrayList<Command>()
-  );
-  private final Set<String> names = new HashSet<>();
   private final Command notFound = new NotFoundCommand();
+  private final NameTrie<Command> commands = new NameTrie<>(notFound, Comparator.comparingInt(Command::getPriority));
 
   /**
    * Static singleton instance.
@@ -67,7 +64,6 @@ public class CommandRegistry {
   private synchronized void reloadCommands() {
     Log.info("Reloading game commands");
     commands.clear();
-    names.clear();
 
     // Core built-in commands
     Arrays.asList(
@@ -96,39 +92,39 @@ public class CommandRegistry {
    * Adds a command to the registry.
    * @param c The command to add.
    */
-  private void add(Command c) {
+  private synchronized void add(Command c) {
     Log.debug("Adding: " + c.getName());
     String name = c.getName().toLowerCase();
     if (name.length() == 0) {
       Log.warn("Encountered command with empty name, skipping");
       return;
     }
-    if (names.contains(name)) {
+    if (commands.containsName(name)) {
       Log.warn(String.format("Encountered duplicate command name for '%s', skipping", name));
       return;
     }
     Log.trace(String.format("Adding command: %s", name));
-    commands.add(c);
-    names.add(name);
+    commands.put(c.getName(), c);
   }
 
   /**
    * Finds a command with the name matching the given search string.
-   * @param search String to match against.
+   * @param prefix Command name prefix against which to match.
    * @param player Player for which the command is being sought.
    * @return The first command that matches the given string or the "not found" command.
    */
-  private synchronized Command findCommand(String search, Player player) {
-    List<Command> found = commands.stream()
-      .filter((c) -> c.matches(search) && c.hasCommand(player))
-      .collect(Collectors.toList());
-    found.sort((Command a, Command b) -> a.getPriority() < b.getPriority() ? -1 : 1);
-    return found.size() >= 1 ? found.get(0) : notFound;
+  private synchronized Command findCommand(String prefix, Player player) {
+    Command result = commands.find(prefix);
+    return result.hasCommand(player) ? result : notFound;
   }
 
-  private synchronized boolean hasCommand(String search, Player player) {
-    return commands.stream()
-      .filter((c) -> c.matches(search) && c.hasCommand(player))
-      .collect(Collectors.toList()).size() > 0;
+  /**
+   * Determines if a player has a command that begins with the given prefix.
+   * @param prefix Prefix of the command name to search against.
+   * @param player The player in question.
+   * @return True if the player has a command, false otherwise.
+   */
+  private synchronized boolean hasCommand(String prefix, Player player) {
+    return findCommand(prefix, player) != notFound;
   }
 }

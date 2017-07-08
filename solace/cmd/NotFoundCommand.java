@@ -12,7 +12,7 @@ public class NotFoundCommand extends AbstractCommand {
 
   @Override
   public boolean hasCommand(Player player) {
-    return true;
+    return false;
   }
 
   @Override

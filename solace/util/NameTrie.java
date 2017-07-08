@@ -48,6 +48,15 @@ public class NameTrie<T> {
   }
 
   /**
+   * Determines if an item with the given name has been added to this trie.
+   * @param name Name for the item.
+   * @return True if an item with the given name exists, false otherwise.
+   */
+  public boolean containsName(String name) {
+    return trie.keySet().contains(name);
+  }
+
+  /**
    * Finds the highest ranked item matching the given prefix. Ranking of items is done
    * via the NameTrie's comparator.
    * @param prefix Name prefix to search for.
