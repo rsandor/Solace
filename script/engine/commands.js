@@ -47,6 +47,8 @@ this.Commands = (function () {
 
     var command = new ScriptedPlayCommand(
       name, displayName, aliases, runLambda);
+    // TODO Should probably have the `1000` be a constant somewhere...
+    command.setOrder(options.order || 1000);
     ScriptedCommands.add(command);
   }
 
@@ -87,6 +89,9 @@ this.Commands = (function () {
     if (typeof options.checkValidTarget == 'function') {
       cooldown.setCheckValidTarget(options.checkValidTarget);
     }
+
+    // TODO Should probably have the `1000` be a constant somewhere...
+    cooldown.setOrder(options.order || 1000);
 
     ScriptedCommands.add(cooldown);
   }

@@ -14,7 +14,7 @@ Commands.add('drop', function (player, params) {
   }
 
   var name = params[1];
-  var item = player.findItem(name);
+  var item = player.getCharacter().findItem(name);
 
   if (item == null) {
     return player.sendln('You do not currently possess \'' + name + '\'.');
@@ -23,7 +23,7 @@ Commands.add('drop', function (player, params) {
   player.resetVisibilityOnAction('drop');
 
   var description = item.get('description.inventory');
-  player.removeItem(item);
+  player.getCharacter().removeItem(item);
   player.getRoom().addItem(item);
 
   player.sendln('You drop ' + description);

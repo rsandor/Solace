@@ -5,6 +5,11 @@
  * place them into their inventories.
  */
 Commands.add('get', function (player, params) {
+  var character = player.getCharacter();
+  if (!character) {
+    return player.sendln('Non-characters do not have an inventory.');
+  }
+
   if (params.length < 2) {
     return player.sendln('What would you like to get?\n\r');
   }
@@ -26,7 +31,7 @@ Commands.add('get', function (player, params) {
 
   // Remove the item from the room and add it to the player's inventory
   room.removeItem(item);
-  player.addItem(item);
+  character.addItem(item);
 
   // Inform the users and the rest of the players
   var description = item.get('description.inventory');
