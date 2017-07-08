@@ -21,7 +21,7 @@
   - [x] `reload emotes`
   - [x] `reload skills`
   - [x] `reload races`
-- [ ] Write general "CommandTrie" which primarily will be used to do prefix
+- [x] Write general "CommandTrie" which primarily will be used to do prefix
       lookup for commands and apply priority ordering.
 - [ ] Fully Script all commands that can be scripted (this should be most)
 

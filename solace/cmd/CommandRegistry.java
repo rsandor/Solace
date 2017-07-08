@@ -73,14 +73,13 @@ public class CommandRegistry {
       new Attack(),
       new Help(),
       new Hotbar(),
-      new Emote()
+      new Emote(),
+      new Reload(),
+      new Shutdown()
+      //new Inspect()
+      //new solace.cmd.deprecated.admin.Set()
     ).forEach(this::add);
 
-
-    // Admin Commands
-    add(new Reload());
-    // add(new Inspect());
-    // add(new solace.cmd.deprecated.admin.Set());
 
     // Add scripted commands
     for (ScriptedCommand command : ScriptedCommands.getCommands()) {
