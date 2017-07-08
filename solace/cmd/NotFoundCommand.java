@@ -19,9 +19,4 @@ public class NotFoundCommand extends AbstractCommand {
   public void run(Player player, String[] params) {
     player.sendln("Sorry, that is not an option. Type '{y}help{x}' to learn more.");
   }
-
-  @Override
-  public boolean matches(String s) {
-    return false;
-  }
 }

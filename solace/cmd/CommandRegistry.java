@@ -80,7 +80,6 @@ public class CommandRegistry {
       //new solace.cmd.deprecated.admin.Set()
     ).forEach(this::add);
 
-
     // Add scripted commands
     for (ScriptedCommand command : ScriptedCommands.getCommands()) {
       add(command.getInstance());
@@ -94,6 +93,16 @@ public class CommandRegistry {
   private synchronized void add(Command c) {
     Log.debug("Adding: " + c.getName());
     String name = c.getName().toLowerCase();
+    add(name, c);
+    c.getAliases().forEach(alias -> add(alias, c));
+  }
+
+  /**
+   * Adds a command at the given alias or name.
+   * @param name Name for the command.
+   * @param command The command.
+   */
+  private void add(String name, Command command) {
     if (name.length() == 0) {
       Log.warn("Encountered command with empty name, skipping");
       return;
@@ -102,8 +111,8 @@ public class CommandRegistry {
       Log.warn(String.format("Encountered duplicate command name for '%s', skipping", name));
       return;
     }
-    Log.trace(String.format("Adding command: %s", name));
-    commands.put(c.getName(), c);
+    Log.trace(String.format("Adding command %s with name %s", command.getName(), name));
+    commands.put(name, command);
   }
 
   /**

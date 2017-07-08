@@ -1,6 +1,8 @@
 package solace.cmd;
 import solace.game.Player;
 
+import java.util.Collection;
+
 /**
  * Base interface for all game play commands.
  * @author Ryan Sandor Richards
@@ -17,6 +19,11 @@ public interface Command {
   String getDisplayName();
 
   /**
+   * @return A collection of the command's aliases.
+   */
+  Collection<String> getAliases();
+
+  /**
    * Returns the ordering priority for the command. This is used to sort
    * a collection of commands returned during a search operation in order
    * to decide which command should be chose (e.g. in for multiple commands
@@ -24,15 +31,6 @@ public interface Command {
    * @return The ordering priority for the command.
    */
   int getPriority();
-
-  /**
-   * Determines if the given string matches the command's name (this can
-   * sometimes be different than the two strings being lexically identical,
-   * consider prefix matches which many MUDs use).
-   * @param s String to test for a match
-   * @return True if the string matches the command's name, false otherwise.
-   */
-  boolean matches(String s);
 
   /**
    * Determines if a player has access to this command.

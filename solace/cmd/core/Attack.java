@@ -10,9 +10,7 @@ import solace.net.Connection;
  * @author Ryan Sandor Richards
  */
 public class Attack extends AbstractCommand {
-  private static final String[] aliases = {
-    "attack", "kill", "fight"
-  };
+  private static final String[] aliases = { "kill", "fight" };
 
   public Attack() {
     super("attack", Attack.aliases);

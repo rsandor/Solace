@@ -1,20 +1,21 @@
 package solace.cmd;
 import solace.game.Player;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 /**
  * Abstract base class for all play commands.
  * @author Ryan Sandor Richards.
  */
 public abstract class AbstractCommand implements Command {
-  // TODO Use an enum?
   public static int ORDER_CORE = 0;
-  public static int ORDER_HIGH = 10;
-  public static int ORDER_DEFAULT = 20;
-  public static int ORDER_LOW = 30;
+  private static int ORDER_DEFAULT = 50;
+  public static int ORDER_LOW = 100;
 
   private String name;
   private String displayName;
-  private int order = ORDER_DEFAULT;
+  private int priority = ORDER_DEFAULT;
   private String[] aliases = new String[0];
 
   /**
@@ -64,60 +65,27 @@ public abstract class AbstractCommand implements Command {
   protected void setAliases(String[] a) { aliases = a; }
 
   /**
-   * @see Command
+   * Sets the priority for the command.
+   * @param p Priority to set.
    */
-  public int getPriority() { return order; }
+  public void setPriority(int p) { priority = p; }
 
-  /**
-   * Sets the ordering priority for the command.
-   * @param o Order to set.
-   */
-  public void setPriority(int o) { order = o; }
+  @Override
+  public int getPriority() { return priority; }
 
-  /**
-   * @see Command
-   */
+  @Override
   public abstract void run(Player player, String[] params);
 
-  /**
-   * @see Command
-   */
-  public boolean hasCommand(Player player) {
-    return true;
-  }
-
-  /**
-   * @see solace.cmd.Command;
-   */
   @Override
-  public String getName() {
-    return name;
-  }
+  public boolean hasCommand(Player player) { return true; }
 
-  /**
-   * @see solace.cmd.Command;
-   */
   @Override
-  public String getDisplayName() {
-    return displayName;
-  }
+  public String getName() { return name; }
 
-  /**
-   * Determines if the given string is a prefix of this command's name.
-   * @param s String to test for a match
-   * @return True if the string is prefix of this command's name, false otherwise.
-   */
   @Override
-  public boolean matches(String s) {
-    if (name.toLowerCase().startsWith(s.toLowerCase())) {
-      return true;
-    }
-    for (String alias : aliases) {
-      if (alias.toLowerCase().startsWith(s.toLowerCase())) {
-        return true;
-      }
-    }
-    return false;
-  }
+  public String getDisplayName() { return displayName; }
+
+  @Override
+  public Collection<String> getAliases() { return Arrays.asList(aliases); }
 }
 
