@@ -9,7 +9,7 @@
 - [ ] Design, document, and implement a file extension scheme
   - [x] `.config.xml` - Game engine settings / configuration
   - [x] `.emote.json` - Emote definitions
-  - [ ] `.skill.json` - Skill definitions
+  - [x] `.skill.json` - Skill definitions
   - [ ] `.race.json` - Race definitions
   - [ ] `.area.xml` - Area definitions
   - [ ] `.message.txt` - Large messages
