@@ -58,12 +58,14 @@
       that are stripped and ingested upon parsing).
 
 **Help 2.0**
-  - Use Apache Lucene for full help text search
+  - [ ] Admin only help pages
+  - [ ] Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
   - [ ] Better direct indexing scheme for help files
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
+- [ ] Sex and Gender Identity
 - [ ] Skills 2.0
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
