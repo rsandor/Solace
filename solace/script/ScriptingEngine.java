@@ -32,8 +32,8 @@ public class ScriptingEngine {
     Log.info("Reloading game scripts");
     try {
       ScriptedCommands.clear();
-      GameFiles.getEngineScripts().forEach(instance::runEngineScript);
-      GameFiles.getScripts().forEach(instance::run);
+      GameFiles.findEngineScripts().forEach(instance::runEngineScript);
+      GameFiles.findScripts().forEach(instance::run);
     } catch (Throwable e) {
       Log.error("An error occurred when reloading game scripts.");
       e.printStackTrace();

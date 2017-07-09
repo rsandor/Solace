@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public class GameFiles {
   private static final Path gamePath = Paths.get("game/");
   private static final Path engineScriptsPath = Paths.get("scripts/");
+
   private static final String configExt = ".config.xml";
   private static final String emoteExt = ".emote.json";
   private static final String scriptExt = ".js";
@@ -62,7 +63,7 @@ public class GameFiles {
    * @return A stream of paths to all scripts in the game directory.
    * @throws IOException If an error occurs while finding script files.
    */
-  public static Stream<Path> getScripts() throws IOException {
+  public static Stream<Path> findScripts() throws IOException {
     return find(scriptExt);
   }
 
@@ -70,7 +71,7 @@ public class GameFiles {
    * @return A stream of paths to all engine script files.
    * @throws IOException If an error occurs while finding engine scripts.
    */
-  public static Stream<Path> getEngineScripts() throws IOException {
+  public static Stream<Path> findEngineScripts() throws IOException {
     return find(engineScriptsPath, scriptExt);
   }
 
@@ -78,7 +79,7 @@ public class GameFiles {
    * @return A stream of paths to all skills in the game directory.
    * @throws IOException If an error occurs while finding skill files.
    */
-  public static Stream<Path> findSkills() throws IOException {
+  static Stream<Path> findSkills() throws IOException {
     return find(skillExt);
   }
 }
