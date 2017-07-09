@@ -2,14 +2,24 @@
 
 ### In Progress
 
-**The "game/" directory**
+**Game Directory**
 - [x] Default prompt as setting
-- [ ] Move from using `data/` to `game/`
-- [ ] Design, document, and implement a file extension scheme (e.g. `.help.md`)
+- [ ] Move `data/` -> `game/`
+- [ ] Change config files to use JSON format
+- [ ] Design, document, and implement a file extension scheme
+  - [ ] `.emote.json` - Emote definitions
+  - [ ] `.skill.json` - Skill definitions
+  - [ ] `.race.json` - Race definitions
+  - [ ] `.area.xml` - Area definitions
+  - [ ] `.config.json` - Configurations
+  - [ ] `.message.txt` - Large messages
+  - [ ] `.passive.json` - Passive enhancement definitions
+- [ ] Move scripts from to the `game/` directory
 - [ ] Buff scripting
+  - [ ] Extension: `.buff.js`
   - [ ] Convert existing buffs to scripts
-- [ ] Skills as "packages"
-- [ ] Races as "packages"
+- [ ] Arrange Skill + Cooldowns as "packages"
+- [ ] Arrange Race + Passive/Cooldown as "packages"
 
 --------------------------------------------------------------------------------
 
@@ -28,6 +38,7 @@
 ### Backlog
 
 **Help 2.0**
+  - [ ] Extension: `.help.md`
   - [ ] Admin only help pages
   - [ ] Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
@@ -118,6 +129,20 @@
 - SSL Termination for secure client connection
 - Connection proxy so the game can be fully recompiled and reloaded
 - Data layer for storing game state (mongo?)
+
+**Plugins (SPM)**
+Allow anything that could inhabit the game directory to be coded as
+a plugin. The idea would be that you'd have a command-line utility
+called `spm` (Solace Plugin Manager) that works like so:
+```
+spm install rsandor/solace-race-darkelf
+```
+The utility would just fetch the repo from the following URL:
+```
+https://github.com/rsando/solace-race-darkelf
+```
+And install it in the `game/plugins` directory.
+
 
 --------------------------------------------------------------------------------
 
