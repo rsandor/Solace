@@ -75,7 +75,8 @@ public class CommandRegistry {
       new Hotbar(),
       new Emote(),
       new Reload(),
-      new Shutdown()
+      new Shutdown(),
+      new Flee()
       //new Inspect()
       //new solace.cmd.deprecated.admin.Set()
     ).forEach(this::add);
