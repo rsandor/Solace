@@ -17,7 +17,7 @@
 - [ ] Buff scripting
   - [ ] Extension: `.buff.js`
   - [ ] Convert existing buffs to scripts
-- [ ] Arrange Skill + Cooldowns as "packages"
+- [x] Arrange Skill + Cooldowns as "packages"
 - [ ] Arrange Race + Passive/Cooldown as "packages"
 
 --------------------------------------------------------------------------------
