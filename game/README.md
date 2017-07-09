@@ -1,8 +1,8 @@
 # The Game Directory
 
 The `game/` directory holds all of the data for a game using the Solace engine. This document describes
-how to modify and add additional files so a game author can create the exact game they desire on the
-engine.
+how to modify and add additional files so an author can customize a game running on the solace engine
+without the need to directly program against the engine itself.
 
 ## Game Files and Common Extensions
 Many game objects the engine processes can be describe by using files of various formats within the
