@@ -63,7 +63,7 @@ public class Hotbar extends AbstractCommand {
         player.send("    ");
         player.sendln(Joiner.on(", ").join(
           HOTBAR_KEYS.stream()
-            .map((k) -> String.format("'{y}%s{x}'", k))
+            .map(k -> String.format("'{y}%s{x}'", k))
             .collect(Collectors.toList())
         ));
         return;

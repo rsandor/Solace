@@ -17,9 +17,7 @@ public class NameTrie<T> {
    * Creates a new name trie with the given default value.
    * @param def Default value for the name trie.
    */
-  public NameTrie(T def) {
-    defaultValue = def;
-  }
+  public NameTrie(T def) { defaultValue = def; }
 
   /**
    * Creates a new name trie with the given default value and post match comparator.
@@ -34,9 +32,7 @@ public class NameTrie<T> {
   /**
    * Clears al keys and values from the trie.
    */
-  public void clear() {
-    trie.clear();
-  }
+  public void clear() { trie.clear(); }
 
   /**
    * Puts an item into the trie.
