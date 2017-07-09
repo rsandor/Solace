@@ -14,5 +14,6 @@ Commands.addCooldown('aetherflow', {
     player.sendln(
       'You draw upon the {m}aetherflow{x} healing [{M}' + healed + '{x}] mp!'
     );
+    return true;
   }
 });

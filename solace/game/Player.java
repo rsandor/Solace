@@ -373,7 +373,14 @@ public interface Player {
    * @param name Name of the cooldown.
    * @param duration Duration in seconds to cool down.
    */
-  void cooldownAt(String name, int duration);
+  void setOnCooldown(String name, int duration);
+
+  /**
+   * Determines if the action with the given name is on cooldown.
+   * @param name Name of the cooldown action.
+   * @return True if it is on cooldown for the player, false otherwise.
+   */
+  boolean isOnCooldown(String name);
 
   /**
    * Determines the amount of time remaining for a cooldown of the given name.
@@ -433,8 +440,6 @@ public interface Player {
    * @return A list of cooldowns for the player.
    */
   Collection<String> getCooldowns();
-
-  // ---
 
   /**
    * Determines if the player is currently affected by a buff of the given name.

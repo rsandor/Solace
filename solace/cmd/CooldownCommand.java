@@ -26,7 +26,6 @@ public abstract class CooldownCommand extends AbstractCommand {
    */
   private static final int GLOBAL_COOLDOWN = -1;
   private int cooldownDuration;
-  private boolean onCooldown = false;
   private List<ResourceCost> resourceCosts = new LinkedList<>();
   private boolean initiatesCombat = false;
   private String combosWith = null;
@@ -219,6 +218,7 @@ public abstract class CooldownCommand extends AbstractCommand {
 
     // Check to see if the skill is on cooldown
     boolean onGCD = getCooldownDuration() == GLOBAL_COOLDOWN && player.isOnGCD();
+    boolean onCooldown = player.isOnCooldown(getName());
     if (onGCD || onCooldown) {
       throw new CooldownException(String.format(
         "%s is not ready yet.", getName()));
@@ -253,8 +253,7 @@ public abstract class CooldownCommand extends AbstractCommand {
     }
 
     // Check to ensure all the resource costs can be met
-    checkResourceCosts(player
-    );
+    checkResourceCosts(player);
 
     return target;
   }
@@ -294,12 +293,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   protected void afterExecute(Player player, String []params, Player target, boolean isHit) {
     // Schedule off global cooldowns
     if (getCooldownDuration() != GLOBAL_COOLDOWN && isHit) {
-      onCooldown = true;
-      Clock.getInstance().schedule(
-        String.format("%s cooldown for %s", getName(), player.getName()),
-        getCooldownDuration(),
-        () -> onCooldown = false);
-      player.cooldownAt(getName(), getCooldownDuration());
+      player.setOnCooldown(getName(), getCooldownDuration());
     }
 
     // Handle GCD combos
@@ -357,24 +351,17 @@ public abstract class CooldownCommand extends AbstractCommand {
           return;
         }
 
-        Runnable eventRunnable = new Runnable() {
-          public void run() {
-            try {
-              player.finishCasting();
-              beforeExecute(player, target, params);
-              boolean result = execute(player, target, level);
-              afterExecute(player, params, target, result);
-            } catch (CooldownException cnse) {
-              player.sendln(cnse.getMessage());
-            }
+        String eventName = String.format("%s casting %s", player.getName(), getName());
+        player.beginCasting(Clock.getInstance().schedule(eventName, castTime, () -> {
+          try {
+            player.finishCasting();
+            beforeExecute(player, target, params);
+            boolean result = execute(player, target, level);
+            afterExecute(player, params, target, result);
+          } catch (CooldownException cnse) {
+            player.sendln(cnse.getMessage());
           }
-        };
-
-        String eventName = String.format(
-          "%s casting %s", player.getName(), getName());
-
-        player.beginCasting(Clock.getInstance().schedule(
-          eventName, castTime, eventRunnable));
+        }));
         player.sendln(getCastMessage());
 
         afterSchedule(player, target, params);

@@ -78,18 +78,6 @@ public abstract class AbstractPlayer implements Player {
   public abstract Connection getConnection();
 
   /**
-   * @see solace.game.Player
-   */
-  public solace.game.Character getCharacter() { return Character.NULL; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public Account getAccount() {
-    return Account.NULL;
-  }
-
-  /**
    * Sets the passives and cooldowns for this character. This method should be
    * called after loading a character, on level, skill level, or when acquiring
    * a new skill.
@@ -100,41 +88,12 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * @see solace.game.Player
-   */
-  public int getSavingThrow(String name) {
-    try {
-      return Stats.getSavingThrow(this, name);
-    } catch (InvalidSavingThrowException e) {
-      Log.error(String.format(
-        "Invalid saving throw name encountered: %s", name));
-    }
-    return 0;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getMagicRoll(String saveName) {
-    try {
-      return Stats.getMagicRoll(this, saveName);
-    } catch (InvalidSavingThrowException e) {
-      Log.error(String.format(
-        "Magic roll attempted with invalid saving throw: %s",
-        saveName));
-      return 0;
-    }
-  }
-
-  /**
    * Determines the ability score of the given name.
    * @param name Name of the ability score.
    * @return The ability score for this player.
    * @see solace.game.Stats
    */
-  protected int getAbility(String name) {
-    return Stats.getAbility(this, name);
-  }
+  protected int getAbility(String name) { return Stats.getAbility(this, name); }
 
   /**
    * Gets the maximum value for the given resource.
@@ -154,328 +113,6 @@ public abstract class AbstractPlayer implements Player {
   /**
    * @see solace.game.Player
    */
-  public PlayState getPlayState() {
-    return state;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setPlayState(PlayState s) {
-    state = s;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isSleeping() {
-    return state == PlayState.SLEEPING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setSleeping() {
-    state = PlayState.SLEEPING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isResting() {
-    return state == PlayState.RESTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setResting() {
-    state = PlayState.RESTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isSitting() {
-    return state == PlayState.SITTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setSitting() {
-    state = PlayState.SITTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isRestingOrSitting() {
-    return state == PlayState.RESTING || state == PlayState.SITTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isStanding() {
-    return state == PlayState.STANDING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setStanding() {
-    state = PlayState.STANDING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isFighting() {
-    return state == PlayState.FIGHTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setFighting() {
-    state = PlayState.FIGHTING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isStandingOrFighting() {
-    return state == PlayState.FIGHTING || state == PlayState.STANDING;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public Room getRoom() {
-    return room;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setRoom(Room r) {
-    room = r;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getLevel() { return level; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setLevel(int l) { level = l; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setMajorStat(String name) { majorStat = name; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setMinorStat(String name) { minorStat = name; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public String getMajorStat() { return majorStat; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public String getMinorStat() { return minorStat; }
-
-  /**
-   * @return The player's current hit points.
-   */
-  public int getHp() { return hp; }
-
-  /**
-   * Sets the player's current hit points.
-   * @param v HP to set.
-   */
-  public void setHp(int v) { hp = v; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getMaxHp() { return getMaxResource("hp"); }
-
-  /**
-   * @return The player's current mp.
-   */
-  public int getMp() { return mp; }
-
-  /**
-   * Sets the player's current mp.
-   * @param v MP to set.
-   */
-  public void setMp(int v) { mp = v; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getMaxMp() { return getMaxResource("mp"); }
-
-  /**
-   * @return The character's current sp.
-   */
-  public int getSp() { return sp; }
-
-  /**
-   * Sets the character's current sp.
-   * @param v SP to set.
-   */
-  public void setSp(int v) { sp = v; }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getMaxSp() { return getMaxResource("sp"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getStrength() { return getAbility("strength"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getVitality() {
-    int vit = getAbility("vitality");
-    return hasPassive("stout-hearted") ? (int)(1.1 * vit) : vit;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getMagic() { return getAbility("magic"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getSpeed() {
-    int spe = getAbility("speed");
-    return hasPassive("light-footed") ? (int)(1.1 * spe) : spe;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getWillSave() { return getSavingThrow("will"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getReflexSave() { return getSavingThrow("reflex"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getResolveSave() { return getSavingThrow("resolve"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getVigorSave() { return getSavingThrow("vigor"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getPrudenceSave() { return getSavingThrow("prudence"); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getGuileSave() { return getSavingThrow("guile"); }
-
-  /**
-   * @return The player's armor class.
-   */
-  public int getAC() { return Stats.getAC(this); }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int applyDamage(int damage) {
-    hp -= damage;
-    return damage;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isDead() {
-    return getHp() <= 0;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean isOnGCD() {
-    return onGCDCooldown;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setOnGCD() {
-    onGCDCooldown = true;
-    // TODO GCD cooldowns should really be independent of the global clock...
-    Clock.getInstance().schedule(
-      String.format("GCD for %s", getName()),
-      2, () -> onGCDCooldown = false);
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void cooldownAt(String name, int duration) {
-    cooldownTimers.put(name, new CooldownTimer(duration));
-  }
-
-  /**
-  * @see solace.game.Player
-  */
-  public int getCooldownDuration(String name) {
-    if (cooldownTimers.containsKey(name)) {
-      return cooldownTimers.get(name).getTimeRemaining();
-    }
-    return -1;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public void setComboAction(String action) {
-    comboAction = action;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public String getComboAction() {
-    return comboAction == null ? "" : comboAction;
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean hasPassive(String name) {
-    return passives.containsKey(name);
-  }
-
-  /**
-   * @see solace.game.Player
-   */
   public int getPassiveLevel(String name) {
     if (!hasPassive(name)) return -1;
     return passives.get(name);
@@ -486,31 +123,7 @@ public abstract class AbstractPlayer implements Player {
    * @param name Name of the passive.
    * @param level Level of the passive.
    */
-  void setPassive(String name, int level) {
-    passives.put(name, level);
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public Collection<String> getPassives() {
-    return Collections.unmodifiableCollection(passives.keySet());
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public boolean hasCooldown(String name) {
-    return cooldowns.containsKey(name);
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public int getCooldownLevel(String name) {
-    if (!hasCooldown(name)) return -1;
-    return cooldowns.get(name);
-  }
+  void setPassive(String name, int level) { passives.put(name, level); }
 
   /**
    * Sets a cooldown on the player for the given name at the given level.
@@ -519,13 +132,6 @@ public abstract class AbstractPlayer implements Player {
    */
   void setCooldown(String name, int level) {
     cooldowns.put(name, level);
-  }
-
-  /**
-   * @see solace.game.Player
-   */
-  public Collection<String> getCooldowns() {
-    return Collections.unmodifiableCollection(cooldowns.keySet());
   }
 
   /**
@@ -560,9 +166,239 @@ public abstract class AbstractPlayer implements Player {
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
+  public solace.game.Character getCharacter() { return Character.NULL; }
+
+  @Override
+  public Account getAccount() { return Account.NULL; }
+
+  @Override
+  public int getSavingThrow(String name) {
+    try {
+      return Stats.getSavingThrow(this, name);
+    } catch (InvalidSavingThrowException e) {
+      Log.error(String.format(
+        "Invalid saving throw name encountered: %s", name));
+    }
+    return 0;
+  }
+
+  @Override
+  public int getMagicRoll(String saveName) {
+    try {
+      return Stats.getMagicRoll(this, saveName);
+    } catch (InvalidSavingThrowException e) {
+      Log.error(String.format(
+        "Magic roll attempted with invalid saving throw: %s",
+        saveName));
+      return 0;
+    }
+  }
+
+  @Override
+  public PlayState getPlayState() { return state; }
+
+  @Override
+  public void setPlayState(PlayState s) { state = s; }
+
+  @Override
+  public boolean isSleeping() { return state == PlayState.SLEEPING; }
+
+  @Override
+  public void setSleeping() { state = PlayState.SLEEPING; }
+
+  @Override
+  public boolean isResting() { return state == PlayState.RESTING; }
+
+  @Override
+  public void setResting() { state = PlayState.RESTING; }
+
+  @Override
+  public boolean isSitting() { return state == PlayState.SITTING; }
+
+  @Override
+  public void setSitting() { state = PlayState.SITTING; }
+
+  @Override
+  public boolean isRestingOrSitting() { return state == PlayState.RESTING || state == PlayState.SITTING; }
+
+  @Override
+  public boolean isStanding() { return state == PlayState.STANDING; }
+
+  @Override
+  public void setStanding() { state = PlayState.STANDING; }
+
+  @Override
+  public boolean isFighting() { return state == PlayState.FIGHTING; }
+
+  @Override
+  public void setFighting() { state = PlayState.FIGHTING; }
+
+  @Override
+  public boolean isStandingOrFighting() { return state == PlayState.FIGHTING || state == PlayState.STANDING; }
+
+  @Override
+  public Room getRoom() { return room; }
+
+  @Override
+  public void setRoom(Room r) { room = r; }
+
+  @Override
+  public int getLevel() { return level; }
+
+  @Override
+  public void setLevel(int l) { level = l; }
+
+  @Override
+  public void setMajorStat(String name) { majorStat = name; }
+
+  @Override
+  public void setMinorStat(String name) { minorStat = name; }
+
+  @Override
+  public String getMajorStat() { return majorStat; }
+
+  @Override
+  public String getMinorStat() { return minorStat; }
+
+  @Override
+  public int getHp() { return hp; }
+
+  @Override
+  public void setHp(int v) { hp = v; }
+
+  @Override
+  public int getMaxHp() { return getMaxResource("hp"); }
+
+  @Override
+  public int getMp() { return mp; }
+
+  @Override
+  public void setMp(int v) { mp = v; }
+
+  @Override
+  public int getMaxMp() { return getMaxResource("mp"); }
+
+  @Override
+  public int getSp() { return sp; }
+
+  @Override
+  public void setSp(int v) { sp = v; }
+
+  @Override
+  public int getMaxSp() { return getMaxResource("sp"); }
+
+  @Override
+  public int getStrength() { return getAbility("strength"); }
+
+  @Override
+  public int getVitality() {
+    int vit = getAbility("vitality");
+    return hasPassive("stout-hearted") ? (int)(1.1 * vit) : vit;
+  }
+
+  @Override
+  public int getMagic() { return getAbility("magic"); }
+
+  @Override
+  public int getSpeed() {
+    int spe = getAbility("speed");
+    return hasPassive("light-footed") ? (int)(1.1 * spe) : spe;
+  }
+
+  @Override
+  public int getWillSave() { return getSavingThrow("will"); }
+
+  @Override
+  public int getReflexSave() { return getSavingThrow("reflex"); }
+
+  @Override
+  public int getResolveSave() { return getSavingThrow("resolve"); }
+
+  @Override
+  public int getVigorSave() { return getSavingThrow("vigor"); }
+
+  @Override
+  public int getPrudenceSave() { return getSavingThrow("prudence"); }
+
+  @Override
+  public int getGuileSave() { return getSavingThrow("guile"); }
+
+  @Override
+  public int getAC() { return Stats.getAC(this); }
+
+  @Override
+  public int applyDamage(int damage) {
+    hp -= damage;
+    return damage;
+  }
+
+  @Override
+  public boolean isDead() {
+    return getHp() <= 0;
+  }
+
+  @Override
+  public boolean isOnGCD() {
+    return onGCDCooldown;
+  }
+
+  @Override
+  public void setOnGCD() {
+    onGCDCooldown = true;
+    // TODO GCD cooldowns should really be independent of the global clock...
+    Clock.getInstance().schedule(
+      String.format("GCD for %s", getName()),
+      2, () -> onGCDCooldown = false);
+  }
+
+  @Override
+  public void setOnCooldown(String name, int duration) {
+    Log.trace(String.format("Setting cooldown at %d for %s", duration, name));
+    cooldownTimers.put(name, new CooldownTimer(duration));
+  }
+
+  @Override
+  public boolean isOnCooldown(String name) {
+    if (!cooldownTimers.containsKey(name)) {
+      return false;
+    }
+    return cooldownTimers.get(name).getTimeRemaining() > 0;
+  }
+
+  @Override
+  public int getCooldownDuration(String name) {
+    if (cooldownTimers.containsKey(name)) {
+      return cooldownTimers.get(name).getTimeRemaining();
+    }
+    return -1;
+  }
+
+  @Override
+  public void setComboAction(String action) { comboAction = action; }
+
+  @Override
+  public String getComboAction() { return comboAction == null ? "" : comboAction; }
+
+  @Override
+  public boolean hasPassive(String name) { return passives.containsKey(name); }
+
+  @Override
+  public Collection<String> getPassives() { return Collections.unmodifiableCollection(passives.keySet()); }
+
+  @Override
+  public boolean hasCooldown(String name) { return cooldowns.containsKey(name); }
+
+  @Override
+  public int getCooldownLevel(String name) {
+    if (!hasCooldown(name)) return -1;
+    return cooldowns.get(name);
+  }
+
+  @Override
+  public Collection<String> getCooldowns() { return Collections.unmodifiableCollection(cooldowns.keySet()); }
+
+  @Override
   public void applyBuff(Buff b) {
     String name = b.getName();
     if (hasBuff(name)) {
@@ -575,9 +411,7 @@ public abstract class AbstractPlayer implements Player {
     b.scheduleTickAction();
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void applyBuff(String name) {
     if (hasBuff(name)) {
       Buff oldBuff = getBuff(name);
@@ -590,23 +424,13 @@ public abstract class AbstractPlayer implements Player {
     b.scheduleTickAction();
   }
 
-  /**
-   * @see solace.game.Player
-   */
-  public boolean hasBuff(String name) {
-    return buffs.containsKey(name);
-  }
+  @Override
+  public boolean hasBuff(String name) { return buffs.containsKey(name); }
 
-  /**
-   * @see solace.game.Player
-   */
-  public Buff getBuff(String name) {
-    return buffs.get(name);
-  }
+  @Override
+  public Buff getBuff(String name) { return buffs.get(name); }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void removeBuff(String name) {
     if (!hasBuff(name)) {
       return;
@@ -617,9 +441,7 @@ public abstract class AbstractPlayer implements Player {
     sendBuffEndMessages(b);
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public Collection<Buff> getBuffs() {
     synchronized (buffs) {
       List<Buff> remove = new LinkedList<>();
@@ -634,9 +456,7 @@ public abstract class AbstractPlayer implements Player {
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void removeExpiredBuffs() {
     synchronized (buffs) {
       for (Buff b : buffs.values()) {
@@ -647,9 +467,7 @@ public abstract class AbstractPlayer implements Player {
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void removeAllBuffs() {
     synchronized (buffs) {
       for (Buff b : buffs.values()) {
@@ -658,30 +476,22 @@ public abstract class AbstractPlayer implements Player {
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public boolean isImmortal() {
     return immortal;
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void toggleImmortal(Player setter) {
     setImmortal(!immortal, setter);
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void setImmortal(boolean i) {
     immortal = i;
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void setImmortal(boolean i, Player setter) {
     immortal = i;
     if (immortal) {
@@ -699,49 +509,38 @@ public abstract class AbstractPlayer implements Player {
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public boolean isVisibleTo(Player viewer) {
-    // TODO Add a special buff that allows players to see "vanished" players
-    //      this should not be easy to attain for player players, but some
+    // TODO Add a special buff that allows players to see "vanished" players.
+    //      This should not be easy to attain for player players, but some
     //      "god" level mobs should always have the buff.
     return !hasBuff("vanished");
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void resetVisibilityOnAction(String event) {
-    // TODO Various buffs need to be added to make this implementation more
-    //      interesting and vairable depending on the situation. For the time
-    //      being basically everything that can drop the "vanished" buff will
-    //      do so (helps us avoid having to fix all messaging around movement
-    //      dropping items, etc., for instance: "Someone moves west..." or
-    //      simply omitting the message at all, etc.).
+    // TODO Various buffs need to be added to make this implementation more interesting.
+    //      For the time being basically everything that can drop the "vanished" buff will
+    //      do so (helps us avoid having to fix all messaging around movement dropping
+    //      items, etc., for instance: "Someone moves west..." or simply omitting the
+    //      message at all, etc.).
     if (hasBuff("vanished")) {
       removeBuff("vanished");
     }
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public boolean isCasting() {
     return casting;
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void beginCasting(Clock.Event e) {
     casting = true;
     castingEvent = e;
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void interruptCasting() {
     if (castingEvent != null) {
       castingEvent.cancel();
@@ -750,25 +549,16 @@ public abstract class AbstractPlayer implements Player {
     sendln("Your spell was interrupted!");
   }
 
-  /**
-   * @see solace.game.Player
-   */
+  @Override
   public void finishCasting() {
     casting = false;
     castingEvent = null;
   }
 
-  /**
-   * @see solace.game.Player
-   */
-  public Battle getBattle() {
-    return BattleManager.getBattleFor(this);
-  }
+  @Override
+  public Battle getBattle() { return BattleManager.getBattleFor(this); }
 
-  /**
-   * TODO We may remove this once we have fully scriptable buffs.
-   * @see solace.game.Player
-   */
+  @Override
   public void applyDot(String name, int avg, int d, int f, String msg) {
     applyBuff(new DotBuff(name, this, avg, d, f, msg));
   }

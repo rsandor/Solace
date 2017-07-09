@@ -15,5 +15,6 @@ Commands.addCooldown('vanish', {
     if (battle !== null) {
       battle.remove(player);
     }
+    return true;
   }
 });
