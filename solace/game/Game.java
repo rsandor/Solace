@@ -43,7 +43,7 @@ public class Game {
     RecoveryManager.start();
     PlayerManager.start();
 
-    ScriptingEngine.start();
+    ScriptingEngine.reload();
     CommandRegistry.reload();
 
     server = new Server(port);

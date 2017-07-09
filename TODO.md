@@ -5,6 +5,7 @@
 **Game Directory**
 - [x] Default prompt as setting
 - [x] Move `data/` -> `game/`
+- [x] Move scripts to the `game/` directory
 - [ ] Design, document, and implement a file extension scheme
   - [x] `.config.xml` - Game engine settings / configuration
   - [x] `.emote.json` - Emote definitions
@@ -13,7 +14,6 @@
   - [ ] `.area.xml` - Area definitions
   - [ ] `.message.txt` - Large messages
   - [ ] `.passive.json` - Passive enhancement definitions
-- [ ] Move scripts from to the `game/` directory
 - [ ] Buff scripting
   - [ ] Extension: `.buff.js`
   - [ ] Convert existing buffs to scripts

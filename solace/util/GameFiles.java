@@ -12,8 +12,10 @@ import java.util.stream.Stream;
  */
 public class GameFiles {
   private static final Path gamePath = Paths.get("game/");
+  private static final Path engineScriptsPath = Paths.get("scripts/");
   private static final String configExt = ".config.xml";
   private static final String emoteExt = ".emote.json";
+  private static final String scriptExt = ".js";
 
   /**
    * Recursively finds all files with the given file extension that exist in
@@ -22,10 +24,20 @@ public class GameFiles {
    * @return A stream of paths for all files found.
    */
   public static Stream<Path> find(String ext) throws IOException {
+    return find(gamePath, ext);
+  }
+
+  /**
+   * Finds all files with the given extension in the given path.
+   * @param path Path over which to search.
+   * @param ext Extension of the files to find.
+   * @return A stream of paths for all files found.
+   */
+  private static Stream<Path> find(Path path, String ext) throws IOException {
     return Files.find(
-      gamePath,
+      path,
       Integer.MAX_VALUE,
-      (path, attr) -> attr.isRegularFile() && String.valueOf(path).endsWith(ext)
+      (p, attr) -> attr.isRegularFile() && String.valueOf(p).endsWith(ext)
     );
   }
 
@@ -43,5 +55,21 @@ public class GameFiles {
    */
   static Stream<Path> findEmotes() throws IOException {
     return find(emoteExt);
+  }
+
+  /**
+   * @return A stream of paths to all scripts in the game directory.
+   * @throws IOException If an error occurs while finding script files.
+   */
+  public static Stream<Path> getScripts() throws IOException {
+    return find(scriptExt);
+  }
+
+  /**
+   * @return A stream of paths to all engine script files.
+   * @throws IOException If an error occurs while finding engine scripts.
+   */
+  public static Stream<Path> getEngineScripts() throws IOException {
+    return find(engineScriptsPath, scriptExt);
   }
 }
