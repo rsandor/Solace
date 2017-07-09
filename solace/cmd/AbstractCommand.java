@@ -1,74 +1,91 @@
 package solace.cmd;
+import solace.game.Player;
 
-import solace.net.Connection;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
- * Basic abstract command class that serves as the base class for all commands.
- * This class handles command name storage and retrieval, as well as the command
- * matching by using the well known "prefix" match.
- *
- * @author Ryan Sandor Richards (Gaius)
+ * Abstract base class for all play commands.
+ * @author Ryan Sandor Richards.
  */
-public abstract class AbstractCommand
-  implements Command
-{
-  String name;
-  String displayName;
-  boolean skipPrompt = false;
+public abstract class AbstractCommand implements Command {
+  public static int ORDER_CORE = 0;
+  public static int ORDER_DEFAULT = 50;
+  public static int ORDER_LOW = 100;
+
+  private String name;
+  private String displayName;
+  private int priority = ORDER_DEFAULT;
+  private String[] aliases = new String[0];
 
   /**
-   * Creates a new <code>AbstractCommand</code> with the given name.
+   * Creates an abstract play command with the given name.
    * @param n Name for the command.
    */
   public AbstractCommand(String n) {
-    name = n.toLowerCase();
-    setDisplayName(n);
+    name = n;
+    displayName = n;
   }
 
   /**
-   * Default behavior set to always return <code>true</code>, override in sub
-   * classes to add varied functionality.
-   * @param c Connection to test against.
+   * Creates an abstract play command with the given name and aliases.
+   * @param n Name for the command.
    */
-  public boolean canExecute(Connection c) {
-    return true;
+  public AbstractCommand(String n, String[] a) {
+    name = n;
+    displayName = n;
+    aliases = a;
   }
 
   /**
-   * Implementation of the basic "prefix" match used by many other MUDs.
-   * @param s String to check for match.
-   * @return <code>true</code> if the given string matches, <code>false</code>
-   *   otherwise.
+   * Creates a new abstract play command with the given name and display name.
+   * @param n Name for the command.
+   * @param d Display name for the command.
    */
-  public boolean matches(String s) {
-    return name.startsWith(s);
-  }
-
-  /**
-   * @see solace.cmd.Command.getName()
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @see solace.cmd.Command.getName()
-   */
-  public String getDisplayName() {
-    return displayName;
-  }
-
-  /**
-   * Method used to set the display name of the command if it differs from the
-   * name.
-   * @param d Desired display name for the command.
-   */
-  public void setDisplayName(String d) {
+  public AbstractCommand(String n, String d) {
+    name = n;
     displayName = d;
   }
 
   /**
-   * @see solace.cmd.Command.run(Connection c, String []params)
+   * Creates a new abstract play command with the given name, display name, and aliases.
+   * @param n Name for the command.
+   * @param d Display name for the command.
    */
-  public abstract boolean run(Connection c, String[] params);
+  public AbstractCommand(String n, String d, String[] a) {
+    name = n;
+    displayName = d;
+    aliases = a;
+  }
+
+  /**
+   * Sets aliases for the command.
+   * @param a Aliases for the command.
+   */
+  protected void setAliases(String[] a) { aliases = a; }
+
+  /**
+   * Sets the priority for the command.
+   * @param p Priority to set.
+   */
+  public void setPriority(int p) { priority = p; }
+
+  @Override
+  public int getPriority() { return priority; }
+
+  @Override
+  public abstract void run(Player player, String[] params);
+
+  @Override
+  public boolean hasCommand(Player player) { return true; }
+
+  @Override
+  public String getName() { return name; }
+
+  @Override
+  public String getDisplayName() { return displayName; }
+
+  @Override
+  public Collection<String> getAliases() { return Arrays.asList(aliases); }
 }
+

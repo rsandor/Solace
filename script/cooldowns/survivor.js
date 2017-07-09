@@ -7,7 +7,7 @@
  */
 Commands.addCooldown('survivor', {
   cooldownDuration: 300,
-  run: function (level, player) {
+  run: function (player, target, level, cooldown) {
     var hpHealed = Math.min(
       player.getMaxHp() / 2,
       player.getMaxHp() - player.getHp());
@@ -21,7 +21,6 @@ Commands.addCooldown('survivor', {
       'You are a {m}survivor{x}! You\'ve been healed [{G}' + hpHealed +
       '{x}] hp and [{Y}' + spHealed + '{x}] sp!'
     );
-
     return true;
   }
 });

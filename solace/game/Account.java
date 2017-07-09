@@ -14,13 +14,18 @@ import solace.game.Character;
  */
 public class Account
 {
+  /**
+   * Null account returned when an account could not be found.
+   */
+  public static final Account NULL = new Account("null", "", false);
+
   // Instance Variables
   String name;
   String password;
   boolean admin;
   Hashtable <String, solace.game.Character> charactersByName;
   List<solace.game.Character> characters;
-  solace.game.Character activeCharacter = null;
+  solace.game.Character activeCharacter = Character.NULL;
 
   /*
    * Account file location constants.
@@ -35,6 +40,7 @@ public class Account
   protected static String accountPath(String name) {
     return accountDir + name.toLowerCase() + ".xml";
   }
+
 
   /**
    * Loads an account from file on the disk and returns it.
@@ -141,14 +147,14 @@ public class Account
   }
 
   /**
-   * @return The account's characters.
+   * @return The account's players.
    */
   public List<solace.game.Character> getCharacters() {
     return characters;
   }
 
   /**
-   * @return The account's first character, or null if there are no characters.
+   * @return The account's first character, or null if there are no players.
    */
   public solace.game.Character getFirstCharacter() {
     return characters.get(0);
@@ -157,7 +163,7 @@ public class Account
   /**
    * Determines if this account has a character with the given name.
    * @param name Name of the character.
-   * @param <code>true</code> if a character with the name exists on the
+   * @returns true if a character with the name exists on the
    *   account, <code>false</code> otherwise.
    */
   public boolean hasCharacter(String name) {
@@ -168,7 +174,7 @@ public class Account
   }
 
   /**
-   * Determines if the account has any characters.
+   * Determines if the account has any players.
    * @return <code>true</code> if the account has at least one character,
    *   <code>false</code> otherwise.
    */

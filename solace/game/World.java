@@ -33,13 +33,13 @@ public class World {
    * @throws GameException If the default room could not be found after areas
    *   are loaded.
    */
-  public static void init() throws GameException
+  public static void init() throws GameException, IOException
   {
     if (initialized)
       return;
 
-    Skills.initialize();
-    Races.initialize();
+    Skills.getInstance().reload();
+    Races.getInstance().reload();
     Buffs.initialize();
 
     loadAreas();
@@ -218,7 +218,7 @@ public class World {
   }
 
   /**
-   * @return An unmodifiable collection of all player characters and mobiles
+   * @return An unmodifiable collection of all player players and mobiles
    *   in the game world.
    */
   public static Collection<Player> getAllPlayers() {
@@ -239,11 +239,28 @@ public class World {
   }
 
   /**
-   * @return the oogChat
+   * @return An unmodifiable list of chat connections.
    */
-  public static Collection<Connection> getChatConnections()
-  {
-    return oogChat;
+  public static Collection<Connection> getChatConnections() {
+    synchronized (oogChat) {
+      return Collections.unmodifiableCollection(oogChat);
+    }
+  }
+
+  /**
+   * Adds a connection to the out of game chat.
+   * @param c Connection to add.
+   */
+  public static void addChatConnection(Connection c) {
+    oogChat.add(c);
+  }
+
+  /**
+   * Removes a connection for out of game chat.
+   * @param c The connection to remove.
+   */
+  public static void removeChatconnection(Connection c) {
+    oogChat.remove(c);
   }
 
 

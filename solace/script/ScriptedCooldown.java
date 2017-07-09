@@ -1,12 +1,11 @@
 package solace.script;
 import java.util.List;
 import java.util.LinkedList;
+
 import solace.cmd.Command;
 import solace.cmd.InvalidTargetException;
-import solace.cmd.cooldown.CooldownCommand;
-import solace.cmd.cooldown.ResourceCost;
-import solace.util.Log;
-import solace.net.Connection;
+import solace.cmd.CooldownCommand;
+import solace.cmd.ResourceCost;
 import solace.game.Player;
 
 /**
@@ -20,9 +19,9 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
   @FunctionalInterface
   public interface CooldownExecuteFunction {
     public boolean execute(
-      int level,
       Player player,
       Player target,
+      int level,
       CooldownCommand cooldown
     );
   }
@@ -104,7 +103,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Sets the casting message for this cooldown.
-   * @param String m Message to set.
+   * @param m Message to set.
    */
   public void setCastMessage(String m) { castMessage = m; }
 
@@ -177,7 +176,7 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Sets the "check valid target" hook handler for the cooldown.
-   * @param CooldownCheckValidTargetFunction l The handler.
+   * @param l The handler.
    */
   public void setCheckValidTarget(CooldownCheckValidTargetFunction l) {
     checkValidTarget = l;
@@ -185,11 +184,11 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
 
   /**
    * Creates an instance of the play command for use by the game engine.
-   * @param ch Character for the play command.
+   * @param player Character for the play command.
    * @return The play command instance.
    */
-  public Command getInstance(solace.game.Character ch) {
-    CooldownCommand command = new CooldownCommand(getName(), ch) {
+  public Command getInstance() {
+    CooldownCommand command = new CooldownCommand(getName(), getDisplayName()) {
       public void checkValidTarget(Player target)
         throws InvalidTargetException
       {
@@ -204,11 +203,10 @@ public class ScriptedCooldown extends AbstractScriptedCommand {
         }
       }
 
-      public boolean execute(int level, Player target) {
-        return executeLambda.execute(level, getPlayer(), target, this);
+      public boolean execute(Player player, Player target, int level) {
+        return executeLambda.execute(player, target, level, this);
       }
     };
-    command.setDisplayName(getDisplayName());
     command.setCooldownDuration(getCooldownDuration());
     command.setInitiatesCombat(getInitiatesCombat());
     command.setCastTime(getCastTime());

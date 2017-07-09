@@ -7,6 +7,8 @@
 ### Bugs
 
 - [ ] **Bug:** Shutdown command sometimes hangs, investigate
+      Seems to hang when there are logged in players
+      It catches right after it says "Stopping account writer"
 
 --------------------------------------------------------------------------------
 
@@ -16,40 +18,31 @@
 
 ### Backlog
 
-**Feature: Commands 2.0**
-- [ ] Centralized command registry
-  - [ ] Commands as singletons
-  - [ ] Add `reload` command as a PlayCommand for admins only (easier testing)
-  - [ ] Add `reload scripts` so we can update commands on-the-fly
-- [ ] Overhaul command and controllers abstraction
-  - [ ] Controllers should no longer hold player specific command instances
-  - [ ] Prompt parsers can lookup commands in the registry
-  - [ ] Commands should be able to provide an ordering field that helps with
-        selecting the correct command even if they have a common prefix
-- [ ] Scripting engine access to command aliases (move data out of controllers)
-- [ ] Fully Script all commands that can be scripted (this should be most)
-
-**Feature: Help system 2.0**
-- Create a better direct indexing system for help pages
-- Use Apache Lucene for full help text search
-- Allow help files to be defined along side objects they describe
-  (perhaps use a `.help.md` extension and a recursive find along with
-  the ability to assign keywords from within the help markdown itself
-  that are stripped and ingested upon parsing).
-
 **The "game/" directory**
+- [ ] Default prompt as setting
 - [ ] Move from using `data/` to `game/`
+- [ ] Come up with and document a file extension scheme
+      (e.g. `.emote.json`, `.help.md`, etc.)
 - [ ] Buff scripting
   - [ ] Convert existing buffs to scripts
 - [ ] Passive scripting
 - [ ] Race scripting
 - [ ] Skill scripting (with localized scripts)
 - [ ] Basic area scripting
+- [ ] Allow help files to be defined along side objects they describe
+      (perhaps use a `.help.md` extension and a recursive find along with
+      the ability to assign keywords from within the help markdown itself
+      that are stripped and ingested upon parsing).
+- [ ] Help 2.0
+  - [ ] Admin only help pages
+  - [ ] Use Apache Lucene for full help text search
+    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
+  - [ ] Better direct indexing scheme for help files
 
-**Feature: Account System 2.0**
-- [ ] Account files should be saved to JSON
 
 **Feature: Character Creation 2.0**
+- [ ] Account files should be saved to JSON
+- [ ] Sex and Gender Identity
 - [ ] Skills 2.0
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
@@ -64,8 +57,8 @@
 - [ ] Random dreams while sleeping (fun and refreshes prompt)
 - Decorative banners for shops, inventory, character sheet, etc.
 - Make screen width adjustable on connection (currently fixed to 80)
-- Global communication channels
-- Player-to-player auction house
+- [ ] Global communication channels
+- [ ] Player-to-player auction house
 - [ ] Create book type items that can be read
 - [ ] Book: Liber Particularum Magicae (book of elemental magic)
       (reading this unlocks ultimate level 100 evocation skill!)

@@ -10,5 +10,6 @@
     <dependency org="org.json" name="json" rev="20090211"/>
     <dependency org="com.google.guava" name="guava" rev="12.0" />
     <dependency org="org.scala-lang" name="scala-xml" rev="2.11.0-M4"/>
+    <dependency org="org.apache.commons" name="commons-collections4" rev="4.1"/>
   </dependencies>
 </ivy-module>

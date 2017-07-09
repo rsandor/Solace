@@ -10,8 +10,8 @@ Commands.addCooldown('skullknock', {
   cooldownDuration: 180,
   initiatesCombat: true,
   basePotency: 150,
-  run: function (level, player, target, cooldown) {
-    var isHit = cooldown.executeAttack(target);
+  run: function (player, target, level, cooldown) {
+    var isHit = cooldown.executeAttack(player, target);
     if (isHit) {
       target.applyBuff(Buffs.create("stunned", 4));
     }

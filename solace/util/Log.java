@@ -88,7 +88,7 @@ public class Log {
   public static void info(String s) {
     if (!show("info")) { return; }
     Date d = new Date();
-    System.out.println("[INFO] ("+d+"): "+s);
+    System.out.println(Color.format("[INFO] ("+d+"): "+s));
   }
 
   /**
@@ -108,6 +108,6 @@ public class Log {
   public static void trace(String s) {
     if (!show("trace")) { return; }
     Date d = new Date();
-    System.out.println("[TRACE] ("+d+"): "+s);
+    System.out.println(Color.format("[TRACE] ("+d+"): "+s));
   }
 }

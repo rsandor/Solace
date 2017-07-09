@@ -17,7 +17,7 @@ public class Connection implements Runnable {
   PrintWriter out;
   BufferedReader in;
   Account account;
-  StateController controller;
+  Controller controller;
   Date connectionTime;
   boolean skipPrompt = false;
 
@@ -43,14 +43,14 @@ public class Connection implements Runnable {
    * Sets the state controller for the connection.
    * @param c State controller.
    */
-  public void setStateController(StateController c) {
+  public void setStateController(Controller c) {
     controller = c;
   }
 
   /**
    * @return The user's state controller.
    */
-  public StateController getStateController() {
+  public Controller getStateController() {
     return controller;
   }
 

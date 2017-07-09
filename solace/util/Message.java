@@ -60,6 +60,11 @@ public class Message
    * @param name Name of the message.
    */
   public static String get(String name) {
-    return messages.get(name).replace("\n", "\n\r");
+    String msg = messages.get(name);
+    if (msg == null) {
+      Log.error(String.format("Unable to load message with name: %s", name));
+      return "";
+    }
+    return msg.replace("\n", "\n\r");
   }
 }

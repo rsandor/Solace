@@ -5,14 +5,17 @@
  * place them into their inventories.
  */
 Commands.add('get', function (player, params) {
+  var character = player.getCharacter();
+  if (!character) {
+    return player.sendln('Non-characters do not have an inventory.');
+  }
+
   if (params.length < 2) {
-    player.sendln('What would you like to get?\n\r');
-    return false;
+    return player.sendln('What would you like to get?\n\r');
   }
 
   if (player.isSleeping()) {
-    player.sendln('You cannot get anything while alseep.');
-    return false;
+    return player.sendln('You cannot get anything while alseep.');
   }
 
   var name = params[1];
@@ -21,20 +24,17 @@ Commands.add('get', function (player, params) {
 
   // If there is no such item, then we're done, inform the player
   if (!item) {
-    player.sendln('You could not find \'' + name + '\' here.\n\r');
-    return false;
+    return player.sendln('You could not find \'' + name + '\' here.\n\r');
   }
 
   player.resetVisibilityOnAction('get');
 
   // Remove the item from the room and add it to the player's inventory
   room.removeItem(item);
-  player.addItem(item);
+  character.addItem(item);
 
   // Inform the users and the rest of the players
   var description = item.get('description.inventory');
   player.sendln('You get ' + description);
   room.sendMessage(player.getName() + ' gets ' + description, player);
-
-  return true;
 });

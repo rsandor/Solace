@@ -25,7 +25,7 @@ public enum PlayState {
   }
 
   /**
-   * @return The
+   * @return The name of the state.
    */
   public String toString() { return name; }
 

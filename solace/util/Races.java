@@ -1,5 +1,7 @@
 package solace.util;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import org.json.*;
@@ -10,53 +12,48 @@ import solace.game.Race;
  * @author Ryan Sandor Richards
  */
 public class Races {
-  /**
-   * Path to the races data directory.
-   */
-  protected static final String PATH = "data/races/";
+  private static final String RACES_DIR = "data/races/";
+  public static final Races instance = new Races();
 
-  static Hashtable<String, Race> races;
+  private final Hashtable<String, Race> races = new Hashtable<>();
 
   /**
-   * Loads all races for the game.
+   * @return The singleton instance of the races utility.
    */
-  public static void initialize() {
-    File dir = new File(PATH);
-    String[] names = dir.list();
-    races = new Hashtable<String, Race>();
+  public static Races getInstance() { return instance; }
 
+  /**
+   * Initializes the skills helper by loading all the skills provided in the
+   * game data directory.
+   */
+  public void reload() throws IOException {
     Log.info("Loading races");
-
-    for (String name : names) {
+    races.clear();
+    Files.find(
+      Paths.get(RACES_DIR),
+      Integer.MAX_VALUE,
+      (path, attr) -> attr.isRegularFile()
+    ).forEach(path -> {
+      String name = path.getFileName().toString();
       try {
-        Log.trace("Loading race " + name);
-        String path = PATH + name;
-        StringBuffer contents = new StringBuffer("");
-        BufferedReader in = new BufferedReader(new FileReader(path));
-        String line = in.readLine();
-        while (line != null) {
-          contents.append(line + "\n");
-          line = in.readLine();
-        }
-        Race race = Race.parseJSON(contents.toString());
+        String contents = new String(Files.readAllBytes(path));
+        Race race = Race.parseJSON(contents);
         races.put(race.getName(), race);
       } catch (JSONException je) {
-        Log.error(String.format(
-          "Malformed json in race %s: %s", je.getMessage()
-        ));
+        Log.error(String.format("Malformed json in race %s: %s", name, je.getMessage()));
       } catch (IOException ioe) {
-        Log.error("Unable to load race: " + name);
+        Log.error(String.format("Unable to load race: %s", name));
         ioe.printStackTrace();
       }
-    }
+    });
   }
 
   /**
-   * Determiens if there is a race with the given name.
+   * Determines if there is a race with the given name.
    * @param name Name of the race.
    * @return True if a race with the given name exists, false otherwise.
    */
-  public static boolean has(String name) {
+  public boolean has(String name) {
     return races.containsKey(name);
   }
 
@@ -65,8 +62,7 @@ public class Races {
    * @param name Name of the race.
    * @return The race with the given name.
    */
-  public static Race get(String name) {
-    if (!has(name)) return null;
+  public Race get(String name) {
     return races.get(name);
   }
 }

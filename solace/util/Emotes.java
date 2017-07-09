@@ -1,6 +1,8 @@
 package solace.util;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -11,47 +13,53 @@ public class Emotes {
   /**
    * Location of the emote files in the game data directory.
    */
-  protected static final String EMOTE_DIR = "data/emotes/";
+  private static final String EMOTE_DIR = "data/emotes/";
 
-  static final int FORMAT_SELF = 0;
-  static final int FORMAT_ROOM = 1;
-  static final int FORMAT_TARGET_SELF = 2;
-  static final int FORMAT_TARGET = 3;
-  static final int FORMAT_TARGET_ROOM = 4;
+  private static final int FORMAT_SELF = 0;
+  private static final int FORMAT_ROOM = 1;
+  private static final int FORMAT_TARGET_SELF = 2;
+  private static final int FORMAT_TARGET = 3;
+  private static final int FORMAT_TARGET_ROOM = 4;
 
-  Hashtable<String, String> emotes;
+  private final Hashtable<String, String> emotes = new Hashtable<>();
 
   /**
    * Creates a new Emotes instance and loads all emote files.
    */
   public Emotes() {
-    emotes = new Hashtable<String, String>();
-    File dir = new File(EMOTE_DIR);
-    String[] names = dir.list();
-    for (String name : names) {
-      try {
-        String path = EMOTE_DIR + name;
-        StringBuffer contents = new StringBuffer("");
-        BufferedReader in = new BufferedReader(new FileReader(path));
-        String line = in.readLine();
-        while (line != null) {
-          contents.append(line   + "\n");
-          line = in.readLine();
-        }
-        emotes.put(name, contents.toString());
-      }
-      catch (IOException ioe) {
-        Log.error("Unable to read emote file: " + name);
-        ioe.printStackTrace();
-      }
+    try {
+      reload();
+    } catch (IOException e) {
+      Log.error("Unable to load emotes:");
+      e.printStackTrace();
     }
+  }
+
+  /**
+   * Reloads all emotes.
+   * @throws IOException If the emotes directory could not be read.
+   */
+  public void reload() throws IOException {
+    emotes.clear();
+    Files.find(
+      Paths.get(EMOTE_DIR),
+      Integer.MAX_VALUE,
+      (path, attr) -> attr.isRegularFile()
+    ).forEach((path) -> {
+      String name = path.getFileName().toString();
+      try {
+        emotes.put(name, new String(Files.readAllBytes(path)));
+      } catch (IOException e) {
+        Log.warn(String.format("Error loading emote '%s', skipping.", name));
+      }
+    });
   }
 
   /**
    * @return A collection of emote names for use with the emote command.
    */
-  public Collection<String> getEmoteAliases() {
-    return emotes.keySet();
+  public String[] getEmoteAliases() {
+    return emotes.keySet().toArray(new String[0]);
   }
 
   /**

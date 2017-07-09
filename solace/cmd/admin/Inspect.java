@@ -1,10 +1,8 @@
 package solace.cmd.admin;
 
-import solace.cmd.play.PlayCommand;
+import solace.cmd.AbstractCommand;
 import java.util.*;
 import solace.game.*;
-import solace.net.*;
-import java.io.*;
 import solace.util.*;
 
 /**
@@ -15,48 +13,46 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Inspect extends PlayCommand {
-  public Inspect(solace.game.Character ch) {
-    super("inspect", ch);
+public class Inspect extends AbstractCommand {
+  public Inspect() {
+    super("inspect");
+    setPriority(AbstractCommand.ORDER_DEFAULT + 10);
   }
 
-  public boolean run(Connection c, String []params) {
-    solace.game.Character character = getCharacter();
+  @Override
+  public boolean hasCommand(Player player) {
+    return player.getAccount().isAdmin();
+  }
 
-    if (!character.getAccount().isAdmin()) {
-      c.sendln("You are unable to perform this command.");
-      Log.error("Admin level play command executed by a normal account.");
-      return false;
-    }
-
-    Room room = character.getRoom();
+  @Override
+  public void run(Player player, String []params) {
+    Room room = player.getRoom();
     if (params.length == 1) {
-      c.sendln(inspectRoom(room));
-      return true;
+      player.sendln(inspectRoom(room));
+      return;
     }
 
     String name = params[1];
 
     Item item = room.findItem(name);
     if (item != null) {
-      c.sendln(inspectItem(item));
-      return true;
+      player.sendln(inspectItem(item));
+      return;
     }
 
-    Player player = room.findPlayer(name);
-    if (player != null) {
-      c.sendln(inspectPlayer(player));
-      return true;
+    Player p = room.findPlayer(name);
+    if (p != null) {
+      player.sendln(inspectPlayer(p));
+      return;
     }
 
-    Item inventoryItem = character.findItem(name);
+    Item inventoryItem = player.getCharacter().findItem(name);
     if (inventoryItem != null) {
-      c.sendln(inspectItem(inventoryItem));
-      return true;
+      player.sendln(inspectItem(inventoryItem));
+      return;
     }
 
-    c.sendln("Game entity with name '{g}" + name + "{x}' was not found.");
-    return true;
+    player.sendln("Game entity with name '{g}" + name + "{x}' was not found.");
   }
 
   /**
@@ -64,8 +60,8 @@ public class Inspect extends PlayCommand {
    * @param room The room to inspect.
    * @return The resulting inspect description.
    */
-  protected String inspectRoom(Room room) {
-    StringBuffer buffer = new StringBuffer();
+  private String inspectRoom(Room room) {
+    StringBuilder buffer = new StringBuilder();
     buffer.append(Strings.RULE);
 
     buffer.append(String.format(
@@ -105,8 +101,8 @@ public class Inspect extends PlayCommand {
    * @param  item Item to inspect.
    * @return      The inspect description.
    */
-  protected String inspectItem(Item item) {
-    StringBuffer buffer = new StringBuffer();
+  private String inspectItem(Item item) {
+    StringBuilder buffer = new StringBuilder();
     Hashtable<String, String> props = item.getProperties();
     for (String key : props.keySet()) {
       String value = props.get(key);
@@ -122,9 +118,9 @@ public class Inspect extends PlayCommand {
    * @param  player The player to inspect.
    * @return        The inpsect description.
    */
-  protected String inspectPlayer(Player player) {
+  private String inspectPlayer(Player player) {
     Mobile mobile = player.isMobile() ? (Mobile)player : null;
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     buffer.append(Strings.RULE);
 
     if (player.isMobile()) {
@@ -141,7 +137,7 @@ public class Inspect extends PlayCommand {
 
     buffer.append(Strings.RULE);
 
-    if (player.isMobile()) {
+    if (player.isMobile() && mobile != null) {
       buffer.append(String.format(
         "| {c}Level:{x} %-29d | {c}Power:{x} %-30d |\n\r",
         player.getLevel(), mobile.getPower()));

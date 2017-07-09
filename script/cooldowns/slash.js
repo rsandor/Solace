@@ -13,7 +13,7 @@ Commands.addCooldown('slash', {
   comboPotency: 225,
   combosWith: 'flurry',
   spCost: 4,
-  run: function (level, player, target, cooldown) {
-    return cooldown.executeAttack(target);
+  run: function (player, target, level, cooldown) {
+    return cooldown.executeAttack(player, target);
   }
 });

@@ -10,6 +10,8 @@ import java.util.function.BiPredicate;
 public abstract class AbstractScriptedCommand implements ScriptedCommand {
   private String name;
   private String displayName;
+  private String[] aliases;
+  private int priority;
   private BiPredicate<Player, String[]> runLambda;
 
   /**
@@ -17,7 +19,7 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
    * @param name Name of the command.
    * @param displayName The display name for the command.
    */
-  public AbstractScriptedCommand(String name, String displayName) {
+  AbstractScriptedCommand(String name, String displayName) {
     setName(name);
     setDisplayName(name);
   }
@@ -28,14 +30,40 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
    * @param displayName The display name for the command.
    * @param runLambda Run lambda for the command.
    */
-  public AbstractScriptedCommand(
+  AbstractScriptedCommand(
     String name,
     String displayName,
+    String[] aliases,
     BiPredicate<Player, String[]> runLambda
   ) {
     setName(name);
     setDisplayName(displayName);
     setRunLambda(runLambda);
+    setAliases(aliases);
+  }
+
+  /**
+   * Sets the priority for the scripted command.
+   * @param p Order to set.
+   */
+  public void setPriority(int p) { priority = p; }
+
+  /**
+   * @return The priority for the scripted command.
+   */
+  public int getPriority() { return priority; }
+
+  /**
+   * Sets the aliases for the scripted command.
+   * @param a Aliases to set.
+   */
+  public void setAliases(String[] a) { aliases = a; }
+
+  /**
+   * @return Aliases for the scripted command.
+   */
+  public String[] getAliases() {
+    return aliases;
   }
 
   /**
@@ -71,5 +99,5 @@ public abstract class AbstractScriptedCommand implements ScriptedCommand {
   /**
    * @see solace.script.ScriptedCommand
    */
-  public abstract Command getInstance(solace.game.Character ch);
+  public abstract Command getInstance();
 }

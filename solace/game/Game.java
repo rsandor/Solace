@@ -1,77 +1,55 @@
 package solace.game;
-
+import solace.cmd.CommandRegistry;
 import solace.net.*;
 import solace.util.*;
-import solace.xml.*;
-import solace.script.Engine;
+import solace.script.ScriptingEngine;
 import solace.cmd.GameException;
-
 import java.io.*;
-import java.util.*;
 import javax.script.ScriptException;
 
 /**
  * Main application class for the Solace engine.
- * @author Ryan Sandor Richards (Gaius)
+ * @author Ryan Sandor Richards
  */
-public class Game
-{
-  static Server server;
+public class Game {
+  private static Server server;
   public static AccountWriter writer;
-
-  /**
-   * @return The game server.
-   */
-  public static Server getServer() {
-    return server;
-  }
 
   /**
    * Initializes the game and starts the game server.
    */
-  protected static void init(String[] args)
+  private static void init(String[] args)
     throws IOException, GameException, ScriptException
   {
     int port;
-
     try {
       port = Integer.parseInt(args[0]);
-    }
-    catch (Exception e) {
+    } catch (Throwable t) {
       port = 4000;
     }
 
-    // Load all configuration files
     Config.load();
-
-    // Load static game messages
     Message.load();
-
-    // Initialize the game world
     World.init();
 
-    // Start the periodic account saver / file writer
     writer = new AccountWriter();
     new Thread(writer).start();
 
-    // Start the main game world clock
     Clock.getInstance().start();
 
-    // Start all management services
     BattleManager.start();
     RecoveryManager.start();
     PlayerManager.start();
 
-    // Initialize the scripting engine
-    Engine.start();
+    ScriptingEngine.start();
+    CommandRegistry.reload();
 
-    // Initialize and start the game server
     server = new Server(port);
     server.listen();
   }
 
   /**
-   * Safely shuts the game down by saving all characters, stopping all network
+   * Safely shuts the game down by saving all players, stopping all network
    * communication to clients, etc.
    */
   public static void shutdown() {
@@ -83,7 +61,7 @@ public class Game
   /**
    * Main method for the Solace engine, initializes the game, and starts the
    * game server.
-   * @param args
+   * @param args Command line arguments.
    */
   public static void main(String[] args) {
     try {

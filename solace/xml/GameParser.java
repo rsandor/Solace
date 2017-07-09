@@ -14,7 +14,7 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class GameParser {
-  protected static final String EQUIPMENT_PATH = "data/config/equipment.xml";
+  private static final String EQUIPMENT_PATH = "data/config/equipment.xml";
 
   /**
    * Parses a generic XML file with a given handler and returns the result.
@@ -67,7 +67,7 @@ public class GameParser {
       ));
       System.exit(1);
     }
-    return null;
+    return new LinkedList<>();
   }
 
   /**
@@ -81,7 +81,7 @@ public class GameParser {
 
   /**
    * Parses an area XML file and generates an <code>Area</code> game object.
-   * @param filename Name of the area to parse. The file is loaded relative to
+   * @param fileName Name of the area to parse. The file is loaded relative to
    *   the default areas path 'Areas/'.
    * @return The area generated as a result of parsing the file.
    */

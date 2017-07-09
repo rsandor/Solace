@@ -9,9 +9,14 @@ import java.util.*;
  * RP value by helping the player to imagine what they may look or act like.
  */
 public class Race {
+  /**
+   * Returned when a race could not be found.
+   */
+  public static final Race NULL = new Race("null race");
+
   String name;
-  Collection<String> passives;
-  Collection<String> cooldowns;
+  Collection<String> passives = new ArrayList<String>();
+  Collection<String> cooldowns = new ArrayList<String>();
 
   /**
    * Creates a new race with the given name.
@@ -19,8 +24,6 @@ public class Race {
    */
   public Race(String n) {
     name = n;
-    passives = new ArrayList<String>();
-    cooldowns = new ArrayList<String>();
   }
 
   /**

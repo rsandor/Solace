@@ -1,53 +1,48 @@
 package solace.cmd;
+import solace.game.Player;
 
-import solace.net.Connection;
+import java.util.Collection;
 
 /**
- * Commands are essentially programmatic representations of user submitted
- * commands, which contain the code to be executed when the command is executed.
- * Commands have a name, which is used by controllers to determine if/when the
- * command is executed.
- * @author Ryan Sandor Richards (Gaius)
+ * Base interface for all game play commands.
+ * @author Ryan Sandor Richards
  */
-public interface Command
-{
-  /**
-   * Determines if a connected user has permissions to execute the command.
-   * @param c Connection to test against.
-   * @return True if the user can run the command, false otherwise.
-   */
-  public boolean canExecute(Connection c);
-
+public interface Command {
   /**
    * @return The name of the command.
    */
-  public String getName();
+  String getName();
 
   /**
    * @return The display name of the command used for messages.
    */
-  public String getDisplayName();
+  String getDisplayName();
 
   /**
-   * Sets the display name for the command.
-   * @param String n Name to set.
+   * @return A collection of the command's aliases.
    */
-  public void setDisplayName(String n);
+  Collection<String> getAliases();
 
   /**
-   * Determines if the given string matches the command's name (this can
-   * somtimes be different than the two strings being lexically identical,
-   * consider prefix matches which many MUDs use).
-   * @param s String to test for a match
-   * @return True if the string matches the command's name, false otherwise.
+   * Returns the ordering priority for the command. This is used to sort
+   * a collection of commands returned during a search operation in order
+   * to decide which command should be chose (e.g. in for multiple commands
+   * that match a common prefix).
+   * @return The ordering priority for the command.
    */
-  public boolean matches(String s);
+  int getPriority();
 
   /**
-   * Executes the command.
-   * @param c Connection which issued the command.
-   * @param params Parameters sent along with the command by the connection.
-   * @return True if the command was successful, false otherwise.
+   * Determines if a player has access to this command.
+   * @param player Player to test.
+   * @return `true` if the player has the command, `false` otherwise.
    */
-  public boolean run(Connection c, String []params);
+  boolean hasCommand(Player player);
+
+  /**
+   * Runs the command for the given player and parameters.
+   * @param player Player for which to run the command.
+   * @param params Parameters for the command.
+   */
+  void run(Player player, String []params);
 }

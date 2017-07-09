@@ -1,12 +1,11 @@
 package solace.script;
+import solace.cmd.AbstractCommand;
 import solace.cmd.Command;
-import solace.cmd.play.PlayCommand;
-import solace.net.Connection;
 import solace.game.Player;
 import java.util.function.BiPredicate;
 
 /**
- * Data model for scripted gameplay commands (`PlayCommand`). Gameplay commands
+ * Data model for scripted gameplay commands. Game play commands
  * handle basic actions such as getting items, movement, etc.
  * @author Ryan Sandor Richards
  */
@@ -20,23 +19,28 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
   public ScriptedPlayCommand(
     String name,
     String displayName,
+    String[] aliases,
     BiPredicate<Player, String[]> runLambda
   ) {
-    super(name, displayName, runLambda);
+    super(name, displayName, aliases, runLambda);
+    setPriority(100);
   }
 
   /**
    * Creates an instance of the play command for use by the game engine.
-   * @param ch Character for the play command.
    * @return The play command instance.
    */
-  public Command getInstance(solace.game.Character ch) {
-    Command command = new PlayCommand(getName(), ch) {
-      public boolean run(Connection c, String[] params) {
-        return getRunLambda().test(ch, params);
+  public Command getInstance() {
+    AbstractCommand command = new AbstractCommand(
+      getName(),
+      getDisplayName(),
+      getAliases()
+    ) {
+      public void run(Player p, String[] params) {
+        getRunLambda().test(p, params);
       }
     };
-    command.setDisplayName(getDisplayName());
+    command.setPriority(getPriority());
     return command;
   }
 }

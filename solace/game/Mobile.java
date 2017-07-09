@@ -1,9 +1,7 @@
 package solace.game;
 
-import solace.cmd.play.Move;
+import com.google.common.base.Joiner;
 import solace.util.*;
-import solace.game.*;
-import java.util.*;
 import solace.util.EventEmitter;
 import solace.util.EventListener;
 
@@ -12,10 +10,10 @@ import solace.util.EventListener;
  * @author Ryan Sandor Richards
  */
 public class Mobile extends AbstractPlayer {
-  int power;
-  boolean isPlaced = false;
-  EventEmitter events;
-  Template template;
+  private int power;
+  private boolean isPlaced = false;
+  private EventEmitter events;
+  private Template template;
 
   /**
    * Creates a new mobile.
@@ -63,12 +61,22 @@ public class Mobile extends AbstractPlayer {
   /**
    * @see solace.game.Player
    */
+  public void sendln(String... lines) { sendMessage(Joiner.on("\n\r").join(lines)); }
+
+  /**
+   * @see solace.game.Player
+   */
   public void wrapln(String msg) { sendMessage(msg); }
 
   /**
    * @see solace.game.Player
    */
   public boolean isMobile() { return true; }
+
+  /**
+   * @see solace.game.Player
+   */
+  public solace.net.Connection getConnection() { return null; }
 
   /**
    * @return The power level for the mobile. The power level is an additional
@@ -81,6 +89,7 @@ public class Mobile extends AbstractPlayer {
    * Sets the power level of the mobile.
    * @param p Power level to set.
    */
+  @SuppressWarnings("unused")
   public void setPower(int p) { power = p; }
 
   /**
@@ -143,7 +152,7 @@ public class Mobile extends AbstractPlayer {
   /**
    * Places the mobile into the game world.
    */
-  public void place(Room room) {
+  void place(Room room) {
     if (isPlaced) { return; }
     isPlaced = true;
 
@@ -184,16 +193,16 @@ public class Mobile extends AbstractPlayer {
     hp = getMaxHp();
 
     room.getMobiles().add(this);
-    room.getCharacters().add(this);
+    room.addPlayer(this);
   }
 
   /**
    * Removes the mobile from the game world.
    */
-  public void pluck() {
+  void pluck() {
     if (!isPlaced) { return; }
     Room room = getRoom();
-    room.getCharacters().remove(this);
+    room.removePlayer(this);
     room.getMobiles().remove(this);
     setRoom(null);
     isPlaced = false;
@@ -204,6 +213,7 @@ public class Mobile extends AbstractPlayer {
    * @param event Name of the event.
    * @param listener Listener for the event.
    */
+  @SuppressWarnings("unused")
   public void addEventListener(String event, EventListener listener) {
     events.addListener(event, listener);
   }
@@ -213,6 +223,7 @@ public class Mobile extends AbstractPlayer {
    * @param event Name of the event.
    * @param listener Listener for the event.
    */
+  @SuppressWarnings("unused")
   public void removeEventListener(String event, EventListener listener) {
     events.removeListener(event, listener);
   }
@@ -231,7 +242,7 @@ public class Mobile extends AbstractPlayer {
    * @param id Id of the shop.
    * @return True if the mobile owns the shop, false otherwise.
    */
-  public boolean ownsShop(String id) {
+  boolean ownsShop(String id) {
     return id.equals(template.get("shop-owner"));
   }
 }

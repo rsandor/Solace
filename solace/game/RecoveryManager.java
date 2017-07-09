@@ -4,7 +4,7 @@ import java.util.*;
 import solace.util.*;
 
 /**
- * Manages the recovery of resources for all mobiles and characters in the game
+ * Manages the recovery of resources for all mobiles and players in the game
  * world.
  *
  * - TODO Add mobile recovery
@@ -41,7 +41,7 @@ public class RecoveryManager {
   }
 
   /**
-   * Performs a recovery cycle for all characters and mobiles in the game world.
+   * Performs a recovery cycle for all players and mobiles in the game world.
    */
   public static void cycle() {
     Collection<solace.game.Character> playing = World.getActiveCharacters();

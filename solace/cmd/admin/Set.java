@@ -1,8 +1,7 @@
 package solace.cmd.admin;
 
-import solace.cmd.play.PlayCommand;
+import solace.cmd.AbstractCommand;
 import solace.game.*;
-import solace.net.*;
 import solace.util.*;
 
 /**
@@ -14,89 +13,89 @@ import solace.util.*;
  *
  * @author Ryan Sandor Richards
  */
-public class Set extends PlayCommand {
+public class Set extends AbstractCommand {
   /**
    * Default constructor.
-   * @param ch Character associated with the command.
+
    */
-  public Set(solace.game.Character ch) {
-    super("set", ch);
+  public Set() {
+    super("set");
   }
 
   /**
    * Sets parameters for players.
-   * @param p The player for which to set the parameter.
+   * @param target The player for which to set the parameter.
    * @param param Name of the parameter to set.
    * @param value Value to set for the parameter.
-   * @return True if the parameter was set, false otherwise.
    */
-  protected boolean setPlayerParam(Player p, String param, String value) {
-    solace.game.Character character = getCharacter();
+  private void setPlayerParam(Player player, Player target, String param, String value) {
     try {
-      if (param.equals("level")) {
-        int level = Integer.parseInt(value);
-        if (level < 1 || level > 100) {
-          throw new Exception("Level out of bounds: " + level);
-        }
-        p.setLevel(level);
-      } else if (param.equals("state")) {
-        PlayState state = PlayState.fromString(value);
-        if (state == null) {
-          throw new Exception("Invalid play state: " + value);
-        }
-        p.setPlayState(state);
-      } else if (param.equals("hp")) {
-        int hp = Integer.parseInt(value);
-        p.setHp(hp);
-      } else if (param.equals("mp")) {
-        int mp = Integer.parseInt(value);
-        p.setMp(mp);
-      } else if (param.equals("race")) {
-        if (!Races.has(value)) {
-          throw new Exception("Invalid player race: " + value);
-        }
-        if (p.isMobile()) {
-          throw new Exception("Mobiles cannot have races.");
-        }
-        ((solace.game.Character)p).setRace(Races.get(value));
-      } else if (param.equals("immortal")) {
-        // Player immortality can only be set by immortals, it prevents all
-        // damage to the player who is currently flagged as such. This shouldn't
-        // be used outside of testing.
-        // TODO Support `true` and `false` value commands.
-        p.toggleImmortal(character);
-      } else {
-        throw new Exception("Invalid parameter: " + param);
+      switch (param) {
+        case "level":
+          int level = Integer.parseInt(value);
+          if (level < 1 || level > 100) {
+            throw new Exception("Level out of bounds: " + level);
+          }
+          target.setLevel(level);
+          break;
+        case "state":
+          PlayState state = PlayState.fromString(value);
+          if (state == null) {
+            throw new Exception("Invalid play state: " + value);
+          }
+          target.setPlayState(state);
+          break;
+        case "hp":
+          int hp = Integer.parseInt(value);
+          target.setHp(hp);
+          break;
+        case "mp":
+          int mp = Integer.parseInt(value);
+          target.setMp(mp);
+          break;
+        case "race":
+          if (!Races.getInstance().has(value)) {
+            throw new Exception("Invalid player race: " + value);
+          }
+          if (target.isMobile()) {
+            throw new Exception("Mobiles cannot have races.");
+          }
+          ((solace.game.Character) target).setRace(Races.getInstance().get(value));
+          break;
+        case "immortal":
+          // Player immortality can only be set by immortals, it prevents all
+          // damage to the player who is currently flagged as such. This shouldn't
+          // be used outside of testing.
+          // TODO Support `true` and `false` value commands.
+          target.toggleImmortal(player);
+          break;
+        default:
+          throw new Exception("Invalid parameter: " + param);
       }
-      return true;
     } catch (NumberFormatException nfe) {
-      character.sendln("Invalid number format: " + value);
+      player.sendln("Invalid number format: " + value);
     } catch (Exception e) {
-      character.sendln(e.getMessage());
+      player.sendln(e.getMessage());
     }
-    return false;
   }
 
-  /**
-   * @see solace.cmd.PlayCommand
-   */
-  public boolean run(Connection c, String []params) {
-    solace.game.Character character = getCharacter();
-    if (params.length != 4) {
-      character.sendln("Usage: set [target] [param] [value]");
-      return false;
-    }
+  @Override
+  public boolean hasCommand(Player player) {
+    return player.getAccount().isAdmin();
+  }
 
+  @Override
+  public void run(Player player, String []params) {
     String target = params[1];
     String param = params[2];
     String value = params[3];
 
-    Player playerTarget = character.getRoom().findPlayer(target);
+    Player playerTarget = player.getRoom().findPlayer(target);
     if (playerTarget == null) {
-      character.sendln("Could not find player with name: " + target);
-      return false;
+      player.sendln("Could not find player with name: " + target);
+      return;
     }
 
-    return setPlayerParam(playerTarget, param, value);
+    setPlayerParam(player, playerTarget, param, value);
   }
 }

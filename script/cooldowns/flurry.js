@@ -11,7 +11,7 @@ Commands.addCooldown('flurry', {
   initiatesCombat: true,
   basePotency: 150,
   spCost: 2,
-  run: function (level, player, target, cooldown) {
-    return cooldown.executeAttack(target);
+  run: function (player, target, level, cooldown) {
+    return cooldown.executeAttack(player, target);
   }
 });

@@ -5,11 +5,11 @@
  * @author Ryan Sandor Richards
  */
 this.Commands = (function () {
-  var Commands = Packages.solace.script.Commands;
+  var ScriptedCommands = Packages.solace.script.ScriptedCommands;
   var ScriptedPlayCommand = Packages.solace.script.ScriptedPlayCommand;
   var ScriptedCooldown = Packages.solace.script.ScriptedCooldown;
-  var SpCost = Packages.solace.cmd.cooldown.SpCost;
-  var MpCost = Packages.solace.cmd.cooldown.MpCost;
+  var SpCost = Packages.solace.cmd.SpCost;
+  var MpCost = Packages.solace.cmd.MpCost;
 
   /**
    * General error handler for logging issues when adding game commands.
@@ -17,6 +17,7 @@ this.Commands = (function () {
    */
   function errorHandler (e) {
     Log.error('Cannot create script command - ' + e.getMessage());
+    e.printStackTrace();
   }
 
   /**
@@ -27,23 +28,27 @@ this.Commands = (function () {
    *   command.
    */
   function addPlayCommand (name, options) {
-    var displayName, runLambda;
+    var displayName, runLambda, aliases;
 
     if (typeof options === 'function') {
       displayName = name;
       runLambda = options;
+      aliases = [];
     } else if (typeof options === 'object') {
       if (!options.run) {
         throw new Error('Commands.add: missing run function for ' + name + '.');
       }
       displayName = options.displayName || name;
+      aliases = options.aliases || [];
       runLambda = options.run;
     } else {
       throw new Error('Commands.add: invalid options given for ' + name);
     }
 
-    var command = new ScriptedPlayCommand(name, displayName, runLambda);
-    Commands.add(command);
+    var command = new ScriptedPlayCommand(
+      name, displayName, aliases, runLambda);
+    command.setPriority(options.priority || 50);
+    ScriptedCommands.add(command);
   }
 
   /**
@@ -84,7 +89,10 @@ this.Commands = (function () {
       cooldown.setCheckValidTarget(options.checkValidTarget);
     }
 
-    Commands.add(cooldown);
+    // TODO Should probably have the `1000` be a constant somewhere...
+    cooldown.setPriority(options.priority || 1000);
+
+    ScriptedCommands.add(cooldown);
   }
 
   /**
