@@ -39,8 +39,8 @@ Commands.add('wear', function (player, params) {
   // Are they high enough level to wear it?
   try {
     var levelOffset = 10;
-    if (Config.get("item.level-offset") != null) {
-      levelOffset = Integer.parseInt(Config.get("world.item.level-offset"));
+    if (Config.get("game.item.level-offset") != null) {
+      levelOffset = Integer.parseInt(Config.get("game.item.level-offset"));
     }
     if (itemLevel != null) {
       if (parseInt(itemLevel) > levelOffset + character.getLevel()) {
@@ -51,7 +51,7 @@ Commands.add('wear', function (player, params) {
   }
   catch (e) {
     e.printStackTrace();
-    Log.warn("Config: world.item.level-offset is not an integer");
+    Log.warn("Config: game.item.level-offset is not an integer");
   }
 
   // Attempt to equip the item

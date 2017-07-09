@@ -20,7 +20,7 @@ public class RecoveryManager {
   public static void start() {
     if (recoveryEvent != null) { return; }
     Log.info("Starting recovery manager");
-    int ticks = Integer.parseInt(Config.get("world.recovery.ticks"));
+    int ticks = Integer.parseInt(Config.get("game.recovery.ticks"));
     recoveryEvent = Clock.getInstance().interval(
       "recovery-cycle",
       ticks,
