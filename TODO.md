@@ -5,23 +5,11 @@
 **The "game/" directory**
 - [x] Default prompt as setting
 - [ ] Move from using `data/` to `game/`
-- [ ] Come up with and document a file extension scheme
-      (e.g. `.emote.json`, `.help.md`, etc.)
+- [ ] Design, document, and implement a file extension scheme (e.g. `.help.md`)
 - [ ] Buff scripting
   - [ ] Convert existing buffs to scripts
-- [ ] Passive scripting
-- [ ] Race scripting
-- [ ] Skill scripting (with localized scripts)
-- [ ] Basic area scripting
-- [ ] Allow help files to be defined along side objects they describe
-      (perhaps use a `.help.md` extension and a recursive find along with
-      the ability to assign keywords from within the help markdown itself
-      that are stripped and ingested upon parsing).
-- [ ] Help 2.0
-  - [ ] Admin only help pages
-  - [ ] Use Apache Lucene for full help text search
-    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
-  - [ ] Better direct indexing scheme for help files
+- [ ] Skills as "packages"
+- [ ] Races as "packages"
 
 --------------------------------------------------------------------------------
 
@@ -38,6 +26,12 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
+
+**Help 2.0**
+  - [ ] Admin only help pages
+  - [ ] Use Apache Lucene for full help text search
+    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
+  - [ ] Better direct indexing scheme for help files
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
