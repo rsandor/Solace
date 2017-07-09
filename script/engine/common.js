@@ -9,6 +9,7 @@
 this.Log = Packages.solace.util.Log;
 this.Strings = Packages.solace.util.Strings;
 this.Color = Packages.solace.util.Color;
+this.Config = Packages.solace.util.Config;
 
 this.format = java.lang.String.format;
 this.StringBuffer = java.lang.StringBuffer;
