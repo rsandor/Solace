@@ -12,6 +12,7 @@ represents:
 - `.config.xml`: Engine configuration
 - `.emote.json`: Emote command definition
 - `.js`: Game script
+- `.skill.json`: Player skill definition
 
 
 ### Engine Configurations
@@ -43,13 +44,13 @@ given in the server logs and the emote will be skipped.
 Here is an example emote that conforms to the expected format:
 ```json
 {
-  "name": "example",
-  "toPlayer": "Message to send to the player when they use the emote.",
-  "toRoom": "Message to send to the room. %s (user name)",
+  "name": "scowl",
+  "toPlayer": "You scowl menacingly.",
+  "toRoom": "%s scowls menacingly.",
   "withTarget": {
-    "toPlayer": "Sent to the player when the emote has a target: %s (target name)",
-    "toTarget": "Sent to target of the emote: %s (user name)",
-    "toRoom": "Sent to room when an emote has a target: %s (user name) %s (target name)"
+    "toPlayer": "You narrow your eyes, cock your head, and scowl at %s.",
+    "toTarget": "%s gets a mean look upon their face and scowls at you.",
+    "toRoom": "Something's amiss... %s just gave %s a pretty mean look."
   }
 }
 ```
@@ -61,3 +62,34 @@ Here is an example emote that conforms to the expected format:
 Game scripts are JavaScript files that the game loads on startup that add programmatic functionality to the game.
 A full treatment on scripting is out of the scope of this document, see [scripting.md](./scripting.md) for more
 details.
+
+### Player Skills
+
+**Extension:** `.skill.json`
+
+Skills are one of the primary character customization methods of the solace engine. They define a set of passive
+enhancements and cooldown actions that players can use to interact with the game world. On game load the engine will
+search the `game/` directory for any JSON files with the `.skill.json` extension and register them as game skills.
+Any errors encountered while processing skill definitions will be displayed in the server's log output.
+
+Here's an example of the format for `.skill.json` files:
+```json
+{
+  "id": "one-handed",
+  "name": "One-handed",
+  "passives": [
+    { "level": 15, "name": "parry" },
+    { "level": 40, "name": "second attack" },
+    { "level": 80, "name": "third attack" },
+    { "level": 100, "name": "battle trance" },
+  ],
+  "cooldowns": [
+    { "level": 5, "name": "flurry" },
+    { "level": 35, "name": "slash" },
+    { "level": 65, "name": "riposte" },
+    { "level": 95, "name": "coup" }
+  ]
+}
+```
+
+

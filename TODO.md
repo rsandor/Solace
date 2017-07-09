@@ -2,7 +2,7 @@
 
 ### In Progress
 
-**Game Directory**
+**Feature: The Game Directory**
 - [x] Default prompt as setting
 - [x] Move `data/` -> `game/`
 - [x] Move scripts to the `game/` directory
@@ -36,7 +36,7 @@
 
 ### Backlog
 
-**Help 2.0**
+**Feature: Help 2.0**
   - [ ] Extension: `.help.md`
   - [ ] Admin only help pages
   - [ ] Use Apache Lucene for full help text search
