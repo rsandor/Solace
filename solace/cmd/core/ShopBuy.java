@@ -1,23 +1,17 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
 import solace.game.*;
-import solace.net.*;
 
 /**
  * Buy command, allows the player to buy items from shops.
  * @author Ryan Sandor Richards
  */
 public class ShopBuy extends ShopCommand {
-  public ShopBuy(solace.game.Character ch) {
-     super("buy", ch);
+  public ShopBuy() {
+     super("buy");
   }
 
-  public void command(
-    Connection c,
-    String[] params,
-    Shop shop,
-    Room room
-  ) {
+  public void command(solace.game.Character character, String[] params, Shop shop, Room room) {
     if (character.isFighting()) {
       character.sendln("You cannot buy items while in battle!");
       return;
@@ -29,7 +23,7 @@ public class ShopBuy extends ShopCommand {
     }
 
     String name = params[1];
-    ShopItem item = null;
+    ShopItem item;
 
     try {
       item = shop.getItemByIndex(Integer.parseInt(name));
@@ -75,7 +69,6 @@ public class ShopBuy extends ShopCommand {
       character.wrapln(String.format(
         "The owner refuses to sell %s.", name
       ));
-      return;
     }
     catch (CurrencyException ce) {
       character.wrapln(String.format(
@@ -83,7 +76,5 @@ public class ShopBuy extends ShopCommand {
         sample.get("description.inventory")
       ));
     }
-
-    return;
   }
 }

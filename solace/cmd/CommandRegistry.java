@@ -76,7 +76,11 @@ public class CommandRegistry {
       new Emote(),
       new Reload(),
       new Shutdown(),
-      new Flee()
+      new Flee(),
+      new ShopAppraise(),
+      new ShopBuy(),
+      new ShopList(),
+      new ShopSell()
       //new Inspect()
       //new solace.cmd.deprecated.admin.Set()
     ).forEach(this::add);

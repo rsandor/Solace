@@ -1,23 +1,17 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
 import solace.game.*;
-import solace.net.*;
 
 /**
  * Sell command, sells items in player inventories to shop owners.
  * @author Ryan Sandor Richards
  */
 public class ShopSell extends ShopCommand {
-  public ShopSell(solace.game.Character ch) {
-    super("sell", ch);
+  public ShopSell() {
+    super("sell");
   }
 
-  public void command(
-    Connection c,
-    String[] params,
-    Shop shop,
-    Room room
-  ) {
+  public void command(solace.game.Character character, String[] params, Shop shop, Room room) {
     if (character.isFighting()) {
       character.sendln("You're too distracted to sell items while fighting!");
       return;

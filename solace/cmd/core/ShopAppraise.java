@@ -1,7 +1,6 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
 import solace.game.*;
-import solace.net.*;
 
 /**
  * Appraise command, lets the player know how much the owner of the shop will
@@ -9,16 +8,11 @@ import solace.net.*;
  * @author Ryan Sandor Richards
  */
 public class ShopAppraise extends ShopCommand {
-  public ShopAppraise(solace.game.Character ch) {
-    super("appraise", ch);
+  public ShopAppraise() {
+    super("appraise");
   }
 
-  public void command(
-    Connection c,
-    String[] params,
-    Shop shop,
-    Room room
-  ) {
+  public void command(solace.game.Character character, String[] params, Shop shop, Room room) {
     if (character.isFighting()) {
       character.sendln("You cannot have items appraised while fighting!");
       return;

@@ -1,23 +1,18 @@
-package solace.cmd.deprecated;
+package solace.cmd.core;
 
-import solace.game.*;
-import solace.net.*;
+import solace.game.Room;
+import solace.game.Shop;
 
 /**
  * List command, lists items for sale in shops to the player.
  * @author Ryan Sandor Richards
  */
 public class ShopList extends ShopCommand {
-  public ShopList(solace.game.Character ch) {
-    super("list", ch);
+  public ShopList() {
+    super("list");
   }
 
-  public void command(
-    Connection c,
-    String[] params,
-    Shop shop,
-    Room room
-  ) {
+  public void command(solace.game.Character character, String[] params, Shop shop, Room room) {
     if (character.isFighting()) {
       character.sendln("You cannot browse a shop while fighting!");
       return;
