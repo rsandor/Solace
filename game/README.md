@@ -9,7 +9,9 @@ Many game objects the engine processes can be describe by using files of various
 game directory. Here is a quick list of common file extension recognized by the engine and what each
 represents:
 
-- `.config.xml`: A game engine configuration file
+- `.config.xml`: Engine configuration
+- `.emote.json`: Emote command definition
+- `.js`: Game script
 
 
 ### Engine Configurations
@@ -28,3 +30,34 @@ var defaultPrompt = Config.get('default.prompt');
 On game load the engine will search the `game/` directory for any files matching the `.config.xml` extension and load
 the configurations into the `Config` utility. This means a game author can add as many additional custom configurations
 as desired (as it may make it easier to tweak scripts, etc.).
+
+### Emote Commands
+
+**Extension:** `.emote.json`
+
+Emotes are role playing commands that have no impact other than to add flavor to interactions between players.
+On game load the engine will search the `game/` directory for any JSON files matching the `.emote.json` extension
+and load them into the game. If the game encounters an unexpected format for the JSON file a warning will be
+given in the server logs and the emote will be skipped.
+
+Here is an example emote that conforms to the expected format:
+```json
+{
+  "name": "example",
+  "toPlayer": "Message to send to the player when they use the emote.",
+  "toRoom": "Message to send to the room. %s (user name)",
+  "withTarget": {
+    "toPlayer": "Sent to the player when the emote has a target: %s (target name)",
+    "toTarget": "Sent to target of the emote: %s (user name)",
+    "toRoom": "Sent to room when an emote has a target: %s (user name) %s (target name)"
+  }
+}
+```
+
+### Game Scripts
+
+**Extension:** `.emote.json`
+
+Game scripts are JavaScript files that the game loads on startup that add programmatic functionality to the game.
+A full treatment on scripting is out of the scope of this document, see [scripting.md](./scripting.md) for more
+details.

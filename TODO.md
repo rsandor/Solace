@@ -45,13 +45,14 @@
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
-- [ ] Sex and Gender Identity
-- [ ] Skills 2.0
+- [ ] Gender
+- [ ] New Interactive Character Creator
+  - [ ] Provide access to help files from within creator
+
+**Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
   - [ ] Incorporate skill level into game math for skill cooldowns
-- [ ] New Interactive Character Creator
-  - [ ] Provide access to help files from within creator
 
 **Feature: Presentation & Communication**
 - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
