@@ -56,7 +56,7 @@ Here is an example emote that conforms to the expected format:
 
 ### Game Scripts
 
-**Extension:** `.emote.json`
+**Extension:** `.js`
 
 Game scripts are JavaScript files that the game loads on startup that add programmatic functionality to the game.
 A full treatment on scripting is out of the scope of this document, see [scripting.md](./scripting.md) for more
