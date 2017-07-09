@@ -12,7 +12,7 @@ import org.json.*;
  * @author Ryan Sandor Richards
  */
 public class Skills {
-  private static final String SKILLS_DIR = "data/skills/";
+  private static final String SKILLS_DIR = "game/skills/";
   private static final Skills instance = new Skills();
 
   private final Hashtable<String, Skill> skills = new Hashtable<>();

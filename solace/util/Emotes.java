@@ -13,7 +13,7 @@ public class Emotes {
   /**
    * Location of the emote files in the game data directory.
    */
-  private static final String EMOTE_DIR = "data/emotes/";
+  private static final String EMOTE_DIR = "game/emotes/";
 
   private static final int FORMAT_SELF = 0;
   private static final int FORMAT_ROOM = 1;

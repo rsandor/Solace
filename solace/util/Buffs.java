@@ -101,7 +101,7 @@ public class Buffs {
   /**
    * Path to the races data directory.
    */
-  static final String PATH = "data/buffs/";
+  static final String PATH = "game/buffs/";
 
   /**
    * Default duration, in seconds, for buffs which did not define said duration.

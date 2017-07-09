@@ -18,7 +18,7 @@ public class Config {
   /**
    * Path to the configurations directory.
    */
-  protected static final String configPath = "data/config/";
+  protected static final String configPath = "game/config/";
 
   /**
    * Loads a configuration file.

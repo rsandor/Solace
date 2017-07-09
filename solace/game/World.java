@@ -17,7 +17,7 @@ public class World {
   /**
    * Path to the area data directory.
    */
-  static final String AREA_PATH = "data/areas/";
+  static final String AREA_PATH = "game/areas/";
 
   static List<Connection> connections;
   static List<Connection> oogChat;

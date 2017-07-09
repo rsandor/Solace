@@ -12,7 +12,7 @@ import solace.game.Race;
  * @author Ryan Sandor Richards
  */
 public class Races {
-  private static final String RACES_DIR = "data/races/";
+  private static final String RACES_DIR = "game/races/";
   public static final Races instance = new Races();
 
   private final Hashtable<String, Race> races = new Hashtable<>();

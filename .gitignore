@@ -4,7 +4,7 @@ notes/
 .DS_Store
 battle.md
 report/
-data/accounts/*.xml
+game/accounts/*.xml
 .idea/
 out/
 *.iml

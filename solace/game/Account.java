@@ -30,7 +30,7 @@ public class Account
   /*
    * Account file location constants.
    */
-  protected static final String accountDir = "data/accounts/";
+  protected static final String accountDir = "game/accounts/";
 
   /**
    * @param name Name of the account.

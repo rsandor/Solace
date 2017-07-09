@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class Message
 {
-  static final String messageDir = "data/messages/";
+  static final String messageDir = "game/messages/";
   static Hashtable<String, String> messages = new Hashtable<String, String>();
 
   /**

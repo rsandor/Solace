@@ -14,7 +14,7 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class GameParser {
-  private static final String EQUIPMENT_PATH = "data/config/equipment.xml";
+  private static final String EQUIPMENT_PATH = "game/config/equipment.xml";
 
   /**
    * Parses a generic XML file with a given handler and returns the result.

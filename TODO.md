@@ -4,7 +4,7 @@
 
 **Game Directory**
 - [x] Default prompt as setting
-- [ ] Move `data/` -> `game/`
+- [x] Move `data/` -> `game/`
 - [ ] Change config files to use JSON format
 - [ ] Design, document, and implement a file extension scheme
   - [ ] `.emote.json` - Emote definitions
