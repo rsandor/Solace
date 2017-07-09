@@ -1,7 +1,5 @@
 package solace.xml;
 
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import java.util.*;
@@ -11,6 +9,9 @@ import solace.util.*;
 
 /**
  * Contains helper methods for parsing various types of game XML files.
+ *
+ * TODO Convert all string file names to Path objects.
+ *
  * @author Ryan Sandor Richards
  */
 public class GameParser {
@@ -46,8 +47,7 @@ public class GameParser {
    * @param fileName Name of the file to parse.
    * @return The configuration hash parsed from the file.
    */
-  public static Configuration parseConfiguration(String fileName)
-    throws IOException
+  public static Configuration parseConfiguration(String fileName) throws IOException
   {
     return (Configuration)parse(fileName, new ConfigHandler());
   }

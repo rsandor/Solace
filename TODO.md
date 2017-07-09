@@ -5,13 +5,12 @@
 **Game Directory**
 - [x] Default prompt as setting
 - [x] Move `data/` -> `game/`
-- [ ] Change config files to use JSON format
 - [ ] Design, document, and implement a file extension scheme
+  - [x] `.config.xml` - Game engine settings / configuration
   - [ ] `.emote.json` - Emote definitions
   - [ ] `.skill.json` - Skill definitions
   - [ ] `.race.json` - Race definitions
   - [ ] `.area.xml` - Area definitions
-  - [ ] `.config.json` - Configurations
   - [ ] `.message.txt` - Large messages
   - [ ] `.passive.json` - Passive enhancement definitions
 - [ ] Move scripts from to the `game/` directory

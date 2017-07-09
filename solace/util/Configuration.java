@@ -6,8 +6,7 @@ import java.util.Hashtable;
  * @author Ryan Sandor Richards
  */
 public class Configuration extends Hashtable<String, String> {
-  // Instance variables
-  String name;
+  private String name;
 
   /**
    * @param name Name of the configuration.

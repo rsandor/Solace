@@ -1,7 +1,11 @@
 package solace.util;
 
+import solace.game.Game;
 import solace.xml.GameParser;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 
 /**
@@ -9,29 +13,20 @@ import java.util.Hashtable;
  * @author Ryan Sandor Richards.
  */
 public class Config {
-  /**
-   * Holds parsed configurations.
-   */
-  protected static Hashtable<String, Configuration> configurations =
-    new Hashtable<String, Configuration>();
-
-  /**
-   * Path to the configurations directory.
-   */
-  protected static final String configPath = "game/config/";
+  private static Hashtable<String, Configuration> configurations = new Hashtable<>();
 
   /**
    * Loads a configuration file.
-   * @param name Name of the file to load.
+   * @param path Path to the configuration file.
    */
-  protected static void loadFile(String name) {
+  private static void loadConfig(Path path) {
+    String filename = String.valueOf(path);
     try {
-      Configuration c = GameParser.parseConfiguration(configPath + name);
+      Configuration c = GameParser.parseConfiguration(filename);
       configurations.put(c.getName(), c);
-      Log.info("Configuration \"" + name + "\" loaded.");
-    }
-    catch (IOException ioe) {
-      Log.error("Unable to load configuration file: " + name);
+      Log.info("Configuration \"" + filename + "\" loaded.");
+    } catch (IOException ioe) {
+      Log.error("Unable to load configuration file: " + filename);
     }
   }
 
@@ -39,18 +34,11 @@ public class Config {
    * Loads all configuration files.
    */
   public static void load() {
-    File dir = new File(configPath);
-    String[] names = dir.list();
-    if (names != null) {
-      for (String name : names) {
-        if (name.equals("equipment.xml")) {
-          continue;
-        }
-        loadFile(name);
-      }
-    }
-    else {
-      Log.info("No configurations to load.");
+    try {
+      GameFiles.findConfigurations().forEach(Config::loadConfig);
+    } catch (IOException e) {
+      Log.fatal("Failed to read configurations from game directory, exiting.");
+      System.exit(0);
     }
   }
 
@@ -67,7 +55,7 @@ public class Config {
     if (!configurations.containsKey(cfgName))
       return null;
 
-    StringBuffer keyBuffer = new StringBuffer();
+    StringBuilder keyBuffer = new StringBuilder();
     for (int i = 1; i < parts.length; i++) {
       keyBuffer.append(parts[i]);
       if (i != parts.length - 1)

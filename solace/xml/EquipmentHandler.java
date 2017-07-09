@@ -1,9 +1,6 @@
 package solace.xml;
 
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import javax.xml.parsers.*;
-import java.io.*;
 import solace.util.*;
 import java.util.*;
 
@@ -14,12 +11,10 @@ import java.util.*;
 public class EquipmentHandler extends Handler {
   enum State { INIT, EQUIPMENT }
 
-  List<String> slots = new LinkedList<String>();
-  State state = State.INIT;
+  private List<String> slots = new LinkedList<>();
+  private State state = State.INIT;
 
-  /**
-   * @see org.xml.sax.helpers.DefaultHandler
-   */
+  @Override
   public void startElement(
     String uri,
     String localName,
@@ -34,7 +29,7 @@ public class EquipmentHandler extends Handler {
     else if (state == State.EQUIPMENT) {
       if (name.equals("slot")) {
         String slot = attrs.getValue("name");
-        if (name == null) {
+        if (name.length() == 0) {
           Log.warn("Equipment slot not given name, skipping.");
           return;
         }
@@ -46,18 +41,14 @@ public class EquipmentHandler extends Handler {
     }
   }
 
-  /**
-   * @see org.xml.sax.helpers.DefaultHandler
-   */
+  @Override
   public void endElement(String uri, String localName, String name) {
     if (name.equals("equipment")) {
       state = State.INIT;
     }
   }
 
-  /**
-   * @return The equipment slots found by parsing the config file.
-   */
+  @Override
   public Object getResult() {
     return slots;
   }
