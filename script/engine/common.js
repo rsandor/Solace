@@ -14,5 +14,6 @@ this.Config = Packages.solace.util.Config;
 this.format = java.lang.String.format;
 this.StringBuffer = java.lang.StringBuffer;
 this.StringBuilder = java.lang.StringBuilder;
+this.Arrays = java.lang.Arrays;
 
 this.Joiner = Packages.com.google.common.base.Joiner;
