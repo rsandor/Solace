@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="game">
+  <default>
+    <option name="prompt" value="(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>" />
+  </default>
+</config>

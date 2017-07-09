@@ -25,12 +25,6 @@ public class Character extends AbstractPlayer {
   static final Character NULL = new Character();
 
   /**
-   * Default prompt given to new players.
-   */
-  private static final String DEFAULT_PROMPT =
-    "(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>";
-
-  /**
    * Determines if the given slot name is a valid equipment slot.
    * @param name Name of the slot to check.
    * @return `true` if the slot is valid, `false` otherwise.
@@ -48,7 +42,7 @@ public class Character extends AbstractPlayer {
   private Hashtable<String, Skill> skills = new Hashtable<>();
 
   private Account account = Account.NULL;
-  private String prompt = Character.DEFAULT_PROMPT;
+  private String prompt = Config.get("game.default.prompt");
   private Hashtable<String, String> hotbar = new Hashtable<>();
   private Race race = Race.NULL;
 

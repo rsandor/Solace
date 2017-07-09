@@ -3,7 +3,7 @@
 ### In Progress
 
 **The "game/" directory**
-- [ ] Default prompt as setting
+- [x] Default prompt as setting
 - [ ] Move from using `data/` to `game/`
 - [ ] Come up with and document a file extension scheme
       (e.g. `.emote.json`, `.help.md`, etc.)

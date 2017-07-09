@@ -1,7 +1,5 @@
 'use strict';
 
-var DEFAULT_PROMPT = '(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>';
-
 /**
  * Command that allows players to set custom prompt formats.
  * @author Ryan Sandor Richards
@@ -13,8 +11,7 @@ Commands.add('prompt', function (player, params) {
 
   var prompt;
   if (params.length < 2) {
-    player.sendln('Setting default prompt.');
-    prompt = DEFAULT_PROMPT;
+    prompt = Config.get("game.default.prompt");
   } else {
     prompt = params[1];
   }
