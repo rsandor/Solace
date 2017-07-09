@@ -2,22 +2,6 @@
 
 ### In Progress
 
---------------------------------------------------------------------------------
-
-### Bugs
-
-- [ ] **Bug:** Shutdown command sometimes hangs, investigate
-      Seems to hang when there are logged in players
-      It catches right after it says "Stopping account writer"
-
---------------------------------------------------------------------------------
-
-### Unorganized:
-
---------------------------------------------------------------------------------
-
-### Backlog
-
 **The "game/" directory**
 - [ ] Default prompt as setting
 - [ ] Move from using `data/` to `game/`
@@ -39,6 +23,21 @@
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
   - [ ] Better direct indexing scheme for help files
 
+--------------------------------------------------------------------------------
+
+### Bugs
+
+- [ ] **Bug:** Shutdown command sometimes hangs, investigate
+      Seems to hang when there are logged in players
+      It catches right after it says "Stopping account writer"
+
+--------------------------------------------------------------------------------
+
+### Unorganized:
+
+--------------------------------------------------------------------------------
+
+### Backlog
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
