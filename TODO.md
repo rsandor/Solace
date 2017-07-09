@@ -7,7 +7,7 @@
 - [x] Move `data/` -> `game/`
 - [ ] Design, document, and implement a file extension scheme
   - [x] `.config.xml` - Game engine settings / configuration
-  - [ ] `.emote.json` - Emote definitions
+  - [x] `.emote.json` - Emote definitions
   - [ ] `.skill.json` - Skill definitions
   - [ ] `.race.json` - Race definitions
   - [ ] `.area.xml` - Area definitions
@@ -68,8 +68,9 @@
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
-  - [ ] Emote JSON format
+  - [x] Emote JSON format
   - [ ] Better parameter handling
+  - [ ] Use a trie for emote lookup
 - [ ] Add many common emotes (use ROM2.4 for reference)
 
 **Feature: Loot System**

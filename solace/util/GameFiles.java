@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 public class GameFiles {
   private static final Path gamePath = Paths.get("game/");
   private static final String configExt = ".config.xml";
+  private static final String emoteExt = ".emote.json";
 
   /**
    * Recursively finds all files with the given file extension that exist in
@@ -20,7 +21,7 @@ public class GameFiles {
    * @param ext File extensions by which to filter.
    * @return A stream of paths for all files found.
    */
-  public static final Stream<Path> find(String ext) throws IOException {
+  public static Stream<Path> find(String ext) throws IOException {
     return Files.find(
       gamePath,
       Integer.MAX_VALUE,
@@ -32,7 +33,15 @@ public class GameFiles {
    * @return A stream of paths to all configuration files in the game directory.
    * @throws IOException If an error occurs while finding configuration files.
    */
-  public static final Stream<Path> findConfigurations() throws IOException {
+  static Stream<Path> findConfigurations() throws IOException {
     return find(configExt);
+  }
+
+  /**
+   * @return A stream of paths to all emote files in the game directory.
+   * @throws IOException If an error occurs while finding emote files.
+   */
+  static Stream<Path> findEmotes() throws IOException {
+    return find(emoteExt);
   }
 }

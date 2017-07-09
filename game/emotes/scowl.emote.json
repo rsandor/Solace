@@ -1,0 +1,10 @@
+{
+  "name": "scowl",
+  "toPlayer": "You scowl menacingly.",
+  "toRoom": "%s scowls menacingly.",
+  "withTarget": {
+    "toPlayer": "You narrow your eyes, cock your head, and scowl at %s.",
+    "toTarget": "%s gets a mean look upon their face and scowls at you.",
+    "toRoom": "Something's amiss... %s just gave %s a pretty mean look."
+  }
+}

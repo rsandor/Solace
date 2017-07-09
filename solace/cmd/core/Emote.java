@@ -51,7 +51,7 @@ public class Emote extends AbstractCommand {
       Emotes emotes = Emotes.getInstance();
       if (params.length == 1) {
         player.wrapln(emotes.toSource(params[0]));
-        room.sendMessage(emotes.toRoom(params[0]), player);
+        room.sendMessage(emotes.toRoom(params[0], player.getName()), player);
         return;
       }
 
@@ -82,8 +82,8 @@ public class Emote extends AbstractCommand {
       player.sendln(emotes.toSource(emote, target.getName()));
       target.sendMessage(emotes.toTarget(emote, player.getName()));
     }
-    catch (EmoteNotFoundException | InvalidEmoteException enfe) {
-      Log.error(enfe.getMessage());
+    catch (EmoteNotFoundException e) {
+      Log.error(e.getMessage());
       player.sendln("Could not emote. Try again later.");
     }
   }

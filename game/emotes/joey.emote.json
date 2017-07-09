@@ -1,0 +1,10 @@
+{
+  "name": "joey",
+  "toPlayer": "You raise an eyebrow and announce 'How you doin?'.",
+  "toRoom": "%s gets all sexy and says 'How you doin?'.",
+  "withTarget": {
+    "toPlayer": "You sidle up, put on your sex pants and say 'How you doin?' to %s.",
+    "toTarget": "%s approaches, slowly checks you out, and says 'How you doin?'",
+    "toRoom": "%s struts forth, gives %s a sexy look, and says 'How you doin?'"
+  }
+}
