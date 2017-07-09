@@ -5,7 +5,7 @@ import solace.cmd.GameException;
 import solace.game.*;
 import solace.game.Character;
 import solace.net.Connection;
-import solace.script.Engine;
+import solace.script.ScriptingEngine;
 import solace.cmd.CompositeCommand;
 import solace.util.*;
 
@@ -47,7 +47,7 @@ public class Reload extends CompositeCommand {
   @SuppressWarnings("unused")
   private void scripts(Player player, String[] params) {
     Log.info(String.format("User '{m}%s{x}' initiated script reload...", player.getName()));
-    Engine.reload();
+    ScriptingEngine.reload();
     CommandRegistry.reload();
     player.sendln("Game scripts reloaded.");
   }

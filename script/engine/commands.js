@@ -47,8 +47,7 @@ this.Commands = (function () {
 
     var command = new ScriptedPlayCommand(
       name, displayName, aliases, runLambda);
-    // TODO Should probably have the `1000` be a constant somewhere...
-    command.setOrder(options.order || 1000);
+    command.setPriority(options.priority || 50);
     ScriptedCommands.add(command);
   }
 
@@ -91,7 +90,7 @@ this.Commands = (function () {
     }
 
     // TODO Should probably have the `1000` be a constant somewhere...
-    cooldown.setOrder(options.order || 1000);
+    cooldown.setPriority(options.priority || 1000);
 
     ScriptedCommands.add(cooldown);
   }

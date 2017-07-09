@@ -8,7 +8,8 @@ import solace.script.ScriptedCommands;
 import solace.util.Log;
 import solace.util.NameTrie;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Registry for all game play commands. This keeps track of the master
@@ -80,9 +81,9 @@ public class CommandRegistry {
       new ShopAppraise(),
       new ShopBuy(),
       new ShopList(),
-      new ShopSell()
-      //new Inspect()
-      //new solace.cmd.deprecated.admin.Set()
+      new ShopSell(),
+      new Inspect(),
+      new Set()
     ).forEach(this::add);
 
     // Add scripted commands

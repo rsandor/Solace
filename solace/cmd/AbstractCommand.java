@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public abstract class AbstractCommand implements Command {
   public static int ORDER_CORE = 0;
-  private static int ORDER_DEFAULT = 50;
+  public static int ORDER_DEFAULT = 50;
   public static int ORDER_LOW = 100;
 
   private String name;

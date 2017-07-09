@@ -2,10 +2,7 @@ package solace.script;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.nio.*;
 import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
 import java.io.*;
 import solace.util.Log;
 
@@ -16,7 +13,7 @@ import solace.util.Log;
  * buffs, etc.
  * @author Ryan Sandor Richards
  */
-public class Engine {
+public class ScriptingEngine {
   private ScriptEngineManager engineManager;
   private ScriptEngine engine;
 
@@ -33,12 +30,12 @@ public class Engine {
   /**
    * Singleton instance of the scripting engine.
    */
-  private static final Engine instance = new Engine();
+  private static final ScriptingEngine instance = new ScriptingEngine();
 
   /**
    * Creates a new solace scripting engine.
    */
-  Engine() {
+  ScriptingEngine() {
     engineManager = new ScriptEngineManager();
     engine = engineManager.getEngineByName("nashorn");
   }
@@ -46,7 +43,7 @@ public class Engine {
   /**
    * @return The singelton instance of the scripting engine.
    */
-  public static Engine getInstance() {
+  public static ScriptingEngine getInstance() {
     return instance;
   }
 

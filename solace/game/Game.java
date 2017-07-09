@@ -2,7 +2,7 @@ package solace.game;
 import solace.cmd.CommandRegistry;
 import solace.net.*;
 import solace.util.*;
-import solace.script.Engine;
+import solace.script.ScriptingEngine;
 import solace.cmd.GameException;
 import java.io.*;
 import javax.script.ScriptException;
@@ -41,7 +41,7 @@ public class Game {
     RecoveryManager.start();
     PlayerManager.start();
 
-    Engine.start();
+    ScriptingEngine.start();
     CommandRegistry.reload();
 
     server = new Server(port);

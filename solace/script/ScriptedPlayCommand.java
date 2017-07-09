@@ -5,7 +5,7 @@ import solace.game.Player;
 import java.util.function.BiPredicate;
 
 /**
- * Data model for scripted gameplay commands (`PlayStateCommand`). Gameplay commands
+ * Data model for scripted gameplay commands. Game play commands
  * handle basic actions such as getting items, movement, etc.
  * @author Ryan Sandor Richards
  */
@@ -23,7 +23,7 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
     BiPredicate<Player, String[]> runLambda
   ) {
     super(name, displayName, aliases, runLambda);
-    setOrder(100);
+    setPriority(100);
   }
 
   /**
@@ -40,7 +40,7 @@ public class ScriptedPlayCommand extends AbstractScriptedCommand {
         getRunLambda().test(p, params);
       }
     };
-    command.setPriority(getOrder());
+    command.setPriority(getPriority());
     return command;
   }
 }

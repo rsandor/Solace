@@ -2,29 +2,6 @@
 
 ### In Progress
 
-**Feature: Commands 2.0**
-- [x] Overhaul command and controllers abstraction
-  - [x] Controllers should no longer hold player specific command instances
-  - [x] Prompt parsers can lookup commands in the registry
-  - [x] Commands should provide an ordering field that helps with
-        selecting the correct command even if they have a common prefix
-- [x] Scripting engine access to command aliases (move data out of controllers)
-- [x] Centralized command registry
-  - [x] Commands as singletons
-  - [x] Add command registry
-  - [x] Ability to reload all commands on the fly (including scripted commands)
-- [x] Add + Flesh-out `reload` command (core in-game command, admin only)
-  - [x] `reload scripts` - update commands on-the-fly!
-  - [x] `reload messages`
-  - [x] `reload areas`
-  - [x] `reload help`
-  - [x] `reload emotes`
-  - [x] `reload skills`
-  - [x] `reload races`
-- [x] Write general "CommandTrie" which primarily will be used to do prefix
-      lookup for commands and apply priority ordering.
-- [ ] Fully Script all commands that can be scripted (this should be most)
-
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -56,12 +33,12 @@
       (perhaps use a `.help.md` extension and a recursive find along with
       the ability to assign keywords from within the help markdown itself
       that are stripped and ingested upon parsing).
-
-**Help 2.0**
+- [ ] Help 2.0
   - [ ] Admin only help pages
   - [ ] Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
   - [ ] Better direct indexing scheme for help files
+
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
