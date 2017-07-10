@@ -1,6 +1,5 @@
 package solace.util;
 
-import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
 import java.io.*;
@@ -13,26 +12,26 @@ public class HelpSystem {
   /**
    * Path to the keywords file relative to the project root.
    */
-  protected static final String KEYWORDS_FILE = "game/help/keywords.yml";
+  private static final String KEYWORDS_FILE = "game/help/keywords.yml";
 
   /**
    * Path the the games help files.
    */
-  protected static final String HELP_PATH = "game/help/";
+  private static final String HELP_PATH = "game/help/";
 
   // Instance variables
-  HashSet<String> keywords;
-  Hashtable<String, List<String>> keywordIndex;
-  Hashtable<String, String> primaryKeyword;
-  Hashtable<String, String> articles;
+  private HashSet<String> keywords;
+  private Hashtable<String, List<String>> keywordIndex;
+  private Hashtable<String, String> primaryKeyword;
+  private Hashtable<String, String> articles;
 
   /**
    * Creates a new help system to query help articles.
    */
-  public HelpSystem() {
+  private HelpSystem() {
     Log.info("Generating help system keyword indexes");
     generateKeywordIndex();
-    articles = new Hashtable<String, String>();
+    articles = new Hashtable<>();
     Log.info("Help system loaded and ready to query");
   }
 
@@ -40,10 +39,10 @@ public class HelpSystem {
    * Generates an keyword index and primary keywords for help articles based on
    * the keywords file.
    */
-  protected void generateKeywordIndex() {
-    keywords = new HashSet<String>();
-    keywordIndex = new Hashtable<String, List<String>>();
-    primaryKeyword = new Hashtable<String, String>();
+  private void generateKeywordIndex() {
+    keywords = new HashSet<>();
+    keywordIndex = new Hashtable<>();
+    primaryKeyword = new Hashtable<>();
 
     try {
       for (String line : Files.readAllLines(Paths.get(KEYWORDS_FILE))) {
@@ -68,7 +67,7 @@ public class HelpSystem {
 
           List<String> files;
           if (!keywordIndex.containsKey(keyword)) {
-            files = new LinkedList<String>();
+            files = new LinkedList<>();
             keywordIndex.put(keyword, files);
           }
           else {
@@ -113,8 +112,8 @@ public class HelpSystem {
    * @return A list of articles matching the given keywords or the article
    */
   public String query(Set<String> input) {
-    TreeSet<String> articlePaths = new TreeSet<String>();
-    TreeSet<String> validKeywords = new TreeSet<String>();
+    TreeSet<String> articlePaths = new TreeSet<>();
+    TreeSet<String> validKeywords = new TreeSet<>();
 
     // See if any of the keywords given is a prefix to a keyword in the system
     for (String keyword : keywords) {
@@ -131,9 +130,7 @@ public class HelpSystem {
       if (!keywordIndex.containsKey(keyword)) {
         continue;
       }
-      for (String path : keywordIndex.get(keyword)) {
-        articlePaths.add(path);
-      }
+      articlePaths.addAll(keywordIndex.get(keyword));
     }
 
     // Couldn't find an article that matches
@@ -147,10 +144,10 @@ public class HelpSystem {
     }
 
     // Found multiple, give the player a list of articles to check out
-    StringBuffer result = new StringBuffer();
+    StringBuilder result = new StringBuilder();
     result.append("The following articles match your search:\n\r\n\r");
     for (String path : articlePaths) {
-      result.append("  {y}" + primaryKeyword.get(path) + "{x}\n\r");
+      result.append("  {y}").append(primaryKeyword.get(path)).append("{x}\n\r");
     }
     return result.toString();
   }
@@ -158,7 +155,7 @@ public class HelpSystem {
   /**
    * Default help system instance.
    */
-  static HelpSystem instance = new HelpSystem();
+  private static HelpSystem instance = new HelpSystem();
 
   /**
    * Reloads the game's help messages.
