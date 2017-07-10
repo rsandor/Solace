@@ -2,20 +2,6 @@
 
 ### In Progress
 
-**Feature: The Game Directory**
-- [x] Default prompt as setting
-- [x] Move `data/` -> `game/`
-- [x] Move scripts to the `game/` directory
-- [x] Design, document, and implement a file extension scheme
-  - [x] `.config.xml` - Game engine settings / configuration
-  - [x] `.emote.json` - Emote definitions
-  - [x] `.skill.json` - Skill definitions
-  - [x] `.race.json` - Race definitions
-  - [x] `.area.xml` - Area definitions
-  - [x] `.message.txt` - Large messages
-- [x] Arrange Skill + Cooldowns as "packages"
-- [x] Arrange Race + Passive/Cooldown as "packages"
-
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -152,7 +138,19 @@ And install it in the `game/plugins` directory.
 --------------------------------------------------------------------------------
 
 ### Done
-
+**Feature: The Game Directory**
+- [x] Default prompt as setting
+- [x] Move `data/` -> `game/`
+- [x] Move scripts to the `game/` directory
+- [x] Design, document, and implement a file extension scheme
+  - [x] `.config.xml` - Game engine settings / configuration
+  - [x] `.emote.json` - Emote definitions
+  - [x] `.skill.json` - Skill definitions
+  - [x] `.race.json` - Race definitions
+  - [x] `.area.xml` - Area definitions
+  - [x] `.message.txt` - Large messages
+- [x] Arrange Skill + Cooldowns as "packages"
+- [x] Arrange Race + Passive/Cooldown as "packages"
 - [x] **Bug:** Movement commands to not check exit names against lowercase
 **Feature: Better Color Encoding**
 - [x] Add a better format for color encoding in strings
