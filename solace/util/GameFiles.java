@@ -18,6 +18,8 @@ public class GameFiles {
   private static final String emoteExt = ".emote.json";
   private static final String scriptExt = ".js";
   private static final String skillExt = ".skill.json";
+  private static final String raceExt = ".race.json";
+
 
   /**
    * Recursively finds all files with the given file extension that exist in
@@ -81,5 +83,13 @@ public class GameFiles {
    */
   static Stream<Path> findSkills() throws IOException {
     return find(skillExt);
+  }
+
+  /**
+   * @return A stream of paths to all skills in the game directory.
+   * @throws IOException If an error occurs while finding skill files.
+   */
+  static Stream<Path> findRaces() throws IOException {
+    return find(raceExt);
   }
 }

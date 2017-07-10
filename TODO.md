@@ -10,7 +10,7 @@
   - [x] `.config.xml` - Game engine settings / configuration
   - [x] `.emote.json` - Emote definitions
   - [x] `.skill.json` - Skill definitions
-  - [ ] `.race.json` - Race definitions
+  - [x] `.race.json` - Race definitions
   - [ ] `.area.xml` - Area definitions
   - [ ] `.message.txt` - Large messages
   - [ ] `.passive.json` - Passive enhancement definitions
@@ -18,7 +18,7 @@
   - [ ] Extension: `.buff.js`
   - [ ] Convert existing buffs to scripts
 - [x] Arrange Skill + Cooldowns as "packages"
-- [ ] Arrange Race + Passive/Cooldown as "packages"
+- [x] Arrange Race + Passive/Cooldown as "packages"
 
 --------------------------------------------------------------------------------
 

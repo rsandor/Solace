@@ -11,6 +11,7 @@ represents:
 
 - `.config.xml`: Engine configuration
 - `.emote.json`: Emote command definition
+- `.race.json`: Player race definitions
 - `.js`: Game script
 - `.skill.json`: Player skill definition
 
@@ -52,6 +53,21 @@ Here is an example emote that conforms to the expected format:
     "toTarget": "%s gets a mean look upon their face and scowls at you.",
     "toRoom": "Something's amiss... %s just gave %s a pretty mean look."
   }
+}
+```
+
+### Player Races
+Races are one of the primary character customization methods of the solace engine. Each race grants a single passive
+enhancement and cooldown action to player characters. On game load the engine will search the `game/` directory for any
+JSON files with the `.race.json` extension and register them as player races. Any errors that occur while loading a
+race will be displayed in the server's log output.
+
+here's an example of the format expected for `.race.json` files:
+```json
+{
+  "name": "dwarf",
+  "passives": ["stout-hearted"],
+  "cooldowns": ["skullknock"]
 }
 ```
 

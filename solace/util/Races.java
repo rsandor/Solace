@@ -12,7 +12,6 @@ import solace.game.Race;
  * @author Ryan Sandor Richards
  */
 public class Races {
-  private static final String RACES_DIR = "game/races/";
   public static final Races instance = new Races();
 
   private final Hashtable<String, Race> races = new Hashtable<>();
@@ -29,11 +28,7 @@ public class Races {
   public void reload() throws IOException {
     Log.info("Loading races");
     races.clear();
-    Files.find(
-      Paths.get(RACES_DIR),
-      Integer.MAX_VALUE,
-      (path, attr) -> attr.isRegularFile()
-    ).forEach(path -> {
+    GameFiles.findRaces().forEach(path -> {
       String name = path.getFileName().toString();
       try {
         String contents = new String(Files.readAllBytes(path));
