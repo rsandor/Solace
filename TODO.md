@@ -2,6 +2,13 @@
 
 ### In Progress
 
+**Feature: Help 2.0**
+  - [ ] Extension: `.help.md`
+  - [ ] Admin only help pages
+  - [ ] Use Apache Lucene for full help text search
+    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
+  - [ ] Better direct indexing scheme for help files
+
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -21,13 +28,6 @@
 **Feature: Buffs 2.0**
 - [ ] Extension: `.buff.js`
 - [ ] Convert existing buffs to scripts
-
-**Feature: Help 2.0**
-  - [ ] Extension: `.help.md`
-  - [ ] Admin only help pages
-  - [ ] Use Apache Lucene for full help text search
-    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
-  - [ ] Better direct indexing scheme for help files
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
