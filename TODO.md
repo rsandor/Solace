@@ -11,7 +11,7 @@
   - [x] `.emote.json` - Emote definitions
   - [x] `.skill.json` - Skill definitions
   - [x] `.race.json` - Race definitions
-  - [ ] `.area.xml` - Area definitions
+  - [x] `.area.xml` - Area definitions
   - [ ] `.message.txt` - Large messages
   - [ ] `.passive.json` - Passive enhancement definitions
 - [ ] Buff scripting

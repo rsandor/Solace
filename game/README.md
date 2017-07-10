@@ -9,11 +9,24 @@ Many game objects the engine processes can be describe by using files of various
 game directory. Here is a quick list of common file extension recognized by the engine and what each
 represents:
 
+- `.area.xml`: Area files
 - `.config.xml`: Engine configuration
 - `.emote.json`: Emote command definition
 - `.race.json`: Player race definitions
 - `.js`: Game script
 - `.skill.json`: Player skill definition
+
+### Area Files
+
+**Extension:** `.area.xml`
+
+Areas define the rooms, items, and mobiles that make up a game world for the solace engine. On game load the engine
+will search the `game/` directory for any files matching the `.area.xml` extension and load the area as described in
+each file it finds. Any errors the engine encounters while processing area files will be output as in the server's
+log.
+
+A full treatment of area creation is outside the scope of this document, please see [Solace Area Creation](./areas.md)
+for more information.
 
 
 ### Engine Configurations
@@ -57,6 +70,9 @@ Here is an example emote that conforms to the expected format:
 ```
 
 ### Player Races
+
+**Extension:** `.race.json`
+
 Races are one of the primary character customization methods of the solace engine. Each race grants a single passive
 enhancement and cooldown action to player characters. On game load the engine will search the `game/` directory for any
 JSON files with the `.race.json` extension and register them as player races. Any errors that occur while loading a
