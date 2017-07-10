@@ -5,8 +5,6 @@ import solace.util.*;
 import solace.script.ScriptingEngine;
 import solace.cmd.GameException;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import javax.script.ScriptException;
 
 /**
@@ -31,7 +29,7 @@ public class Game {
     }
 
     Config.load();
-    Message.load();
+    Messages.reload();
     World.init();
 
     writer = new AccountWriter();

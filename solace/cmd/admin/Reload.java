@@ -61,7 +61,7 @@ public class Reload extends CompositeCommand {
   private void messages(Player player, String[] params) {
     try {
       Log.info(String.format("User '{m}%s{x}' initiated messages reload", player.getName()));
-      Message.reload();
+      Messages.reload();
       player.sendln("Game messages reloaded.");
     } catch (Throwable t) {
       player.sendln("Error encountered when reloading messages...");

@@ -83,7 +83,7 @@ public class MainMenuController implements Controller {
    */
   @SuppressWarnings("unused")
   private void help(String[] params) {
-    connection.sendln(Message.get("MainMenu"));
+    connection.sendln(Messages.get("MainMenu"));
   }
 
   /**

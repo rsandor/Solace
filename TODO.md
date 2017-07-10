@@ -6,17 +6,13 @@
 - [x] Default prompt as setting
 - [x] Move `data/` -> `game/`
 - [x] Move scripts to the `game/` directory
-- [ ] Design, document, and implement a file extension scheme
+- [x] Design, document, and implement a file extension scheme
   - [x] `.config.xml` - Game engine settings / configuration
   - [x] `.emote.json` - Emote definitions
   - [x] `.skill.json` - Skill definitions
   - [x] `.race.json` - Race definitions
   - [x] `.area.xml` - Area definitions
-  - [ ] `.message.txt` - Large messages
-  - [ ] `.passive.json` - Passive enhancement definitions
-- [ ] Buff scripting
-  - [ ] Extension: `.buff.js`
-  - [ ] Convert existing buffs to scripts
+  - [x] `.message.txt` - Large messages
 - [x] Arrange Skill + Cooldowns as "packages"
 - [x] Arrange Race + Passive/Cooldown as "packages"
 
@@ -36,6 +32,10 @@
 
 ### Backlog
 
+**Feature: Buffs 2.0**
+- [ ] Extension: `.buff.js`
+- [ ] Convert existing buffs to scripts
+
 **Feature: Help 2.0**
   - [ ] Extension: `.help.md`
   - [ ] Admin only help pages
@@ -48,6 +48,10 @@
 - [ ] Gender
 - [ ] New Interactive Character Creator
   - [ ] Provide access to help files from within creator
+
+**Feature: Better Passives**
+- [ ] Common extension `.passive.json` - Passive enhancement definitions
+- [ ] See if there is a way to make passives a construct of scripting instead of the engine
 
 **Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills

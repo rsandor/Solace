@@ -17,7 +17,7 @@ public class ChatController implements Controller {
   ChatController(Connection c) {
     connection = c;
     World.addChatConnection(connection);
-    connection.sendln(Message.get("ChatIntro"));
+    connection.sendln(Messages.get("ChatIntro"));
   }
 
   /**
@@ -29,7 +29,7 @@ public class ChatController implements Controller {
 
   /**
    * Parses chat commands and broadcasts messages.
-   * @param message Message or command to parse.
+   * @param message Messages or command to parse.
    */
   public void parse(String message) {
     if (message == null || message.length() == 0) {
@@ -40,7 +40,7 @@ public class ChatController implements Controller {
       World.removeChatconnection(connection);
       connection.setStateController(new MainMenuController(connection));
     } else if (message.toLowerCase().startsWith("/help")) {
-      String help = Message.get("ChatHelp");
+      String help = Messages.get("ChatHelp");
       connection.sendln(help);
     } else {
       String name = connection.getAccount().getName().toLowerCase();

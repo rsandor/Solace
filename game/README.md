@@ -12,6 +12,7 @@ represents:
 - `.area.xml`: Area files
 - `.config.xml`: Engine configuration
 - `.emote.json`: Emote command definition
+- `.message.txt`: Game messages
 - `.race.json`: Player race definitions
 - `.js`: Game script
 - `.skill.json`: Player skill definition
@@ -68,6 +69,16 @@ Here is an example emote that conforms to the expected format:
   }
 }
 ```
+
+### Game Messages
+
+**Extension:** `.message.txt`
+
+Game messages are relatively large plain text messages that are displayed in the game. Currently the engine supports
+the use of messages in only a few ways, but they're ideal for a variety of situations (banners, ascii art, etc.). On
+load the engine loads all files in the `game/` directory with the extension `.message.txt` as messages. The resulting
+key name for the message is the filename before the extension. For instance, a message file named `cool.message.txt`
+can be accessed via the messages utility using `Messages.get("cool")`.
 
 ### Player Races
 

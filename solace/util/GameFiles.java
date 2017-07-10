@@ -20,7 +20,7 @@ public class GameFiles {
   private static final String skillExt = ".skill.json";
   private static final String raceExt = ".race.json";
   private static final String areaExt = ".area.xml";
-
+  private static final String messageExt = ".message.txt";
 
   /**
    * Recursively finds all files with the given file extension that exist in
@@ -98,7 +98,15 @@ public class GameFiles {
    * @return A stream of paths to all areas in the game directory.
    * @throws IOException If an error occurs while finding area files.
    */
-  public static Stream<Path> findAreas() throws IOException {
+  static Stream<Path> findAreas() throws IOException {
     return find(areaExt);
+  }
+
+  /**
+   * @return A stream of paths to all messages in the game directory.
+   * @throws IOException If an error occurs while finding message files.
+   */
+  static Stream<Path> findMessages() throws IOException {
+    return find(messageExt);
   }
 }

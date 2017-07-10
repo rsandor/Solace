@@ -31,7 +31,7 @@ public class LoginController
 
   public void init(Connection c) {
     connection = c;
-    connection.sendln( Message.get("Intro") );
+    connection.sendln( Messages.get("Intro") );
   }
 
   public String getPrompt() {
@@ -56,7 +56,7 @@ public class LoginController
 
     // Check to see if they want to make a new account
     if (input.toLowerCase().equals("new")) {
-      connection.sendln( Message.get("NewAccountRules") );
+      connection.sendln( Messages.get("NewAccountRules") );
       state = NEW_ACCOUNT_NAME;
       return;
     }

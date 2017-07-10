@@ -518,7 +518,7 @@ public class Character extends AbstractPlayer {
   /**
    * Helper method to send messages to a character. This also resends their
    * prompt after the message has been sent.
-   * @param msg Message to send.
+   * @param msg Messages to send.
    */
   public void sendMessage(String msg) {
     Connection c = getConnection();
@@ -528,7 +528,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void send(String msg) {
     getConnection().send(msg);
@@ -536,7 +536,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character append with a newline.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void sendln(String msg) {
     getConnection().sendln(msg);
@@ -549,7 +549,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character wrapped with newlines.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void wrapln(String msg) {
     getConnection().wrapln(msg);
