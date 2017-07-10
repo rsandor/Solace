@@ -3,11 +3,12 @@
 ### In Progress
 
 **Feature: Help 2.0**
-  - [ ] Extension: `.help.md`
-  - [ ] Admin only help pages
+  - [ ] Help file annotations
+    - [ ] \@ - Escapes the @ character
+    - [ ] @admin - Annotation that restricts access to help files to only admins
+  - [ ] Common Extension: `.help.md`
   - [ ] Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
-  - [ ] Better direct indexing scheme for help files
 
 --------------------------------------------------------------------------------
 
@@ -19,15 +20,15 @@
 
 --------------------------------------------------------------------------------
 
-### Unorganized:
-
---------------------------------------------------------------------------------
-
 ### Backlog
 
 **Feature: Buffs 2.0**
 - [ ] Extension: `.buff.js`
 - [ ] Convert existing buffs to scripts
+
+**Feature: Better Passives**
+- [ ] Common extension `.passive.json` - Passive enhancement definitions
+- [ ] See if there is a way to make passives a construct of scripting instead of the engine
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
@@ -35,27 +36,23 @@
 - [ ] New Interactive Character Creator
   - [ ] Provide access to help files from within creator
 
-**Feature: Better Passives**
-- [ ] Common extension `.passive.json` - Passive enhancement definitions
-- [ ] See if there is a way to make passives a construct of scripting instead of the engine
-
 **Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
   - [ ] Incorporate skill level into game math for skill cooldowns
 
 **Feature: Presentation & Communication**
-- Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-- Shop commands should refer to the shop owner and be more flavorful
-- Better `skill` command formatting (currently very hard to read)
+- [ ] Colored cooldown hotbar in prompts, e.g. [1234567890-=]
+- [ ] Shop commands should refer to the shop owner and be more flavorful
+- [ ] Better `skill` command formatting (currently very hard to read)
 - [ ] Random dreams while sleeping (fun and refreshes prompt)
-- Decorative banners for shops, inventory, character sheet, etc.
-- Make screen width adjustable on connection (currently fixed to 80)
+- [ ] Decorative banners for shops, inventory, character sheet, etc.
+- [ ] Make screen width adjustable on connection (currently fixed to 80)
 - [ ] Global communication channels
 - [ ] Player-to-player auction house
 - [ ] Create book type items that can be read
-- [ ] Book: Liber Particularum Magicae (book of elemental magic)
-      (reading this unlocks ultimate level 100 evocation skill!)
+  - [ ] Book: Liber Particularum Magicae (book of elemental magic)
+        (reading this unlocks ultimate level 100 evocation skill!)
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
