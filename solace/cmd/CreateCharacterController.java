@@ -93,7 +93,7 @@ class CreateCharacterController implements Controller {
   CreateCharacterController(Connection c) {
     connection = c;
     state = State.CHOOSE_NAME;
-    c.sendln(Message.get("NewCharacter"));
+    c.sendln(Messages.get("NewCharacter"));
   }
 
   public String getPrompt() {

@@ -1,9 +1,7 @@
 package solace.xml;
 
+import com.google.common.base.Joiner;
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import javax.xml.parsers.*;
-import java.io.*;
 import solace.util.*;
 import java.util.*;
 
@@ -12,39 +10,32 @@ import java.util.*;
  * @author Ryan Sandor Richards.
  */
 public class ConfigHandler extends Handler {
-  // Instance variables
-  Configuration config;
-  Stack<String> scope = new Stack<String>();
+  private Configuration config;
+  private Stack<String> scope = new Stack<>();
 
   /**
    * @return The scope prefix for an option.
    */
-  protected String getScope() {
-    StringBuffer buf = new StringBuffer("");
-    for (String s : scope)
-      buf.append(s).append('.');
-    return buf.toString();
+  private String getScope() {
+    return Joiner.on(".").join(scope) + ".";
   }
 
   /**
    * @see org.xml.sax.helpers.DefaultHandler
    */
-  public void startElement(
-    String uri,
-    String localName,
-    String name,
-    Attributes attrs
-  ) {
-    if (name.equals("config")) {
-      config = new Configuration(attrs.getValue("name"));
-    }
-    else if (name.equals("option")) {
-      String n = attrs.getValue("name");
-      String v = attrs.getValue("value");
-      config.put(getScope()+n, v);
-    }
-    else {
-      scope.push(name);
+  public void startElement(String uri, String localName, String name, Attributes attrs) {
+    switch (name) {
+      case "config":
+        config = new Configuration(attrs.getValue("name"));
+        break;
+      case "option":
+        String n = attrs.getValue("name");
+        String v = attrs.getValue("value");
+        config.put(getScope() + n, v);
+        break;
+      default:
+        scope.push(name);
+        break;
     }
   }
 
@@ -52,14 +43,13 @@ public class ConfigHandler extends Handler {
    * @see org.xml.sax.helpers.DefaultHandler
    */
   public void endElement(String uri, String localName, String name) {
-    if (name != "config" && name != "option" && scope.size() > 0)
+    if (!name.equals("config") && !name.equals("option") && scope.size() > 0) {
       scope.pop();
+    }
   }
 
   /**
    * @return The configuration hash generated from the file.
    */
-  public Object getResult() {
-    return config;
-  }
+  public Object getResult() { return config; }
 }

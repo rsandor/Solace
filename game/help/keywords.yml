@@ -7,7 +7,7 @@
 #
 #   dir/article.md: some key words
 #
-# Will map the article loacted at `data/help/dir/article.md` to
+# Will map the article loacted at `game/help/dir/article.md` to
 # the keywords 'some', 'key', and 'words'
 
 stats/index.md: statistics stats

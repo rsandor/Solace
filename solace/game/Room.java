@@ -48,7 +48,7 @@ public class Room {
 
   /**
    * Sends a message to all of the players in a room.
-   * @param message Message to send.
+   * @param message Messages to send.
    */
   public void sendMessage(String message) {
     synchronized(players) {
@@ -63,7 +63,7 @@ public class Room {
    * player character (useful for messages sent as a result of a character's
    * actions). Players who cannot see the excluded player will not recieve the
    * message.
-   * @param message Message to send.
+   * @param message Messages to send.
    * @param exclude Player to exclude when sending the message.
    */
   public void sendMessage(String message, Player exclude) {
@@ -79,7 +79,7 @@ public class Room {
   /**
    * Sends a message to all of the players in a room excepting those in the
    * given array of players.
-   * @param message Message to send.
+   * @param message Messages to send.
    * @param excludes Players to exclude when sending the message.
    */
   public void sendMessage(String message, Player[] excludes) {

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="game">
+  <!-- Game name and author -->
+  <option name="name" value="Solace" />
+  <option name="author" value="Ryan Sandor Richards" />
+
+  <default>
+    <!-- Default player prompt string -->
+    <option name="prompt" value="(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>" />
+  </default>
+
+  <!-- Clock options -->
+  <clock>
+    <!-- Unit for each clock cycle for the game clock. -->
+    <option name="tick" value="1000" />
+  </clock>
+
+  <item>
+    <!-- How many levels below an ithem's level you can be to wear it -->
+    <option name="level-offset" value="10"/>
+  </item>
+
+  <!-- Recovery options -->
+  <recovery>
+    <!-- How many ticks between each recovery cycle -->
+    <option name="ticks" value="6" />
+  </recovery>
+</config>

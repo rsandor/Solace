@@ -12,7 +12,6 @@ import org.json.*;
  * @author Ryan Sandor Richards
  */
 public class Skills {
-  private static final String SKILLS_DIR = "data/skills/";
   private static final Skills instance = new Skills();
 
   private final Hashtable<String, Skill> skills = new Hashtable<>();
@@ -29,13 +28,9 @@ public class Skills {
    * game data directory.
    */
   public void reload() throws IOException {
-    Log.info("Loading skill");
+    Log.info("Loading skills");
     skills.clear();
-    Files.find(
-      Paths.get(SKILLS_DIR),
-      Integer.MAX_VALUE,
-      (path, attr) -> attr.isRegularFile()
-    ).forEach((path) -> {
+    GameFiles.findSkills().forEach((path) -> {
       String name = path.getFileName().toString();
       try {
         String contents = new String(Files.readAllBytes(path));

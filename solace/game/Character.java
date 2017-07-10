@@ -25,12 +25,6 @@ public class Character extends AbstractPlayer {
   static final Character NULL = new Character();
 
   /**
-   * Default prompt given to new players.
-   */
-  private static final String DEFAULT_PROMPT =
-    "(( {G}%h{x}/{g}%H{x}hp {M}%m{x}/{m}%M{x}mp {Y}%s{x}/{y}%S{x}sp )) {Y}%gg{x} %T>";
-
-  /**
    * Determines if the given slot name is a valid equipment slot.
    * @param name Name of the slot to check.
    * @return `true` if the slot is valid, `false` otherwise.
@@ -48,7 +42,7 @@ public class Character extends AbstractPlayer {
   private Hashtable<String, Skill> skills = new Hashtable<>();
 
   private Account account = Account.NULL;
-  private String prompt = Character.DEFAULT_PROMPT;
+  private String prompt = Config.get("game.default.prompt");
   private Hashtable<String, String> hotbar = new Hashtable<>();
   private Race race = Race.NULL;
 
@@ -524,7 +518,7 @@ public class Character extends AbstractPlayer {
   /**
    * Helper method to send messages to a character. This also resends their
    * prompt after the message has been sent.
-   * @param msg Message to send.
+   * @param msg Messages to send.
    */
   public void sendMessage(String msg) {
     Connection c = getConnection();
@@ -534,7 +528,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void send(String msg) {
     getConnection().send(msg);
@@ -542,7 +536,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character append with a newline.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void sendln(String msg) {
     getConnection().sendln(msg);
@@ -555,7 +549,7 @@ public class Character extends AbstractPlayer {
 
   /**
    * Sends a string to the character wrapped with newlines.
-   * @param msg Message to send the character.
+   * @param msg Messages to send the character.
    */
   public void wrapln(String msg) {
     getConnection().wrapln(msg);

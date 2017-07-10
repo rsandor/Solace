@@ -13,12 +13,12 @@ public class HelpSystem {
   /**
    * Path to the keywords file relative to the project root.
    */
-  protected static final String KEYWORDS_FILE = "data/help/keywords.yml";
+  protected static final String KEYWORDS_FILE = "game/help/keywords.yml";
 
   /**
    * Path the the games help files.
    */
-  protected static final String HELP_PATH = "data/help/";
+  protected static final String HELP_PATH = "game/help/";
 
   // Instance variables
   HashSet<String> keywords;

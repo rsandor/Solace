@@ -18,37 +18,31 @@
 
 ### Backlog
 
-**The "game/" directory**
-- [ ] Default prompt as setting
-- [ ] Move from using `data/` to `game/`
-- [ ] Come up with and document a file extension scheme
-      (e.g. `.emote.json`, `.help.md`, etc.)
-- [ ] Buff scripting
-  - [ ] Convert existing buffs to scripts
-- [ ] Passive scripting
-- [ ] Race scripting
-- [ ] Skill scripting (with localized scripts)
-- [ ] Basic area scripting
-- [ ] Allow help files to be defined along side objects they describe
-      (perhaps use a `.help.md` extension and a recursive find along with
-      the ability to assign keywords from within the help markdown itself
-      that are stripped and ingested upon parsing).
-- [ ] Help 2.0
+**Feature: Buffs 2.0**
+- [ ] Extension: `.buff.js`
+- [ ] Convert existing buffs to scripts
+
+**Feature: Help 2.0**
+  - [ ] Extension: `.help.md`
   - [ ] Admin only help pages
   - [ ] Use Apache Lucene for full help text search
     https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
   - [ ] Better direct indexing scheme for help files
 
-
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
-- [ ] Sex and Gender Identity
-- [ ] Skills 2.0
+- [ ] Gender
+- [ ] New Interactive Character Creator
+  - [ ] Provide access to help files from within creator
+
+**Feature: Better Passives**
+- [ ] Common extension `.passive.json` - Passive enhancement definitions
+- [ ] See if there is a way to make passives a construct of scripting instead of the engine
+
+**Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Incorporate ability scores into game math for skills
   - [ ] Incorporate skill level into game math for skill cooldowns
-- [ ] New Interactive Character Creator
-  - [ ] Provide access to help files from within creator
 
 **Feature: Presentation & Communication**
 - Colored cooldown hotbar in prompts, e.g. [1234567890-=]
@@ -65,8 +59,9 @@
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
-  - [ ] Emote JSON format
+  - [x] Emote JSON format
   - [ ] Better parameter handling
+  - [ ] Use a trie for emote lookup
 - [ ] Add many common emotes (use ROM2.4 for reference)
 
 **Feature: Loot System**
@@ -126,10 +121,36 @@
 - Connection proxy so the game can be fully recompiled and reloaded
 - Data layer for storing game state (mongo?)
 
+**Plugins (SPM)**
+Allow anything that could inhabit the game directory to be coded as
+a plugin. The idea would be that you'd have a command-line utility
+called `spm` (Solace Plugin Manager) that works like so:
+```
+spm install rsandor/solace-race-darkelf
+```
+The utility would just fetch the repo from the following URL:
+```
+https://github.com/rsando/solace-race-darkelf
+```
+And install it in the `game/plugins` directory.
+
+
 --------------------------------------------------------------------------------
 
 ### Done
-
+**Feature: The Game Directory**
+- [x] Default prompt as setting
+- [x] Move `data/` -> `game/`
+- [x] Move scripts to the `game/` directory
+- [x] Design, document, and implement a file extension scheme
+  - [x] `.config.xml` - Game engine settings / configuration
+  - [x] `.emote.json` - Emote definitions
+  - [x] `.skill.json` - Skill definitions
+  - [x] `.race.json` - Race definitions
+  - [x] `.area.xml` - Area definitions
+  - [x] `.message.txt` - Large messages
+- [x] Arrange Skill + Cooldowns as "packages"
+- [x] Arrange Race + Passive/Cooldown as "packages"
 - [x] **Bug:** Movement commands to not check exit names against lowercase
 **Feature: Better Color Encoding**
 - [x] Add a better format for color encoding in strings

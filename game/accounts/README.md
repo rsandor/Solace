@@ -1,4 +1,4 @@
-# data/accounts
+# game/accounts
 
 This directory holds the account information for all players. By the ignore
 rules we do not save account information to the git repository. This file is

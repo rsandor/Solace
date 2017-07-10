@@ -21,11 +21,10 @@ Here is a list of the directories and files in the root of the repository and
 what they all contain:
 
 * `build.xml` - The ant build script
-* `solace/` - Root source directory
-* `script/` - Root embedded scripts directory
-* `data/accounts` - user account flat files
-* `data/messages` - static game messages such as the MOTD
-* `data/config` - various configuration files
+* `solace/` - Server/Engine source
+* `script/` - Embedded scripts
+* `game/` - Defines the specifics of the game (areas, skills, etc.)
+  See: [game/ README](./game/README.md) for more details.
 
 ## Compiling and Running
 

@@ -1,7 +1,13 @@
 package solace.util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import solace.game.Race;
+
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -11,17 +17,67 @@ import java.util.*;
  */
 public class Emotes {
   /**
-   * Location of the emote files in the game data directory.
+   * Java representation of emote JSON data.
+   * @author Ryan Sandor Richards
    */
-  private static final String EMOTE_DIR = "data/emotes/";
+  private class EmoteData {
+    private String name;
+    private String toPlayer;
+    private String toRoom;
+    private String toPlayerWithTarget;
+    private String toTarget;
+    private String toRoomWithTarget;
 
-  private static final int FORMAT_SELF = 0;
-  private static final int FORMAT_ROOM = 1;
-  private static final int FORMAT_TARGET_SELF = 2;
-  private static final int FORMAT_TARGET = 3;
-  private static final int FORMAT_TARGET_ROOM = 4;
+    /**
+     * Creates a new emote data entry.
+     * @param n Name of the emote.
+     * @param p Format to use when sending emote text to a player.
+     * @param r Format to use when sending emote text to a room.
+     * @param pt Format to use when sending emote text to a player when the emote is targeted.
+     * @param t Format to use when sending emote text to the target of the emote.
+     * @param rt Format to use when sending emote text to a room when the emote is targeted.
+     */
+    EmoteData(String n, String p, String r, String pt, String t, String rt) {
+      name = n;
+      toPlayer = p;
+      toRoom = r;
+      toPlayerWithTarget = pt;
+      toTarget = t;
+      toRoomWithTarget = rt;
+    }
 
-  private final Hashtable<String, String> emotes = new Hashtable<>();
+    /**
+     * @return The name of the emote.
+     */
+    String getName() { return name; }
+
+    /**
+     * @return The format to use when sending emote messages to the player.
+     */
+    String getToPlayer() { return toPlayer; }
+
+    /**
+     * @return The format to use when sending the emote message to a room.
+     */
+    String getToRoom() { return toRoom; }
+
+    /**
+     * @return The format to use when sending emote messages to the player when the emote is targeted.
+     */
+    String getToPlayerWithTarget() { return toPlayerWithTarget; }
+
+    /**
+     * @return The format to use when sending emote messages to the target.
+     */
+    String getToTarget() { return toTarget; }
+
+    /**
+     * @return The format to use when sending emote messages to the room when the emote is targeted.
+     */
+    String getToRoomWithTarget() { return toRoomWithTarget; }
+  }
+
+  private final Hashtable<String, EmoteData> emotes = new Hashtable<>();
 
   /**
    * Creates a new Emotes instance and loads all emote files.
@@ -41,72 +97,66 @@ public class Emotes {
    */
   public void reload() throws IOException {
     emotes.clear();
-    Files.find(
-      Paths.get(EMOTE_DIR),
-      Integer.MAX_VALUE,
-      (path, attr) -> attr.isRegularFile()
-    ).forEach((path) -> {
-      String name = path.getFileName().toString();
-      try {
-        emotes.put(name, new String(Files.readAllBytes(path)));
-      } catch (IOException e) {
-        Log.warn(String.format("Error loading emote '%s', skipping.", name));
-      }
-    });
+    Log.info("Reloading emotes");
+    GameFiles.findEmotes().forEach(this::loadEmote);
+  }
+
+  /**
+   * Parse the emote data located at the given path and adds it to the list of emotes.
+   * @param path Path for the emote JSON file.
+   */
+  public void loadEmote (Path path) {
+    String filename = path.getFileName().toString();
+    try {
+      String json = new String(Files.readAllBytes(path));
+
+      JSONObject object = new JSONObject(json);
+      String name = object.getString("name");
+
+      String toPlayer = object.getString("toPlayer");
+      String toRoom = object.getString("toRoom");
+
+      JSONObject withTarget = object.getJSONObject("withTarget");
+      String toPlayerWithTarget = withTarget.getString("toPlayer");
+      String toTarget = withTarget.getString("toTarget");
+      String toRoomWithTarget = withTarget.getString("toRoom");
+
+      addEmoteData(new EmoteData(name, toPlayer, toRoom, toPlayerWithTarget, toTarget, toRoomWithTarget));
+    } catch (JSONException je) {
+      Log.warn(String.format("Invalid JSON for emote '%s', skipping.", filename));
+      Log.warn(je.getMessage());
+    } catch (IOException e) {
+      Log.warn(String.format("Error loading emote '%s', skipping.", filename));
+    }
+  }
+
+  /**
+   * Adds emote data to the emotes list.
+   * @param data Emote data to add.
+   */
+  private void addEmoteData(EmoteData data) {
+    emotes.put(data.getName(), data);
   }
 
   /**
    * @return A collection of emote names for use with the emote command.
    */
-  public String[] getEmoteAliases() {
-    return emotes.keySet().toArray(new String[0]);
-  }
+  public String[] getEmoteAliases() { return emotes.keySet().toArray(new String[0]); }
 
   /**
    * Finds an emote that matches the given prefix.
    * @param prefix Prefix to find.
    * @return The name of the emote that matches, or null if none was found.
    */
-  protected String emoteName(String prefix) {
+  private EmoteData findEmote(String prefix)
+    throws EmoteNotFoundException
+  {
     for (String name : emotes.keySet()) {
       if (name.startsWith(prefix)) {
-        return name;
+        return emotes.get(name);
       }
     }
-    return null;
-  }
-
-  /**
-   * Gets the format string for an emote with the given prefix.
-   * @param prefix Prefix for the emote to find.
-   * @param number The format string index to retrieve.
-   * @throws EmoteNotFoundException If an emote with the given prefix could not
-   *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
-   */
-  protected String getEmoteFormat(String prefix, int number)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    String emote = emoteName(prefix);
-    if (emote == null) {
-      throw new EmoteNotFoundException("Emote with prefix not found: " + prefix);
-    }
-
-    String[] formats = emotes.get(emote).split("\n");
-    if (formats.length <= number) {
-      throw new InvalidEmoteException("Emote incorrectly formatted: " + emote);
-    }
-
-    return formats[number];
-  }
-
-  /**
-   * Determines if an emote with the given name exists.
-   * @param emote Name of the emote to check.
-   * @return `true` if the emote exists, `false` otherwise.
-   */
-  public boolean hasEmote(String emote) {
-    return emoteName(emote) != null;
+    throw new EmoteNotFoundException(String.format("Emote with prefix '%s' not found.", prefix));
   }
 
   /**
@@ -115,12 +165,9 @@ public class Emotes {
    * @return The formatted emote string.
    * @throws EmoteNotFoundException If an emote with the given prefix could not
    *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
    */
-  public String toSource(String prefix)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    return getEmoteFormat(prefix, FORMAT_SELF);
+  public String toSource(String prefix) throws EmoteNotFoundException {
+    return findEmote(prefix).getToPlayer();
   }
 
   /**
@@ -131,14 +178,9 @@ public class Emotes {
    * @return The formatted emote string.
    * @throws EmoteNotFoundException If an emote with the given prefix could not
    *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
    */
-  public String toSource(String prefix, String targetName)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    return String.format(
-      getEmoteFormat(prefix, FORMAT_TARGET_SELF), targetName
-    );
+  public String toSource(String prefix, String targetName) throws EmoteNotFoundException {
+    return String.format(findEmote(prefix).getToPlayerWithTarget(), targetName);
   }
 
   /**
@@ -149,14 +191,9 @@ public class Emotes {
    * @return The formatted emote string.
    * @throws EmoteNotFoundException If an emote with the given prefix could not
    *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
    */
-  public String toTarget(String prefix, String sourceName)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    return String.format(
-      getEmoteFormat(prefix, FORMAT_TARGET), sourceName
-    );
+  public String toTarget(String prefix, String sourceName) throws EmoteNotFoundException {
+    return String.format(findEmote(prefix).getToTarget(), sourceName);
   }
 
   /**
@@ -165,12 +202,9 @@ public class Emotes {
    * @return The formatted emote string.
    * @throws EmoteNotFoundException If an emote with the given prefix could not
    *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
    */
-  public String toRoom(String prefix)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    return getEmoteFormat(prefix, FORMAT_ROOM);
+  public String toRoom(String prefix, String sourceName) throws EmoteNotFoundException {
+    return String.format(findEmote(prefix).getToRoom(), sourceName);
   }
 
   /**
@@ -181,23 +215,16 @@ public class Emotes {
    * @return The formatted emote string.
    * @throws EmoteNotFoundException If an emote with the given prefix could not
    *   be found.
-   * @throws InvalidEmoteException If the emote file is incorrectly formatted.
    */
-  public String toRoom(String prefix, String source, String target)
-    throws EmoteNotFoundException, InvalidEmoteException
-  {
-    return String.format(
-      getEmoteFormat(prefix, FORMAT_TARGET_ROOM), source, target
-    );
+  public String toRoom(String prefix, String source, String target) throws EmoteNotFoundException {
+    return String.format(findEmote(prefix).getToRoomWithTarget(), source, target);
   }
 
-  // Emotes singelton
-  static final Emotes instance = new Emotes();
+  // Emotes singleton
+  private static final Emotes instance = new Emotes();
 
   /**
    * @return The default Emotes instance.
    */
-  public static Emotes getInstance() {
-    return instance;
-  }
+  public static Emotes getInstance() { return instance; }
 }

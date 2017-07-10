@@ -29,7 +29,7 @@ public class Game {
     }
 
     Config.load();
-    Message.load();
+    Messages.reload();
     World.init();
 
     writer = new AccountWriter();
@@ -41,7 +41,7 @@ public class Game {
     RecoveryManager.start();
     PlayerManager.start();
 
-    ScriptingEngine.start();
+    ScriptingEngine.reload();
     CommandRegistry.reload();
 
     server = new Server(port);

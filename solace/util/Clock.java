@@ -130,7 +130,7 @@ public class Clock implements Runnable {
       return;
     }
 
-    int tickMs = Integer.parseInt(Config.get("world.clock.tick"));
+    int tickMs = Integer.parseInt(Config.get("game.clock.tick"));
     Log.info("Starting game clock, with tick interval " + tickMs + "ms");
     tickFuture = executor.scheduleAtFixedRate(
       this, 0, tickMs, TimeUnit.MILLISECONDS);

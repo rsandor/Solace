@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config name="world">
-	<!-- Overall information about the game world -->
-	<option name="name" value="Solace" />
-	<option name="author" value="Ryan Sandor Richards" />
-
 	<default>
 		<!--
 			The default area and room represent the starting room for a new character.
@@ -14,12 +10,6 @@
 		<option name="room" value="prosperitas" />
 	</default>
 
-	<!-- Clock options -->
-	<clock>
-		<!-- Unit for each clock cycle for the game clock. -->
-		<option name="tick" value="1000" />
-	</clock>
-
 	<!-- Shop options -->
 	<shop>
 		<option name="default.buy" value="0.5" />
@@ -27,7 +17,7 @@
 		<option name="restock" value="600" />
 	</shop>
 
-	<!-- Defines coloring for various game objects -->
+	<!-- Defines colors for various description items -->
 	<colors>
 		<room>
 			<option name="exit" value="{r}" />
@@ -35,15 +25,4 @@
 			<option name="look" value="{g}" />
 		</room>
 	</colors>
-
-	<item>
-		<!-- How many levels below an ithem's level you can be to wear it -->
-		<option name="level-offset" value="10"/>
-	</item>
-
-	<!-- Recovery options -->
-	<recovery>
-		<!-- How many ticks between each recovery cycle -->
-		<option name="ticks" value="6" />
-	</recovery>
 </config>

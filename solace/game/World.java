@@ -14,27 +14,20 @@ import solace.cmd.GameException;
  * @author Ryan Sandor Richards (Gaius)
  */
 public class World {
-  /**
-   * Path to the area data directory.
-   */
-  static final String AREA_PATH = "data/areas/";
-
-  static List<Connection> connections;
-  static List<Connection> oogChat;
-  static Hashtable<String, Account> namesToAccounts;
-  static Hashtable<Account, Connection> accountsToConnections;
-  static Hashtable<String, Area> areas;
-  static List<solace.game.Character> playing;
-  static boolean initialized = false;
-  static boolean areasLoaded = false;
+  private static List<Connection> connections;
+  private static List<Connection> oogChat;
+  private static Hashtable<String, Account> namesToAccounts;
+  private static Hashtable<Account, Connection> accountsToConnections;
+  private static Hashtable<String, Area> areas = new Hashtable<>();
+  private static List<solace.game.Character> playing;
+  private static boolean initialized = false;
 
   /**
    * Initializes the game world: loads areas and sets up collections.
    * @throws GameException If the default room could not be found after areas
    *   are loaded.
    */
-  public static void init() throws GameException, IOException
-  {
+  static void init() throws GameException, IOException {
     if (initialized)
       return;
 
@@ -62,60 +55,36 @@ public class World {
    * @throws GameException if no default room could be determined after the load.
    */
   public static synchronized void loadAreas() throws GameException {
-    Hashtable<String, Area> newAreas = new Hashtable<String, Area>();
+    try {
+      // Clean up existing shops
+      areas.values().forEach(area -> {
+        area.getShops().forEach(Shop::destroy);
+      });
 
-    File dir = new File(AREA_PATH);
-    String[] names = dir.list();
+      // Clear the mobile manager
+      MobileManager.getInstance().clear();
 
-    MobileManager.getInstance().clear();
-
-    if (areas != null) {
-      for (Area area : areas.values()) {
-        for (Shop shop : area.getShops()) {
-          shop.destroy();
-        }
+      // Load all areas
+      Hashtable<String, Area> newAreas = new Hashtable<>();
+      Collection<Area> loadedAreas = Areas.getInstance().reload();
+      if (loadedAreas.size() == 0) {
+        Log.warn("No areas found in the game directory.");
       }
-    }
-
-    if (names != null) {
-      // Try to load all the areas...
-      for (int i = 0; i < names.length; i++) {
-        try {
-          String fileName = AREA_PATH + names[i];
-          Area a = GameParser.parseArea(fileName);
-          newAreas.put(a.getId(), a);
-
-          for (Room room : a.getRooms()) {
-            room.instantiate();
-          }
-
-          Log.info(
-            "Area '" + a.getId() +
-            "' successfully loaded from '" + names[i] + "'"
-          );
-        }
-        catch (IOException ioe) {
-          Log.error("Area '" + names[i] + "' failed to load.");
-        }
-      }
-
-      // Attempt to find the default area
+      loadedAreas.forEach(a -> newAreas.put(a.getId(), a));
       findDefaultRoom(newAreas);
-    }
-    else {
-      Log.info("No area files available to load.");
-    }
+      areas = newAreas;
 
-    areas = newAreas;
-    MobileManager.getInstance().instantiate();
+      // Instantiate mobiles
+      MobileManager.getInstance().instantiate();
 
-    for (String name : areas.keySet()) {
-      Area a = areas.get(name);
-      for (Room r : a.getRooms()) {
-        if (r.hasShop()) {
-          r.getShop().initialize();
-        }
-      }
+      // Initialize shops
+      areas.values().forEach(area -> {
+        area.getRooms().forEach(room -> {
+          if (room.hasShop()) room.getShop().initialize();
+        });
+      });
+    } catch (IOException e) {
+      Log.error(String.format("Unable reload areas: %s", e.getMessage()));
     }
   }
 
