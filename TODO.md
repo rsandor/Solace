@@ -10,8 +10,8 @@
     - [ ] @admin - Annotation that restricts access to help files to only admins
     - [x] @name(name) - Gives a direct name link for a page
     - [x] @author(name) - Adds an author to the help page
-  - [ ] Move `help` command into scripts
-  - [ ] Command: `help-search` - bypasses direct lookup and just performs search
+  - [x] Move `help` command into scripts
+  - [x] Command: `help-search` - bypasses direct lookup and just performs search
   - [ ] New help file to explain the updated system
 
 --------------------------------------------------------------------------------
