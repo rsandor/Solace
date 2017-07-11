@@ -95,7 +95,7 @@ class Markdown {
     // Check for non-valued or "null" annotations
     Matcher nullMatcher = nullAnnotation.matcher(markdown);
     while(nullMatcher.find()) {
-      annotations.put(valuedMatcher.group(1), "");
+      annotations.put(nullMatcher.group(1), "");
     }
 
     return annotations;
