@@ -72,7 +72,6 @@ public class CommandRegistry {
       new Move(),
       new Look(),
       new Attack(),
-      new Help(),
       new Hotbar(),
       new Emote(),
       new Reload(),

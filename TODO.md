@@ -2,6 +2,24 @@
 
 ### In Progress
 
+**Feature: Help 2.0**
+  - [x] Use Apache Lucene for full help text search
+    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
+  - [x] Common Extension: `.help.md`
+  - [x] Help file annotations
+    - [x] @admin - Annotation that restricts access to help files to only admins
+    - [x] @name(name) - Gives a direct name link for a page
+    - [x] @author(name) - Adds an author to the help page
+  - [x] Move `help` command into scripts
+  - [x] Command: `help-search` - bypasses direct lookup and just performs search
+  - [x] New help file to explain the updated system
+  - [x] Admin command help pages
+    - [x] inspect
+    - [x] reload
+    - [x] set
+    - [x] shutdown
+  - [x] Document `.help.md` files
+
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -12,32 +30,21 @@
 
 --------------------------------------------------------------------------------
 
-### Unorganized:
-
---------------------------------------------------------------------------------
-
 ### Backlog
 
 **Feature: Buffs 2.0**
 - [ ] Extension: `.buff.js`
 - [ ] Convert existing buffs to scripts
 
-**Feature: Help 2.0**
-  - [ ] Extension: `.help.md`
-  - [ ] Admin only help pages
-  - [ ] Use Apache Lucene for full help text search
-    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
-  - [ ] Better direct indexing scheme for help files
-
-**Feature: Character Creation 2.0**
-- [ ] Account files should be saved to JSON
-- [ ] Gender
-- [ ] New Interactive Character Creator
-  - [ ] Provide access to help files from within creator
-
 **Feature: Better Passives**
 - [ ] Common extension `.passive.json` - Passive enhancement definitions
 - [ ] See if there is a way to make passives a construct of scripting instead of the engine
+
+**Feature: Character Creation 2.0**
+- [ ] Account files should be saved to JSON
+- [ ] Character Gender
+- [ ] New Interactive Character Creator
+ - [ ] Provide access to help command from within creator
 
 **Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills
@@ -45,17 +52,17 @@
   - [ ] Incorporate skill level into game math for skill cooldowns
 
 **Feature: Presentation & Communication**
-- Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-- Shop commands should refer to the shop owner and be more flavorful
-- Better `skill` command formatting (currently very hard to read)
+- [ ] Colored cooldown hotbar in prompts, e.g. [1234567890-=]
+- [ ] Shop commands should refer to the shop owner and be more flavorful
+- [ ] Better `skill` command formatting (currently very hard to read)
 - [ ] Random dreams while sleeping (fun and refreshes prompt)
-- Decorative banners for shops, inventory, character sheet, etc.
-- Make screen width adjustable on connection (currently fixed to 80)
+- [ ] Decorative banners for shops, inventory, character sheet, etc.
+- [ ] Make screen width adjustable on connection (currently fixed to 80)
 - [ ] Global communication channels
 - [ ] Player-to-player auction house
 - [ ] Create book type items that can be read
-- [ ] Book: Liber Particularum Magicae (book of elemental magic)
-      (reading this unlocks ultimate level 100 evocation skill!)
+  - [ ] Book: Liber Particularum Magicae (book of elemental magic)
+        (reading this unlocks ultimate level 100 evocation skill!)
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System

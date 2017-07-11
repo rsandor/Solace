@@ -28,6 +28,7 @@ public class Game {
       port = 4000;
     }
 
+    HelpSystem.getInstance().reload();
     Config.load();
     Messages.reload();
     World.init();

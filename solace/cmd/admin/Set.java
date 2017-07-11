@@ -9,7 +9,6 @@ import solace.util.*;
  * supports the setting of state and level for players.
  *
  * TODO Flesh this out over time to add new things that can be set.
- * TODO Add admin only help and an entry for this command.
  *
  * @author Ryan Sandor Richards
  */

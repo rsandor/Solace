@@ -1,3 +1,6 @@
+@name(potency)
+@author(Ryan Sandor Richards)
+
 # Battle Mechanic: Potency
 Potency is an attribute of an attack that roughly determines the power of the
 attack. For any given attack, the potency of the attack is used to calculate

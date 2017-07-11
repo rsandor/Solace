@@ -55,12 +55,21 @@ public class NameTrie<T> {
   /**
    * Finds the highest ranked item matching the given prefix. Ranking of items is done
    * via the NameTrie's comparator.
-   * @param prefix Name prefix to search for.
+   * @param prefix Name prefix for which to search.
    * @return The best match for the given prefix or the default value if no items match.
    */
   public T find(String prefix) {
     T bestMatch = trie.prefixMap(prefix).values().stream()
       .reduce(null, (best, item) -> (best == null || comparator.compare(best, item) > 0) ? item : best);
     return bestMatch == null ? defaultValue : bestMatch;
+  }
+
+  /**
+   * Finds all items matching the given prefix.
+   * @param prefix Name prefix for which to search.
+   * @return All items that match the given prefix.
+   */
+  public Collection<T> findAll(String prefix) {
+    return trie.prefixMap(prefix).values();
   }
 }

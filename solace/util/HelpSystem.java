@@ -1,9 +1,24 @@
 package solace.util;
 
-import java.nio.*;
-import java.nio.file.*;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
+import solace.game.Player;
+
+import java.io.IOException;
 import java.util.*;
-import java.io.*;
+import java.util.stream.Collectors;
 
 /**
  * Queries and fetches help articles.
@@ -11,166 +26,138 @@ import java.io.*;
  */
 public class HelpSystem {
   /**
-   * Path to the keywords file relative to the project root.
+   * Internal helper class used for logging meaningful messages when processing a help page.
+   * @author Ryan Sandor Richards
    */
-  protected static final String KEYWORDS_FILE = "game/help/keywords.yml";
+  private class HelpPageLoadException extends Exception {
+    HelpPageLoadException(String msg) {
+      super(msg);
+    }
+  }
+
+  private Directory directory = new RAMDirectory();
+  private NameTrie<HelpPage> pageByName;
+  private Analyzer analyzer;
 
   /**
-   * Path the the games help files.
+   * Reloads all help pages.
+   * @throws IOException If an error occurs while reloading help pages.
    */
-  protected static final String HELP_PATH = "game/help/";
+  public void reload() throws IOException {
+    Log.info("Reloading game help pages.");
 
-  // Instance variables
-  HashSet<String> keywords;
-  Hashtable<String, List<String>> keywordIndex;
-  Hashtable<String, String> primaryKeyword;
-  Hashtable<String, String> articles;
+    directory.close(); // Close out the old ram directory (if any)
 
-  /**
-   * Creates a new help system to query help articles.
-   */
-  public HelpSystem() {
-    Log.info("Generating help system keyword indexes");
-    generateKeywordIndex();
-    articles = new Hashtable<String, String>();
-    Log.info("Help system loaded and ready to query");
+    Set<String> titles = new HashSet<>();
+    directory = new RAMDirectory();
+    pageByName = new NameTrie<>(null);
+    analyzer = new EnglishAnalyzer();
+
+
+    IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
+    GameFiles.findHelpFiles().forEach(path -> {
+      String filename = String.valueOf(path);
+      Log.debug(String.format("Loading help page '%s'", filename));
+      try {
+        HelpPage page = HelpPage.fromPath(path);
+
+        // Check for duplicate names
+        String name = page.getName().toLowerCase();
+        if (pageByName.containsName(name)) {
+          throw new HelpPageLoadException(String.format(
+            "Duplicate name '%s' encountered for help file '%s', skipping.", name, filename));
+        }
+
+        // Check for duplicate titles
+        String title = page.getTitle().toLowerCase();
+        if (titles.contains(title)) {
+          throw new HelpPageLoadException(String.format(
+            "Duplicate title '%s' encountered for help file '%s', skipping.", page.getTitle(), filename));
+        }
+
+        pageByName.put(name, page);
+        titles.add(title);
+
+        Document document = new Document();
+        document.add(new Field("name", page.getName(), TextField.TYPE_STORED));
+        document.add(new Field("title", page.getTitle(), TextField.TYPE_STORED));
+        document.add(new Field("body", page.getPlainText(), TextField.TYPE_STORED));
+        indexWriter.addDocument(document);
+      } catch (RequiredAnnotationException rae) {
+        Log.warn(String.format("Failed to find @name annotation in help page file '%s', skipping.", filename));
+      } catch (TitleNotFoundException tnf) {
+        Log.warn(String.format("Failed to find title in markdown in help page file '%s', skipping.", filename));
+      } catch (HelpPageLoadException hpl) {
+        Log.warn(hpl.getMessage());
+      } catch (Throwable t) {
+        Log.warn(String.format("Unknown error encountered when parsing help file '%s', skipping.", filename));
+        Log.warn(t.getMessage());
+      }
+    });
+    indexWriter.close();
   }
 
   /**
-   * Generates an keyword index and primary keywords for help articles based on
-   * the keywords file.
+   * Attempts to find a help page with the given name prefix for the given player.
+   * @param player Player for which to find the help page.
+   * @param namePrefix Name prefix for the help page to search for.
+   * @return The help page that best matches the given prefix.
+   * @throws HelpPageNotFoundException If no help pages that match the prefix could be found.
    */
-  protected void generateKeywordIndex() {
-    keywords = new HashSet<String>();
-    keywordIndex = new Hashtable<String, List<String>>();
-    primaryKeyword = new Hashtable<String, String>();
+  @SuppressWarnings("unused")
+  public HelpPage getPage(Player player, String namePrefix) throws HelpPageNotFoundException {
+    List<HelpPage> results = pageByName.findAll(namePrefix).stream()
+      .filter(page -> !page.isAdminOnly() || player.getAccount().isAdmin())
+      .collect(Collectors.toList());
+    if (results.size() == 0) {
+      throw new HelpPageNotFoundException(namePrefix);
+    }
+    return results.get(0);
+  }
+
+  /**
+   * Searches for help files that match the given text for the given player.
+   * @param player Player initiating the search.
+   * @param text Text for which to search.
+   * @return An array of the top ten (or less) help pages matching the text ordered by relevance.
+   */
+  public List<HelpPage> search(Player player, String text) {
+    List<HelpPage> results = new LinkedList<>();
 
     try {
-      for (String line : Files.readAllLines(Paths.get(KEYWORDS_FILE))) {
-        String[] parts = line.split(":\\s*");
+      DirectoryReader reader = DirectoryReader.open(directory);
+      IndexSearcher searcher = new IndexSearcher(reader);
 
-        if (parts.length < 2) {
-          continue;
-        }
+      QueryParser parser = new QueryParser("body", analyzer);
+      Query query = parser.parse(text);
+      ScoreDoc[] hits = searcher.search(query, 100).scoreDocs;
 
-        String path = parts[0];
-        String[] articleKeywords = parts[1].split("\\s+");
-
-        if (articleKeywords.length < 1) {
-          continue;
-        }
-
-        // The first given keyword should always be unique to the path
-        primaryKeyword.put(path, articleKeywords[0]);
-
-        for (String keyword : articleKeywords) {
-          keywords.add(keyword);
-
-          List<String> files;
-          if (!keywordIndex.containsKey(keyword)) {
-            files = new LinkedList<String>();
-            keywordIndex.put(keyword, files);
-          }
-          else {
-            files = keywordIndex.get(keyword);
-          }
-          files.add(parts[0]);
+      int numFound = 0;
+      for (int i = 0; i < hits.length && numFound < 10; i++) {
+        Document document = searcher.doc(hits[i].doc);
+        HelpPage page = pageByName.find(document.get("name"));
+        if (player.getAccount().isAdmin() || !page.isAdminOnly()) {
+          numFound++;
+          results.add(page);
         }
       }
-    }
-    catch (IOException ioe) {
-      Log.error("Unable to read help system index file: " + KEYWORDS_FILE);
-      ioe.printStackTrace();
-    }
-  }
 
-  /**
-   * Fetches a particular article from the help system.
-   * @param path Path to the article markdown file in the data directory.
-   * @return The article's contents.
-   */
-  public String getArticle(String path) {
-    if (articles.containsKey(path)) {
-      return articles.get(path);
+      reader.close();
+    } catch (Throwable t) {
+      Log.error("Error searching help pages lucene: " + t.getMessage());
+      t.printStackTrace();
     }
 
-    try {
-      String article = Markdown.convertFile(HELP_PATH + path);
-      articles.put(path, article);
-      return article;
-    }
-    catch (IOException ioe) {
-      Log.error("Problem reading help article: " + path);
-      ioe.printStackTrace();
-      return "A problem occurred, please try again later.";
-    }
-  }
-
-  /**
-   * Queries the help system and attempts to find an article or set of artciles
-   * that match the given keywords.
-   * @param input Prefix keywords to use for the search (given by user)
-   * @return A list of articles matching the given keywords or the article
-   */
-  public String query(Set<String> input) {
-    TreeSet<String> articlePaths = new TreeSet<String>();
-    TreeSet<String> validKeywords = new TreeSet<String>();
-
-    // See if any of the keywords given is a prefix to a keyword in the system
-    for (String keyword : keywords) {
-      for (String prefix : input) {
-        if (keyword.startsWith(prefix)) {
-          validKeywords.add(keyword);
-          break;
-        }
-      }
-    }
-
-    for (String keyword : validKeywords) {
-      // This should never happen if we've parsed the files correctly...
-      if (!keywordIndex.containsKey(keyword)) {
-        continue;
-      }
-      for (String path : keywordIndex.get(keyword)) {
-        articlePaths.add(path);
-      }
-    }
-
-    // Couldn't find an article that matches
-    if (articlePaths.size() == 0) {
-      return "No articles with the given keywords could be found.";
-    }
-
-    // Found exactly one, simply return its contents
-    if (articlePaths.size() == 1) {
-      return getArticle(articlePaths.first());
-    }
-
-    // Found multiple, give the player a list of articles to check out
-    StringBuffer result = new StringBuffer();
-    result.append("The following articles match your search:\n\r\n\r");
-    for (String path : articlePaths) {
-      result.append("  {y}" + primaryKeyword.get(path) + "{x}\n\r");
-    }
-    return result.toString();
+    return results;
   }
 
   /**
    * Default help system instance.
    */
-  static HelpSystem instance = new HelpSystem();
-
-  /**
-   * Reloads the game's help messages.
-   */
-  public static void reload() {
-    instance = new HelpSystem();
-  }
+  private static HelpSystem instance = new HelpSystem();
 
   /**
    * @return the default help system instance.
    */
-  public static synchronized HelpSystem getInstance() {
-    return instance;
-  }
+  public static synchronized HelpSystem getInstance() { return instance; }
 }
