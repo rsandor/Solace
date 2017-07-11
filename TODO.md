@@ -2,24 +2,6 @@
 
 ### In Progress
 
-**Feature: Help 2.0**
-  - [x] Use Apache Lucene for full help text search
-    https://lucene.apache.org/core/6_6_0/core/overview-summary.html#overview.description
-  - [x] Common Extension: `.help.md`
-  - [x] Help file annotations
-    - [x] @admin - Annotation that restricts access to help files to only admins
-    - [x] @name(name) - Gives a direct name link for a page
-    - [x] @author(name) - Adds an author to the help page
-  - [x] Move `help` command into scripts
-  - [x] Command: `help-search` - bypasses direct lookup and just performs search
-  - [x] New help file to explain the updated system
-  - [x] Admin command help pages
-    - [x] inspect
-    - [x] reload
-    - [x] set
-    - [x] shutdown
-  - [x] Document `.help.md` files
-
 --------------------------------------------------------------------------------
 
 ### Bugs
