@@ -77,9 +77,14 @@ public class Reload extends CompositeCommand {
    */
   @SuppressWarnings("unused")
   private void help(Player player, String[] params) {
-    Log.info(String.format("User '{m}%s{x}' initiated help reload...", player.getName()));
-    HelpSystem.reload();
-    player.sendln("Help articles reloaded.");
+    try {
+      Log.info(String.format("User '{m}%s{x}' initiated help reload...", player.getName()));
+      HelpSystem.getInstance().reload();
+      player.sendln("Help articles reloaded.");
+    } catch (Throwable t) {
+      Log.error("Could not reload help system.");
+      Log.error(t.getMessage());
+    }
   }
 
   /**
