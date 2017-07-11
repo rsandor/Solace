@@ -14,10 +14,11 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+import solace.game.Player;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Queries and fetches help articles.
@@ -97,57 +98,57 @@ public class HelpSystem {
   }
 
   /**
-   * Attempts to find a help page by direct match. If no such page could be found then
-   * this will then use the full text of the parameters to the help command to perform
-   * a search.
-   * @param prefix Direct name prefix to match against.
-   * @param text Full text to search with.
-   * @return The help page or the search results.
+   * Attempts to find a help page with the given name prefix for the given player.
+   * @param player Player for which to find the help page.
+   * @param namePrefix Name prefix for the help page to search for.
+   * @return The help page that best matches the given prefix.
+   * @throws HelpPageNotFoundException If no help pages that match the prefix could be found.
    */
   @SuppressWarnings("unused")
-  public String direct(String prefix, String text) {
-    HelpPage page = pageByName.find(prefix.toLowerCase());
-    if (page != null) {
-      return page.getDisplayText();
+  public HelpPage getPage(Player player, String namePrefix) throws HelpPageNotFoundException {
+    List<HelpPage> results = pageByName.findAll(namePrefix).stream()
+      .filter(page -> !page.isAdminOnly() || player.getAccount().isAdmin())
+      .collect(Collectors.toList());
+    if (results.size() == 0) {
+      throw new HelpPageNotFoundException(namePrefix);
     }
-    return search(text);
+    return results.get(0);
   }
 
   /**
-   * Searches for help files that match the given text.
+   * Searches for help files that match the given text for the given player.
+   * @param player Player initiating the search.
    * @param text Text for which to search.
-   * @return A string describing the matching pages by rank.
+   * @return An array of the top ten (or less) help pages matching the text ordered by relevance.
    */
-  public String search(String text) {
-    StringBuilder results = new StringBuilder();
+  public List<HelpPage> search(Player player, String text) {
+    List<HelpPage> results = new LinkedList<>();
+
     try {
       DirectoryReader reader = DirectoryReader.open(directory);
       IndexSearcher searcher = new IndexSearcher(reader);
 
       QueryParser parser = new QueryParser("body", analyzer);
       Query query = parser.parse(text);
-      ScoreDoc[] hits = searcher.search(query, 10).scoreDocs;
+      ScoreDoc[] hits = searcher.search(query, 100).scoreDocs;
 
-      if (hits.length > 0) {
-        results.append("Search results:\n\r\n\r");
-        for (int i = 0; i < hits.length; i++) {
-          Document document = searcher.doc(hits[i].doc);
-          HelpPage page = pageByName.find(document.get("name"));
-          results.append(String.format(
-            "    %-2d. [{y}%s{x}] {c}%s{x}\n\r",
-            (i + 1), page.getName(), document.get("title")));
+      int numFound = 0;
+      for (int i = 0; i < hits.length && numFound < 10; i++) {
+        Document document = searcher.doc(hits[i].doc);
+        HelpPage page = pageByName.find(document.get("name"));
+        if (player.getAccount().isAdmin() || !page.isAdminOnly()) {
+          numFound++;
+          results.add(page);
         }
-      } else {
-        results.append("No help pages match the given query.");
       }
 
       reader.close();
     } catch (Throwable t) {
       Log.error("Error searching help pages lucene: " + t.getMessage());
       t.printStackTrace();
-      return "No help pages match the given query.";
     }
-    return results.toString();
+
+    return results;
   }
 
   /**

@@ -1,9 +1,5 @@
 package solace.util;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.TextField;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +11,7 @@ import java.util.Map;
  */
 public class HelpPage {
   private String plainText;
-  private String displayText;
+  private String renderedMarkdown;
   private Map<String, String> annotations;
   private String title;
 
@@ -29,7 +25,7 @@ public class HelpPage {
       throw new RequiredAnnotationException("@name");
     }
     plainText = Markdown.strip(src);
-    displayText = Markdown.render(src);
+    renderedMarkdown = Markdown.render(src);
     title = Markdown.getTitle(src);
   }
 
@@ -55,12 +51,12 @@ public class HelpPage {
   /**
    * @return The @name annotation for the help page.
    */
-  String getName() { return getAnnotation("name"); }
+  public String getName() { return getAnnotation("name"); }
 
   /**
    * @return The title of the help page.
    */
-  String getTitle() { return title; }
+  public String getTitle() { return title; }
 
   /**
    * @return Plain text of the help file with markdown syntax stripped.
@@ -73,11 +69,9 @@ public class HelpPage {
   boolean isAdminOnly() { return hasAnnotation("admin"); }
 
   /**
-   * @return The renderd text to display to users for this help page.
+   * @return The rendered markdown to display to users for this help page.
    */
-  public String getDisplayText() {
-    return displayText;
-  }
+  @SuppressWarnings("unused") public String getRenderedMarkdown() { return renderedMarkdown; }
 
   /**
    * Creates a new help page from a given path.

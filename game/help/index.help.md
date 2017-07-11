@@ -10,9 +10,6 @@ To access a specific page use the `help <name>` command. If a page with the
 given name was not found, the help system will search across all pages to find
 a list of results that most closely match the query.
 
-To use the search engine directly use `help-search <query>` this will search all
-help pages in the game and return a ranked list of the top ten pages that match
-your query.
-
-To get started why not see the list of available commands? To do so simply type
-`help commands`.
+To use the search engine directly use the `help-search <query>` command. This
+will search all help pages in the game and return a ranked list of up to ten
+pages that best match your query.
