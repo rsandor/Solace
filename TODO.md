@@ -11,7 +11,8 @@
     - [x] @name(name) - Gives a direct name link for a page
     - [x] @author(name) - Adds an author to the help page
   - [ ] Move `help` command into scripts
-  - [ ] Command: `help-search`
+  - [ ] Command: `help-search` - bypasses direct lookup and just performs search
+  - [ ] New help file to explain the updated system
 
 --------------------------------------------------------------------------------
 
@@ -35,9 +36,9 @@
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
-- [ ] Gender
+- [ ] Character Gender
 - [ ] New Interactive Character Creator
-  - [ ] Provide access to help files from within creator
+ - [ ] Provide access to help command from within creator
 
 **Feature: Skills 2.0**
   - [ ] Flesh out design for and implement remaining skills
