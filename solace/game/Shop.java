@@ -1,5 +1,6 @@
 package solace.game;
 
+import solace.io.Config;
 import solace.util.*;
 import java.util.*;
 import java.text.DecimalFormat;

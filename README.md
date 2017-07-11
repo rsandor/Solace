@@ -22,7 +22,7 @@ what they all contain:
 
 * `build.xml` - The ant build script
 * `solace/` - Server/Engine source
-* `script/` - Embedded scripts
+* `script/` - Engine initialization scripts
 * `game/` - Defines the specifics of the game (areas, skills, etc.)
   See: [game/ README](./game/README.md) for more details.
 

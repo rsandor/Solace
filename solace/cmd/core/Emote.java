@@ -1,6 +1,7 @@
 package solace.cmd.core;
 
 import solace.cmd.AbstractCommand;
+import solace.io.Emotes;
 import solace.util.*;
 import solace.game.*;
 import java.util.*;

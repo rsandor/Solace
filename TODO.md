@@ -7,20 +7,12 @@
 ### Bugs
 
 - [ ] **Bug:** Shutdown command sometimes hangs, investigate
-      Seems to hang when there are logged in players
+      Seems to hang when there are multiple logged in players
       It catches right after it says "Stopping account writer"
 
 --------------------------------------------------------------------------------
 
 ### Backlog
-
-**Feature: Buffs 2.0**
-- [ ] Extension: `.buff.js`
-- [ ] Convert existing buffs to scripts
-
-**Feature: Better Passives**
-- [ ] Common extension `.passive.json` - Passive enhancement definitions
-- [ ] See if there is a way to make passives a construct of scripting instead of the engine
 
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
@@ -28,14 +20,8 @@
 - [ ] New Interactive Character Creator
  - [ ] Provide access to help command from within creator
 
-**Feature: Skills 2.0**
-  - [ ] Flesh out design for and implement remaining skills
-  - [ ] Incorporate ability scores into game math for skills
-  - [ ] Incorporate skill level into game math for skill cooldowns
-
 **Feature: Presentation & Communication**
 - [ ] Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-- [ ] Shop commands should refer to the shop owner and be more flavorful
 - [ ] Better `skill` command formatting (currently very hard to read)
 - [ ] Random dreams while sleeping (fun and refreshes prompt)
 - [ ] Decorative banners for shops, inventory, character sheet, etc.
@@ -48,18 +34,28 @@
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
-  - [x] Emote JSON format
   - [ ] Better parameter handling
   - [ ] Use a trie for emote lookup
-- [ ] Add many common emotes (use ROM2.4 for reference)
+- [ ] Add many common emotes (use ROM2.4 "socials.are" for reference)
+
+**Feature: Skills 2.0**
+  - [ ] Flesh out design for and implement remaining skills
+  - Betters Buffs and Passives
+    - Need to work out a way to handle buffs and passives as scripts
+    - Seems to require a lot of hooks into the engine to know when to apply them
+    - How do we handle things like additional attacks?
+    - Resource costs?
+    - Ability score buffs / passives?
+  - [ ] Incorporate ability scores into game math for skills
+  - [ ] Incorporate skill level into game math for skill cooldowns
 
 **Feature: Loot System**
-- Level and power ranges for mobiles
-- Loot System 1.0
-  - Grades of equipment (higher grade equals bigger bonuses)
-- Crafting System 1.0
-  - Crafting classes
-  - Crafting loot from mobs
+- Grades of equipment (higher grade equals bigger bonuses)
+- Drops based on level and power ranges for mobiles
+
+**Feature: Crafting System**
+- Crafting skills
+- Crafting loot from mobs
 
 **Feature: Areas 2.0**
 - Room scripting

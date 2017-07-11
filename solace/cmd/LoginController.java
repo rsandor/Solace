@@ -3,6 +3,8 @@ package solace.cmd;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import java.util.*;
+
+import solace.io.Messages;
 import solace.util.*;
 import solace.game.*;
 import solace.net.*;

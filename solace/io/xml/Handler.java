@@ -1,4 +1,4 @@
-package solace.xml;
+package solace.io.xml;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;

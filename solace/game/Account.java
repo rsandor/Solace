@@ -1,12 +1,9 @@
 package solace.game;
 
-import solace.xml.GameParser;
+import solace.io.xml.GameParser;
 import solace.util.*;
 import java.io.*;
 import java.util.*;
-import java.security.MessageDigest;
-
-import solace.game.Character;
 
 /**
  * Holds information pretaining to a game account.

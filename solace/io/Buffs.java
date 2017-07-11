@@ -1,9 +1,10 @@
-package solace.util;
+package solace.io;
 
 import java.util.*;
 import java.io.*;
 import org.json.*;
 import solace.game.Buff;
+import solace.util.Log;
 
 /**
  * Utility class for loading buff metadata and generating buffs by name.

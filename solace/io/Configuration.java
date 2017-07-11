@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 import java.util.Hashtable;
 
 /**

@@ -1,11 +1,11 @@
-package solace.util;
+package solace.io;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import org.json.*;
 import solace.game.Race;
+import solace.util.Log;
 
 /**
  * Utility class for loading and referencing races by name.

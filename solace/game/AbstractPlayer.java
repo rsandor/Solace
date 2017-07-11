@@ -2,7 +2,7 @@ package solace.game;
 
 import solace.util.Clock;
 import solace.util.Log;
-import solace.util.Buffs;
+import solace.io.Buffs;
 import solace.net.Connection;
 import java.util.*;
 

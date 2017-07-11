@@ -2,12 +2,21 @@ package solace.cmd.admin;
 
 import solace.cmd.CommandRegistry;
 import solace.cmd.GameException;
-import solace.game.*;
+import solace.game.Account;
+import solace.game.Area;
 import solace.game.Character;
+import solace.game.Player;
+import solace.game.Room;
+import solace.game.World;
+import solace.io.Emotes;
+import solace.io.HelpSystem;
+import solace.io.Messages;
+import solace.io.Races;
+import solace.io.Skills;
 import solace.net.Connection;
 import solace.script.ScriptingEngine;
 import solace.cmd.CompositeCommand;
-import solace.util.*;
+import solace.util.Log;
 
 import java.util.Collection;
 import java.util.Collections;

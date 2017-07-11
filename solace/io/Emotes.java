@@ -1,14 +1,13 @@
-package solace.util;
+package solace.io;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import solace.game.Race;
+import solace.util.EmoteNotFoundException;
+import solace.util.Log;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**

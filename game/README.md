@@ -37,7 +37,7 @@ for more information.
 
 Engine configuration are used to override specific aspects of the game engine, such as how combat calculations are
 performed, the id of the starting room, etc. Configurations are structured as a hierarchical key-value map and can
-be accessed via the `solace.util.Config` utility from both within the engine and by scripts.
+be accessed via the `solace.io.Config` utility from both within the engine and by scripts.
 
 Here's an example from the `prompt.js` command script that uses the configuration to fetch the default game prompt:
 ```js

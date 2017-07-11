@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -15,6 +15,9 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import solace.game.Player;
+import solace.util.Log;
+import solace.util.NameTrie;
+import solace.util.TitleNotFoundException;
 
 import java.io.IOException;
 import java.util.*;

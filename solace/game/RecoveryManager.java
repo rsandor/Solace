@@ -1,6 +1,8 @@
 package solace.game;
 
 import java.util.*;
+
+import solace.io.Config;
 import solace.util.*;
 
 /**

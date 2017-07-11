@@ -3,11 +3,14 @@ package solace.game;
 import java.io.*;
 import java.util.*;
 
-import solace.util.*;
+import solace.io.Areas;
+import solace.io.Buffs;
+import solace.io.Config;
+import solace.io.Races;
+import solace.io.Skills;
 import solace.net.Connection;
-import solace.xml.GameParser;
 import solace.cmd.GameException;
-
+import solace.util.Log;
 
 /**
  * Holds the state of the entire game world.

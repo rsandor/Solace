@@ -2,7 +2,7 @@ package solace.cmd.admin;
 
 import solace.cmd.AbstractCommand;
 import solace.game.*;
-import solace.util.*;
+import solace.io.Races;
 
 /**
  * Sets variables and parameters for game objects. Currently this command only

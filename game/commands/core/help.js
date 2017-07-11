@@ -1,6 +1,6 @@
 'use strict';
 
-var HelpSystem = Packages.solace.util.HelpSystem;
+var HelpSystem = Packages.solace.io.HelpSystem;
 
 /**
  * Builds a single query string from a help command's parameters.

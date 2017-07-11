@@ -1,8 +1,8 @@
 package solace.cmd;
 
 import solace.game.*;
+import solace.io.Messages;
 import solace.net.Connection;
-import solace.util.*;
 
 /**
  * Out of game chat controller. The out of game chat allows people to chat on

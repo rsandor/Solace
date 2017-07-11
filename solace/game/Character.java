@@ -3,9 +3,13 @@ package solace.game;
 import java.util.*;
 
 import com.google.common.base.Joiner;
+import solace.io.Config;
+import solace.io.Races;
+import solace.io.SkillNotFoundException;
+import solace.io.Skills;
 import solace.net.Connection;
 import solace.util.*;
-import solace.xml.GameParser;
+import solace.io.xml.GameParser;
 import solace.cmd.GameException;
 
 /**

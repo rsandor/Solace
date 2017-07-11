@@ -1,11 +1,11 @@
-package solace.util;
+package solace.io;
 
 import solace.game.Skill;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import org.json.*;
+import solace.util.Log;
 
 /**
  * Utility class for loading and referencing skills by name.

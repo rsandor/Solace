@@ -2,6 +2,7 @@ package solace.cmd;
 
 import java.util.*;
 import solace.game.*;
+import solace.io.Messages;
 import solace.net.*;
 import solace.util.*;
 

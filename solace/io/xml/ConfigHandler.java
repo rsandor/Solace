@@ -1,8 +1,9 @@
-package solace.xml;
+package solace.io.xml;
 
 import com.google.common.base.Joiner;
 import org.xml.sax.*;
-import solace.util.*;
+import solace.io.Configuration;
+
 import java.util.*;
 
 /**

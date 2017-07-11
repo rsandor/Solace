@@ -1,4 +1,4 @@
-package solace.xml;
+package solace.io.xml;
 
 /**
  * Exception thrown in response to a parse error while parsing an area XML file.

@@ -1,10 +1,8 @@
-package solace.xml;
+package solace.io.xml;
 
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import javax.xml.parsers.*;
-import java.io.*;
 import solace.game.*;
+import solace.io.Config;
 import solace.util.*;
 import java.util.*;
 

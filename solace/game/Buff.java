@@ -1,6 +1,6 @@
 package solace.game;
 
-import solace.util.Buffs;
+import solace.io.Buffs;
 import java.util.Date;
 
 /**

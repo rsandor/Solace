@@ -1,12 +1,10 @@
-package solace.xml;
+package solace.io.xml;
 
 import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import javax.xml.parsers.*;
-import java.io.*;
 import solace.game.*;
+import solace.io.Races;
+import solace.io.SkillNotFoundException;
 import solace.util.*;
-import java.util.*;
 
 /**
  * Handles the parsing of area XML files.

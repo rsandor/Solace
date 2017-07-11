@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 
 /**
  * Thrown when a skill could not be found for a given id.

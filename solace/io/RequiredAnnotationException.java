@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 
 /**
  * Thrown when a required annotation is missing from a markdown file.

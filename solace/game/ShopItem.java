@@ -1,8 +1,9 @@
 package solace.game;
 
 import java.util.*;
+
+import solace.io.Config;
 import solace.util.*;
-import solace.game.*;
 
 /**
  * Represents a single item for sale in a shop.

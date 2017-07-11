@@ -1,4 +1,7 @@
-package solace.util;
+package solace.io;
+
+import solace.util.Markdown;
+import solace.util.TitleNotFoundException;
 
 import java.io.IOException;
 import java.nio.file.Files;

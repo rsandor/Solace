@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * future use in possible notes (BBS) and mail system.
  * @author Ryan Sandor Richards
  */
-class Markdown {
+public class Markdown {
   private static final Pattern titlePattern = Pattern.compile("^\\s*[#]([^#].*)\\s*$");
   private static Pattern nullAnnotation = Pattern.compile("@([a-zA-Z0-9\\-]+)");
   private static Pattern valuedAnnotation = Pattern.compile("@([a-zA-Z0-9\\-]+)\\(([^)]+)\\)");
@@ -24,7 +24,7 @@ class Markdown {
    * @param src Markdown document source to render.
    * @return The color encoded and rendered result.
    */
-  static String render(String src) {
+  public static String render(String src) {
     String markdown = stripAnnotations(src);
     StringBuilder buf = new StringBuilder();
     Arrays.asList(markdown.split("\\n\\r?")).forEach(line -> {
@@ -69,7 +69,7 @@ class Markdown {
    * @param markdown Markdown document to strip.
    * @return The plain text of the markdown document.
    */
-  static String strip(String markdown) {
+  public static String strip(String markdown) {
     return stripAnnotations(markdown)
       .replaceAll("^\\s*[#]+\\s*(.*)$", "$1")
       .replaceAll("`([^`]+)`", "$1")
@@ -82,7 +82,7 @@ class Markdown {
    * @param markdown The markdown from which to get the annotation map.
    * @return The annotation map.
    */
-  static Map<String, String> getAnnotationMap(String markdown) {
+  public static Map<String, String> getAnnotationMap(String markdown) {
     Map<String, String> annotations = new Hashtable<>();
 
     // Check for valued annotations first, then strip them
@@ -120,7 +120,7 @@ class Markdown {
    * @return The title text of the markdown.
    * @throws TitleNotFoundException If no title could be found.
    */
-  static String getTitle(String markdown) throws TitleNotFoundException {
+  public static String getTitle(String markdown) throws TitleNotFoundException {
     String[] lines = markdown.split("\\n\\r?");
     for (String line : lines) {
       Matcher m = titlePattern.matcher(line);

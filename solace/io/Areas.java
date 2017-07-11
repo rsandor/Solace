@@ -1,8 +1,9 @@
-package solace.util;
+package solace.io;
 
 import solace.game.Area;
 import solace.game.Room;
-import solace.xml.GameParser;
+import solace.util.Log;
+import solace.io.xml.GameParser;
 
 import java.io.IOException;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 
 /**
  * Thrown when a help page with the given name could not be found.

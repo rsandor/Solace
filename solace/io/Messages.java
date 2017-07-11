@@ -1,4 +1,6 @@
-package solace.util;
+package solace.io;
+
+import solace.util.Log;
 
 import java.io.IOException;
 import java.nio.file.Files;

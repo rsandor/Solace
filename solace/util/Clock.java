@@ -2,7 +2,8 @@ package solace.util;
 
 import java.util.*;
 import java.util.concurrent.*;
-import solace.util.*;
+
+import solace.io.Config;
 
 /**
  * The master game clock. The clock is configured with a tick duration (via

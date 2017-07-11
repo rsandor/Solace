@@ -4,7 +4,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.nio.file.*;
 
-import solace.util.GameFiles;
+import solace.io.GameFiles;
 import solace.util.Log;
 
 /**

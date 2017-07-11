@@ -1,4 +1,4 @@
-package solace.util;
+package solace.io;
 
 /**
  * Exception thrown when an emote file is incorrectly formatted.

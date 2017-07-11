@@ -1,5 +1,6 @@
 package solace.cmd;
 
+import solace.io.Messages;
 import solace.net.*;
 import solace.game.*;
 import solace.util.*;
