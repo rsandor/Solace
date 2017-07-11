@@ -18,7 +18,7 @@
     - [x] reload
     - [x] set
     - [x] shutdown
-  - [ ] Document `.help.md` files
+  - [x] Document `.help.md` files
 
 --------------------------------------------------------------------------------
 

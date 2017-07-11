@@ -12,6 +12,7 @@ represents:
 - `.area.xml`: Area files
 - `.config.xml`: Engine configuration
 - `.emote.json`: Emote command definition
+- `.help.md`: Help pages
 - `.message.txt`: Game messages
 - `.race.json`: Player race definitions
 - `.js`: Game script
@@ -68,6 +69,56 @@ Here is an example emote that conforms to the expected format:
     "toRoom": "Something's amiss... %s just gave %s a pretty mean look."
   }
 }
+```
+### Help Pages
+
+**Extension:** `.help.md`
+
+Help pages provide information about the game for reference by players. On load the engine
+finds all files in the `game/` directory with the extension `.help.md` and loads them into the
+help system. The system itself is features both direct "by name" lookup and full text searching
+capabilities.
+
+The following markdown constructs are used when rendering help pages:
+
+1. `# Title Text` - Top level header, denotes the "page title"
+2. `## Sub header` - Subsection headers, highlighted in cyan.
+3. \``text`\` - Highlights the given text in yellow, used for referencing other help pages or commands.
+4. `[text]` - Highlights the given text in cyan, used for parameters.
+5. `*` - Used for list bullets, highlighted in red.
+
+In addition, help pages can be annotated with the following:
+
+* `@author(Author Name)` - Adds an author name to the page (currently unused).
+* `@name(lookup-name)` - Sets the lookup name for directly accessing a page.
+* `@admin` - Denotes the help page as "admin only"
+
+The annotations are stripped from the resulting page output that is sent to players
+after they have been processed and collected.
+
+**IMPORTANT:** If the system encounters a page that does not provide a title and name,
+or duplicates an existing title or name then the page will be skipped and a warning will
+be displayed in the server's log output.
+
+Here is an example of a help file:
+
+```md
+@name(set)
+@admin
+@author(Ryan Sandor Richards)
+
+# Admin Command: Set
+Usage: `set` [player-name] [parameter] [value]
+
+The `set` command allows an administrator to set various values for a player.
+The following [parameter] items are currently supported:
+
+* level - Sets the level of the player
+* race - Sets the race of the player
+* hp - Sets the hit points of the player
+* mp - Sets the magic points of the player
+* state - Sets the state (e.g. standing, sitting, resting, etc.) of the player
+* immortal - Flags the player as immortal negating all damage (for testing)
 ```
 
 ### Game Messages
@@ -134,5 +185,3 @@ Here's an example of the format for `.skill.json` files:
   ]
 }
 ```
-
-
