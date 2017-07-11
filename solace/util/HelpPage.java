@@ -14,9 +14,10 @@ import java.util.Map;
  * @author Ryan Sandor Richards
  */
 public class HelpPage {
-  private Document document;
+  private String plainText;
   private String displayText;
   private Map<String, String> annotations;
+  private String title;
 
   /**
    * Creates a new help page with given markdown source.
@@ -27,23 +28,9 @@ public class HelpPage {
     if (!hasAnnotation("name")) {
       throw new RequiredAnnotationException("@name");
     }
+    plainText = Markdown.strip(src);
     displayText = Markdown.render(src);
-    document = createLuceneDocument(getName(), Markdown.getTitle(src), Markdown.strip(src));
-  }
-
-  /**
-   * Generates a lucene document from the given markdown source.
-   * @param name The direct name of the page.
-   * @param title The title of the page.
-   * @param body The plain text body of the page
-   * @return An indexable lucene document for the given markdown.
-   */
-  private Document createLuceneDocument(String name, String title, String body) {
-    Document doc = new Document();
-    doc.add(new Field("name", name, TextField.TYPE_STORED));
-    doc.add(new Field("title", title, TextField.TYPE_STORED));
-    doc.add(new Field("body", body, TextField.TYPE_STORED));
-    return doc;
+    title = Markdown.getTitle(src);
   }
 
   /**
@@ -66,16 +53,24 @@ public class HelpPage {
   }
 
   /**
-   * @return The @name annotation for the help file.
+   * @return The @name annotation for the help page.
    */
   String getName() { return getAnnotation("name"); }
 
   /**
-   * @return The indexable lucene document associated with the help page.
+   * @return The title of the help page.
    */
-  Document getDocument() {
-    return document;
-  }
+  String getTitle() { return title; }
+
+  /**
+   * @return Plain text of the help file with markdown syntax stripped.
+   */
+  String getPlainText() { return plainText; }
+
+  /**
+   * @return True if the page has been flagged as admin only, false otherwise.
+   */
+  boolean isAdminOnly() { return hasAnnotation("admin"); }
 
   /**
    * @return The renderd text to display to users for this help page.
