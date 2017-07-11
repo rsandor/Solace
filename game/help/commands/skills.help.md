@@ -1,4 +1,4 @@
-@name(skills)
+@name(cmd-skills)
 @author(Ryan Sandor Richards)
 
 # Command: skills
