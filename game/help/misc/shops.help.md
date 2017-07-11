@@ -17,7 +17,7 @@ inventory number, and price of the item.
 
 ## Buying
 Upon deciding to buy an item given by the `list` command, players can use the
-`buy [name | number]` command to buy an item with the given name or inventory
+`buy` [name | number] command to buy an item with the given name or inventory
 number (displayed to the left of the item's name in the `list`).
 
 If the character has enough of the currency required then the exchange will be
@@ -26,14 +26,14 @@ gold equal to the sale price missing from their coffers.
 
 ## Appraisals
 To determine the value of the items in a character's inventory, player can use
-the `appraise [name]` command. The shop owner will then let the player know how
+the `appraise` [name] command. The shop owner will then let the player know how
 much gold they are willing to part with when buying the item. Different shop
 owners will buy the same item at different prices, so it may be prudent to
 "shop around" before deciding to sell an item.
 
 ## Selling
 When determined to do so, players can sell items in their character's inventory
-by using the `sell [name]` command. The item will be removed from the
+by using the `sell` [name] command. The item will be removed from the
 character's inventory and an amount of gold as detailed by the `appraise`
 command will be added to the character's coffers.
 
