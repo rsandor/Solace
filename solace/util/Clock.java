@@ -32,7 +32,7 @@ public class Clock implements Runnable {
      * @param a Action to perform.
      * @param i True if the action is a set interval, false otherwise.
      */
-    public Event(String l, long d, Runnable a, boolean i) {
+    Event(String l, long d, Runnable a, boolean i) {
       id = UUID.randomUUID().toString();
       label = l;
       initialDelay = d;
@@ -52,7 +52,7 @@ public class Clock implements Runnable {
      * @return <code>true</code> if the event should be removed from the
      *   schedule, <code>false</code> otherwise.
      */
-    protected boolean tick() {
+    boolean tick() {
       delay--;
 
       if (delay < 0) {
@@ -61,7 +61,10 @@ public class Clock implements Runnable {
 
       if (delay == 0) {
         Log.trace(String.format("Running event %s (id: %s).", label, id));
-        action.run();
+
+        // Run the action in a new thread, and continue processing event
+        new Thread(() -> action.run()).start();
+
         if (!isInterval) {
           return true;
         }
@@ -94,19 +97,17 @@ public class Clock implements Runnable {
     return instance;
   }
 
-  ScheduledExecutorService executor;
-  ScheduledFuture tickFuture;
-  List<Event> events;
-  List<Event> scheduleQueue;
-  final Semaphore scheduleLock = new Semaphore(1);
+  private ScheduledExecutorService executor;
+  private ScheduledFuture tickFuture;
+  private final List<Event> events = Collections.synchronizedList(new LinkedList<Event>());
+  private final List<Event> scheduleQueue = Collections.synchronizedList(new LinkedList<Event>());
+  private final Semaphore scheduleLock = new Semaphore(1);
 
   /**
    * Creates a new clock.
    */
   public Clock() {
     executor = Executors.newScheduledThreadPool(1);
-    events = Collections.synchronizedList(new LinkedList<Event>());
-    scheduleQueue = Collections.synchronizedList(new LinkedList<Event>());
   }
 
   /**
@@ -131,7 +132,8 @@ public class Clock implements Runnable {
       return;
     }
 
-    int tickMs = Integer.parseInt(Config.get("game.clock.tick"));
+    String tickMsConfig = Config.get("game.clock.tick");
+    int tickMs = (tickMsConfig == null) ? 1000 : Integer.parseInt(tickMsConfig);
     Log.info("Starting game clock, with tick interval " + tickMs + "ms");
     tickFuture = executor.scheduleAtFixedRate(
       this, 0, tickMs, TimeUnit.MILLISECONDS);
@@ -140,7 +142,7 @@ public class Clock implements Runnable {
   /**
    * Pauses the game world clock.
    */
-  public void pause() {
+  private void pause() {
     if (tickFuture == null) return;
     tickFuture.cancel(false);
     tickFuture = null;
@@ -163,9 +165,7 @@ public class Clock implements Runnable {
     synchronized (scheduleQueue) {
       Log.trace(String.format(
         "addEventsFromQueue: adding %d events", scheduleQueue.size()));
-      for (Event event : scheduleQueue) {
-        events.add(event);
-      }
+      events.addAll(scheduleQueue);
       scheduleQueue.clear();
     }
   }
@@ -179,13 +179,7 @@ public class Clock implements Runnable {
     try {
       Log.trace("processEvents: Processing game clock events");
       synchronized (events) {
-        Iterator<Event> iter = events.iterator();
-        while (iter.hasNext()) {
-          Event event = iter.next();
-          if (event.tick()) {
-            iter.remove();
-          }
-        }
+        events.removeIf(Event::tick);
       }
     } finally {
       Log.trace("processEvents: Releasing event scheduling lock");
