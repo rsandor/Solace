@@ -9,6 +9,6 @@ Type: `Spell`
 Saving Throw: `Prudence`
 
 Flames erupt from the caster's hands and envelop the target dealing damage
-with `potency` 800.
+with `potency` 400 `fire` damage.
 
 See also: `evocation` (skill)

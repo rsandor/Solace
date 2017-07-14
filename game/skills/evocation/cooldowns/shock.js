@@ -6,14 +6,14 @@
  */
 Commands.addCooldown("shock", {
   initiatesCombat: true,
-  cooldownDuration: 6,
+  cooldownDuration: 10,
   castTime: 3,
   basePotency: 100,
   savingThrow: 'will',
   castMessage: 'You begin casting shock...',
-  run: function (player, target, level, cooldown) {
+  run: function (player, givenTarget, level, cooldown) {
     try {
-      var target = cooldown.resolveTarget(givenTarget);
+      var target = cooldown.resolveTarget(player, givenTarget);
       var result = cooldown.rollToHit(player, target);
       if (result.isMiss()) {
         cooldown.sendMissMessage(player);
@@ -22,9 +22,9 @@ Commands.addCooldown("shock", {
 
       // TODO Seems like this calculation should be centralized...
       // TODO Should we allow for the use of passives on this?
-      var POTENCY_LOW = 20.0;
-      var POTENCY_HIGH = 30.0;
-      var potency = POTENCY_LOW + POTENCY_HIGH * (level/100.0);
+      var POTENCY_LOW = 10.0;
+      var POTENCY_HIGH = 20.0;
+      var potency = POTENCY_LOW + (POTENCY_HIGH * level / 100.0);
       var avgDamage = parseInt(potency * player.getAverageDamage() / 100.0, 10);
 
       // TODO Perhaps too specific an interface...
@@ -35,6 +35,7 @@ Commands.addCooldown("shock", {
       return true;
     } catch (e) {
       player.sendln(e.getMessage());
+      return false;
     }
   }
 });

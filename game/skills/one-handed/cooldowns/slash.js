@@ -10,7 +10,7 @@ Commands.addCooldown('slash', {
   cooldownDuration: Commands.GLOBAL_COOLDOWN,
   initiatesCombat: true,
   basePotency: 150,
-  comboPotency: 225,
+  comboPotency: 200,
   combosWith: 'flurry',
   spCost: 4,
   run: function (player, target, level, cooldown) {

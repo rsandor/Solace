@@ -7,7 +7,7 @@
 Commands.addCooldown('icespike', {
   cooldownDuration: Commands.GLOBAL_COOLDOWN,
   initiatesCombat: true,
-  basePotency: 200,
+  basePotency: 70,
   savingThrow: 'prudence',
   run: function (player, target, level, cooldown) {
     var isHit = cooldown.executeAttack(player, target);

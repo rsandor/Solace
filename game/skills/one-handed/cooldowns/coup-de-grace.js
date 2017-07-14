@@ -9,7 +9,7 @@ Commands.addCooldown('coup', {
   displayName: 'coup de grace',
   cooldownDuration: 120,
   initiatesCombat: true,
-  basePotency: 1000,
+  basePotency: 500,
   spCost: 10,
   run: function (player, target, level, cooldown) {
     return cooldown.executeAttack(player, target);

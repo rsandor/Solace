@@ -3,6 +3,17 @@
 ### In Progress
 
 **Feature: Skills 2.0**
+  - [ ] Weapon & Armor Proficiencies
+    - [ ] Common extension `.prof.js`
+    - [ ] Load proficiencies at game start
+    - [ ] Update selection at "Contego Protectives"
+    - [ ] Create "Arma Armarium" weapons shop
+  - [ ] Damage types
+    - [ ] Weapon damage types (associated with types of weapons)
+    - [ ] Armor resistance types (associated with types of armor)
+    - [ ] Elemental types: fire, water, etc.
+    - [ ] Misc types: acid, light, darkness, etc.
+    - [ ] Character damage resistances
   - [ ] Flesh out design for and implement remaining skills
   - [ ] Scriptable Buffs and Passives
     - Need to work out a way to handle buffs and passives as scripts

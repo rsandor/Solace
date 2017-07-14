@@ -6,9 +6,9 @@ A skill encompasses a general category of actions regarding an aspect of
 warfare, crafting, or manipulation in the game world. Every skill has a level
 from 1 to 100 which indicates a character's proficiency.
 
-Skills provide characters with access to weapon and armor proficiencies, provide
-`passive enhancements`, unlock `cooldown` actions, and provide additional
-commands that can be used to manipulate the game world.
+Skills provide characters with access to weapon and armor `proficiencies`,
+provide `passive enhancements`, unlock `cooldown` actions, and provide
+additional commands that can be used to manipulate the game world.
 
 Finally, each skill is associated with two `ability scores` that have an
 additional effect on how well the character performs skill actions, and how
@@ -38,4 +38,4 @@ effective passive enhancements are.
 * `persuasion`  (spe/vit) - fast talking, bartering, and subterfuge
 * `ranging`     (vit/mag) - tracking, survival, and nature abilities
 
-See Also: `help cmdskills`
+See Also: `help cmd-skills`

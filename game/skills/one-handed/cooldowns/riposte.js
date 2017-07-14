@@ -10,7 +10,7 @@ Commands.addCooldown('riposte', {
   cooldownDuration: Commands.GLOBAL_COOLDOWN,
   initiatesCombat: true,
   basePotency: 150,
-  comboPotency: 350,
+  comboPotency: 300,
   combosWith: 'slash',
   spCost: 6,
   run: function (player, target, level, cooldown) {
