@@ -51,7 +51,9 @@ public class MainMenuController implements Controller {
    * @see solace.cmd.Controller
    */
   public void parse(String s) {
-    commands.find(s).run(s.split("\\s"));
+    String[] params = s.split("\\s+");
+    String command = (params.length < 1) ? "" : params[0];
+    commands.find(command).run(params);
   }
 
   /**
@@ -160,8 +162,7 @@ public class MainMenuController implements Controller {
 
       if (params.length < 2) {
         ch = act.getFirstCharacter();
-      }
-      else {
+      } else {
         String name = params[1];
         if (!act.hasCharacter(name)) {
           connection.sendln(
