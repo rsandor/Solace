@@ -9,16 +9,14 @@ that require both hands to wield.
 Characters with the two-handed skill become proficient in the use of the
 following weapon types at the given skill level:
 
-* [Level  1] - `quarterstaff`, `longspear`, `greatclub`
-* [Level 20] - `greatsword`, `greataxe`, `lance`
-* [Level 40] - `heavy-flail`, `halberd`, `guisarme`
-* [Level 60] - `glaive`, `spiked-chain`, `scythe`
+  `glaive`, `greataxe`, `greatclub`, `greatsword`, `guisarme`, `halberd`, `heavy-flail`,
+  `lance`, `longspear`, `quarterstaff`, `scythe`, `spiked-chain`
 
 ## Passive Enhancements:
 The two-handed skill provides the following passive enhancements when a
 character is wielding a two-handed weapon at the given skill level:
 
-* [Level 20] `Weapon Focus`
+* [Level 20] `Two-handed Finesse`
   Attacks with two-handed weapons gain a 15-30% bonus to hit (depending on
   two-handed skill level).
 * [Level 40] `Blood Letter`
@@ -27,7 +25,7 @@ character is wielding a two-handed weapon at the given skill level:
   Make two attacks per round in battle.
 * [Level 90] `Fury of Keldar`
   Attacks with two-handed weapons against debuffed opponents deal an additional
-  50 potency damage.
+  75 potency damage.
 
 ## Cooldown Actions:
 The two-handed skill provides the following cooldown actions when a character
