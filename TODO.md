@@ -5,14 +5,27 @@
 **Feature: Skills 2.0**
   - [x] Weapon Proficiencies
     - [x] Common extension `.weapon.json`
-    - [x] Load proficiencies at game start
+    - [x] Associate weapon proficiencies with skills
   - [ ] Damage types
+    - [ ] Common extension: `.damage.json`
     - [ ] Weapon damage types (associated with types of weapons)
-    - [ ] Armor resistance types (associated with types of armor)
-    - [ ] Elemental types: fire, water, etc.
-    - [ ] Misc types: acid, light, darkness, etc.
+      - [x] Associate damage types for weapon proficiencies
+      - [ ] Check for invalid types
+    - [ ] Armor resistance, vulnerability, immunity for types
     - [ ] Character damage resistances
-  - [ ] Flesh out design for and implement remaining skills
+  - [ ] Design/implement remaining skills
+    - [ ] Unarmed
+    - [-] Two-handed
+    - [ ] Ranged
+    - [ ] Unarmored
+    - [-] Light-armor
+    - [ ] Heavy-armor
+    - [ ] Block
+    - [-] Evocation
+    - [ ] Restoration
+    - [ ] Alteration
+    - [ ] Necromancy
+    - [ ] Conjuration
   - [ ] Scriptable Buffs and Passives
     - Need to work out a way to handle buffs and passives as scripts
     - Seems to require a lot of hooks into the engine to know when to apply them
@@ -48,12 +61,13 @@
 **Feature: Scriptable Communication Channels**
 - [ ] Communication manager service
   - Design an interface for scripts to register chat channels / commands
-- [ ] Implement built-in channels
+- [ ] Implement built-in channels:
   - [ ] `ooc` - Global out of character chat
   - [ ] `shout` - Area specific channel
   - [ ] `newbie` - New player QA channel
   - [ ] `ask/answer` - General QA channel
-  - [ ] `info` - Immortal system wide information messages
+  - [ ] `info` - System wide information messages (admin only)
+  - [ ] `admin` - Admin chat (admin only)
 - [ ] Document channel scripting
 
 **Feature: Misc. Presentation**
@@ -63,9 +77,9 @@
 - [ ] Make screen width adjustable on connection (currently fixed to 80)
 
 **Feature: Dreams**
-- Random dreams while sleeping (fun and refreshes prompt)
-- Should tell a story like mad libs
-- Recurring dreams and arcs?
+- [ ] Common Extension: `.dream.txt`
+- [ ] Register dreams at game load
+- [ ] While sleeping, periodically present players with random dreams.
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
