@@ -76,6 +76,7 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getAverageDamage();
   public abstract int getNumberOfAttacks();
   public abstract Connection getConnection();
+  public abstract int getWeaponProficiency(String name);
 
   /**
    * Sets the passives and cooldowns for this character. This method should be

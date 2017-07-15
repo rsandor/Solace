@@ -1,9 +1,6 @@
 package solace.game;
 import solace.cmd.CommandRegistry;
-import solace.io.AccountWriter;
-import solace.io.Config;
-import solace.io.HelpSystem;
-import solace.io.Messages;
+import solace.io.*;
 import solace.net.*;
 import solace.util.*;
 import solace.script.ScriptingEngine;
@@ -35,6 +32,8 @@ public class Game {
     HelpSystem.getInstance().reload();
     Config.load();
     Messages.reload();
+    WeaponProficiencies.getInstance().reload();
+
     World.init();
 
     writer = new AccountWriter();

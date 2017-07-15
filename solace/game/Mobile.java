@@ -245,4 +245,7 @@ public class Mobile extends AbstractPlayer {
   boolean ownsShop(String id) {
     return id.equals(template.get("shop-owner"));
   }
+
+  @Override
+  public int getWeaponProficiency(String name) { return 0; }
 }

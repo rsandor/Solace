@@ -412,9 +412,10 @@ public class StatsTest {
   @Test
   public void weaponAttackRollByLevel() {
     int[] levels = new int[] { 1, 50, 100 };
-    int[] expected = new int[] { 65, 325, 1005 };
+    int[] proficiencies = new int[] { 25, 50, 100 };
+    int[] expected = new int[] { 40, 295, 1491 };
     for (int i = 0; i < levels.length; i++) {
-      assertEquals(expected[i], Stats.getWeaponAttackRoll(levels[i]));
+      assertEquals(expected[i], Stats.getWeaponAttackRoll(levels[i], proficiencies[i]));
     }
   }
 

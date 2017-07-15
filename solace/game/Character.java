@@ -3,10 +3,7 @@ package solace.game;
 import java.util.*;
 
 import com.google.common.base.Joiner;
-import solace.io.Config;
-import solace.io.Races;
-import solace.io.SkillNotFoundException;
-import solace.io.Skills;
+import solace.io.*;
 import solace.net.Connection;
 import solace.util.*;
 import solace.io.xml.GameParser;
@@ -20,6 +17,7 @@ public class Character extends AbstractPlayer {
   /**
    * Unmodifiable collection of all valid equipment slots for a given character.
    */
+  @SuppressWarnings("WeakerAccess")
   public static final Collection<String> EQ_SLOTS =
     Collections.unmodifiableCollection(GameParser.parseEquipment());
 
@@ -203,11 +201,25 @@ public class Character extends AbstractPlayer {
    */
   public int getAttackRoll() {
     Item weapon = getEquipment("weapon");
-    // TODO Need better unarmed calculations here
     if (weapon == null) {
-      return (int)(level * 1.5);
+      return getUnarmedAttackRoll();
     }
-    return Stats.getWeaponAttackRoll(weapon.getInt("level"));
+
+    // Determine the weapon proficiency
+    String prof = weapon.get("proficiency");
+    if (prof == null) {
+      Log.warn(String.format("Encountered weapon without proficiency on player '%s'.", getName()));
+      prof = "";
+    }
+    return Stats.getWeaponAttackRoll(weapon.getInt("level"), getWeaponProficiency(prof));
+  }
+
+  /**
+   * @return Player's unarmed attack roll.
+   */
+  private int getUnarmedAttackRoll() {
+    // TODO Need better unarmed calculations here
+    return (int)(level * 1.5);
   }
 
   /**
@@ -433,6 +445,7 @@ public class Character extends AbstractPlayer {
    * @param item Item to equip.
    * @return The item that was previously equipped.
    */
+  @SuppressWarnings("UnusedReturnValue")
   public Item equip(Item item) throws NotEquipmentException {
     String slot = item.get("slot");
     if (slot == null) {
@@ -455,6 +468,7 @@ public class Character extends AbstractPlayer {
    * @throws NoSuchItemException If the character does not possess the item.
    * @throws NotEquipmentException If the given item is not equipment.
    */
+  @SuppressWarnings("unused")
   public void unequip(Item item)
     throws NotEquipmentException, NoSuchItemException
   {
@@ -476,7 +490,10 @@ public class Character extends AbstractPlayer {
    * @param slot Slot for which to retrive the item.
    * @return The item at the given equipment slot.
    */
-  public Item getEquipment(String slot) {
+  @SuppressWarnings("WeakerAccess")
+  public Item getEquipment(
+    @SuppressWarnings("SameParameterValue") String slot
+  ) {
     return equipment.get(slot);
   }
 
@@ -672,10 +689,8 @@ public class Character extends AbstractPlayer {
    * @param id Name of the skill.
    * @return `true` if they have the skill, `false` otherwise.
    */
-  @SuppressWarnings("unused")
-  public boolean hasSkill(String id) {
-    return skills.keySet().contains(id);
-  }
+  @SuppressWarnings({"unused", "WeakerAccess"})
+  public boolean hasSkill(String id) { return skills.keySet().contains(id); }
 
   /**
    * Retrieves a hotbar command for the given key.
@@ -707,5 +722,19 @@ public class Character extends AbstractPlayer {
   public void setRace(Race r) {
     race = r;
     setPassivesAndCooldowns();
+  }
+
+  @Override
+  public int getWeaponProficiency(String name) {
+    if (!WeaponProficiencies.getInstance().has(name)) {
+      Log.warn(String.format("Character.getWeaponProficiency encountered unknown name: %s", name));
+      return 0;
+    }
+    WeaponProficiency prof = WeaponProficiencies.getInstance().get(name);
+    int skillLevel = hasSkill(prof.getSkill()) ? skills.get(prof.getSkill()).getLevel() : 0;
+    if (prof.isSimple()) {
+      return Math.max(Math.min(75, getLevel()), skillLevel);
+    }
+    return skillLevel;
   }
 }

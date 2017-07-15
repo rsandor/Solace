@@ -8,15 +8,8 @@ import java.util.Collections;
  * Represents a weapon proficiency
  */
 public class WeaponProficiency {
-  /**
-   * Represent the "simple" weapon proficiency type.
-   */
-  public static final String TYPE_SIMPLE = "simple";
-
-  /**
-   * Represents the "martial" weapon proficiency type.
-   */
-  public static final String TYPE_MARTIAL = "martial";
+  private static final String TYPE_SIMPLE = "simple";
+  private static final String TYPE_MARTIAL = "martial";
 
   private String name;
   private String type;
@@ -94,4 +87,14 @@ public class WeaponProficiency {
    * @param hands Number of hands to set.
    */
   public void setHands(int hands) { this.hands = hands; }
+
+  /**
+   * @return `true` if this is a simple weapon proficiency, `false` otherwise.
+   */
+  public boolean isSimple() { return type.equals(TYPE_SIMPLE); }
+
+  /**
+   * @return `true` if this is a martial weapon proficiency, `false` otherwise.
+   */
+  public boolean isMartial() { return type.equals(TYPE_MARTIAL); }
 }
