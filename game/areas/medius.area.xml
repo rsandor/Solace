@@ -80,6 +80,7 @@
 
 		<instance type="item" id="yarn" />
 		<instance type="item" id="wooden-sword" />
+		<instance type="item" id="steel-longsword" />
 		<instance type="mobile" id="pauper" />
 	</room>
 
@@ -244,7 +245,7 @@
 	<item id="wooden-sword" names="wooden sword">
 		<property key="type">equipment</property>
 		<property key="slot">weapon</property>
-		<property key="skill">one-handed</property>
+		<property key="proficiency">shortsword</property>
 		<property key="weight">2</property>
 		<property key="level">1</property>
 		<property key="value">5</property>
@@ -255,6 +256,22 @@
 		<property key="description.inventory">wooden sword</property>
 		<property key="description.room">
 			A sturdy wooden sword rests here.
+		</property>
+	</item>
+
+	<item id="steel-longsword" names="steel sword longsword">
+		<property key="type">equipment</property>
+		<property key="slot">weapon</property>
+		<property key="proficiency">longsword</property>
+		<property key="weight">2</property>
+		<property key="level">10</property>
+		<property key="value">50</property>
+		<property key="description">
+			A longsword made of the finest steel.
+		</property>
+		<property key="description.inventory">steel longsword</property>
+		<property key="description.room">
+			A steel longsword rests here.
 		</property>
 	</item>
 
@@ -297,7 +314,7 @@
 	<item id="master-sword" names="master sword">
 		<property key="type">equipment</property>
 		<property key="slot">weapon</property>
-		<property key="skill">one-handed</property>
+		<property key="proficiency">longsword</property>
 		<property key="weight">10</property>
 		<property key="level">100</property>
 		<property key="value">50000</property>
@@ -375,7 +392,7 @@
 			A test dummy pops into existence.
 		</property>
 		<property key="level">5</property>
-		<property key="power">10</property>
+		<property key="power">35</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">magic</property>
 	</mobile>
@@ -390,7 +407,7 @@
 			A stong dummy pops into existence.
 		</property>
 		<property key="level">7</property>
-		<property key="power">15</property>
+		<property key="power">35</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
 	</mobile>
@@ -405,7 +422,7 @@
 			A super dummy pops into existence.
 		</property>
 		<property key="level">20</property>
-		<property key="power">20</property>
+		<property key="power">35</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
 	</mobile>
