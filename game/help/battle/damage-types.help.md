@@ -1,3 +1,6 @@
+@name(damage-types)
+@author(Ryan Sandor Richards)
+
 # Damage Types, Vulnerabilities, Resistances, and Immunities
 Damage comes in a variety of forms, whether it be slashing damage from a
 scimitar or cold damage from a spell. Broadly speaking there are two major
