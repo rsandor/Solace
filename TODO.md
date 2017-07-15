@@ -3,11 +3,9 @@
 ### In Progress
 
 **Feature: Skills 2.0**
-  - [ ] Weapon & Armor Proficiencies
-    - [ ] Common extension `.prof.js`
-    - [ ] Load proficiencies at game start
-    - [ ] Update selection at "Contego Protectives"
-    - [ ] Create "Arma Armarium" weapons shop
+  - [x] Weapon Proficiencies
+    - [x] Common extension `.weapon.json`
+    - [x] Load proficiencies at game start
   - [ ] Damage types
     - [ ] Weapon damage types (associated with types of weapons)
     - [ ] Armor resistance types (associated with types of armor)
