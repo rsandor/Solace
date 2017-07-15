@@ -12,7 +12,7 @@
       - [x] Associate damage types for weapon proficiencies
       - [ ] Check for invalid types
     - [ ] Armor resistance, vulnerability, immunity for types
-    - [ ] Character damage resistances
+    - [ ] Player (Mobile/Character) innate damage resistances
   - [ ] Design/implement remaining skills
     - [ ] Unarmed
     - [-] Two-handed
