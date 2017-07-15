@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * "Riposte" is a cooldown action that does 150 potency damage to the attacker's
+ * "Riposte" is a cooldown action that does 125 potency damage to the attacker's
  * target. If executed immediately after a "slash" cooldown then this has a
- * combo potency of 350.
+ * combo potency of 300.
  * @author Ryan Sandor Richards
  */
 Commands.addCooldown('riposte', {

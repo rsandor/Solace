@@ -2,7 +2,7 @@
 
 /**
  * "Coup de Grace" is a cooldown action that does 1000 potency damage to a
- * target whos health is at 30% or less.
+ * target whos health is at 20% or less.
  * @author Ryan Sandor Richards
  */
 Commands.addCooldown('coup', {
@@ -15,9 +15,9 @@ Commands.addCooldown('coup', {
     return cooldown.executeAttack(player, target);
   },
   checkValidTarget: function (target) {
-    if (target.getHp() / target.getMaxHp() >= 0.3) {
+    if (target.getHp() / target.getMaxHp() >= 0.2) {
       throw new Error(
-        'Coup de grace can only be used on targets with less than 30% health.'
+        'Coup de grace can only be used on targets with less than 20% health.'
       );
     }
   }
