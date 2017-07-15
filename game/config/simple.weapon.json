@@ -1,0 +1,30 @@
+[
+  {
+    "name": "dagger",
+    "type": "simple",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "club",
+    "type": "simple",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "shortsword",
+    "type": "simple",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "quarterstaff",
+    "type": "simple",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "bludgeoning"
+  }
+]

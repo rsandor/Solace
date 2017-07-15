@@ -17,6 +17,7 @@ represents:
 - `.race.json`: Player race definitions
 - `.js`: Game script
 - `.skill.json`: Player skill definition
+- `.weapon.json`: Weapon proficiency definitions
 
 ### Area Files
 
@@ -184,4 +185,43 @@ Here's an example of the format for `.skill.json` files:
     { "level": 95, "name": "coup" }
   ]
 }
+```
+
+### Weapon Proficiencies
+
+**Extension:** `.weapon.json`
+
+Weapon proficiencies encapsulate the types of weapons found in the game world.
+On game load the engine will search the `game/` directory for any JSON files
+with the `.weapon.json` extension and register them as weapon proficiency types.
+
+Each proficiency has the following attributes:
+
+* `name` - Name of the weapon proficiency
+* `type` - Either `"simple"` (can be used without a skill) or  `"martial"`
+  (requires a skill to effectively use)
+* `hands` - Number of hands required to wield the type of weapon
+* `skill` - The name of the skill associated with the type of weapon (used in
+  battle calculations for characters wielding weapons with the given proficiency).
+* `damage` - The type of damage the weapon deals.
+
+Here is an example of the format for a `.weapon.json` file:
+
+```json
+[
+  {
+    "name": "dagger",
+    "type": "simple",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "club",
+    "type": "simple",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  }
+]
 ```

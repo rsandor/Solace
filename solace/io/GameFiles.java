@@ -22,6 +22,7 @@ public class GameFiles {
   private static final String areaExt = ".area.xml";
   private static final String messageExt = ".message.txt";
   private static final String helpExt = ".help.md";
+  private static final String weaponExt = ".weapon.json";
 
   /**
    * Recursively finds all files with the given file extension that exist in
@@ -117,5 +118,13 @@ public class GameFiles {
    */
   static Stream<Path> findHelpFiles() throws IOException {
     return find(helpExt);
+  }
+
+  /**
+   * @return A stream of paths to all weapon proficiency definition files in the game directory.
+   * @throws IOException If an error occurs while finding weapon proficiency files.
+   */
+  static Stream<Path> findWeaponProficiencyFiles() throws IOException {
+    return find(weaponExt);
   }
 }

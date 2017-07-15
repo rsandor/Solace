@@ -1,0 +1,93 @@
+[
+  {
+    "name": "bastard-sword",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "battle-axe",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "flail",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "hammer",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "handaxe",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "longsword",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "mace",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "morningstar",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning,piercing"
+  },
+  {
+    "name": "rapier",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "scimitar",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "shortspear",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "sickle",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "whip",
+    "type": "martial",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  }
+]
