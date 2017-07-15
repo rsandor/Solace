@@ -7,12 +7,10 @@ that require a single hand to wield.
 
 ## Weapon Proficiencies
 Characters with the one-handed skill become proficient in the use of the
-following weapon types at the given skill level:
+following weapon types:
 
-* [Level  1] - `club`, `dagger`, `shortsword`, `handaxe`
-* [Level 20] - `longsword`, `mace`, `sickle`, `flail`
-* [Level 40] - `rapier`, `hammer`, `battle-axe`, `whip`
-* [Level 60] - `scimitar`, `shortspear`, `morningstar`, `bastard-sword`
+  `bastard-sword`, `battle-axe`, `club`, `dagger`, `flail`, `hammer`, `handaxe`, `longsword`,
+  `mace`, `morningstar`, `rapier`, `scimitar`, `shortspear`, `shortsword`, `sickle`, `whip`
 
 ## Passive Enhancements:
 The one-handed skill provides the following passive enhancements when a
