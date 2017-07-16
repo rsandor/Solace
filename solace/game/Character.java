@@ -201,11 +201,16 @@ public class Character extends AbstractPlayer {
    */
   public int getAttackRoll() {
     Item weapon = getEquipment("weapon");
+
+    // Unarmed attacks
     if (weapon == null) {
-      return getUnarmedAttackRoll();
+      if (hasSkill("unarmed")) {
+        return Stats.getWeaponAttackRoll(getLevel(), skills.get("unarmed").getLevel());
+      }
+      return (int)(level * 1.5);
     }
 
-    // Determine the weapon proficiency
+    // Weapon attacks
     String prof = weapon.get("proficiency");
     if (prof == null) {
       Log.warn(String.format("Encountered weapon without proficiency on player '%s'.", getName()));
@@ -215,19 +220,9 @@ public class Character extends AbstractPlayer {
   }
 
   /**
-   * @return Player's unarmed attack roll.
-   */
-  private int getUnarmedAttackRoll() {
-    // TODO Need better unarmed calculations here
-    return (int)(level * 1.5);
-  }
-
-  /**
    * @see solace.game.Player
    */
-  public int getHitMod() {
-    return Stats.getHitMod(this) + getModFromEquipment("hit");
-  }
+  public int getHitMod() { return Stats.getHitMod(this) + getModFromEquipment("hit"); }
 
   /**
    * @see solace.game.Player
@@ -235,7 +230,10 @@ public class Character extends AbstractPlayer {
   public int getAverageDamage() {
     Item weapon = getEquipment("weapon");
     if (weapon == null) {
-      return (int)(level * 1.5 + 1);
+      if (hasSkill("unarmed")) {
+        return Stats.getUnarmedAverageDamage(getLevel());
+      }
+      return (int)(level * 1.5);
     }
     return Stats.getWeaponAverageDamage(weapon.getInt("level"));
   }

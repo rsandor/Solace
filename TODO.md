@@ -13,9 +13,9 @@
       - [ ] Check for invalid types
     - [ ] Armor resistance, vulnerability, immunity for types
     - [ ] Player (Mobile/Character) innate damage resistances
-  - [ ] Design/implement remaining skills
-    - [ ] Unarmed
-    - [-] Two-handed
+  - [ ] Design remaining skills
+    - [x] Unarmed
+    - [x] Two-handed
     - [ ] Ranged
     - [ ] Unarmored
     - [-] Light-armor

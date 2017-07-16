@@ -117,6 +117,7 @@ public class Stats {
 
   // Weapon Proficiency Constants
   public static double PROFICIENCY_FOR_FULL_WEAPON_BASE_ATTACK = 58.0;
+  public static double UNARMED_DAMAGE_SCALAR = 0.8;
 
   // Static caches
   private static Hashtable<Integer, Double> cacheAverageHpByLevel = new Hashtable<>();
@@ -688,5 +689,14 @@ public class Stats {
     );
 
     return result;
+  }
+
+  /**
+   * Determins average damage per attack for those proficient in unarmed combat.
+   * @param level Level of the character.
+   * @return The average unarmed damage.
+   */
+  public static int getUnarmedAverageDamage(int level) {
+    return (int)Math.floor(UNARMED_DAMAGE_SCALAR * Stats.getWeaponAverageDamage(level));
   }
 }
