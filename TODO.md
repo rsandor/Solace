@@ -17,7 +17,7 @@
     - [x] Unarmed
     - [x] Two-handed
     - [x] Ranged
-    - [ ] Unarmored
+    - [x] Unarmored
     - [ ] Light-armor
     - [ ] Heavy-armor
     - [ ] Block
