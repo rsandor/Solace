@@ -275,7 +275,10 @@ public class Character extends AbstractPlayer {
       }
 
       Room origin = getRoom();
-      Room destination = World.getDefaultRoom();
+      Room destination = Areas.getInstance().getDefaultRoom();
+      if (destination == null) {
+        throw new GameException("Default room not defined.");
+      }
 
       origin.getPlayers().remove(this);
 
@@ -297,8 +300,7 @@ public class Character extends AbstractPlayer {
       setPlayState(PlayState.RESTING);
       setRoom(destination);
       sendMessage(room.describeTo(this));
-    }
-    catch (GameException ge) {
+    } catch (GameException ge) {
       Log.error("World configuration does not define a default room!");
     }
   }
@@ -500,7 +502,7 @@ public class Character extends AbstractPlayer {
    */
   public Connection getConnection() {
     if (account != null) {
-      return World.connectionFromAccount(account);
+      return Game.connectionFromAccount(account);
     }
     return null;
   }

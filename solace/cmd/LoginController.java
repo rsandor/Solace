@@ -64,7 +64,7 @@ public class LoginController
     }
 
     // Ensure they are not attempting to login twice
-    if (World.isLoggedIn(aname)) {
+    if (Game.isLoggedIn(aname)) {
       connection.sendln("{r}Account already logged in!{x}");
       Log.info(
         "Double login attempt for account '" + aname + "' from " +
@@ -113,7 +113,7 @@ public class LoginController
 
       connection.sendln("\n\rIncorrect password.");
       Collection connections = Collections.synchronizedCollection(
-        World.getConnections()
+        Game.getConnections()
       );
       synchronized (connections) {
         connections.remove(connection);
@@ -124,7 +124,7 @@ public class LoginController
     }
 
     // Everything seems fine, log them in and present the game's main menu
-    World.addAccount(connection, account);
+    Game.addAccount(connection, account);
     connection.setAccount(account);
     Log.info(
       "Account '" + account.getName() +

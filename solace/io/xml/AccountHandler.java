@@ -2,6 +2,7 @@ package solace.io.xml;
 
 import org.xml.sax.*;
 import solace.game.*;
+import solace.io.Areas;
 import solace.io.Races;
 import solace.io.SkillNotFoundException;
 import solace.util.*;
@@ -243,7 +244,7 @@ public class AccountHandler extends Handler {
    */
   protected State startCharacter(String name, Attributes attrs) {
     if (name.equals("location")) {
-      area = World.getArea(attrs.getValue("area"));
+      area = Areas.getInstance().get(attrs.getValue("area"));
       character.setRoom(area.getRoom(attrs.getValue("room")));
     } else if (name.equals("inventory")) {
       return State.INVENTORY;
@@ -366,7 +367,7 @@ public class AccountHandler extends Handler {
       uuid, id, names, areaId
     ));
 
-    item = new Item(id, names, World.getArea(areaId));
+    item = new Item(id, names, Areas.getInstance().get(areaId));
     item.setUUID(uuid);
   }
 }

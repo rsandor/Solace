@@ -22,7 +22,7 @@ public class Config {
     try {
       Configuration c = GameParser.parseConfiguration(filename);
       configurations.put(c.getName(), c);
-      Log.info("Configuration \"" + filename + "\" loaded.");
+      Log.trace("Configuration \"" + filename + "\" loaded.");
     } catch (IOException ioe) {
       Log.error("Unable to load configuration file: " + filename);
     }
@@ -33,6 +33,7 @@ public class Config {
    */
   public static void load() {
     try {
+      Log.info("Loading configurations");
       GameFiles.findConfigurations().forEach(Config::loadConfig);
     } catch (IOException e) {
       Log.fatal("Failed to read configurations from game directory, exiting.");

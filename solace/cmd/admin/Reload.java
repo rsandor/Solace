@@ -1,18 +1,9 @@
 package solace.cmd.admin;
 
 import solace.cmd.CommandRegistry;
-import solace.cmd.GameException;
-import solace.game.Account;
-import solace.game.Area;
+import solace.game.*;
 import solace.game.Character;
-import solace.game.Player;
-import solace.game.Room;
-import solace.game.World;
-import solace.io.Emotes;
-import solace.io.HelpSystem;
-import solace.io.Messages;
-import solace.io.Races;
-import solace.io.Skills;
+import solace.io.*;
 import solace.net.Connection;
 import solace.script.ScriptingEngine;
 import solace.cmd.CompositeCommand;
@@ -105,7 +96,7 @@ public class Reload extends CompositeCommand {
   private void areas(Player player, String[] params) {
     Log.info(String.format("User '{m}%s{x}' initiated area reload...", player.getName()));
     Collection<Character> characters =
-      Collections.synchronizedCollection(World.getActiveCharacters());
+      Collections.synchronizedCollection(Game.getActiveCharacters());
     synchronized (characters) {
       try {
         // Freeze all the players (ignore their input)
@@ -116,8 +107,8 @@ public class Reload extends CompositeCommand {
         }
 
         // Reload all the areas
-        World.loadAreas();
-        Room defaultRoom = World.getDefaultRoom();
+        Areas.getInstance().reload();
+        Room defaultRoom = Areas.getInstance().getDefaultRoom();
         if (defaultRoom == null) {
           Log.error("Default room null on area reload.");
         }
@@ -159,7 +150,7 @@ public class Reload extends CompositeCommand {
             else {
               String room_id = room.getId();
               String area_id = area.getId();
-              Area new_area = World.getArea(area_id);
+              Area new_area = Areas.getInstance().get(area_id);
 
               if (new_area == null) {
                 ch.setRoom(defaultRoom);
@@ -176,13 +167,7 @@ public class Reload extends CompositeCommand {
         }
 
         player.sendln("Areas reloaded.");
-      }
-      catch (GameException ge) {
-        String msg = "Area reload error: cannot find default room.";
-        player.sendln(msg);
-        Log.error(msg);
-      }
-      finally {
+      } finally {
         // Un-freeze the players and force them to take a look around :)
         for (solace.game.Character ch : characters) {
           Connection con = ch.getConnection();
@@ -220,7 +205,7 @@ public class Reload extends CompositeCommand {
     Log.info(String.format("User '{m}%s{x}' initiated skills reload...", player.getName()));
     try {
       Skills.getInstance().reload();
-      World.getActiveCharacters().forEach(Character::resetSkills);
+      Game.getActiveCharacters().forEach(Character::resetSkills);
       player.sendln("Skills reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading emotes.");
@@ -237,7 +222,7 @@ public class Reload extends CompositeCommand {
     Log.info(String.format("User '{m}%s{x}' initiated races reload...", player.getName()));
     try {
       Races.getInstance().reload();
-      World.getActiveCharacters().forEach(Character::resetRace);
+      Game.getActiveCharacters().forEach(Character::resetRace);
       player.sendln("Races reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading emotes.");

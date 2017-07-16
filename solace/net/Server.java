@@ -90,7 +90,7 @@ public class Server
     Connection c = new Connection(s);
 
     // Add the connection to the game world
-    World.addConnection(c);
+    Game.addConnection(c);
 
     // Start the connection thread
     (new Thread(c)).start();
@@ -108,7 +108,7 @@ public class Server
      * Close all connections to the server.
      */
     Collection connections = Collections.synchronizedCollection(
-      World.getConnections()
+      Game.getConnections()
     );
     synchronized (connections)
     {

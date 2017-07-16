@@ -41,7 +41,7 @@ public class PlayerManager {
    * crashes, buggy code, etc.
    */
   private static void cleanupPlayers() {
-    for (Player p : World.getAllPlayers()) {
+    for (Player p : Game.getAllPlayers()) {
       p.removeExpiredBuffs();
       PlayerManager.cleanFightingState(p);
       PlayerManager.cleanDeathState(p);
