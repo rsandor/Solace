@@ -17,7 +17,7 @@ wields no weapons at the given skill level:
   Make four attacks per round in battle.
 
 ## Cooldown Actions:
-The two-handed skill provides the following cooldown actions when a character
+The unarmed skill provides the following cooldown actions when a character
 wields no weapons at the given skill level:
 
 * [Level 15] `Manipura Palm` (GCD, 4% SP)
