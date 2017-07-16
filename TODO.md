@@ -52,6 +52,16 @@
 - [ ] New Interactive Character Creator
  - [ ] Provide access to help command from within creator
 
+**Task: Adopt AssetManager Pattern**
+- [ ] Emotes
+- [ ] Buffs
+- [ ] Configs
+- [ ] HelpSystem
+- [ ] Messages
+- [ ] Races
+- [ ] Skills
+- [ ] Weapon Types
+
 **Task: Begin Scripting Documentation**
 - [ ] Overview of scripting
 - [ ] Creating Commands
