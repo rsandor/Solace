@@ -25,7 +25,7 @@ public class Messages {
       String filename = String.valueOf(path);
       try {
         String name = String.valueOf(path.getFileName()).replace(".message.txt","");
-        Log.debug(String.format("Loading message '%s'", name));
+        Log.trace(String.format("Loading message '%s'", name));
         messages.put(name, new String(Files.readAllBytes(path)));
       } catch (IOException e) {
         Log.warn(String.format("Error loading message '%s', skipping.", filename));

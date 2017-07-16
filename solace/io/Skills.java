@@ -32,6 +32,7 @@ public class Skills {
     skills.clear();
     GameFiles.findSkills().forEach((path) -> {
       String name = path.getFileName().toString();
+      Log.trace(String.format("Loading skill '%s'", name));
       try {
         String contents = new String(Files.readAllBytes(path));
         Skill skill = Skill.parseJSON(contents);

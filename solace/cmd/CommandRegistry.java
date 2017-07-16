@@ -96,7 +96,6 @@ public class CommandRegistry {
    * @param c The command to add.
    */
   private synchronized void add(Command c) {
-    Log.debug("Adding: " + c.getName());
     String name = c.getName().toLowerCase();
     add(name, c);
     c.getAliases().forEach(alias -> add(alias, c));

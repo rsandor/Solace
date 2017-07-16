@@ -20,12 +20,13 @@ public class Areas {
    * @throws IOException If an error occurred when loading areas.
    */
   public Collection<Area> reload() throws IOException {
+    Log.info("Loading areas");
     Collection<Area> areas = new LinkedList<>();
     GameFiles.findAreas().map(String::valueOf).forEach(filename -> {
       try {
         Area area = GameParser.parseArea(filename);
         area.getRooms().stream().forEach(Room::instantiate);
-        Log.debug(String.format("Area '%s' loaded from '%s'", area.getId(), filename));
+        Log.trace(String.format("Area '%s' loaded from '%s'", area.getId(), filename));
         areas.add(area);
       } catch (Throwable t) {
         Log.warn(String.format("Error loading area '%s', skipping.", filename));

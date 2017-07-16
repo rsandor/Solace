@@ -60,7 +60,7 @@ public class HelpSystem {
     IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(analyzer));
     GameFiles.findHelpFiles().forEach(path -> {
       String filename = String.valueOf(path);
-      Log.debug(String.format("Loading help page '%s'", filename));
+      Log.trace(String.format("Loading help page '%s'", filename));
       try {
         HelpPage page = HelpPage.fromPath(path);
 
