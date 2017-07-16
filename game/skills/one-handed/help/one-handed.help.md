@@ -24,7 +24,8 @@ character is wielding a one-handed weapon at the given skill level:
 * [Level 80] `Third Attack`
   Make three attacks per round in battle.
 * [Level 100] `Battle Trance`
-  Each one-handed weapon attack receives a 10% bonus to hit and damage
+  Each one-handed weapon attack is increased by 10 potency and receives a 10%
+  bonus to hit.
 
 ## Cooldown Actions:
 The one-handed skill provides the following cooldown actions when a character
