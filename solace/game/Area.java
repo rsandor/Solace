@@ -7,6 +7,7 @@ import java.util.*;
  * @author Ryan Sandor Richards
  */
 public class Area {
+  @SuppressWarnings("WeakerAccess")
   public static final Area NULL = new Area("", "null area", "");
 
   String id = "";
