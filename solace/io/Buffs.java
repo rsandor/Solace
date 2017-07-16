@@ -112,7 +112,7 @@ public class Buffs {
   static Hashtable<String, BuffTemplate> templates;
 
   /**
-   * Loads all races for the game.
+   * Loads all buffs for the game.
    */
   public static void initialize() {
     File dir = new File(PATH);
