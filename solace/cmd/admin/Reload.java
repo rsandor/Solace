@@ -109,9 +109,6 @@ public class Reload extends CompositeCommand {
         // Reload all the areas
         Areas.getInstance().reload();
         Room defaultRoom = Areas.getInstance().getDefaultRoom();
-        if (defaultRoom == null) {
-          Log.error("Default room null on area reload.");
-        }
 
         // Place players into their original rooms if available, or the
         // default room if not
@@ -148,19 +145,15 @@ public class Reload extends CompositeCommand {
               ch.setRoom(defaultRoom);
             }
             else {
-              String room_id = room.getId();
-              String area_id = area.getId();
-              Area new_area = Areas.getInstance().get(area_id);
-
-              if (new_area == null) {
+              String roomId = room.getId();
+              String areaId = area.getId();
+              try {
+                Area newArea = Areas.getInstance().get(areaId);
+                Room newRoom = area.getRoom(roomId);
+                ch.setRoom(newRoom);
+              } catch (Throwable t) {
+                Log.warn(String.format("reload areas - room for character '%s' not found.", ch.getName()));
                 ch.setRoom(defaultRoom);
-              }
-              else {
-                Room new_room = new_area.getRoom(room_id);
-                if (new_room == null)
-                  ch.setRoom(defaultRoom);
-                else
-                  ch.setRoom(new_room);
               }
             }
           }

@@ -19,7 +19,6 @@ public class GameFiles {
   private static final String scriptExt = ".js";
   private static final String skillExt = ".skill.json";
   private static final String raceExt = ".race.json";
-  private static final String areaExt = ".area.xml";
   private static final String messageExt = ".message.txt";
   private static final String helpExt = ".help.md";
   private static final String weaponExt = ".weapon.json";
@@ -94,14 +93,6 @@ public class GameFiles {
    */
   static Stream<Path> findRaces() throws IOException {
     return find(raceExt);
-  }
-
-  /**
-   * @return A stream of paths to all areas in the game directory.
-   * @throws IOException If an error occurs while finding area files.
-   */
-  static Stream<Path> findAreas() throws IOException {
-    return find(areaExt);
   }
 
   /**
