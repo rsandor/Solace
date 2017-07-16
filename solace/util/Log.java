@@ -108,6 +108,6 @@ public class Log {
   public static void trace(String s) {
     if (!show("trace")) { return; }
     Date d = new Date();
-    System.out.println(Color.format("[TRACE] ("+d+"): "+s));
+    System.out.println(Color.format("{K}[TRACE]{x} ("+d+"): "+s));
   }
 }
