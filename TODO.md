@@ -16,12 +16,11 @@
   - [ ] Design remaining skills
     - [x] Unarmed
     - [x] Two-handed
-    - [ ] Ranged
+    - [x] Ranged
     - [ ] Unarmored
-    - [-] Light-armor
+    - [ ] Light-armor
     - [ ] Heavy-armor
     - [ ] Block
-    - [-] Evocation
     - [ ] Restoration
     - [ ] Alteration
     - [ ] Necromancy
