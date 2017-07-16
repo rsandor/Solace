@@ -42,6 +42,7 @@ public class WeaponProficiencies {
           WeaponProficiency proficiency = new WeaponProficiency(
             profJson.getString("name"),
             profJson.getString("type"),
+            profJson.getString("style"),
             profJson.getString("skill"),
             profJson.getInt("hands"),
             Arrays.asList(profJson.getString("damage").split("\\s*,\\s*"))
@@ -55,9 +56,9 @@ public class WeaponProficiencies {
           proficiencies.put(proficiency.getName(), proficiency);
         }
       } catch (JSONException je) {
-        Log.error(String.format("Malformed json in race %s: %s", name, je.getMessage()));
+        Log.error(String.format("Malformed json in weapon proficiency %s: %s", name, je.getMessage()));
       } catch (IOException ioe) {
-        Log.error(String.format("Unable to load race: %s", name));
+        Log.error(String.format("Unable to load weapon proficiency: %s", name));
         ioe.printStackTrace();
       }
     });

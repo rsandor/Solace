@@ -10,9 +10,12 @@ import java.util.Collections;
 public class WeaponProficiency {
   private static final String TYPE_SIMPLE = "simple";
   private static final String TYPE_MARTIAL = "martial";
+  private static final String STYLE_MELEE = "melee";
+  private static final String STYLE_RANGED = "ranged";
 
   private String name;
   private String type;
+  private String style;
   private String skill;
   private int hands;
   private Collection<String> damageTypes = new ArrayList<>();
@@ -25,7 +28,7 @@ public class WeaponProficiency {
    * @param hands Number of hands needed to wield weapons that have the proficiency.
    * @param damTypes Damage types for weapons that have the proficiency.
    */
-  public WeaponProficiency(String name, String type, String skill, int hands, Collection<String> damTypes) {
+  public WeaponProficiency(String name, String type, String style, String skill, int hands, Collection<String> damTypes) {
     setName(name);
     setType(type);
     setSkill(skill);
@@ -97,4 +100,25 @@ public class WeaponProficiency {
    * @return `true` if this is a martial weapon proficiency, `false` otherwise.
    */
   public boolean isMartial() { return type.equals(TYPE_MARTIAL); }
+
+  /**
+   * @return The style of the weapon proficiency.
+   */
+  public String getStyle() { return style; }
+
+  /**
+   * Sets the style for the weapon proficiency.
+   * @param style Style to set.
+   */
+  public void setStyle(String style) { this.style = style; }
+
+  /**
+   * @return `true` if the style is melee, `false` otherwise.
+   */
+  public boolean isMelee() { return getStyle().equals(STYLE_MELEE); }
+
+  /**
+   * @return `true` if the style is ranged, `false` otherwise.
+   */
+  public boolean isRanged() { return getStyle().equals(STYLE_RANGED); }
 }
