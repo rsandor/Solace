@@ -20,7 +20,7 @@
     - [x] Unarmored
     - [x] Light-armor
     - [x] Heavy-armor
-    - [ ] Block
+    - [x] Block
     - [ ] Restoration
     - [ ] Alteration
     - [ ] Necromancy
