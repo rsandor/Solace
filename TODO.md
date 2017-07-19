@@ -18,13 +18,16 @@
     - [x] Two-handed
     - [x] Ranged
     - [x] Unarmored
-    - [ ] Light-armor
+    - [x] Light-armor
     - [ ] Heavy-armor
     - [ ] Block
     - [ ] Restoration
     - [ ] Alteration
     - [ ] Necromancy
     - [ ] Conjuration
+    - [ ] Stealth
+    - [ ] Persuasion
+    - [ ] Ranging
   - [ ] Scriptable Buffs and Passives
     - Need to work out a way to handle buffs and passives as scripts
     - Seems to require a lot of hooks into the engine to know when to apply them
