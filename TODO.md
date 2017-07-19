@@ -19,7 +19,7 @@
     - [x] Ranged
     - [x] Unarmored
     - [x] Light-armor
-    - [ ] Heavy-armor
+    - [x] Heavy-armor
     - [ ] Block
     - [ ] Restoration
     - [ ] Alteration
