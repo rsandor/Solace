@@ -10,8 +10,8 @@ The heavy-armor skill provides the following passive enhancements:
 
 * [Level 10] `Heavy Mettle`
   When wearing only heavy armor the character is granted a 5% to 20% damage
-  resistance to bludgeoning, piercing, fire, cold, and force damage (resistance
-  scales with skill level).
+  resistance to bludgeoning, piercing, slashing, fire, cold, and force damage
+  (resistance scales with skill level).
 * [Level 25] `Flesh of Steel`
   The character is granted a 25% armor class bonus for heavy armor worn on the
   head, body, and hands.
