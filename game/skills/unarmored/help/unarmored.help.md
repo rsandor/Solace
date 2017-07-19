@@ -22,17 +22,19 @@ wears no equipment that constitutes as light or heavy armor:
   waist that is neither light nor heavy armor. Further, they are granted an
   additional 1% to 5% resistance to slashing (resistance scales based on skill
   level).
-* [Level 45] `Footwork`
-  The character gains comparable (though lessened) AC from wering feet equipment
-  that is neither light nor heavy armor. Further, they are granted a 1% to 10%
-  success bonus when fleeing battle (bonus scales based on skill level).
+* [Level 45] `Fast Footwork`
+  The character gains comparable (though lessened) AC from wearing feet
+  equipment that is neither light nor heavy armor. Further, they are granted a
+  1% to 10% success bonus when fleeing battle (bonus scales based on skill
+  level).
 * [Level 65] `Focused Mind`
   The character gains a 25% resistance to being interrupted when performing
   cooldown actions that require time to cast or enact.
 * [Level 75] `Fluid Movement`
   The character is granted a 10% discount to SP costs for cooldown skills.
-* [Level 85] `Unhindered`
+* [Level 85] `Master of None`
+  The character is granted a 20% bonus to overall AC if wearing only items that
+  are not considered light or heavy armor.
+* [Level 100] `Unhindered`
   All cooldown actions that require time to cast or enact have their times
-  reduced by 10% or 1 second (whichever is higher).
-* [Level 100] `Master of None`
-  The character is granted a 20% bonus to overall AC.
+  reduced by 20% or 1 second (whichever is higher).

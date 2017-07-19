@@ -20,7 +20,7 @@ wields no weapons at the given skill level:
 The unarmed skill provides the following cooldown actions when a character
 wields no weapons at the given skill level:
 
-* [Level 15] `Manipura Palm` (GCD, 4% SP)
+* [Level 15] `Manipura Palm` (GCD, 5% SP)
   Drawing upon power from flame chakra the player performs a sudden palm attack
   dealing potency 125 `fire` damage to an opponent. On a successful hit the
   player receives a single stack of the `prana vayu` buff for 6s (up to a
@@ -30,7 +30,7 @@ wields no weapons at the given skill level:
   the `prana vayu` buff to deal potency 400 `force` damage to an opponent. Note
   that this cooldown cannot be activated unless the player has at least two
   stacks of the `prana vayu` buff.
-* [Level 50] `Samana Strike` (GCD, 8% SP)
+* [Level 50] `Samana Strike` (GCD, 10% SP)
   Through focus the player increases their metabolic rate and channels the extra
   energy into a strike dealing potency 175 `force` damage to an opponent. On a
   successful hit the player also gains a stack of the `samana vayu` buff for 6s
