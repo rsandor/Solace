@@ -15,7 +15,7 @@
     - [x] Heavy-armor
     - [x] Block
     - [x] Restoration
-    - [ ] Alteration
+    - [x] Alteration
     - [ ] Necromancy
     - [ ] Conjuration
     - [ ] Stealth
