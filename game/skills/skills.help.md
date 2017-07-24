@@ -28,7 +28,7 @@ effective passive enhancements are.
 
 ## Magic
 * `evocation`   (mag/spe) - controls the elements
-* `restoration` (vit/mag) - mends wounds, cures poisons, and protects
+* `restoration` (vit/mag) - mends wounds, cures debuffs, and protects
 * `alteration`  (mag/str) - changes the state of physical reality
 * `necromancy`  (mag/vit) - manipulates both life and death
 * `conjuration` (str/mag) - summons items and beings
