@@ -2,17 +2,10 @@
 
 ### In Progress
 
-**Feature: Skills 2.0**
+**Feature: Skills 2.0 - Design**
   - [x] Weapon Proficiencies
     - [x] Common extension `.weapon.json`
     - [x] Associate weapon proficiencies with skills
-  - [ ] Damage types
-    - [ ] Common extension: `.damage.json`
-    - [ ] Weapon damage types (associated with types of weapons)
-      - [x] Associate damage types for weapon proficiencies
-      - [ ] Check for invalid types
-    - [ ] Armor resistance, vulnerability, immunity for types
-    - [ ] Player (Mobile/Character) innate damage resistances
   - [ ] Design remaining skills
     - [x] Unarmed
     - [x] Two-handed
@@ -21,21 +14,13 @@
     - [x] Light-armor
     - [x] Heavy-armor
     - [x] Block
-    - [ ] Restoration
+    - [x] Restoration
     - [ ] Alteration
     - [ ] Necromancy
     - [ ] Conjuration
     - [ ] Stealth
     - [ ] Persuasion
     - [ ] Ranging
-  - [ ] Scriptable Buffs and Passives
-    - Need to work out a way to handle buffs and passives as scripts
-    - Seems to require a lot of hooks into the engine to know when to apply them
-    - How do we handle things like additional attacks?
-    - Resource costs?
-    - Ability score buffs / passives?
-  - [ ] Incorporate ability scores into game math for skills
-  - [ ] Incorporate skill level into game math for skill cooldowns
 
 --------------------------------------------------------------------------------
 
@@ -49,11 +34,28 @@
 
 ### Backlog
 
+**Feature: Skills 2.0 - Implementation**
+- [ ] Damage types
+  - [ ] Common extension: `.damage.json`
+  - [ ] Weapon damage types (associated with types of weapons)
+    - [x] Associate damage types for weapon proficiencies
+    - [ ] Check for invalid types
+  - [ ] Armor resistance, vulnerability, immunity for types
+  - [ ] Player (Mobile/Character) innate damage resistances
+- [ ] Scriptable Buffs and Passives
+  - Need to work out a way to handle buffs and passives as scripts
+  - Seems to require a lot of hooks into the engine to know when to apply them
+  - How do we handle things like additional attacks?
+  - Resource costs?
+  - Ability score buffs / passives?
+- [ ] Incorporate ability scores into game math for skills
+- [ ] Incorporate skill level into game math for skill cooldowns
+
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
 - [ ] Character Gender
 - [ ] New Interactive Character Creator
- - [ ] Provide access to help command from within creator
+  - [ ] Provide access to help command from within creator
 
 **Task: Adopt AssetManager Pattern**
 - [ ] Emotes
