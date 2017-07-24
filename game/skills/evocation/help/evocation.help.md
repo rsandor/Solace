@@ -14,6 +14,8 @@ of strategies and synergies crafted by the greatest arch-mages of yore. Finding
 a complete copy of the tome, however, may prove no small feat.
 
 ## Cooldown Actions:
+The following spell cooldowns are granted by the evocation skill at the given
+skill levels:
 
 * [Level 5] `Icespike` (GCD, instant, free, save: prudence, )
   An icicle is formed near the casters hand and thrown directly at the target
