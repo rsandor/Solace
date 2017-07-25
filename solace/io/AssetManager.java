@@ -1,6 +1,7 @@
 package solace.io;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -42,5 +43,5 @@ public interface AssetManager<T> {
   /**
    * @return A collection of all assets under management.
    */
-  Collection<T> getAll();
+  List<T> getAll();
 }
