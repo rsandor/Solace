@@ -52,6 +52,9 @@
 - [ ] Incorporate ability scores into game math for skills
 - [ ] Incorporate skill level into game math for skill cooldowns
 
+**Food & Hunger**
+- [ ] Implement food and hunger system for the game.
+
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
 - [ ] Character Gender
