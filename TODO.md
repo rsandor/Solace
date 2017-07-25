@@ -2,26 +2,6 @@
 
 ### In Progress
 
-**Feature: Skills 2.0 - Design**
-  - [x] Weapon Proficiencies
-    - [x] Common extension `.weapon.json`
-    - [x] Associate weapon proficiencies with skills
-  - [ ] Design remaining skills
-    - [x] Unarmed
-    - [x] Two-handed
-    - [x] Ranged
-    - [x] Unarmored
-    - [x] Light-armor
-    - [x] Heavy-armor
-    - [x] Block
-    - [x] Restoration
-    - [x] Alteration
-    - [x] Necromancy
-    - [x] Conjuration
-    - [ ] Stealth
-    - [ ] Persuasion
-    - [ ] Ranging
-
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -33,6 +13,11 @@
 --------------------------------------------------------------------------------
 
 ### Backlog
+
+**Design: Remaining Skills**
+- [ ] Stealth
+- [ ] Persuasion
+- [ ] Ranging
 
 **Feature: Skills 2.0 - Implementation (Needs to be broken down)**
 - [ ] Pets
