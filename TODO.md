@@ -16,8 +16,8 @@
     - [x] Block
     - [x] Restoration
     - [x] Alteration
-    - [ ] Necromancy
-    - [ ] Conjuration
+    - [x] Necromancy
+    - [x] Conjuration
     - [ ] Stealth
     - [ ] Persuasion
     - [ ] Ranging
@@ -34,7 +34,8 @@
 
 ### Backlog
 
-**Feature: Skills 2.0 - Implementation**
+**Feature: Skills 2.0 - Implementation (Needs to be broken down)**
+- [ ] Pets
 - [ ] Damage types
   - [ ] Common extension: `.damage.json`
   - [ ] Weapon damage types (associated with types of weapons)
