@@ -31,6 +31,7 @@ public class Game {
   {
     Config.load();
     Messages.reload();
+    Dreams.getInstance().reload();
     HelpSystem.getInstance().reload();
     WeaponProficiencies.getInstance().reload();
     Skills.getInstance().reload();
