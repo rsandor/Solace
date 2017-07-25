@@ -27,6 +27,7 @@ public class Reload extends CompositeCommand {
     addSubCommand("emotes", this::emotes);
     addSubCommand("skills", this::skills);
     addSubCommand("races", this::races);
+    addSubCommand("dreams", this::dreams);
   }
 
   @Override
@@ -219,6 +220,18 @@ public class Reload extends CompositeCommand {
       player.sendln("Races reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading emotes.");
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private void dreams(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated dreams reload...", player.getName()));
+    try {
+      Dreams.getInstance().reload();
+      player.sendln("Races reloaded.");
+    } catch (Throwable t) {
+      player.sendln("An error occurred when reloading dreams.");
+      t.printStackTrace();
     }
   }
 }
