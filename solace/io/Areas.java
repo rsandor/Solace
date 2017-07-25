@@ -71,7 +71,7 @@ public class Areas extends AbstractAssetManager<Area> {
         }
       }));
     } catch (IOException e) {
-      Log.error(String.format("Unable reload areas: %s", e.getMessage()));
+      Log.error(String.format("Unable load areas: %s", e.getMessage()));
     }
   }
 

@@ -6,7 +6,7 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class PlayerManager {
-  static Clock.Event event = null;
+  private static Clock.Event event = null;
 
   /**
    * Cleans the scenario where a player is in the fighting state but is not

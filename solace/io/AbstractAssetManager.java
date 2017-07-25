@@ -2,8 +2,7 @@ package solace.io;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -68,5 +67,5 @@ public abstract class AbstractAssetManager<T> implements AssetManager<T> {
   public void forEach(Consumer<T> action) { assets.values().forEach(action); }
 
   @Override
-  public Collection<T> getAll() { return assets.values(); }
+  public List<T> getAll() { return new ArrayList<>(assets.values()); }
 }
