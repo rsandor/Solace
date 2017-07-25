@@ -115,9 +115,12 @@ public class Stats {
   // Battle time estimates
   public static int BATTLE_TIME_P35 = 40;
 
+  // Weapon Proficiency Constants
+  public static double PROFICIENCY_FOR_FULL_WEAPON_BASE_ATTACK = 58.0;
+  public static double UNARMED_DAMAGE_SCALAR = 0.8;
+
   // Static caches
-  protected static Hashtable<Integer, Double> cacheAverageHpByLevel =
-    new Hashtable<Integer, Double>();
+  private static Hashtable<Integer, Double> cacheAverageHpByLevel = new Hashtable<>();
 
   /**
    * Determines a player character ability.
@@ -656,14 +659,19 @@ public class Stats {
   }
 
   /**
-   * Determines the base attack roll for a weapon.
+   * Determines the base attack roll for a weapon based on skill proficiency.
    * @param level Level of the weapon.
-   * @return The base attack roll for a weapon of the given level.
+   * @param proficiency Level of the character's proficiency with the weapon.
+   * @return The base attack roll for a weapon of the given level and player proficiency.
    */
-  public static int getWeaponAttackRoll(int level) {
+  public static int getWeaponAttackRoll(int level, int proficiency) {
     int mobAc = getMobileAC(level, 35);
     int hitMod = getHitMod(level);
-    return (int)((mobAc - hitMod) / (1.0 - WEAPON_CHANCE_TO_HIT_P35));
+    double baseWeaponRoll = (mobAc - hitMod) / (1.0 - WEAPON_CHANCE_TO_HIT_P35);
+    // Attack Roll = [Weapon Atk. Roll]/3 + (2/3)x[Weapon Atk. Roll]x([Prof]/b)
+    return (int)Math.floor(
+      (baseWeaponRoll / 3.0) + (2.0 / 3.0) * baseWeaponRoll * (proficiency / PROFICIENCY_FOR_FULL_WEAPON_BASE_ATTACK)
+    );
   }
 
   /**
@@ -681,5 +689,14 @@ public class Stats {
     );
 
     return result;
+  }
+
+  /**
+   * Determins average damage per attack for those proficient in unarmed combat.
+   * @param level Level of the character.
+   * @return The average unarmed damage.
+   */
+  public static int getUnarmedAverageDamage(int level) {
+    return (int)Math.floor(UNARMED_DAMAGE_SCALAR * Stats.getWeaponAverageDamage(level));
   }
 }

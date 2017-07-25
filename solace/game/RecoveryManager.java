@@ -46,7 +46,7 @@ public class RecoveryManager {
    * Performs a recovery cycle for all players and mobiles in the game world.
    */
   public static void cycle() {
-    Collection<solace.game.Character> playing = World.getActiveCharacters();
+    Collection<solace.game.Character> playing = Game.getActiveCharacters();
     synchronized(playing) {
       for (solace.game.Character p : playing) {
         // Fighting players do not recover resources

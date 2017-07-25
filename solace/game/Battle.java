@@ -1,8 +1,17 @@
 package solace.game;
 
-import com.google.common.collect.*;
-import java.util.*;
-import solace.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+
+import solace.util.Log;
+import solace.util.Roll;
 
 /**
  * Represents a single battle in the game world.
@@ -12,25 +21,21 @@ public class Battle {
   /**
    * Chance that any given attack roll will be a critical hit.
    */
-  public static final double CRITICAL_CHANCE = 0.05;
+  private static final double CRITICAL_CHANCE = 0.05;
 
-  Set<Player> participants;
-  Hashtable<Player, Player> targets;
-  Multimap<Player, Player> attackers;
-  Hashtable<Player, StringBuffer> messageBuffers;
+  private final Set<Player> participants = Collections.synchronizedSet(
+    new HashSet<Player>()
+  );
+  private final Hashtable<Player, Player> targets = new Hashtable<>();
+  private final Multimap<Player, Player> attackers = Multimaps.synchronizedListMultimap(
+    ArrayListMultimap.<Player, Player> create()
+  );
+  private Hashtable<Player, StringBuffer> messageBuffers = new Hashtable<>();
 
   /**
    * Creates a new, empty, battle.
    */
   public Battle() {
-    participants = Collections.synchronizedSet(
-      new HashSet<Player>()
-    );
-    targets = new Hashtable<Player, Player>();
-    attackers = Multimaps.synchronizedListMultimap(
-      ArrayListMultimap.<Player, Player> create()
-    );
-    messageBuffers = new Hashtable<Player, StringBuffer>();
   }
 
   /**
@@ -69,7 +74,7 @@ public class Battle {
   /**
    * @return A collection of participants in the battle.
    */
-  public Collection<Player> getParticipants() {
+  Collection<Player> getParticipants() {
     return Collections.unmodifiableCollection(participants);
   }
 
@@ -78,6 +83,7 @@ public class Battle {
    * @param p Player to find.
    * @return True if they part of this battle, false otherwise.
    */
+  @SuppressWarnings("unused")
   public boolean hasParticipant(Player p) {
     synchronized(participants) {
       for (Player q : participants) {
@@ -100,34 +106,28 @@ public class Battle {
    * Determines if a battle has completed.
    * @return `true` if the battle is over, false otherwise.
    */
-  public boolean isOver() {
-    return size() < 2;
-  }
+  public boolean isOver() { return size() < 2; }
 
   /**
    * Returns the target of the given player in the battle.
    * @param  p Player for which to find the target.
    * @return   The target of the player.
    */
-  public Player getTargetFor(Player p) {
-    return targets.get(p);
-  }
+  public Player getTargetFor(Player p) { return targets.get(p); }
 
   /**
    * Adds a battle message for the specified player.
    * @param p Player to recieve message.
    * @param msg Message to send.
    */
-  public synchronized void message(Player p, String msg) {
-    messageBuffers.get(p).append(msg);
-  }
+  public synchronized void message(Player p, String msg) { messageBuffers.get(p).append(msg); }
 
   /**
    * Determines if a defending player successfully parries an attack.
    * @param defender The player defending an attack.
    * @return True if the attack is parried, false otherwise.
    */
-  public static boolean parry(Player defender) {
+  private static boolean parry(Player defender) {
     int skillLevel = defender.getPassiveLevel("parry");
     if (skillLevel < 1) {
       return false;
@@ -138,9 +138,8 @@ public class Battle {
 
   /**
    * Roll to hit with normal scale potency.
-   * @see Battle.rollToHit(Player, Player, int)
    */
-  public static AttackResult rollToHit(Player attacker, Player defender) {
+  private static AttackResult rollToHit(Player attacker, Player defender) {
     return rollToHit(attacker, defender, 100);
   }
 
@@ -217,13 +216,11 @@ public class Battle {
    * a defender.
    * @param attacker The attacking player.
    * @param defender The defending player.
-   * @param potency Potency of the attack (scales the attacker roll).
    * @param savingThrow Name of the saving throw to use for the defender.
    */
   public static AttackResult rollToCast(
     Player attacker,
     Player defender,
-    int potency,
     String savingThrow
   ) {
     int save = defender.getSavingThrow(savingThrow);
@@ -249,9 +246,8 @@ public class Battle {
 
   /**
    * Performs a damage roll with normal potency.
-   * @see Battle.rollDamage(Player, Player, boolean, int)
    */
-  public static int rollDamage(Player attacker, Player defender, boolean crit) {
+  private static int rollDamage(Player attacker, Player defender, boolean crit) {
     return Battle.rollDamage(attacker, defender, crit, 100);
   }
 
@@ -262,12 +258,7 @@ public class Battle {
    * @param crit Whether or not the attack is a critical hit.
    * @return The amount of damage dealt.
    */
-  public static int rollDamage(
-    Player attacker,
-    Player defender,
-    boolean crit,
-    int potency
-  ) {
+  public static int rollDamage(Player attacker, Player defender, boolean crit, int potency) {
     if (defender.isImmortal()) {
       return 0;
     }
@@ -306,8 +297,7 @@ public class Battle {
       Player target = targets.get(attacker);
       if (target == null) continue;
 
-      int numberOfAttacks = attacker.hasBuff("stun") ?
-        0 : attacker.getNumberOfAttacks();
+      int numberOfAttacks = attacker.hasBuff("stun") ? 0 : attacker.getNumberOfAttacks();
       int damage = 0;
       int hits = 0;
 
@@ -357,7 +347,7 @@ public class Battle {
       }
     }
 
-    Set<Player> dead = new HashSet<Player>();
+    Set<Player> dead = new HashSet<>();
     for (Player p : participants) {
       if (p.isDead()) dead.add(p);
     }

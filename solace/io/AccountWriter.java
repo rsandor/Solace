@@ -46,7 +46,7 @@ public class AccountWriter implements Runnable {
    * Saves all currently active player characters.
    */
   protected void saveActive() {
-    Collection<solace.game.Character> active = World.getActiveCharacters();
+    Collection<solace.game.Character> active = Game.getActiveCharacters();
     synchronized(active) {
       for (solace.game.Character ch : active) {
         try {

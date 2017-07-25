@@ -9,16 +9,29 @@ import solace.util.*;
  */
 public class Room {
   String id;
-  String title = "";
-  String desc = "";
-  Area area = null;
-  LinkedList<Exit> exits = new LinkedList<Exit>();
-  Hashtable<String, String> features = new Hashtable<String, String>();
-  List<String> itemInstances = new LinkedList<String>();
-  List<Player> players;
-  List<Item> items;
-  Shop shop = null;
-  List<Mobile> mobiles;
+  private String title = "";
+  private String desc = "";
+  private Area area = null;
+  private LinkedList<Exit> exits = new LinkedList<>();
+  private Hashtable<String, String> features = new Hashtable<>();
+  private List<String> itemInstances = new LinkedList<>();
+  private List<Player> players;
+  private List<Item> items;
+  private Shop shop = null;
+  private List<Mobile> mobiles;
+
+  /**
+   * This is a system level room that can be used for placing players when look ups fail to find a specific
+   * room (e.g. the default room). In a "healthy" game this should very rarely be used if ever (perhaps it
+   * could be an admin jail or meeting place, etc.).
+   */
+  public static final Room THE_VOID;
+  static {
+    THE_VOID = new Room("system::void");
+    THE_VOID.setArea(Area.NULL);
+    THE_VOID.title = "The Void";
+    THE_VOID.desc = "And endless expanse of non-being encompasses everything and nothing around you.";
+  }
 
   /**
    * Creates a new room with the given id, title, and description.

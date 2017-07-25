@@ -51,7 +51,7 @@ Commands.add('say', function (player, params) {
 
   // Oh-ho-ho, sleep talking...
   if (player.isSleeping()) {
-    return sleepTalk();
+    return sleepTalk(player);
   }
 
   // Format the message

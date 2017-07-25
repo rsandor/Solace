@@ -1,0 +1,90 @@
+[
+  {
+    "name": "glaive",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "piercing,slashing"
+  },
+  {
+    "name": "greataxe",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "greatclub",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "greatsword",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "guisarme",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "piercing,slashing"
+  },
+  {
+    "name": "halberd",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "piercing,slashing"
+  },
+  {
+    "name": "heavy-flail",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "lance",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "longspear",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "scythe",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "spiked-chain",
+    "type": "martial",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "bludgeoning,piercing"
+  }
+]

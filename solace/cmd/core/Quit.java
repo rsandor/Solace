@@ -34,7 +34,7 @@ public class Quit extends AbstractCommand {
 
     solace.game.Character character = player.getCharacter();
     if (character != null) {
-      World.getActiveCharacters().remove(character);
+      Game.getActiveCharacters().remove(character);
       Game.writer.save(character);
       Connection c = character.getConnection();
       c.setStateController( new MainMenuController(c) );

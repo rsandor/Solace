@@ -2,6 +2,8 @@ package solace.io.xml;
 
 import org.xml.sax.*;
 import solace.game.*;
+import solace.io.Areas;
+import solace.io.AssetNotFoundException;
 import solace.io.Races;
 import solace.io.SkillNotFoundException;
 import solace.util.*;
@@ -17,17 +19,16 @@ public class AccountHandler extends Handler {
   private enum State {
     INIT, USER, CHARACTERS, CHARACTER, INVENTORY,
     EQUIPMENT, ITEM, PROPERTY, SKILLS, HOTBAR
-  };
+  }
 
   // Instance variables
-  Account account;
-  solace.game.Character character;
-  Area area;
-  Item item;
-  State state = State.INIT;
-  State itemState = State.INIT;
-  String propertyKey;
-  StringBuffer propertyBuffer;
+  private Account account;
+  private solace.game.Character character;
+  private Item item;
+  private State state = State.INIT;
+  private State itemState = State.INIT;
+  private String propertyKey;
+  private StringBuffer propertyBuffer;
 
   /**
    * @return The area as a result of the parse, or <code>null</code> if no area
@@ -241,18 +242,26 @@ public class AccountHandler extends Handler {
    * @param name Name of the element.
    * @param attrs Attributes for the element.
    */
-  protected State startCharacter(String name, Attributes attrs) {
-    if (name.equals("location")) {
-      area = World.getArea(attrs.getValue("area"));
-      character.setRoom(area.getRoom(attrs.getValue("room")));
-    } else if (name.equals("inventory")) {
-      return State.INVENTORY;
-    } else if (name.equals("equipment")) {
-      return State.EQUIPMENT;
-    } else if (name.equals("skills")) {
-      return State.SKILLS;
-    } else if (name.equals("hotbar")) {
-      return State.HOTBAR;
+  private State startCharacter(String name, Attributes attrs) {
+    switch (name) {
+      case "location":
+        try {
+          Area area = Areas.getInstance().get(attrs.getValue("area"));
+          character.setRoom(area.getRoom(attrs.getValue("room")));
+        } catch (Throwable t) {
+          Log.warn(String.format("Unable to load room for character '%s'", character.getName()));
+          Log.warn(t.getMessage());
+          character.setRoom(Areas.getInstance().getDefaultRoom());
+        }
+        break;
+      case "inventory":
+        return State.INVENTORY;
+      case "equipment":
+        return State.EQUIPMENT;
+      case "skills":
+        return State.SKILLS;
+      case "hotbar":
+        return State.HOTBAR;
     }
     return State.CHARACTER;
   }
@@ -355,7 +364,7 @@ public class AccountHandler extends Handler {
    * Sets the current item based to a new item based on the given attributes.
    * @param attrs Attributes for the item.
    */
-  protected void setItemFromAttrs(Attributes attrs) {
+  private void setItemFromAttrs(Attributes attrs) {
     String uuid = attrs.getValue("uuid");
     String id = attrs.getValue("id");
     String names = attrs.getValue("names");
@@ -366,7 +375,13 @@ public class AccountHandler extends Handler {
       uuid, id, names, areaId
     ));
 
-    item = new Item(id, names, World.getArea(areaId));
+    try {
+      item = new Item(id, names, Areas.getInstance().get(areaId));
+    } catch (AssetNotFoundException e) {
+      Log.warn(String.format("Unable to find area with id '%s'", areaId));
+      item = new Item(id, names, Areas.getInstance().getDefaultArea());
+    }
+
     item.setUUID(uuid);
   }
 }

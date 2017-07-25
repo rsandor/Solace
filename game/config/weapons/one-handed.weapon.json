@@ -1,0 +1,106 @@
+[
+  {
+    "name": "bastard-sword",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "battle-axe",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "flail",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "hammer",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "handaxe",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "longsword",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "mace",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "morningstar",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning,piercing"
+  },
+  {
+    "name": "rapier",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "scimitar",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "shortspear",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "sickle",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "whip",
+    "type": "martial",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  }
+]

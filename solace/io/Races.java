@@ -30,6 +30,7 @@ public class Races {
     races.clear();
     GameFiles.findRaces().forEach(path -> {
       String name = path.getFileName().toString();
+      Log.trace(String.format("Loading race '%s'", name));
       try {
         String contents = new String(Files.readAllBytes(path));
         Race race = Race.parseJSON(contents);

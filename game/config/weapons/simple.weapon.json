@@ -1,0 +1,50 @@
+[
+  {
+    "name": "dagger",
+    "type": "simple",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "piercing"
+  },
+  {
+    "name": "club",
+    "type": "simple",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "shortsword",
+    "type": "simple",
+    "style": "melee",
+    "hands": 1,
+    "skill": "one-handed",
+    "damage": "slashing"
+  },
+  {
+    "name": "quarterstaff",
+    "type": "simple",
+    "style": "melee",
+    "hands": 2,
+    "skill": "two-handed",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "sling",
+    "type": "simple",
+    "style": "ranged",
+    "hands": 1,
+    "skill": "ranged",
+    "damage": "bludgeoning"
+  },
+  {
+    "name": "dart",
+    "type": "simple",
+    "style": "ranged",
+    "hands": 1,
+    "skill": "ranged",
+    "damage": "piercing"
+  }
+]

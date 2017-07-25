@@ -104,7 +104,7 @@ public class Emotes {
    * Parse the emote data located at the given path and adds it to the list of emotes.
    * @param path Path for the emote JSON file.
    */
-  public void loadEmote (Path path) {
+  private void loadEmote (Path path) {
     String filename = path.getFileName().toString();
     try {
       String json = new String(Files.readAllBytes(path));

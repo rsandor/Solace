@@ -1,0 +1,119 @@
+<!--
+  build.intellij.xml
+  Solace MUD Engine ant build file for use with Intellij IDEA
+  By Ryan Sandor Richards
+
+  Usage:
+
+  Command   What it does
+  ant clean Cleans all build files including classes and jars
+  ant compile Compiles all source files
+  ant jar   Constructs the Solace.jar file from the compiled classes
+  ant run   Executes the game server
+
+  Alternately you can build the source using `ant jar` and then run the game
+  server by using `java -jar build/jar/Solace.jar`
+-->
+<project name="solace" default="run"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+
+  <!-- Build Properties -->
+  <property name="src.dir" value="solace" />
+  <property name="build.dir" value="build" />
+  <property name="classes.dir" value="${build.dir}/classes" />
+  <property name="jar.dir" value="${build.dir}/jar" />
+  <property name="lib.dir" value="lib" />
+  <property name="test.dir" value="test"/>
+  <property name="test.build.dir" value="build/test"/>
+  <property name="test.report.dir" value="report"/>
+  <property name="main-class" value="solace.game.Game" />
+
+  <path id="3rd-party-classpath">
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <path id="solace-classpath">
+    <fileset dir="${jar.dir}">
+      <include name="solace.jar"/>
+    </fileset>
+  </path>
+
+  <!-- Ensures all build and output directories exist -->
+  <target name="setup">
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${jar.dir}"/>
+    <mkdir dir="${lib.dir}"/>
+  </target>
+
+  <!-- Clean target -->
+  <target name="clean" description="--> clean the build directory">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <!-- Ivy Target -->
+  <target name="resolve" depends="setup" description="--> retrieve dependencies with ivy">
+    <ivy:retrieve />
+  </target>
+
+  <!-- Compile target -->
+  <target name="compile" depends="resolve" description="--> compile source">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
+      <compilerarg value="-Xlint:unchecked" />
+      <classpath refid="3rd-party-classpath" />
+    </javac>
+  </target>
+
+  <manifestclasspath property="lib.list" jarfile="${jar.dir}/${ant.project.name}.jar">
+    <classpath refid="3rd-party-classpath" />
+  </manifestclasspath>
+
+  <target name="jar" depends="compile" description="--> build solace.jar">
+    <mkdir dir="${jar.dir}"/>
+    <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+      <manifest>
+        <attribute name="Main-Class" value="${main-class}" />
+        <attribute name="Class-Path" value="${lib.list}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Test compile target -->
+  <target name="test-compile" depends="jar" description="--> Compiling unit tests">
+    <mkdir dir="${test.build.dir}"/>
+    <javac srcdir="${test.dir}" destdir="${test.build.dir}">
+      <compilerarg value="-Xlint:unchecked" />
+      <classpath refid="3rd-party-classpath"/>
+      <classpath refid="solace-classpath"/>
+    </javac>
+  </target>
+
+  <!-- JUnit test run target -->
+  <target name="test" depends="test-compile" description="--> Running unit tests">
+    <mkdir dir="${test.report.dir}"/>
+    <junit printsummary="on" fork="true" haltonfailure="no" haltonerror="yes" timeout="2000">
+      <classpath refid="3rd-party-classpath"/>
+      <classpath refid="solace-classpath"/>
+      <classpath>
+        <pathelement location="${test.build.dir}"/>
+      </classpath>
+      <formatter type="plain"/>
+      <batchtest todir="${test.report.dir}">
+        <fileset dir="${test.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- Run target -->
+  <target name="run" depends="jar" description="--> run solace">
+    <java jar="${jar.dir}/${ant.project.name}.jar" fork="true" />
+  </target>
+</project>

@@ -1,6 +1,7 @@
 package solace.cmd;
 
 import solace.game.*;
+import solace.io.Areas;
 import solace.util.*;
 import com.google.common.base.Joiner;
 
@@ -23,7 +24,7 @@ public class PlayController implements Controller {
 
     // Character location initialization
     if (ch.getRoom() == null) {
-      Room room = World.getDefaultRoom();
+      Room room = Areas.getInstance().getDefaultRoom();
       room.addPlayer(ch);
       ch.setRoom(room);
     }
@@ -33,7 +34,7 @@ public class PlayController implements Controller {
       .sendMessage(ch.getName() + " has entered the game.", character);
 
     // Place the player in the world
-    World.getActiveCharacters().add(ch);
+    Game.getActiveCharacters().add(ch);
     ch.sendln("\n\rNow playing as {y}" + ch.getName() + "{x}, welcome!\n\r");
 
     // Describe the room to the player

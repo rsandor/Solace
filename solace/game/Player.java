@@ -568,4 +568,11 @@ public interface Player {
    * @param String msg  Damage message format.
    */
   void applyDot(String name, int avg, int d, int f, String msg);
+
+  /**
+   * Determines the player's proficiency with a weapon type of the given name.
+   * @param name Name of the weapon proficiency.
+   * @return The weapon proficiency level for the given weapon type.
+   */
+  int getWeaponProficiency(String name);
 }

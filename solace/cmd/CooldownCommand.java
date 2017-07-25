@@ -1,8 +1,15 @@
 package solace.cmd;
-import java.util.*;
-import solace.game.*;
-import solace.net.*;
-import solace.util.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import solace.game.AttackResult;
+import solace.game.Battle;
+import solace.game.BattleManager;
+import solace.game.Player;
+import solace.net.Connection;
+import solace.util.Clock;
+import solace.util.Log;
 
 /**
  * Base class for all cooldown commands. Cool down commands are ones which
@@ -16,9 +23,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @author Ryan Sandor Richards
    */
   protected class CooldownException extends Exception {
-    CooldownException(String message) {
-      super(message);
-    }
+    CooldownException(String message) { super(message); }
   }
 
   /**
@@ -39,6 +44,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Creates a new cool down command with the given name.
    * @param name Name of the command.
    */
+  @SuppressWarnings("unused")
   public CooldownCommand(String name) {
     super(name);
   }
@@ -47,7 +53,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * Creates a new cool down command with the given name and display name.
    * @param name Name of the command.
    */
-  public CooldownCommand(String name, String displayName) {
+  protected CooldownCommand(String name, String displayName) {
     super(name, displayName);
   }
 
@@ -84,6 +90,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * @return The cast time for the cooldown.
    */
+  @SuppressWarnings("unused")
   public int getCastTime() { return castTime; }
 
   /**
@@ -95,12 +102,13 @@ public abstract class CooldownCommand extends AbstractCommand {
   /**
    * @return `true` if the cooldown has a non-zero cast time `false` otherwise.
    */
+  @SuppressWarnings("unused")
   public boolean hasCastTime() { return castTime > 0; }
 
   /**
    * @return The message to send when the player begins casting for this action.
    */
-  public String getCastMessage() { return castMessage; }
+  private String getCastMessage() { return castMessage; }
 
   /**
    * Sets the casting message for this cooldown.
@@ -425,7 +433,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    */
   public AttackResult rollToHit(Player attacker, Player target) {
     if (isSpellAttack()) {
-      return Battle.rollToCast(attacker, target, getPotency(attacker), getSavingThrow());
+      return Battle.rollToCast(attacker, target, getSavingThrow());
     }
     return Battle.rollToHit(attacker, target, getPotency(attacker));
   }
@@ -467,6 +475,7 @@ public abstract class CooldownCommand extends AbstractCommand {
    * @param givenTarget The given target of the attack (if any).
    * @return `true` if the attack succeeded, `false` otherwise.
    */
+  @SuppressWarnings("unused")
   public boolean executeAttack(Player attacker, Player givenTarget) {
     try {
       // Resolve the target

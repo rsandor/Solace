@@ -1,0 +1,50 @@
+[
+  {
+    "name": "hand-crossbow",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 1,
+    "skill": "ranged",
+    "damage": "piercing"
+  },
+  {
+    "name": "crossbow",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 2,
+    "skill": "ranged",
+    "damage": "piercing"
+  },
+  {
+    "name": "shortbow",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 2,
+    "skill": "ranged",
+    "damage": "piercing"
+  },
+  {
+    "name": "longbow",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 2,
+    "skill": "ranged",
+    "damage": "piercing"
+  },
+  {
+    "name": "shuriken",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 1,
+    "skill": "ranged",
+    "damage": "piercing"
+  },
+  {
+    "name": "throwing-dagger",
+    "type": "martial",
+    "style": "ranged",
+    "hands": 1,
+    "skill": "ranged",
+    "damage": "piercing"
+  }
+]

@@ -14,40 +14,81 @@
 
 ### Backlog
 
+**Design: Remaining Skills**
+- [ ] Stealth
+- [ ] Persuasion
+- [ ] Ranging
+
+**Feature: Skills 2.0 - Implementation (Needs to be broken down)**
+- [ ] Pets
+- [ ] Damage types
+  - [ ] Common extension: `.damage.json`
+  - [ ] Weapon damage types (associated with types of weapons)
+    - [x] Associate damage types for weapon proficiencies
+    - [ ] Check for invalid types
+  - [ ] Armor resistance, vulnerability, immunity for types
+  - [ ] Player (Mobile/Character) innate damage resistances
+- [ ] Scriptable Buffs and Passives
+  - Need to work out a way to handle buffs and passives as scripts
+  - Seems to require a lot of hooks into the engine to know when to apply them
+  - How do we handle things like additional attacks?
+  - Resource costs?
+  - Ability score buffs / passives?
+- [ ] Incorporate ability scores into game math for skills
+- [ ] Incorporate skill level into game math for skill cooldowns
+
+**Food & Hunger**
+- [ ] Implement food and hunger system for the game.
+
 **Feature: Character Creation 2.0**
 - [ ] Account files should be saved to JSON
 - [ ] Character Gender
 - [ ] New Interactive Character Creator
- - [ ] Provide access to help command from within creator
+  - [ ] Provide access to help command from within creator
 
-**Feature: Presentation & Communication**
+**Task: Adopt AssetManager Pattern**
+- [ ] Emotes
+- [ ] Buffs
+- [ ] Configs
+- [ ] HelpSystem
+- [ ] Messages
+- [ ] Races
+- [ ] Skills
+- [ ] Weapon Types
+
+**Task: Begin Scripting Documentation**
+- [ ] Overview of scripting
+- [ ] Creating Commands
+- [ ] Creating Cooldowns
+
+**Feature: Scriptable Communication Channels**
+- [ ] Communication manager service
+  - Design an interface for scripts to register chat channels / commands
+- [ ] Implement built-in channels:
+  - [ ] `ooc` - Global out of character chat
+  - [ ] `shout` - Area specific channel
+  - [ ] `newbie` - New player QA channel
+  - [ ] `ask/answer` - General QA channel
+  - [ ] `info` - System wide information messages (admin only)
+  - [ ] `admin` - Admin chat (admin only)
+- [ ] Document channel scripting
+
+**Feature: Misc. Presentation**
 - [ ] Colored cooldown hotbar in prompts, e.g. [1234567890-=]
 - [ ] Better `skill` command formatting (currently very hard to read)
-- [ ] Random dreams while sleeping (fun and refreshes prompt)
 - [ ] Decorative banners for shops, inventory, character sheet, etc.
 - [ ] Make screen width adjustable on connection (currently fixed to 80)
-- [ ] Global communication channels
-- [ ] Player-to-player auction house
-- [ ] Create book type items that can be read
-  - [ ] Book: Liber Particularum Magicae (book of elemental magic)
-        (reading this unlocks ultimate level 100 evocation skill!)
+
+**Feature: Dreams**
+- [ ] Common Extension: `.dream.txt`
+- [ ] Register dreams at game load
+- [ ] While sleeping, periodically present players with random dreams.
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
   - [ ] Better parameter handling
   - [ ] Use a trie for emote lookup
 - [ ] Add many common emotes (use ROM2.4 "socials.are" for reference)
-
-**Feature: Skills 2.0**
-  - [ ] Flesh out design for and implement remaining skills
-  - Betters Buffs and Passives
-    - Need to work out a way to handle buffs and passives as scripts
-    - Seems to require a lot of hooks into the engine to know when to apply them
-    - How do we handle things like additional attacks?
-    - Resource costs?
-    - Ability score buffs / passives?
-  - [ ] Incorporate ability scores into game math for skills
-  - [ ] Incorporate skill level into game math for skill cooldowns
 
 **Feature: Loot System**
 - Grades of equipment (higher grade equals bigger bonuses)
@@ -56,6 +97,9 @@
 **Feature: Crafting System**
 - Crafting skills
 - Crafting loot from mobs
+
+**Feature: Auction House**
+- Design and implement a player-to-player auction house
 
 **Feature: Areas 2.0**
 - Room scripting
@@ -70,6 +114,14 @@
 - Banks (items and gold)
 - Game world calendar + Weather
 - Item weight & Carrying Capacity
+
+**Tool: Rom2.4 Area Converter**
+- Build a command-line tool that can convert old Rom2.4 areas into Solace areas
+
+**Feature: Books**
+- [ ] Create book type items that can be read
+  - [ ] Book: Liber Particularum Magicae (book of elemental magic)
+        (reading this unlocks ultimate level 100 evocation skill!)
 
 **Feature: Leveling System**
 - Leveling Design

@@ -40,7 +40,7 @@ Commands.add('wear', function (player, params) {
   try {
     var levelOffset = 10;
     if (Config.get("game.item.level-offset") != null) {
-      levelOffset = Integer.parseInt(Config.get("game.item.level-offset"));
+      levelOffset = parseInt(Config.get("game.item.level-offset"));
     }
     if (itemLevel != null) {
       if (parseInt(itemLevel) > levelOffset + character.getLevel()) {

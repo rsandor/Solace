@@ -2,6 +2,7 @@ package solace.cmd;
 
 import java.util.*;
 import solace.game.*;
+import solace.io.Areas;
 import solace.io.Messages;
 import solace.net.*;
 import solace.util.*;
@@ -51,7 +52,9 @@ public class MainMenuController implements Controller {
    * @see solace.cmd.Controller
    */
   public void parse(String s) {
-    commands.find(s).run(s.split("\\s"));
+    String[] params = s.split("\\s+");
+    String command = (params.length < 1) ? "" : params[0];
+    commands.find(command).run(params);
   }
 
   /**
@@ -94,9 +97,9 @@ public class MainMenuController implements Controller {
   private void quit(String[] params) {
     connection.sendln("Goodbye!");
     if (connection.hasAccount()) {
-      World.removeAccount(connection.getAccount());
+      Game.removeAccount(connection.getAccount());
     }
-    World.removeConnection(connection);
+    Game.removeConnection(connection);
     connection.close();
   }
 
@@ -106,7 +109,7 @@ public class MainMenuController implements Controller {
   @SuppressWarnings("unused")
   private void who(String[] params) {
     connection.sendln("{y}---- {x}Players Online{y} ----{x}");
-    for (Connection c : World.getConnections()) {
+    for (Connection c : Game.getConnections()) {
       if (c.hasAccount()) {
         Account acct = c.getAccount();
         connection.sendln(acct.getName());
@@ -160,8 +163,7 @@ public class MainMenuController implements Controller {
 
       if (params.length < 2) {
         ch = act.getFirstCharacter();
-      }
-      else {
+      } else {
         String name = params[1];
         if (!act.hasCharacter(name)) {
           connection.sendln(
@@ -176,7 +178,7 @@ public class MainMenuController implements Controller {
 
       Room room = ch.getRoom();
       if (room == null) {
-        room = World.getDefaultRoom();
+        room = Areas.getInstance().getDefaultRoom();
         ch.setRoom(room);
       }
       room.addPlayer(ch);

@@ -16,7 +16,7 @@ public class ChatController implements Controller {
 
   ChatController(Connection c) {
     connection = c;
-    World.addChatConnection(connection);
+    Game.addChatConnection(connection);
     connection.sendln(Messages.get("ChatIntro"));
   }
 
@@ -37,7 +37,7 @@ public class ChatController implements Controller {
     }
     if (message.toLowerCase().startsWith("/quit")) {
       connection.sendln("Later!");
-      World.removeChatconnection(connection);
+      Game.removeChatconnection(connection);
       connection.setStateController(new MainMenuController(connection));
     } else if (message.toLowerCase().startsWith("/help")) {
       String help = Messages.get("ChatHelp");
@@ -45,7 +45,7 @@ public class ChatController implements Controller {
     } else {
       String name = connection.getAccount().getName().toLowerCase();
       String format = "{y}" + name + ": {x}" + message;
-      for (Object chatter : World.getChatConnections()) {
+      for (Object chatter : Game.getChatConnections()) {
         Connection c = (Connection) chatter;
         c.sendln(format);
       }
