@@ -8,7 +8,11 @@ and races.
 * Number of Weapon Attacks
 * Attack Evasion
 * Ability Scores
-* Base HP, SP, and MP healing
+* Base HP, SP, and MP recovery
 * Cooldown Potency
 * HP, SP, and MP Resource Costs
 * All Checks
+* Advanced pet skills unlock
+* Pet bonuses
+* As a result of debuff damage
+* On skill use ('Mass Effect' from restoration)
