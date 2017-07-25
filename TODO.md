@@ -2,6 +2,11 @@
 
 ### In Progress
 
+**Feature: Dreams**
+- [ ] Common Extension: `.dream.txt`
+- [ ] Register dreams at game load
+- [ ] While sleeping, periodically present players with random dreams.
+
 --------------------------------------------------------------------------------
 
 ### Bugs
@@ -78,11 +83,6 @@
 - [ ] Better `skill` command formatting (currently very hard to read)
 - [ ] Decorative banners for shops, inventory, character sheet, etc.
 - [ ] Make screen width adjustable on connection (currently fixed to 80)
-
-**Feature: Dreams**
-- [ ] Common Extension: `.dream.txt`
-- [ ] Register dreams at game load
-- [ ] While sleeping, periodically present players with random dreams.
 
 **Feature: Emotes 2.0**
 - [ ] Overhaul Emote System
