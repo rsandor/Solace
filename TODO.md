@@ -2,11 +2,6 @@
 
 ### In Progress
 
-**Feature: Dreams**
-- [ ] Common Extension: `.dream.txt`
-- [ ] Register dreams at game load
-- [ ] While sleeping, periodically present players with random dreams.
-
 --------------------------------------------------------------------------------
 
 ### Bugs
