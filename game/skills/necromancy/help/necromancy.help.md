@@ -24,10 +24,8 @@ given skill levels:
   Raised undead pets gain a 10-40% bonus to HP and each attack performed by a
   raised pets does an additional 10-50 potency damage (HP bonus an potency
   scale with skill level).
-
 * [Level 50] `Dictator`
   Unlocks `advanced pet actions` for raised undead pets.
-
 * [Level 75] `Siphoning`
   Damage due to debuffs on enemies heal raised pets by 25-50% of damage dealt
   (healing percentage scales with skill level).
@@ -66,17 +64,14 @@ levels:
   20 to 50 potency necrotic damage to the target every 2 seconds and applies
   a 5-15% attack roll penalty (duration, damage potency, and attack penalty
   scale with skill level).
-
 * [Level 40] `Lich Form` (180s cooldown, 6s cast, free)
   Applies the `lich` buff to the caster for 10s. The buff deals drains 7% of
   the caster's HP and restores 7% of their MP every second.
-
 * [Level 60] `Drain Life` (40s cooldown, 6s cast, 45% MP)
   Applies the `drained` debuff to the target for 10 to 60s. The debuff deals
   50 to 100 potency necrotic damage to the target every 2 seconds, applies a
   10-20% AC penalty, and gives them vulnerability to fire, cold, and force
   damage (duration, damage potency, and AC penalty scale with skill level).
-
 * [Level 95] `Sacrifice` (120s cooldown, 10s cast, 60% MP)
   The character orders its pet to consume necrotic energy and then explode
   dealing 1800 potency damage its current battle target and instantly dying.
