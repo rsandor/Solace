@@ -33,7 +33,7 @@ public class RecoveryManager {
   }
 
   /**
-   * Stops the battle manager.
+   * Stops the recovery manager.
    */
   public static void stop() {
     if (recoveryEvent == null) { return; }
@@ -45,7 +45,7 @@ public class RecoveryManager {
   /**
    * Performs a recovery cycle for all players and mobiles in the game world.
    */
-  public static void cycle() {
+  private static void cycle() {
     Collection<solace.game.Character> playing = Game.getActiveCharacters();
     synchronized(playing) {
       for (solace.game.Character p : playing) {

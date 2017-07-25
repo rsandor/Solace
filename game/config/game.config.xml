@@ -23,6 +23,6 @@
   <!-- Recovery options -->
   <recovery>
     <!-- How many ticks between each recovery cycle -->
-    <option name="ticks" value="6" />
+    <option name="ticks" value="12" />
   </recovery>
 </config>

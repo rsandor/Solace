@@ -45,6 +45,7 @@ public class Game {
     BattleManager.start();
     RecoveryManager.start();
     PlayerManager.start();
+    DreamManager.start();
 
     ScriptingEngine.reload();
     CommandRegistry.reload();

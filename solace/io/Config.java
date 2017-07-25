@@ -68,4 +68,15 @@ public class Config {
 
     return configurations.get(cfgName).get(key);
   }
+
+  /**
+   * Retrieves a configuration value.
+   * @param name Scoped name for the value.
+   * @param defaultValue A default value to return if a configuration value does not exist.
+   * @return The value, or the given default if the value could not be found.
+   */
+  public static String get(String name, String defaultValue) {
+    String result = get(name);
+    return (result == null) ? defaultValue : result;
+  }
 }
