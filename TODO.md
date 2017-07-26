@@ -15,7 +15,6 @@
 ### Backlog
 
 **Design: Remaining Skills**
-- [ ] Stealth
 - [ ] Persuasion
 - [ ] Ranging
 
