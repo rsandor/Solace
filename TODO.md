@@ -4,96 +4,12 @@
 
 --------------------------------------------------------------------------------
 
-### Bugs
-
-- [ ] **Bug:** Shutdown command sometimes hangs, investigate
-      Seems to hang when there are multiple logged in players
-      It catches right after it says "Stopping account writer"
-
---------------------------------------------------------------------------------
-
 ### Backlog
-
-**Design: Remaining Skills**
-- [ ] Persuasion
-- [ ] Ranging
-
-**Feature: Skills 2.0 - Implementation (Needs to be broken down)**
-- [ ] Pets
-- [ ] Damage types
-  - [ ] Common extension: `.damage.json`
-  - [ ] Weapon damage types (associated with types of weapons)
-    - [x] Associate damage types for weapon proficiencies
-    - [ ] Check for invalid types
-  - [ ] Armor resistance, vulnerability, immunity for types
-  - [ ] Player (Mobile/Character) innate damage resistances
-- [ ] Scriptable Buffs and Passives
-  - Need to work out a way to handle buffs and passives as scripts
-  - Seems to require a lot of hooks into the engine to know when to apply them
-  - How do we handle things like additional attacks?
-  - Resource costs?
-  - Ability score buffs / passives?
-- [ ] Incorporate ability scores into game math for skills
-- [ ] Incorporate skill level into game math for skill cooldowns
-
-**Food & Hunger**
-- [ ] Implement food and hunger system for the game.
-
-**Feature: Character Creation 2.0**
-- [ ] Account files should be saved to JSON
-- [ ] Character Gender
-- [ ] New Interactive Character Creator
-  - [ ] Provide access to help command from within creator
-
-**Task: Adopt AssetManager Pattern**
-- [ ] Emotes
-- [ ] Buffs
-- [ ] Configs
-- [ ] HelpSystem
-- [ ] Messages
-- [ ] Races
-- [ ] Skills
-- [ ] Weapon Types
 
 **Task: Begin Scripting Documentation**
 - [ ] Overview of scripting
 - [ ] Creating Commands
 - [ ] Creating Cooldowns
-
-**Feature: Scriptable Communication Channels**
-- [ ] Communication manager service
-  - Design an interface for scripts to register chat channels / commands
-- [ ] Implement built-in channels:
-  - [ ] `ooc` - Global out of character chat
-  - [ ] `shout` - Area specific channel
-  - [ ] `newbie` - New player QA channel
-  - [ ] `ask/answer` - General QA channel
-  - [ ] `info` - System wide information messages (admin only)
-  - [ ] `admin` - Admin chat (admin only)
-- [ ] Document channel scripting
-
-**Feature: Misc. Presentation**
-- [ ] Colored cooldown hotbar in prompts, e.g. [1234567890-=]
-- [ ] Better `skill` command formatting (currently very hard to read)
-- [ ] Decorative banners for shops, inventory, character sheet, etc.
-- [ ] Make screen width adjustable on connection (currently fixed to 80)
-
-**Feature: Emotes 2.0**
-- [ ] Overhaul Emote System
-  - [ ] Better parameter handling
-  - [ ] Use a trie for emote lookup
-- [ ] Add many common emotes (use ROM2.4 "socials.are" for reference)
-
-**Feature: Loot System**
-- Grades of equipment (higher grade equals bigger bonuses)
-- Drops based on level and power ranges for mobiles
-
-**Feature: Crafting System**
-- Crafting skills
-- Crafting loot from mobs
-
-**Feature: Auction House**
-- Design and implement a player-to-player auction house
 
 **Feature: Areas 2.0**
 - Room scripting
@@ -108,9 +24,6 @@
 - Banks (items and gold)
 - Game world calendar + Weather
 - Item weight & Carrying Capacity
-
-**Tool: Rom2.4 Area Converter**
-- Build a command-line tool that can convert old Rom2.4 areas into Solace areas
 
 **Feature: Books**
 - [ ] Create book type items that can be read
@@ -161,6 +74,6 @@ spm install rsandor/solace-race-darkelf
 ```
 The utility would just fetch the repo from the following URL:
 ```
-https://github.com/rsando/solace-race-darkelf
+https://github.com/rsandor/solace-race-darkelf
 ```
 And install it in the `game/plugins` directory.
