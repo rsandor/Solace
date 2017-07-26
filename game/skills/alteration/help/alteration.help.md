@@ -17,7 +17,7 @@ powerful alteration magics.
 The following passive enhancements are granted by the alteration skill at the
 given skill levels:
 
-* [Level 65] `Aspect of Selune`
+* [Level 75] `Aspect of Selune`
   The character recovers MP 25-75% faster (enhanced recovery scales with skill
   level).
 
@@ -37,7 +37,12 @@ levels:
   The target is granted the `strengthened` buff for 20-120s. The buff grants a
   10-25% bonus to the strength ability score and an additional 10-50 potency
   damage for each attack.
-* [Level 35] `Sphere of Resistance` (80s cooldown, 10s cast, 35% MP)
+* [Level 35] `Truesight` (60s cooldown, 12s cast, 25% MP)
+  The character gains the `truesight` buff for 20-240s (duration scales with
+  skill level). While the buff is applied the character is capable of detecting
+  and seeing objects, players, and mobiles that are under most forms of
+  invisibility (a notable exception is the halfing's `vanished` racial buff).
+* [Level 45] `Sphere of Resistance` (80s cooldown, 10s cast, 35% MP)
   The character is granted 1-4 stacks of the `impervious` buff for 30 to 180s.
   The each stack of the buff will nullify a magical attack and then be shed
   (number of stacks and duration scales with skill level).
@@ -45,10 +50,6 @@ levels:
   The target is granted the `hasted` debuff for 20-120s. The buff allows the
   character an extra attack in battle and provides a 10-25% bonus to AC
   (AC bonus and duration scale with skill level).
-* [Level 75] `Sequencer` (300s cooldown, 20s cast, 80% MP)
-  The character stores 2-4 spells in reserve to be cast later. When the
-  action is used again each of the spells stored will be cast in sequence at
-  25% of the MP cost for each spell.
 * [Level 85] `Seizure` (60s cooldown, 4s cast, 45% MP)
   The target is afflicted with the `paralyzed`, `blinded`, and `silenced`
   debuffs for 20s.
