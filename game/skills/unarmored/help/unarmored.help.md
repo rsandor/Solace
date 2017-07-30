@@ -28,10 +28,12 @@ wears no equipment that constitutes as light or heavy armor:
   1% to 10% success bonus when fleeing battle (bonus scales based on skill
   level).
 * [Level 65] `Focused Mind`
-  The character gains a 25% resistance to being interrupted when performing
-  cooldown actions that require time to cast or enact.
+  The character gains a 15-25% resistance to being interrupted when performing
+  cooldown actions that require time to cast or enact. Resistance scales with
+  skill level.
 * [Level 75] `Fluid Movement`
-  The character is granted a 10% discount to SP costs for cooldown skills.
+  The character is granted a 5-10% discount to SP costs for cooldown skills.
+  Discount scales with skill level.
 * [Level 85] `Master of None`
   The character is granted a 20% bonus to overall AC if wearing only items that
   are not considered light or heavy armor.
