@@ -52,7 +52,7 @@ levels:
 * [Level 55] `Resonance` (30s cooldown, 6s cast, 30% MP)
   The target gains the `resonating` debuff for 10-60s. The debuff deals 20-60
   potency force damage damage every 2 seconds and they also become vulnerable
-  to the damage type element of any summed pet at the time of casting.
+  to the damage type element of any summoned pet at the time of casting.
 * [Level 80] `Absorb` (240s cooldown, instant, free)
   The caster aborbs the energy of their summoned elemental instantly healing
   80% of their MP. The elemental is consumed and dies as a result.
