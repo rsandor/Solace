@@ -14,7 +14,7 @@ The persuasion skill provides the following passive at the given skill level:
   The character is granted a 5-25% reduction for the cost of good in all
   shops (bonus scales with skill level).
 * [Level 35] `Sales Executive`
-  The character ios granted a 5-25% increase in gold for selling items at
+  The character is granted a 5-25% increase in gold for selling items at
   shops (bonus scales with skill level). Further, the amount of gold from
   any successful use of `beg` is doubled.
 * [Level 65] `Prey the Weak`
