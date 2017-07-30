@@ -38,8 +38,8 @@ level:
   duration, and penalties scale with skill level.
 * [Level 50] `Calm` (60s cooldown, 15% SP)
   On success the player calms an aggressive mobile down granting it the
-  `docile` debuff for 60-300s. While under the effects of the debuff the mobile
-  will not be aggressive towards any players.
+  `docile` debuff for 60-300s. While under the effects of the debuff the mobile's
+  aggressiveness is reduced by 50-100% (scales with skill level).
 * [Level 85] `Dishearten` (30s cooldown, 35% SP)
   The player slings insults that shake a target mobile to its very core. On
   success the mobile gains the `distraught` debuff for 4-8s. While under
