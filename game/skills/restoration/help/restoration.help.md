@@ -27,7 +27,7 @@ levels:
 * [Level 15] `Refresh` (GCD, 2s cast, 10% MP)
   The refresh spell heals a target's SP by 10-20% (scales with skill level).
 * [Level 25] `Shield` (20s cooldown, 6s cast time, 15% MP, save: prudence)
-  The target gains the `armored` buff for 60-180s granting a 10-30% bonus to AC
+  The target gains the `shielded` buff for 60-180s granting a 10-30% bonus to AC
   (bonus and duration each scale with skill level).
 * [Level 35] `Succor` (8s cooldown, 2s cast, 15% MP)
   Removes up to 1-3 debuffs from a target (number of debuffs removed scales
