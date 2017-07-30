@@ -23,8 +23,8 @@ The ranging skill provides the following passive at the given skill level:
   ranging from 35 to 100 and penalty to hit from 33% to 0% (potency scales
   and penalty diminishes with skill level).
 * [Level 95] `Wrath of the Wood`
-  The character is granted a 25% bonus to necrotic damage and gains a
-  bonus 50 potency for attacks with slashing weapons.
+  The character is granted a 25% damage resistance to necrotic damage and
+  gains a bonus 50 potency for attacks with slashing weapons.
 
 ## Cooldown Actions
 The ranging skill provides the following cooldown actions at the given skill
