@@ -47,5 +47,5 @@ is wielding a two-handed weapon type at the given skill level:
   Via a mighty swing from a two-handed weapon this attack deals damage with
   500 potency. If the enemy is currently `prone` then this attack has 5% chance
   of instantly killing them (note: some mobiles are immune to being instantly
-  killed). If the opponent is not instantly killed it deals an additiona 100
+  killed). If the opponent is not instantly killed it deals an additional 100
   potency damage instead (for a total of 600 potency).
