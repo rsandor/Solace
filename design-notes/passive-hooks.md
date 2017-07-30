@@ -33,6 +33,7 @@ to allow for the full scripting of all skills.
 - Reduce Number of Attacks (`slowed` debuff, Landslide)
 - Reduce Attack Potency (`slowed` debuff, Landslide)
 - Prevent Movement (`paralyzed` debuff, Lightning)
+- Prevent Fleeing (`paralyzed` debuff, Lightning)
 - Prevent Attacks (`stunned` debuff from Quake)
 - Prevent Movement (`stunned` debuff from Quake)
 
@@ -68,7 +69,7 @@ to allow for the full scripting of all skills.
 - Damage / Time (`mummy rot` debuff, cast by Mummy pet from Raise Dead)
 - Prevent Damage Before Applied / Absorb Damage (undead pets absorb necrotic)
 - Damage / Time (`darkness` debuff, Darkness)
-- Modify Attack Roll (`darknes` debuff, Darkness)
+- Modify Attack Roll (`darkness` debuff, Darkness)
 - Damage / Time (`drained` debuff, Drain Life)
 - Modify AC (`drained` debuff, Drain Life)
 - Modify Damage Vulnerabilities (`drained` debuff, Drain Life)
