@@ -25,8 +25,8 @@ given skill levels:
 The following spells are granted by the alteration skill at the given skill
 levels:
 
-* [Level 5] `Armor` (30s cooldown, 8s cast, 15% MP)
-  The character is granted the `armored` buff for 30 to 300 seconds. The buff
+* [Level 5] `Ghost Armor` (30s cooldown, 8s cast, 15% MP)
+  The character is granted the `ghost armor` buff for 30 to 300 seconds. The buff
   grants the character the an AC bonus as if they were wearing an suit of
   heavy armor at 35% - 100% efficiency (both duration and efficiency scale
   with skill level).
