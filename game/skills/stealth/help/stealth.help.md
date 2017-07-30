@@ -13,7 +13,7 @@ The stealth skill provides the following passive at the given skill level:
   current stealth skill level. Traps much lower are easier to detect, while
   traps near the current level are harder.
 * [Level 50] `Sneak`
-  Movement no longer removes the `hidden` debuff for the character.
+  Movement no longer removes the `hidden` buff from the character.
 * [Level 95] `Precision Strike`
   The `backstab` and `circle` cooldowns deal an additional 20% damage and
   regular attacks deal an additional 50 potency when the character is
