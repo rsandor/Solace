@@ -13,8 +13,8 @@ intent be good or ill.
 There are tales throughout the ages that speak of vast covens of necromancers
 that band together to bring push the boundaries of knowledge within the school.
 Nearly four centuries prior one such coven was said to have inscribed the
-fruits of their labor into a book bound in skin and written in blood... The
-dreaded book was known as the necronomicon.
+fruits of their labor into a book bound in flesh and written in blood... The
+dreaded book was known as the Necronomicon.
 
 ## Passive Enhancements:
 The following passive enhancements are granted by the necromancy skill at the
