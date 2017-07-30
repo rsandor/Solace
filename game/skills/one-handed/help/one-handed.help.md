@@ -39,6 +39,6 @@ is wielding a one-handed weapon type at the given skill level:
 * [Level 65] `Riposte` (GCD, 6% SP)
   Make a quick sudden attack dealing with potency 125. Combo: Slash, increases
   potency to 300.
-* [Level 95] `Coup` de grace (120s, 10% SP)
-  A devastating attack with potency 500. Can only be executed when the target
+* [Level 95] `Coup` de grace (120s, 15% SP)
+  A devastating attack with potency 750. Can only be executed when the target
   is below 20% of its maximum health.
