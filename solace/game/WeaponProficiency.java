@@ -1,8 +1,10 @@
 package solace.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import solace.io.AssetNotFoundException;
+import solace.io.DamageTypes;
+import solace.util.Log;
+
+import java.util.*;
 
 /**
  * Represents a weapon proficiency
@@ -18,7 +20,7 @@ public class WeaponProficiency {
   private String style;
   private String skill;
   private int hands;
-  private Collection<String> damageTypes = new ArrayList<>();
+  private List<DamageType> damageTypes = new ArrayList<>();
 
   /**
    * Creates a new weapon proficiency with the given parameters.
@@ -28,12 +30,28 @@ public class WeaponProficiency {
    * @param hands Number of hands needed to wield weapons that have the proficiency.
    * @param damTypes Damage types for weapons that have the proficiency.
    */
-  public WeaponProficiency(String name, String type, String style, String skill, int hands, Collection<String> damTypes) {
+  public WeaponProficiency(
+    String name,
+    String type,
+    String style,
+    String skill,
+    int hands,
+    Collection<String> damTypes
+  ) {
     setName(name);
     setType(type);
     setSkill(skill);
     setHands(hands);
-    damageTypes = damTypes;
+
+    damTypes.forEach(dmgTypeName -> {
+      try {
+        damageTypes.add(DamageTypes.getInstance().get(dmgTypeName));
+      } catch (AssetNotFoundException e) {
+        Log.warn(String.format(
+          "Invalid damage '%s' referenced by weapon proficiency '%s'",
+          dmgTypeName, name));
+      }
+    });
   }
 
   /**
@@ -72,13 +90,7 @@ public class WeaponProficiency {
   /**
    * @return The damage types for weapons that have the proficiency.
    */
-  public Collection<String> getDamageTypes() { return Collections.unmodifiableCollection(damageTypes); }
-
-  /**
-   * Adds a damage type for weapons that have the proficiency.
-   * @param type Name for the type of damage to add.
-   */
-  public void addDamageType(String type) { damageTypes.add(type); }
+  public Collection<DamageType> getDamageTypes() { return Collections.unmodifiableCollection(damageTypes); }
 
   /**
    * @return Number of hands needed to wield weapons with this proficiency.
