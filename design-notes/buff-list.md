@@ -53,7 +53,7 @@ List of all buffs and debuffs as described by the skill designs at this point.
 - `prone`: the player takes 10-25% more damage from attacks (scales with level).
 - `resonating`: deals 20-60 potency force damage damage every 2 seconds and they also
   become vulnerable to the damage type element of any summoned pet at the time of casting.
-- `silenced`: prevents the use of any cooldown or action that requires an activation
+- `silenced`: 1-95% chance of preventing the use of any cooldown or action that requires an activation
   time cost (e.g. spells).
 - `stunned`: the player has a 50-80% chance of failing to attack for each attack in a
   round (scales with level).
