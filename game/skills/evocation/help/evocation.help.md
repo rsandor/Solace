@@ -27,7 +27,7 @@ skill levels:
   Electricity envelops the target applying a 30 second `shocked` debuff that
   deals 10-20 potency `lightning` damage to the target each round.
 * [Level 35] `Landslide` (90s cooldown, 6s cast, special cost, save: vigor)
-  Using the remainder of her MP, the caster causes a wave of earth to burst froth
+  Using the remainder of her MP, the caster causes a wave of earth to burst forth
   and sweep across the target. The spell deals 0 to 1000 potency bludgeoning
   damage (proportional to the amount of MP used) and also applies the `slowed`
   debuff for 4-12 seconds (duration scales with skill level).
