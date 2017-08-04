@@ -15,7 +15,7 @@ public class Dreams extends AbstractAssetManager<String> {
   public static Dreams getInstance() { return instance; }
 
   /**
-   * Creats a new dreams asset manager.
+   * Creates a new dreams asset manager.
    */
   Dreams() {
     super("dream", ".dream.txt");

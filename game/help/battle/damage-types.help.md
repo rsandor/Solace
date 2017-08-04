@@ -24,16 +24,16 @@ different types and take more damage (e.g. undead are vulnerable to `radiant`).
   through an opponent's flesh or armor (daggers, spears, etc.).
 * `slashing`: slicing damage caused by weapons that cut, rip, or lash across an
   enemy's flesh or armor (swords, axes, whips, etc)
+* `acid`: Corrosive damage that eats away at armor and flesh.
+* `poison`: Toxic damage that attacks the natural functions of one's body.
 
 ## Magical Damage Types
 
-* `acid`: Corrosive damage that eats away at armor and flesh.
 * `cold`: Cold or ice damage that freezes enemies.
 * `fire`: Heat or flame damage that burns an opponent.
 * `force`: Magical damage that pushes, presses, or throws enemies.
 * `lightning`: Electrical damage that shocks opponents.
 * `necrotic`: Damage that rots away living things.
-* `poison`: Toxic damage that attacks the natural functions of one's body.
 * `psychic`: Damage that attacks the mental fortitude of an opponent.
 * `radiant`: Righteous / good damage that penetrates and burns an opponent.
 * `unholy`: Vile / evil damage that viciously consumes an opponent.

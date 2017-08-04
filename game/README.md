@@ -11,6 +11,7 @@ represents:
 
 - `.area.xml`: Area files
 - `.config.xml`: Engine configuration
+- `.damage.json`: Damage type definition
 - `.emote.json`: Emote command definition
 - `.help.md`: Help pages
 - `.message.txt`: Game messages
@@ -48,6 +49,27 @@ var defaultPrompt = Config.get('default.prompt');
 On game load the engine will search the `game/` directory for any files matching the `.config.xml` extension and load
 the configurations into the `Config` utility. This means a game author can add as many additional custom configurations
 as desired (as it may make it easier to tweak scripts, etc.).
+
+### Damage Types
+
+**Extension:** `.damage.json`
+
+Damage types define the various types of damage that can be dealt in the game world. On their own
+they do little, but they can be combined with skill cooldowns, passives, and weapon proficiencies
+to have a profound affect on the game (by way of resistances, weaknesses, and immunities). On game
+load the engine will search the `game/` directory for any files matching the `.damage.json` extension
+and load files found as damage types. Any errors the engine encounters while processing damage types
+will be reported in the server's log.
+
+```json
+{
+  "name": "slashing",
+  "category": "physical"
+}
+```
+
+Note: the `category` field can be any string, but the engine has special support for the following:
+`"physical"` and `"magical"`.
 
 ### Emote Commands
 

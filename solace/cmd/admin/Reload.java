@@ -28,6 +28,7 @@ public class Reload extends CompositeCommand {
     addSubCommand("skills", this::skills);
     addSubCommand("races", this::races);
     addSubCommand("dreams", this::dreams);
+    addSubCommand("damage-types", this::damageTypes);
   }
 
   @Override
@@ -228,7 +229,19 @@ public class Reload extends CompositeCommand {
     Log.info(String.format("User '{m}%s{x}' initiated dreams reload...", player.getName()));
     try {
       Dreams.getInstance().reload();
-      player.sendln("Races reloaded.");
+      player.sendln("Dreams reloaded.");
+    } catch (Throwable t) {
+      player.sendln("An error occurred when reloading dreams.");
+      t.printStackTrace();
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private void damageTypes(Player player, String[] params) {
+    Log.info(String.format("User '{m}%s{x}' initiated damage type reload...", player.getName()));
+    try {
+      DamageTypes.getInstance().reload();
+      player.sendln("Damage types reloaded.");
     } catch (Throwable t) {
       player.sendln("An error occurred when reloading dreams.");
       t.printStackTrace();
