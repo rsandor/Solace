@@ -12,6 +12,7 @@ represents:
 - `.area.xml`: Area files
 - `.config.xml`: Engine configuration
 - `.damage.json`: Damage type definition
+- `.dream.txt`: Dream text
 - `.emote.json`: Emote command definition
 - `.help.md`: Help pages
 - `.message.txt`: Game messages
@@ -70,6 +71,18 @@ will be reported in the server's log.
 
 Note: the `category` field can be any string, but the engine has special support for the following:
 `"physical"` and `"magical"`.
+
+### Dream Text
+
+**Extension:** `.dream.txt`
+
+Dreams are a cosmetic feature that add depth to game play and help pass the time while a character
+is sleeping to recover resources. Dreams are plain text files that can be as long or as short as the
+author desires. While sleeping the engine will randomly select dreams and replace words with blank
+spaces to simulate the missing memories that one often experiences when remembering dreams. On game load
+the engine will search the `game/` directory for any files matching the `.dream.txt` extension and load
+these files as plain text dreams. Any errors that the engine encounters while processing dreams will
+be reported in the server log.
 
 ### Emote Commands
 
