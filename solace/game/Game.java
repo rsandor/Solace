@@ -33,6 +33,7 @@ public class Game {
     Messages.reload();
     Dreams.getInstance().reload();
     HelpSystem.getInstance().reload();
+    DamageTypes.getInstance().reload();
     WeaponProficiencies.getInstance().reload();
     Skills.getInstance().reload();
     Races.getInstance().reload();
