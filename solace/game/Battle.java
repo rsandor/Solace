@@ -1,10 +1,6 @@
 package solace.game;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -297,22 +293,20 @@ public class Battle {
       Player target = targets.get(attacker);
       if (target == null) continue;
 
-      int numberOfAttacks = attacker.hasBuff("stun") ? 0 : attacker.getNumberOfAttacks();
-      int damage = 0;
-      int hits = 0;
-
       Log.trace(String.format(
-        "Battle: %s attacks %s.",
-        attacker.getName(),
-        target.getName()));
+        "Battle: %s attacks %s.", attacker.getName(), target.getName()));
+
+      Damage<Player> damage = new Damage<>(0.0, target, attacker);
+      attacker.getBaseAttackDamageTypes().forEach(damage::addType);
+      int numberOfAttacks = attacker.hasBuff("stun") ? 0 : attacker.getNumberOfAttacks();
+      int hits = 0;
 
       for (int i = 0; i < numberOfAttacks; i++) {
         try {
           AttackResult result = Battle.rollToHit(attacker, target);
-          if (result != AttackResult.MISS) {
+          if (result.isHit()) {
             hits++;
-            damage += Battle.rollDamage(
-              attacker, target, result == AttackResult.CRITICAL);
+            damage.add((double)Battle.rollDamage(attacker, target, result.isCritical()));
           }
         }
         catch (Exception e) {
@@ -325,25 +319,19 @@ public class Battle {
 
       if (hits == 0) {
         messageBuffers.get(attacker).append(String.format(
-          "Your attack missed %s.\n\r",
-          target.getName()));
+          "Your attack missed %s.\n\r", target.getName()));
         messageBuffers.get(target).append(String.format(
-          "%s {g}missed{x} you completely!\n\r",
-          attacker.getName()));
+          "%s {g}missed{x} you completely!\n\r", attacker.getName()));
       } else if (hits == 1) {
         messageBuffers.get(attacker).append(String.format(
-          "[{g}%d{x}] You hit %s!\n\r",
-          actualDamage, target.getName()));
+          "[{g}%d{x}] You hit %s!\n\r", actualDamage, target.getName()));
         messageBuffers.get(target).append(String.format(
-          "<{r}%d{x}> %s hit you!\n\r",
-          actualDamage, attacker.getName()));
+          "<{r}%d{x}> %s hit you!\n\r", actualDamage, attacker.getName()));
       } else {
         messageBuffers.get(attacker).append(String.format(
-          "[{g}%d{x}] You hit %s {y}%d{x} times!\n\r",
-          actualDamage, target.getName(), hits));
+          "[{g}%d{x}] You hit %s {y}%d{x} times!\n\r", actualDamage, target.getName(), hits));
         messageBuffers.get(target).append(String.format(
-          "<{r}%d{x}> %s hit you {y}%d{x} times!\n\r",
-          actualDamage, attacker.getName(), hits));
+          "<{r}%d{x}> %s hit you {y}%d{x} times!\n\r", actualDamage, attacker.getName(), hits));
       }
     }
 
