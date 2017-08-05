@@ -43,7 +43,9 @@ public class DotBuff extends Buff {
    */
   private void applyShockDamage() {
     int damage = Roll.normal(averageDamage);
-    target.applyDamage(damage);
+    // TODO Flesh out use of Damage model here
+    Damage<Buff> dmg = new Damage<>((double)damage, target, this);
+    target.applyDamage(dmg);
     target.sendMessage(String.format(damageMessage, damage));
     if (target.isDead()) {
       target.die(null);
