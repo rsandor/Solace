@@ -422,8 +422,7 @@ public class Character extends AbstractPlayer {
    * @param item Item to add to the player's inventory.
    */
   public void addItem(Item item) {
-    // TODO: Currently no limits on number of items / weight
-    //  need to add this when the time comes.
+    // TODO: Currently no limits on number of items / weight; need to add this when the time comes.
     inventory.add(item);
   }
 
@@ -736,5 +735,20 @@ public class Character extends AbstractPlayer {
       return Math.max(Math.min(75, getLevel()), skillLevel);
     }
     return skillLevel;
+  }
+
+  @Override
+  public Set<DamageType> getBaseAttackDamageTypes() {
+    Item weapon = getEquipment("weapon");
+    if (weapon != null) {
+      return weapon.getDamageTypes();
+    }
+    Set<DamageType> types = new HashSet<>();
+    try {
+      types.add(DamageTypes.getInstance().get("bludgeoning"));
+    } catch (AssetNotFoundException e) {
+      Log.warn("Missing 'bludgeoning' damage type for unarmed.");
+    }
+    return types;
   }
 }

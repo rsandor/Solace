@@ -1,5 +1,10 @@
 package solace.game;
 
+import solace.io.WeaponProficiencies;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents an item in the game world.
  * @author Ryan Sandor Richards
@@ -26,6 +31,26 @@ public class Item extends Template {
       return false;
     }
     return solace.game.Character.isValidEquipmentSlot(slot);
+  }
+
+  /**
+   * Gets all damage types for this item if it is a weapon.
+   * @return The damage types for the item if it is a weapon with an associated
+   *   proficiency, an empty set if it is not.
+   */
+  public Set<DamageType> getDamageTypes() {
+    Set<DamageType> types = new HashSet<>();
+    String slot = get("slot");
+    if (slot == null || !slot.equals("weapon")) {
+      return types;
+    }
+    String profName = get("proficiency");
+    if (profName == null || !WeaponProficiencies.getInstance().has(profName)) {
+      return types;
+    }
+    WeaponProficiency prof = WeaponProficiencies.getInstance().get(profName);
+    types.addAll(prof.getDamageTypes());
+    return types;
   }
 
   /**

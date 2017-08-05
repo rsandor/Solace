@@ -77,6 +77,7 @@ public abstract class AbstractPlayer implements Player {
   public abstract int getNumberOfAttacks();
   public abstract Connection getConnection();
   public abstract int getWeaponProficiency(String name);
+  public abstract Set<DamageType> getBaseAttackDamageTypes();
 
   /**
    * Sets the passives and cooldowns for this character. This method should be
@@ -329,9 +330,10 @@ public abstract class AbstractPlayer implements Player {
   public int getAC() { return Stats.getAC(this); }
 
   @Override
-  public int applyDamage(int damage) {
-    hp -= damage;
-    return damage;
+  public int applyDamage(Damage d) {
+    // TODO Engine Hook: Damage
+    hp -= (int)d.getAmount();
+    return (int)d.getAmount();
   }
 
   @Override
