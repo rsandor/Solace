@@ -8,16 +8,16 @@ import java.util.*;
  * @author Ryan Sandor Richards
  */
 public class Template implements Comparable<Template> {
-  Area area = null;
-  String id = null;
-  String uuid = null;
-  List<String> names = null;
-  Hashtable<String, String> properties = new Hashtable<String, String>();
+  private Area area = null;
+  private String id = null;
+  private String uuid = null;
+  private List<String> names = null;
+  private Hashtable<String, String> properties = new Hashtable<>();
 
   /**
    * Default constructor for a templatable object.
    */
-  public Template() {
+  Template() {
     area = null;
     id = null;
   }
@@ -95,9 +95,9 @@ public class Template implements Comparable<Template> {
 
   /**
    * Sets the object's id.
-   * @param id Id to set for the item.
+   * @param i Id to set for the item.
    */
-  public void setId(String s) { id = s; }
+  public void setId(String i) { id = i; }
 
   /**
    * @return The object's names.
