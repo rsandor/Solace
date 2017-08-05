@@ -410,6 +410,7 @@
 		<property key="power">35</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
+		<property key="attack.type">bludgeoning,fire</property>
 	</mobile>
 
 	<mobile id="dummy-super" names="super dummy" state="stationary">
@@ -425,6 +426,7 @@
 		<property key="power">35</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
+		<property key="attack.type">piercing</property>
 	</mobile>
 
 	<mobile id="dummy-greater" names="greater dummy" state="stationary">
@@ -440,5 +442,6 @@
 		<property key="power">100</property>
 		<property key="stat.major">strength</property>
 		<property key="stat.minor">speed</property>
+		<property key="attack.type">slashing</property>
 	</mobile>
 </area>
