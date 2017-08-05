@@ -3,10 +3,7 @@ package solace.cmd;
 import java.util.LinkedList;
 import java.util.List;
 
-import solace.game.AttackResult;
-import solace.game.Battle;
-import solace.game.BattleManager;
-import solace.game.Player;
+import solace.game.*;
 import solace.net.Connection;
 import solace.util.Clock;
 import solace.util.Log;
@@ -490,7 +487,9 @@ public abstract class CooldownCommand extends AbstractCommand {
 
       // Roll damage, apply it, and we're done!
       int damage = Battle.rollDamage(attacker, target, result.isCritical(), getPotency(attacker));
-      target.applyDamage(damage);
+      // TODO Flesh out use of Damage model for cooldown commands
+      Damage<Player> dmg = new Damage<>((float)damage, target, attacker);
+      target.applyDamage(dmg);
       sendHitMessages(attacker, target, result, damage);
       return true;
     } catch (InvalidTargetException ite) {
