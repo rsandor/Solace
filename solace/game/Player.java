@@ -1,5 +1,7 @@
 package solace.game;
 import java.util.Collection;
+import java.util.Set;
+
 import solace.util.Clock;
 import solace.net.Connection;
 
@@ -345,7 +347,7 @@ public interface Player {
    * @param d Damage to apply.
    * @return The actual damage dealt after applying resistances, etc.
    */
-  int applyDamage(int d);
+  int applyDamage(Damage d);
 
   /**
    * @return `true` if the player is dead, `false` otherwise.
@@ -575,4 +577,10 @@ public interface Player {
    * @return The weapon proficiency level for the given weapon type.
    */
   int getWeaponProficiency(String name);
+
+  /**
+   * Determines the types of damage dealt by base attacks for this player.
+   * @return A set of damage types dealt by base attacks.
+   */
+  Set<DamageType> getBaseAttackDamageTypes();
 }

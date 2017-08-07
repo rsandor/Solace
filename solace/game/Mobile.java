@@ -1,9 +1,15 @@
 package solace.game;
 
 import com.google.common.base.Joiner;
+import solace.io.AssetNotFoundException;
+import solace.io.DamageTypes;
 import solace.util.*;
 import solace.util.EventEmitter;
 import solace.util.EventListener;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a mobile in the game world.
@@ -248,4 +254,29 @@ public class Mobile extends AbstractPlayer {
 
   @Override
   public int getWeaponProficiency(String name) { return 0; }
+
+  @Override
+  public Set<DamageType> getBaseAttackDamageTypes() {
+    Set<DamageType> types = new HashSet<>();
+    String typeNames = template.get("attack.type");
+
+    if (typeNames == null) {
+      try {
+        types.add(DamageTypes.getInstance().get("bludgeoning"));
+      } catch (AssetNotFoundException e) {
+        Log.warn("Missing 'bludgeoning' damage type for default mobile damage type.");
+      }
+      return types;
+    }
+
+    Arrays.stream(typeNames.split("\\s*,\\s*")).forEach(name -> {
+      try {
+        types.add(DamageTypes.getInstance().get(name));
+      } catch (AssetNotFoundException e) {
+        Log.warn(String.format("Unknown damage type '%s' for mobile '%s'",
+          name, getName()));
+      }
+    });
+    return types;
+  }
 }
