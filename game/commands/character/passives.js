@@ -9,7 +9,7 @@ Commands.add('passives', function (player, params) {
 
   var k = 0;
   player.getPassives().forEach(function (passive) {
-    builder.append(format("%-18s  ", passive));
+    builder.append(format("%-18s  ", passive.getLabel()));
     if ((++k) % 4 == 0) builder.append("\n\r");
   });
 
