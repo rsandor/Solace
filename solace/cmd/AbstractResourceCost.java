@@ -60,20 +60,14 @@ public abstract class AbstractResourceCost implements ResourceCost {
       amount;
   }
 
-  /**
-   * @see ResourceCost
-   */
+  @Override
   public boolean canWithdraw(Player p) {
     return getPlayerResource(p) >= getCost(p);
   }
 
-  /**
-   * @see ResourceCost
-   */
+  @Override
   public abstract void withdraw(Player p);
 
-  /**
-   * @see ResourceCost
-   */
-  public abstract String getInsufficentResourceMessage();
+  @Override
+  public abstract String getInsufficientResourceMessage();
 }
