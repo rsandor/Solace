@@ -1,5 +1,8 @@
 package solace.game;
 
+import solace.game.effect.PlayerEffect;
+import solace.game.effect.PlayerModifier;
+import solace.game.effect.PlayerModifierIdentity;
 import solace.game.effect.ScriptedPlayerEffect;
 import solace.script.PassiveNotFoundException;
 import solace.script.ScriptedPassives;
@@ -98,7 +101,21 @@ public abstract class AbstractPlayer implements Player {
    * @return The ability score for this player.
    * @see solace.game.Stats
    */
-  protected int getAbility(String name) { return Stats.getAbility(this, name); }
+  protected int getAbility(String name) {
+    double score = (double)Stats.getAbility(this, name);
+    for (PlayerEffect effect : getEffects()) {
+      PlayerModifier<Double> modifier;
+      switch (name) {
+        case "strength": modifier = effect.getModStrength(); break;
+        case "vitality": modifier = effect.getModVitality(); break;
+        case "magic": modifier = effect.getModMagic(); break;
+        case "speed": modifier = effect.getModSpeed(); break;
+        default: modifier = new PlayerModifierIdentity<>();
+      }
+      score = modifier.modify(this, score);
+    }
+    return (int)Math.round(score);
+  }
 
   /**
    * Gets the maximum value for the given resource.
@@ -305,19 +322,13 @@ public abstract class AbstractPlayer implements Player {
   public int getStrength() { return getAbility("strength"); }
 
   @Override
-  public int getVitality() {
-    int vit = getAbility("vitality");
-    return hasPassive("stout-hearted") ? (int)(1.1 * vit) : vit;
-  }
+  public int getVitality() { return getAbility("vitality"); }
 
   @Override
   public int getMagic() { return getAbility("magic"); }
 
   @Override
-  public int getSpeed() {
-    int spe = getAbility("speed");
-    return hasPassive("light-footed") ? (int)(1.1 * spe) : spe;
-  }
+  public int getSpeed() { return getAbility("speed"); }
 
   @Override
   public int getWillSave() { return getSavingThrow("will"); }
@@ -409,6 +420,15 @@ public abstract class AbstractPlayer implements Player {
       }
     }
     return Collections.unmodifiableCollection(passives);
+  }
+
+  @Override
+  public Collection<PlayerEffect> getEffects() {
+    List<PlayerEffect> effects = new LinkedList<>();
+    for (Passive p : getPassives()) {
+      effects.add(p.getEffect());
+    }
+    return Collections.unmodifiableCollection(effects);
   }
 
   @Override
