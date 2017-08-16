@@ -2,6 +2,7 @@ package solace.game;
 import java.util.Collection;
 import java.util.Set;
 
+import solace.game.effect.PlayerEffect;
 import solace.util.Clock;
 import solace.net.Connection;
 
@@ -422,6 +423,11 @@ public interface Player {
    * @return A list of passive abilities for the player.
    */
   Collection<Passive> getPassives();
+
+  /**
+   * @return A collection of all effects for the player.
+   */
+  Collection<PlayerEffect> getEffects();
 
   /**
    * Determines if a player has a given cooldown action.
