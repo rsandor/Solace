@@ -5,7 +5,7 @@
     { "level": 15, "name": "parry" },
     { "level": 40, "name": "second attack" },
     { "level": 80, "name": "third attack" },
-    { "level": 100, "name": "battle trance" },
+    { "level": 100, "name": "battle trance" }
   ],
   "cooldowns": [
     { "level": 5, "name": "flurry" },
