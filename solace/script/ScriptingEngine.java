@@ -31,6 +31,7 @@ public class ScriptingEngine {
   public static void reload() {
     Log.info("Reloading game scripts");
     try {
+      ScriptedPassives.clear();
       ScriptedCommands.clear();
       GameFiles.findEngineScripts().forEach(instance::runEngineScript);
       GameFiles.findScripts().forEach(instance::run);

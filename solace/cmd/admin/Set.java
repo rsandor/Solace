@@ -52,6 +52,10 @@ public class Set extends AbstractCommand {
           int mp = Integer.parseInt(value);
           target.setMp(mp);
           break;
+        case "sp":
+          int sp = Integer.parseInt(value);
+          target.setSp(sp);
+          break;
         case "race":
           if (!Races.getInstance().has(value)) {
             throw new Exception("Invalid player race: " + value);

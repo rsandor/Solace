@@ -67,10 +67,7 @@ public class Character extends AbstractPlayer {
     level = 1;
   }
 
-  /**
-   * Sets the passives and cooldowns this character has based on the character's
-   * core skills, role skills, and race.
-   */
+  @Override
   public void setPassivesAndCooldowns() {
     super.setPassivesAndCooldowns();
 
@@ -78,25 +75,20 @@ public class Character extends AbstractPlayer {
     for (Skill skill : skills.values()) {
       int skillLevel = skill.getLevel();
       for (String passive : skill.getPassives()) {
-        if (skillLevel > getPassiveLevel(passive)) {
-          setPassive(passive, skillLevel);
-        }
+        setPassive(passive, skillLevel);
       }
       for (String cooldown : skill.getCooldowns()) {
-        if (skillLevel > getCooldownLevel(cooldown)) {
-          setCooldown(cooldown, skillLevel);
-        }
+        setCooldown(cooldown, skillLevel);
       }
     }
 
     // Racial passives and cooldowns
-    // NOTE Racial passives and cooldowns always have a skill level of 100.
     for (String passive : race.getPassives()) {
-      setPassive(passive, 100);
+      setPassive(passive, getLevel());
     }
 
     for (String cooldown : race.getCooldowns()) {
-      setCooldown(cooldown, 100);
+      setCooldown(cooldown, getLevel());
     }
   }
 

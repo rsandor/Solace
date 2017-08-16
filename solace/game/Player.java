@@ -411,17 +411,17 @@ public interface Player {
   boolean hasPassive(String name);
 
   /**
-   * Gets the level for the named passive.
-   * @param name Name of the passive ability.
-   * @return The level of the passive ability, or -1 if the character does not
-   *   possess the given passive.
+   * Determines the level of a passive for the player.
+   * @param name Name of the passive.
+   * @return The level at which the player has the passive, -1 if the player
+   *   has no such passive.
    */
   int getPassiveLevel(String name);
 
   /**
    * @return A list of passive abilities for the player.
    */
-  Collection<String> getPassives();
+  Collection<Passive> getPassives();
 
   /**
    * Determines if a player has a given cooldown action.

@@ -1,7 +1,6 @@
 package solace.game;
 
-import java.util.*;
-
+import solace.game.effect.PlayerEffect;
 import solace.io.Config;
 import solace.util.*;
 
@@ -14,7 +13,7 @@ import solace.util.*;
  * @author Ryan Sandor Richards
  */
 public class RecoveryManager {
-  static Clock.Event recoveryEvent = null;
+  private static Clock.Event recoveryEvent = null;
 
   /**
    * Initializes and starts the battle manager.
@@ -22,14 +21,10 @@ public class RecoveryManager {
   public static void start() {
     if (recoveryEvent != null) { return; }
     Log.info("Starting recovery manager");
-    int ticks = Integer.parseInt(Config.get("game.recovery.ticks"));
+    String ticksString = Config.get("game.recovery.ticks");
+    int ticks = ticksString != null ? Integer.parseInt(ticksString) : 10;
     recoveryEvent = Clock.getInstance().interval(
-      "recovery-cycle",
-      ticks,
-      new Runnable() {
-        public void run() { RecoveryManager.cycle(); }
-      }
-    );
+      "recovery-cycle", ticks, RecoveryManager::cycle);
   }
 
   /**
@@ -46,47 +41,51 @@ public class RecoveryManager {
    * Performs a recovery cycle for all players and mobiles in the game world.
    */
   private static void cycle() {
-    Collection<solace.game.Character> playing = Game.getActiveCharacters();
-    synchronized(playing) {
-      for (solace.game.Character p : playing) {
-        // Fighting players do not recover resources
-        if (p.isFighting()) {
-          continue;
-        }
-
-        // Determine base recovery mod via play state
-        double recoveryMod = 0.05;
-        if (p.isSitting()) {
-          recoveryMod = 0.08;
-        } else if (p.isResting()) {
-          recoveryMod = 0.15;
-        } else if (p.isSleeping()) {
-          recoveryMod = 0.25;
-        }
-
-        // Add additional modifier for vitality
-        recoveryMod += 0.25 * (p.getVitality() / 500);
-
-        // Perform the recovery for all resources
-        int maxHp = p.getMaxHp();
-        int hp = p.getHp();
-        int recoveredHp = Math.max(1, (int)(maxHp * recoveryMod));
-        p.setHp(Math.min(maxHp, hp + recoveredHp));
-
-        int maxMp = p.getMaxMp();
-        int mp = p.getMp();
-        int recoveredMp = (p.hasPassive("meditation")) ?
-          Math.max(1, (int)(maxMp * recoveryMod * 1.25)) :
-          Math.max(1, (int)(maxMp * recoveryMod));
-        p.setMp(Math.min(maxMp, mp + recoveredMp));
-
-        int maxSp = p.getMaxSp();
-        int sp = p.getSp();
-        int recoveredSp = (p.hasPassive("meditation")) ?
-          Math.max(1, (int)(maxSp * recoveryMod * 1.25)) :
-          Math.max(1, (int)(maxSp * recoveryMod));
-        p.setSp(Math.min(maxSp, sp + recoveredSp));
+    // TODO This will need to be updated to heal mobiles as well
+    Game.getActiveCharacters().forEach(player -> {
+      // Fighting players do not,  recover resources
+      if (player.isFighting()) {
+        return;
       }
-    }
+
+      // Determine base recovery mod via play state
+      double recoveryMod = 0.05;
+      if (player.isSitting()) {
+        recoveryMod = 0.08;
+      } else if (player.isResting()) {
+        recoveryMod = 0.15;
+      } else if (player.isSleeping()) {
+        recoveryMod = 0.25;
+      }
+
+      // Add additional modifier for vitality
+      recoveryMod += 0.1 * (player.getVitality() / 500);
+
+      // Determine base recovery for all resources before effects
+      int maxHp = player.getMaxHp();
+      int hp = player.getHp();
+      double recoveredHp = maxHp * recoveryMod;
+
+      int maxMp = player.getMaxMp();
+      int mp = player.getMp();
+      double recoveredMp = maxMp * recoveryMod;
+
+      int maxSp = player.getMaxSp();
+      int sp = player.getSp();
+      double recoveredSp = maxSp * recoveryMod;
+
+      // Apply modifications effects for passives
+      for(Passive passive : player.getPassives()) {
+        PlayerEffect effect = passive.getEffect();
+        recoveredHp = effect.getModHpRecovery().modify(player, recoveredHp);
+        recoveredMp = effect.getModMpRecovery().modify(player, recoveredMp);
+        recoveredSp = effect.getModSpRecovery().modify(player, recoveredSp);
+      }
+
+      // Perform recovery on the player
+      player.setHp((int)Math.min(maxHp, hp + recoveredHp));
+      player.setMp((int)Math.min(maxMp, mp + recoveredMp));
+      player.setSp((int)Math.min(maxSp, sp + recoveredSp));
+    });
   }
 }

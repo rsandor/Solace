@@ -110,7 +110,7 @@ public class Skill {
    * @param c Collection to search.
    * @return The resulting collection of names.
    */
-  protected Collection<String> getNamesForLevel(Collection<LevelPair> c) {
+  private Collection<String> getNamesForLevel(Collection<LevelPair> c) {
     LinkedList<String> result = new LinkedList<String>();
     for (LevelPair pair : c) {
       if (level >= pair.getLevel()) {
@@ -164,7 +164,7 @@ public class Skill {
     String id = object.getString("id");
     String name = object.getString("name");
     Skill skill = new Skill(id, name);
-    int i, j;
+    int i;
 
     JSONArray pass = object.getJSONArray("passives");
     for (i = 0; i < pass.length(); i++) {
