@@ -45,6 +45,39 @@ public interface PlayerEffect {
   PlayerModifier<Double> getModSpRecovery ();
 
   /**
+   * Register a modifier for HP resource costs.
+   * @param callback Modifier callback for HP resource costs.
+   */
+  void modHpCost (PlayerModifier<Double> callback);
+
+  /**
+   * @return The MP cost modifier for this effect.
+   */
+  PlayerModifier<Double> getModMpCost ();
+
+  /**
+   * Register a modifier for MP resource costs.
+   * @param callback Modifier callback for MP resource costs.
+   */
+  void modMpCost (PlayerModifier<Double> callback);
+
+  /**
+   * @return The SP cost modifier for this effect.
+   */
+  PlayerModifier<Double> getModSpCost ();
+
+  /**
+   * Register a modifier for SP resource costs.
+   * @param callback Modifier callback for SP resource costs.
+   */
+  void modSpCost (PlayerModifier<Double> callback);
+
+  /**
+   * @return The HP cost modifier for this effect.
+   */
+  PlayerModifier<Double> getModHpCost ();
+
+  /**
    * Register a modifier callback that effects the player's strength ability score.
    * @param callback Modifier callback to execute when calculating player strength.
    */

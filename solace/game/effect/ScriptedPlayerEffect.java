@@ -12,6 +12,9 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   private PlayerModifier<Double> magicMod = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> vitalityMod = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> speedMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> hpCostMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> mpCostMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> spCostMod = new PlayerModifierIdentity<>();
 
   @Override
   public void modHpRecovery (PlayerModifier<Double> callback) {
@@ -41,6 +44,36 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   @Override
   public PlayerModifier<Double> getModSpRecovery() {
     return spRecovery;
+  }
+
+  @Override
+  public void modHpCost(PlayerModifier<Double> callback) {
+    hpCostMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModHpCost() {
+    return hpCostMod;
+  }
+
+  @Override
+  public void modMpCost(PlayerModifier<Double> callback) {
+    mpCostMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModMpCost() {
+    return mpCostMod;
+  }
+
+  @Override
+  public void modSpCost(PlayerModifier<Double> callback) {
+    spCostMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModSpCost() {
+    return spCostMod;
   }
 
   @Override
