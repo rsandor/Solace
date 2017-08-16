@@ -6,6 +6,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
+import solace.game.effect.PlayerEffect;
 import solace.util.Log;
 import solace.util.Roll;
 
@@ -126,16 +127,13 @@ public class Battle {
   }
 
   /**
-   * Applies global passive modifiers to an attack roll.
-   * @param roll The attack roll to scale.
+   * Applies effects modifiers to an attack roll.
+   * @param roll The attack roll to modify.
    * @return The resulting roll after passive have been applied.
    */
-  private static double applyAttackerPassivesToRoll(Player attacker, double roll) {
-    if (attacker.hasPassive("battle trance")) {
-      roll = roll * 1.1;
-    }
-    if (attacker.hasPassive("generalist")) {
-      roll = roll * 1.05;
+  private static double applyAttackerEffectsToRoll(Player attacker, double roll) {
+    for (PlayerEffect effect : attacker.getEffects()) {
+      roll = effect.getModBaseAttackRoll().modify(attacker, roll);
     }
     return roll;
   }
@@ -174,7 +172,7 @@ public class Battle {
     boolean critical = roll > attackRoll - (attackRoll * CRITICAL_CHANCE);
 
     // Apply attacker passives
-    roll = applyAttackerPassivesToRoll(attacker, roll);
+    roll = applyAttackerEffectsToRoll(attacker, roll);
 
     // Add attacker's hit modifier
     roll += hitMod;
@@ -213,7 +211,7 @@ public class Battle {
     boolean critical = roll > magicRoll - (magicRoll * CRITICAL_CHANCE);
 
     // Apply attacker passives
-    roll = applyAttackerPassivesToRoll(attacker, roll);
+    roll = applyAttackerEffectsToRoll(attacker, roll);
 
     // Apply defender passives
     // TODO Currently none, but counter magic would be cool as hell
