@@ -90,7 +90,7 @@ a script author.
             return 1.25 * damage;
         }
     },
-    modBaseAttackRoll: function (player, roll, type) {
+    modBaseAttackRoll: function (player, roll) {
         return 0.5 * roll;
     },
     modNumberOfBaseAttacks: function (player, attacks) {
@@ -285,9 +285,6 @@ a script author.
 - [ ] Engine Support
 ```js
 {
-    modCheck: function (player, roll) {
-        return 1.05 * roll;
-    },
     modStoreBuyPrice: function (player, price) {
         return 0.75 * price;
     },
