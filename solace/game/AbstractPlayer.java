@@ -1,5 +1,8 @@
 package solace.game;
 
+import solace.game.effect.ScriptedPlayerEffect;
+import solace.script.PassiveNotFoundException;
+import solace.script.ScriptedPassives;
 import solace.util.Clock;
 import solace.util.Log;
 import solace.io.Buffs;
@@ -55,11 +58,11 @@ public abstract class AbstractPlayer implements Player {
   private Clock.Event castingEvent;
 
   private Hashtable<String, CooldownTimer> cooldownTimers = new Hashtable<>();
-  private Hashtable<String, Integer> passives = new Hashtable<>();
+  private Hashtable<String, Integer> passiveLevels = new Hashtable<>();
   private Hashtable<String, Integer> cooldowns = new Hashtable<>();
   private final Hashtable<String, Buff> buffs = new Hashtable<>();
 
-  // Abstract Player Methods
+  // Abstract Player MethodPassives
   public abstract void die(Player killer);
   public abstract boolean isMobile();
   public abstract void sendMessage(String s);
@@ -85,7 +88,7 @@ public abstract class AbstractPlayer implements Player {
    * a new skill.
    */
   public void setPassivesAndCooldowns() {
-    passives.clear();
+    passiveLevels.clear();
     cooldowns.clear();
   }
 
@@ -113,19 +116,25 @@ public abstract class AbstractPlayer implements Player {
   }
 
   /**
-   * @see solace.game.Player
-   */
-  public int getPassiveLevel(String name) {
-    if (!hasPassive(name)) return -1;
-    return passives.get(name);
-  }
-
-  /**
    * Sets a passive on the player for the given name at the given level.
    * @param name Name of the passive.
    * @param level Level of the passive.
    */
-  void setPassive(String name, int level) { passives.put(name, level); }
+  void setPassive(String name, int level) {
+    if (!ScriptedPassives.has(name)) {
+      Log.warn(String.format(
+        "Unable to find passive with name '%s' for player '%s'", name, getName()));
+    }
+    passiveLevels.put(name, level);
+  }
+
+  @Override
+  public int getPassiveLevel(String name) {
+    if (passiveLevels.keySet().contains(name)) {
+      return passiveLevels.get(name);
+    }
+    return -1;
+  }
 
   /**
    * Sets a cooldown on the player for the given name at the given level.
@@ -270,7 +279,9 @@ public abstract class AbstractPlayer implements Player {
   public void setHp(int v) { hp = v; }
 
   @Override
-  public int getMaxHp() { return getMaxResource("hp"); }
+  public int getMaxHp() {
+    return getMaxResource("hp");
+  }
 
   @Override
   public int getMp() { return mp; }
@@ -384,10 +395,21 @@ public abstract class AbstractPlayer implements Player {
   public String getComboAction() { return comboAction == null ? "" : comboAction; }
 
   @Override
-  public boolean hasPassive(String name) { return passives.containsKey(name); }
+  public boolean hasPassive(String name) { return passiveLevels.containsKey(name); }
 
   @Override
-  public Collection<String> getPassives() { return Collections.unmodifiableCollection(passives.keySet()); }
+  public Collection<Passive> getPassives() {
+    List<Passive> passives = new LinkedList<>();
+    for (String name : passiveLevels.keySet()) {
+      try {
+        passives.add(ScriptedPassives.get(name));
+      } catch (PassiveNotFoundException e) {
+        Log.warn(String.format(
+          "Encountered unknown passive '%s' for player '%s'", name, getName()));
+      }
+    }
+    return Collections.unmodifiableCollection(passives);
+  }
 
   @Override
   public boolean hasCooldown(String name) { return cooldowns.containsKey(name); }
