@@ -1,15 +1,16 @@
 package solace.cmd;
 
 import solace.game.Player;
+import solace.game.effect.PlayerEffect;
 
 /**
- * Resource cost for stamina points.
+ * Resource cost for SP.
  * @author Ryan Sandor Richards
  */
 public class SpCost extends AbstractResourceCost {
   /**
    * Creates a new sp cost for the given percentage amount.
-   * @param a Percentage of max mp for the cost.
+   * @param a Percentage of max sp for the cost.
    */
   public SpCost(int a) { super(a); }
 
@@ -21,28 +22,30 @@ public class SpCost extends AbstractResourceCost {
    */
   public SpCost(AbstractResourceCost.CostType t, int a) { super(t, a); }
 
-  /**
-   * @see AbstractResourceCost
-   */
+  @Override
   protected int getPlayerResource(Player p) { return p.getSp(); }
 
-  /**
-   * @see AbstractResourceCost
-   */
+  @Override
   protected int getPlayerResourceMax(Player p) { return p.getMaxSp(); }
 
-  /**
-   * @see ResourceCost
-   */
+  @Override
+  public String getInsufficientResourceMessage() {
+    return "Not enough {m}sp{x}.";
+  }
+
+  @Override
+  protected int getCost(Player p) {
+    double cost = super.getCost(p);
+    for (PlayerEffect effect : p.getEffects()) {
+      cost = effect.getModSpCost().modify(p, cost);
+    }
+    return (int)Math.round(cost);
+  }
+
+  @Override
   public void withdraw(Player p) {
     if (!canWithdraw(p)) return;
     p.setSp(getPlayerResource(p) - getCost(p));
   }
-
-  /**
-   * @see ResourceCost
-   */
-  public String getInsufficentResourceMessage() {
-    return "Not enough {y}sp{x}.";
-  }
 }
+
