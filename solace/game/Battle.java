@@ -119,20 +119,6 @@ public class Battle {
   public synchronized void message(Player p, String msg) { messageBuffers.get(p).append(msg); }
 
   /**
-   * Determines if a defending player successfully parries an attack.
-   * @param defender The player defending an attack.
-   * @return True if the attack is parried, false otherwise.
-   */
-  private static boolean parry(Player defender) {
-    int skillLevel = defender.getPassiveLevel("parry");
-    if (skillLevel < 1) {
-      return false;
-    }
-    double chance = 0.05 + 0.1 * ((double)skillLevel / 100.0);
-    return Roll.uniform() < chance;
-  }
-
-  /**
    * Roll to hit with normal scale potency.
    */
   private static AttackResult rollToHit(Player attacker, Player defender) {
@@ -197,13 +183,11 @@ public class Battle {
     roll = scaleAttackRollByPotency(potency, roll);
 
     // Apply defender passives
-    boolean parried = Battle.parry(defender);
+    // TODO Script "parry" passive
 
     // Calculate the result
-    if (!parried) {
-      if (critical) return AttackResult.CRITICAL;
-      if (roll > ac) return AttackResult.HIT;
-    }
+    if (critical) return AttackResult.CRITICAL;
+    if (roll > ac) return AttackResult.HIT;
     return AttackResult.MISS;
   }
 
