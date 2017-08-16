@@ -8,13 +8,16 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   private PlayerModifier<Double> hpRecovery = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> mpRecovery = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> spRecovery = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> hpCostMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> mpCostMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> spCostMod = new PlayerModifierIdentity<>();
+
   private PlayerModifier<Double> strengthMod = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> magicMod = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> vitalityMod = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> speedMod = new PlayerModifierIdentity<>();
-  private PlayerModifier<Double> hpCostMod = new PlayerModifierIdentity<>();
-  private PlayerModifier<Double> mpCostMod = new PlayerModifierIdentity<>();
-  private PlayerModifier<Double> spCostMod = new PlayerModifierIdentity<>();
+
+  private PlayerModifier<Double> baseAttackRollMod = new PlayerModifierIdentity<>();
 
   @Override
   public void modHpRecovery (PlayerModifier<Double> callback) {
@@ -114,5 +117,15 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   @Override
   public PlayerModifier<Double> getModSpeed() {
     return speedMod;
+  }
+
+  @Override
+  public void modBaseAttackRoll (PlayerModifier<Double> callback) {
+    baseAttackRollMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModBaseAttackRoll () {
+    return baseAttackRollMod;
   }
 }

@@ -120,4 +120,15 @@ public interface PlayerEffect {
    * @return The speed ability score modifier. If not set this returns an identity.
    */
   PlayerModifier<Double> getModSpeed ();
+
+  /**
+   * Register a modifier that effect the player's base attack roll.
+   * @param callback Modifer callback to register.
+   */
+  void modBaseAttackRoll (PlayerModifier<Double> callback);
+
+  /**
+   * @return The base attack roll modifier.
+   */
+  PlayerModifier<Double> getModBaseAttackRoll ();
 }
