@@ -129,7 +129,7 @@ public abstract class CooldownCommand extends AbstractCommand {
   protected void checkResourceCosts(Player player) throws CooldownException {
     for (ResourceCost cost : resourceCosts) {
       if (!cost.canWithdraw(player)) {
-        throw new CooldownException(cost.getInsufficentResourceMessage());
+        throw new CooldownException(cost.getInsufficientResourceMessage());
       }
     }
   }
