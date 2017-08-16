@@ -27,5 +27,5 @@ public interface ResourceCost {
    * @return A message to indicate that tells the player they do not possess
    *   the resources required to take an action (e.g. "Not enough mp.", etc.).
    */
-  public String getInsufficentResourceMessage();
+  public String getInsufficientResourceMessage();
 }

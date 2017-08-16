@@ -1,9 +1,11 @@
 package solace.cmd;
 
 import solace.game.Player;
+import solace.game.effect.PlayerEffect;
+import solace.util.Log;
 
 /**
- * Resource cost for magic points.
+ * Resource cost for MP.
  * @author Ryan Sandor Richards
  */
 public class MpCost extends AbstractResourceCost {
@@ -21,32 +23,32 @@ public class MpCost extends AbstractResourceCost {
    */
   public MpCost(AbstractResourceCost.CostType t, int a) { super(t, a); }
 
-  /**
-   * @see AbstractResourceCost
-   */
+  @Override
   protected int getPlayerResource(Player p) { return p.getMp(); }
 
-  /**
-   * @see AbstractResourceCost
-   */
+  @Override
   protected int getPlayerResourceMax(Player p) { return p.getMaxMp(); }
 
-  /**
-   * @see ResourceCost
-   */
-  public void withdraw(Player p) {
-    if (!canWithdraw(p)) return;
-    int cost = getCost(p);
-    if (p.hasPassive("metamagical")) {
-      cost = (int)(0.9 * cost);
-    }
-    p.setMp(getPlayerResource(p) - cost);
-  }
-
-  /**
-   * @see ResourceCost
-   */
-  public String getInsufficentResourceMessage() {
+  @Override
+  public String getInsufficientResourceMessage() {
     return "Not enough {m}mp{x}.";
   }
+
+  @Override
+  protected int getCost(Player p) {
+    double cost = super.getCost(p);
+    Log.info(String.format("BEFORE: %d", (int)cost));
+    for (PlayerEffect effect : p.getEffects()) {
+      cost = effect.getModMpCost().modify(p, cost);
+    }
+    Log.info(String.format("AFTER: %d", (int)Math.round(cost)));
+    return (int)Math.round(cost);
+  }
+
+  @Override
+  public void withdraw(Player p) {
+    if (!canWithdraw(p)) return;
+    p.setMp(getPlayerResource(p) - getCost(p));
+  }
 }
+

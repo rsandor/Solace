@@ -29,7 +29,7 @@ public class ScriptedPassives {
         "Encountered passive with duplicate name '%s', skipping.", p.getName()));
       return;
     }
-    Log.info(String.format("Adding passive '%s'", p.getName()));
+    Log.debug(String.format("Adding passive '%s'", p.getName()));
     passives.put(p.getName(), p);
   }
 
