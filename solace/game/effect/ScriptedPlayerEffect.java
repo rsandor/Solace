@@ -8,6 +8,10 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   private PlayerModifier<Double> hpRecovery = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> mpRecovery = new PlayerModifierIdentity<>();
   private PlayerModifier<Double> spRecovery = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> strengthMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> magicMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> vitalityMod = new PlayerModifierIdentity<>();
+  private PlayerModifier<Double> speedMod = new PlayerModifierIdentity<>();
 
   @Override
   public void modHpRecovery (PlayerModifier<Double> callback) {
@@ -37,5 +41,45 @@ public class ScriptedPlayerEffect implements PlayerEffect {
   @Override
   public PlayerModifier<Double> getModSpRecovery() {
     return spRecovery;
+  }
+
+  @Override
+  public void modStrength(PlayerModifier<Double> callback) {
+    strengthMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModStrength() {
+    return strengthMod;
+  }
+
+  @Override
+  public void modMagic(PlayerModifier<Double> callback) {
+    magicMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModMagic() {
+    return magicMod;
+  }
+
+  @Override
+  public void modVitality(PlayerModifier<Double> callback) {
+    vitalityMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModVitality() {
+    return vitalityMod;
+  }
+
+  @Override
+  public void modSpeed(PlayerModifier<Double> callback) {
+    speedMod = callback;
+  }
+
+  @Override
+  public PlayerModifier<Double> getModSpeed() {
+    return speedMod;
   }
 }
